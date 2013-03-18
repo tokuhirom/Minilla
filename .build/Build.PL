@@ -1,11 +1,7 @@
 use strict;
-use warnings;
-use Module::Build::Pluggable qw(
-    CPANfile
-    GithubMeta
-);
+use Module::Build;
 
-my $build = Module::Build::Pluggable->new(
+my $builder = Module::Build->new(
     license              => 'perl',
     dynamic_config       => 0,
 

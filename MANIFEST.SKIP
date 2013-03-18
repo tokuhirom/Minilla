@@ -94,3 +94,4 @@ perltidy.ERR$
 ^\.carton/
 ^carton\.lock$
 ^local/
+^_minya/

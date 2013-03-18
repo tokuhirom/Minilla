@@ -1,12 +1,16 @@
-# requires 'Exporter'                      => '0';
 requires 'parent'                        => '0';
-# requires 'Plack'                         => '0.9949';
+requires 'Module::Build' => 0.40;
+requires 'Software::License';
+requires 'ExtUtils::Manifest';
+requires 'JSON::PP';
+requires 'Text::MicroTemplate';
 
 on 'configure' => sub {
     requires 'Module::Build' => '0.40';
     requires 'Module::Build::Pluggable';
     requires 'Module::Build::Pluggable::CPANfile';
     requires 'Module::Build::Pluggable::GithubMeta';
+    requires 'Module::CPANfile';
 };
 
 on 'test' => sub {

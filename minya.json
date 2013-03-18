@@ -1,0 +1,5 @@
+{
+    "name": "Minya",
+    "license":"perl",
+    "script_files": ["bin/minya"]
+}
