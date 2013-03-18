@@ -29,6 +29,14 @@ B<THIS IS A DEVELOPMENT RELEASE. API MAY CHANGE WITHOUT NOTICE>.
 
 =back
 
+=head1 TODO
+
+    minya new
+    minya release
+    M::I::Repository
+    M::I::GithubMeta
+    Create META.yml by own
+
 =head1 AUTHOR
 
 Tokuhiro Matsuno E<lt>tokuhirom AAJKLFJEF@ GMAIL COME<gt>

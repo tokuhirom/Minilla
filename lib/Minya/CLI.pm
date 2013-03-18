@@ -20,12 +20,13 @@ use Minya::Util;
 use Module::Runtime qw(require_module);
 use CPAN::Meta::Check;
 use Data::OptList;
+use Software::License;
 use Class::Trigger qw(
     after_setup_workdir
 );
 
 use Class::Accessor::Lite 0.05 (
-    rw => [qw(minya_json cpanfile base_dir work_dir work_dir_base debug config auto_install prereq_specs)],
+    rw => [qw(minya_json cpanfile base_dir work_dir work_dir_base debug config auto_install prereq_specs license)],
 );
 
 use constant { SUCCESS => 0, INFO => 1, WARN => 2, ERROR => 3 };
@@ -41,6 +42,7 @@ sub new {
     my $class = shift;
 
     bless {
+        color => -t STDOUT ? 1 : 0,
         auto_install => 1,
     }, $class;
 }
@@ -79,6 +81,7 @@ sub run {
                 $self->base_dir(File::Basename::dirname($self->minya_json));
                 $self->work_dir_base($self->_build_work_dir_base)->mkpath;
                 $self->load_plugins();
+                $self->init_license();
                 $self->verify_dependencies([qw(develop)], 'requires');
                 for (grep { -d $_ } $self->work_dir_base()->children) {
                     $self->print("Removing $_\n", INFO);
@@ -101,6 +104,18 @@ sub run {
     } else {
         $self->error("Could not find command '$cmd'\n");
     }
+}
+
+sub init_license {
+    my $self = shift;
+
+    my $klass = "Software::License::" . $self->config->{license};
+    require_module($klass);
+    $self->license(
+        $klass->new({
+            holder => $self->config->{copyright_holder} || $self->config->{author}
+        })
+    );
 }
 
 sub load_plugins {
@@ -142,8 +157,9 @@ sub load_config {
 
     # validation
     $conf->{'name'} || $self->error("Missing name in minya.json\n");
+    $conf->{'author'} || $self->error("Missing author in minya.json\n");
     $conf->{'version'} || $self->error("Missing version in minya.json\n");
-    $conf->{'license'} ||= 'unknown';
+    $conf->{'license'} || $self->error("Missing license in minya.json\n");
 
     return $conf;
 }
@@ -208,9 +224,11 @@ sub cmd_dist {
 
     my $guard = $self->setup_mb();
 
+    local $ENV{RELEASE_TESTING} = 1;
     $self->cmd($^X, 'Build.PL');
+    $self->cmd($^X, 'Build', 'manifest');
+    $self->cmd($^X, 'Build', 'distmeta');
     unless ($notest) {
-        local $ENV{RELEASE_TESTING} = 1;
         $self->cmd($^X, 'Build', 'disttest');
     }
     $self->cmd($^X, 'Build', 'dist');
@@ -260,9 +278,10 @@ sub setup_mb {
 
     # Should I use EU::MM instead of M::B?
     local $Data::Dumper::Terse = 1;
-    path('Build.PL')->spew($self->render(<<'...', $config, $self->prereq_specs));
+    path('Build.PL')->spew($self->render(<<'...', $config, $self->prereq_specs, $self));
 ? my $config = shift;
 ? my $prereq = shift;
+? my $self = shift;
 ? use Data::Dumper;
 use strict;
 use Module::Build;
@@ -275,7 +294,7 @@ my $builder = Module::Build->new(
     name        => '<?= $config->{name} ?>',
     dist_name   => '<?= $config->{name} ?>',
     dist_version => '<?= $config->{version} ?>',
-    license     => '<?= $config->{license} || "unknown" ?>',
+    license     => '<?= $self->license->meta_yml_name || "unknown" ?>',
     script_files => <?= Dumper($config->{script_files}) ?>,
     # TODO: more deps.
     configure_requires => <?= Dumper(+{ 'Module::Build' => 0.40, %{$prereq->{configure}->{requires} || {} } }) ?>,
@@ -283,7 +302,6 @@ my $builder = Module::Build->new(
     build_requires => <?= Dumper(+{ %{$prereq->{build}->{requires} || {} } }) ?>,
     test_files => (-d '.git' || $ENV{RELEASE_TESTING}) ? 't/ xt/' : 't/',
 
-    test_files => 't/',
     recursive_test_files => 1,
 
     create_readme  => 1,

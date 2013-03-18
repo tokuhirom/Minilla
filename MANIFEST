@@ -6,6 +6,7 @@ cpanfile
 lib/Minya.pm
 lib/Minya/CLI.pm
 lib/Minya/Errors.pm
+lib/Minya/Plugin/Test/CPANMeta.pm
 lib/Minya/Plugin/Test/MinimumVersion.pm
 lib/Minya/Plugin/Test/Pod.pm
 lib/Minya/Util.pm
@@ -18,5 +19,4 @@ README
 t/00_compile.t
 xt/01_podspell.t
 xt/02_perlcritic.t
-xt/05_cpan_meta.t
 xt/06_meta_author.t
