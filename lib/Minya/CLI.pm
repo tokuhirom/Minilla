@@ -4,7 +4,6 @@ use warnings;
 use utf8;
 use Getopt::Long;
 use Minya::Errors;
-# use Minya::Util;
 use Try::Tiny;
 use Term::ANSIColor qw(colored);
 use File::Basename;
@@ -17,9 +16,16 @@ use JSON::PP;
 use Data::Dumper; # serializer
 use Module::CPANfile;
 use Text::MicroTemplate;
+use Minya::Util;
+use Module::Runtime qw(require_module);
+use CPAN::Meta::Check;
+use Data::OptList;
+use Class::Trigger qw(
+    after_setup_workdir
+);
 
 use Class::Accessor::Lite 0.05 (
-    rw => [qw(minya_json cpanfile base_dir work_dir work_dir_base debug)],
+    rw => [qw(minya_json cpanfile base_dir work_dir work_dir_base debug config auto_install prereq_specs)],
 );
 
 use constant { SUCCESS => 0, INFO => 1, WARN => 2, ERROR => 3 };
@@ -35,6 +41,7 @@ sub new {
     my $class = shift;
 
     bless {
+        auto_install => 1,
     }, $class;
 }
 
@@ -52,6 +59,7 @@ sub run {
         "color!"    => \$self->{color},
         "debug!"    => \$self->{debug},
         "verbose!"  => \$self->{verbose},
+        "auto-install!"  => \$self->{auto_install},
     );
  
     push @commands, @ARGV;
@@ -61,23 +69,30 @@ sub run {
  
     if ($call) {
         try {
-            $self->minya_json($self->find_file('minya.json'));
-            $self->cpanfile(Module::CPANfile->load($self->find_file('cpanfile')));
-            $self->base_dir(File::Basename::dirname($self->minya_json));
-            $self->work_dir_base($self->_build_work_dir_base);
-            $self->verify_dependencies([qw(develop)], 'requires');
-            for (grep { -d $_ } $self->work_dir_base()->children) {
-                $self->print("Removing $_\n", INFO);
-                $_->remove_tree({safe => 0});
-            }
-            $self->work_dir($self->work_dir_base->child(randstr(8)));
-
-            {
-                my $guard = pushd($self->base_dir);
+            if ($call eq 'cmd_new' || $call eq 'cmd_help') {
                 $self->$call(@commands);
-            }
-            unless ($self->debug) {
-                $self->work_dir->remove_tree({safe => 0});
+            } else {
+                $self->minya_json($self->find_file('minya.json'));
+                $self->config($self->load_config());
+                $self->cpanfile(Module::CPANfile->load($self->find_file('cpanfile')));
+                $self->prereq_specs($self->cpanfile->prereq_specs);
+                $self->base_dir(File::Basename::dirname($self->minya_json));
+                $self->work_dir_base($self->_build_work_dir_base)->mkpath;
+                $self->load_plugins();
+                $self->verify_dependencies([qw(develop)], 'requires');
+                for (grep { -d $_ } $self->work_dir_base()->children) {
+                    $self->print("Removing $_\n", INFO);
+                    $_->remove_tree({safe => 0});
+                }
+                $self->work_dir($self->work_dir_base->child(randstr(8)));
+
+                {
+                    my $guard = pushd($self->base_dir);
+                    $self->$call(@commands);
+                }
+                unless ($self->debug) {
+                    $self->work_dir_base->remove_tree({safe => 0});
+                }
             }
         } catch {
             /Minya::Error::CommandExit/ and return;
@@ -88,11 +103,30 @@ sub run {
     }
 }
 
+sub load_plugins {
+    my $self = shift;
+    for ( @{Data::OptList::mkopt( $self->config->{plugins} || [] )} ) {
+        my $pkg = $_->[0];
+        my $config = $_->[1];
+        my $klass = $pkg =~ s!^\+!! ? $pkg : "Minya::Plugin::$pkg";
+        $self->infof( "Loading plugin: %s\n", $klass );
+        require_module($klass);
+        $klass->init($self, $config);
+    }
+}
+
 sub verify_dependencies {
     my ($self, $phases, $type) = @_;
-    require CPAN::Meta::Check;
     my @err = CPAN::Meta::Check::verify_dependencies($self->cpanfile->prereqs, $phases, $type);
-    $self->print("Warning: $_\n", ERROR) for @err;
+    for (@err) {
+        if (/Module '([^']+)' is not installed/ && $self->auto_install) {
+            my $module = $1;
+            $self->print("Installing $module");
+            $self->cmd('cpanm', $module)
+        } else {
+            $self->print("Warning: $_\n", ERROR);
+        }
+    }
 }
 
 sub _build_work_dir_base {
@@ -101,14 +135,7 @@ sub _build_work_dir_base {
     path($self->base_dir(), $dirname);
 }
 
-sub randstr {
-    my $len = shift;
-    my @chars = ("a".."z","A".."Z",0..9);
-    my $ret = '';
-    join('', map { $chars[int(rand(scalar(@chars)))] } 1..$len);
-}
-
-sub read_config {
+sub load_config {
     my ($self) = @_;
     my $path = $self->minya_json;
     my $conf = JSON::PP::decode_json(path($path)->slurp_utf8);
@@ -128,8 +155,9 @@ sub cmd_test {
         \@args,
     );
 
+    my $guard = $self->setup_workdir();
     $self->verify_dependencies([qw(test runtime)], $_) for qw(requires recommends);
-    $self->cmd($self->read_config->{test_command} || 'prove -l -r t xt');
+    $self->cmd($self->config->{test_command} || 'prove -l -r t xt');
 }
 
 sub render {
@@ -143,6 +171,17 @@ sub render {
     my $code = eval $src; ## no critic.
     $self->error("Cannot compile template: $@\n") if $@;
     $code->(@args);
+}
+
+sub register_prereqs {
+    my ($self, $phase, $type, $module, $version) = @_;
+    if (my $current = $self->{$phase}->{$type}->{$module}) {
+        if (version->parse($current) < version->parse($version)) {
+            $self->{$phase}->{$type}->{$module} = $version;
+        }
+    } else {
+        $self->{$phase}->{$type}->{$module} = $version;
+    }
 }
 
 # Make new dist
@@ -192,18 +231,27 @@ sub setup_workdir {
     unless (-e 'MANIFEST') {
         $self->error("There is no MANIFEST file\n");
     }
+
+    $self->infof("Creating working directory: %s\n", $self->work_dir);
+
     my $manifest = ExtUtils::Manifest::maniread();
 
     # clean up
-    ExtUtils::Manifest::manicopy($manifest, $self->work_dir);
+    {
+        local $ExtUtils::Manifest::Quiet = 1;
+        ExtUtils::Manifest::manicopy($manifest, $self->work_dir);
+    }
 
-    return pushd($self->work_dir);
+    my $guard = pushd($self->work_dir());
+    $self->call_trigger('after_setup_workdir');
+
+    return $guard;
 }
 
 sub setup_mb {
     my ($self) = @_;
 
-    my $config = $self->read_config();
+    my $config = $self->config();
 
     my $guard = $self->setup_workdir();
 
@@ -212,7 +260,7 @@ sub setup_mb {
 
     # Should I use EU::MM instead of M::B?
     local $Data::Dumper::Terse = 1;
-    path('Build.PL')->spew($self->render(<<'...', $config, $self->cpanfile->prereq_specs));
+    path('Build.PL')->spew($self->render(<<'...', $config, $self->prereq_specs));
 ? my $config = shift;
 ? my $prereq = shift;
 ? use Data::Dumper;
@@ -233,6 +281,7 @@ my $builder = Module::Build->new(
     configure_requires => <?= Dumper(+{ 'Module::Build' => 0.40, %{$prereq->{configure}->{requires} || {} } }) ?>,
     requires => <?= Dumper(+{ %{$prereq->{runtime}->{requires} || {} } }) ?>,
     build_requires => <?= Dumper(+{ %{$prereq->{build}->{requires} || {} } }) ?>,
+    test_files => (-d '.git' || $ENV{RELEASE_TESTING}) ? 't/ xt/' : 't/',
 
     test_files => 't/',
     recursive_test_files => 1,
@@ -273,6 +322,11 @@ sub cmd_help {
     my $self = shift;
     my $module = $_[0] ? ( "Minya::Doc::" . ucfirst $_[0] ) : "Minya";
     system "perldoc", $module;
+}
+
+sub infof {
+    my $self = shift;
+    $self->printf(@_, INFO);
 }
 
 sub printf {

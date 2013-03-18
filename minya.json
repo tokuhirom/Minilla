@@ -2,5 +2,10 @@
     "name": "Minya",
     "version": "0.0.1",
     "license":"perl",
-    "script_files": ["bin/minya"]
+    "script_files": ["bin/minya"],
+    "plugins": [
+        "Test::Pod",
+        "Test::CPANMeta",
+        "Test::MinimumVersion"
+    ]
 }

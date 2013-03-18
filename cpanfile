@@ -7,6 +7,7 @@ requires 'Text::MicroTemplate';
 requires 'Class::Accessor::Lite' => 0.05;
 requires 'CPAN::Meta::Check';
 requires 'CPAN::Uploader';
+requires 'Module::Runtime';
 requires perl => '5.0120005';
 
 on 'configure' => sub {
@@ -22,6 +23,7 @@ on 'test' => sub {
     requires 'Test::Requires' => 0;
 };
 
-on 'devel' => sub {
+on 'develop' => sub {
     # Dependencies for developers
+    requires 'Devel::NYTProf';
 };
