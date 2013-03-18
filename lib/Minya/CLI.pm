@@ -129,7 +129,7 @@ sub cmd_test {
     );
 
     $self->verify_dependencies([qw(test runtime)], $_) for qw(requires recommends);
-    $self->cmd('prove', '-l', '-r', 't', 'xt');
+    $self->cmd($self->read_config->{test_command} || 'prove -l -r t xt');
 }
 
 sub render {
@@ -168,9 +168,10 @@ sub cmd_dist {
     );
 
     my $guard = $self->setup_mb();
-    
+
     $self->cmd($^X, 'Build.PL');
     unless ($notest) {
+        local $ENV{RELEASE_TESTING} = 1;
         $self->cmd($^X, 'Build', 'disttest');
     }
     $self->cmd($^X, 'Build', 'dist');
@@ -206,6 +207,9 @@ sub setup_mb {
 
     my $guard = $self->setup_workdir();
 
+    # TODO: Equivalent to M::I::GithubMeta is required?
+
+    # Should I use EU::MM instead of M::B?
     local $Data::Dumper::Terse = 1;
     path('Build.PL')->spew($self->render(<<'...', $config, $self->cpanfile->prereq_specs));
 ? my $config = shift;

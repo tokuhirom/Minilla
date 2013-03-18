@@ -7,7 +7,7 @@ requires 'Text::MicroTemplate';
 requires 'Class::Accessor::Lite' => 0.05;
 requires 'CPAN::Meta::Check';
 requires 'CPAN::Uploader';
-requires perl => '5.0080005';
+requires perl => '5.0120005';
 
 on 'configure' => sub {
     requires 'Module::Build' => '0.40';
