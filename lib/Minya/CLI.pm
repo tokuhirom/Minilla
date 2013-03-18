@@ -114,7 +114,8 @@ sub read_config {
     my $conf = JSON::PP::decode_json(path($path)->slurp_utf8);
 
     # validation
-    $conf->{'name'} || $self->error("Missing name in minya.ini\n");
+    $conf->{'name'} || $self->error("Missing name in minya.json\n");
+    $conf->{'version'} || $self->error("Missing version in minya.json\n");
     $conf->{'license'} ||= 'unknown';
 
     return $conf;
@@ -142,6 +143,18 @@ sub render {
     my $code = eval $src; ## no critic.
     $self->error("Cannot compile template: $@\n") if $@;
     $code->(@args);
+}
+
+# Make new dist
+sub cmd_new {
+    my ($self, @args) = @_;
+    ...
+}
+
+# release to CPAN by CPAN::Uploader
+sub cmd_release {
+    my ($self, @args) = @_;
+    ...
 }
 
 # Can I make dist directly without M::B?
@@ -194,26 +207,27 @@ sub setup_mb {
     my $guard = $self->setup_workdir();
 
     local $Data::Dumper::Terse = 1;
-    warn path('Build.PL')->absolute;
     path('Build.PL')->spew($self->render(<<'...', $config, $self->cpanfile->prereq_specs));
 ? my $config = shift;
 ? my $prereq = shift;
 ? use Data::Dumper;
 use strict;
 use Module::Build;
+use <?= $prereq->{runtime}->{requires}->{perl} || '5.008001' ?>;
 
 my $builder = Module::Build->new(
     dynamic_config       => 0,
 
     no_index    => { 'directory' => [ 'inc' ] },
     name        => '<?= $config->{name} ?>',
+    dist_name   => '<?= $config->{name} ?>',
+    dist_version => '<?= $config->{version} ?>',
     license     => '<?= $config->{license} || "unknown" ?>',
     script_files => <?= Dumper($config->{script_files}) ?>,
     # TODO: more deps.
     configure_requires => <?= Dumper(+{ 'Module::Build' => 0.40, %{$prereq->{configure}->{requires} || {} } }) ?>,
     requires => <?= Dumper(+{ %{$prereq->{runtime}->{requires} || {} } }) ?>,
     build_requires => <?= Dumper(+{ %{$prereq->{build}->{requires} || {} } }) ?>,
-    module_name => 'Minya',
 
     test_files => 't/',
     recursive_test_files => 1,
