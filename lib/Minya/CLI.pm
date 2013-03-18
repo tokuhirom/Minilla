@@ -208,6 +208,7 @@ sub setup_mb {
     my $guard = $self->setup_workdir();
 
     # TODO: Equivalent to M::I::GithubMeta is required?
+    # TODO: ShareDir?
 
     # Should I use EU::MM instead of M::B?
     local $Data::Dumper::Terse = 1;
