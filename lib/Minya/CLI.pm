@@ -224,12 +224,15 @@ sub cmd_dist {
 
     my $guard = $self->setup_mb();
 
-    local $ENV{RELEASE_TESTING} = 1;
+    # Generate license file
+    path('LICENSE')->spew($self->license->fulltext);
+
     $self->cmd($^X, 'Build.PL');
     $self->cmd($^X, 'Build', 'manifest');
     $self->cmd($^X, 'Build', 'distmeta');
     unless ($notest) {
-        $self->cmd($^X, 'Build', 'disttest');
+        local $ENV{RELEASE_TESTING} = 1;
+        $self->cmd('prove', '-r', '-l', 't', 'xt');
     }
     $self->cmd($^X, 'Build', 'dist');
 }
@@ -305,7 +308,6 @@ my $builder = Module::Build->new(
     recursive_test_files => 1,
 
     create_readme  => 1,
-    create_license => 1,
 );
 $builder->create_build_script();
 ...

@@ -36,6 +36,7 @@ B<THIS IS A DEVELOPMENT RELEASE. API MAY CHANGE WITHOUT NOTICE>.
     M::I::Repository
     M::I::GithubMeta
     Create META.yml by own
+    create tar ball by own
 
 =head1 AUTHOR
 

@@ -10,7 +10,6 @@ lib/Minya/Plugin/Test/CPANMeta.pm
 lib/Minya/Plugin/Test/MinimumVersion.pm
 lib/Minya/Plugin/Test/Pod.pm
 lib/Minya/Util.pm
-LICENSE
 MANIFEST			This list of files
 META.json
 META.yml
