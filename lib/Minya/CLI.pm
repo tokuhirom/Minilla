@@ -21,6 +21,7 @@ use Module::Runtime qw(require_module);
 use CPAN::Meta::Check;
 use Data::OptList;
 use Software::License;
+use Path::Iterator::Rule;
 use Class::Trigger qw(
     after_setup_workdir
 );
@@ -222,6 +223,8 @@ sub cmd_dist {
         'notest!' => \$notest,
     );
 
+    $self->verify_dependencies([qw(runtime)], $_) for qw(requires recommends);
+
     my $guard = $self->setup_mb();
 
     # Generate license file
@@ -232,6 +235,7 @@ sub cmd_dist {
     $self->cmd($^X, 'Build', 'distmeta');
     unless ($notest) {
         local $ENV{RELEASE_TESTING} = 1;
+        $self->verify_dependencies([qw(test)], $_) for qw(requires recommends);
         $self->cmd('prove', '-r', '-l', 't', 'xt');
     }
     $self->cmd($^X, 'Build', 'dist');
@@ -255,18 +259,33 @@ sub setup_workdir {
 
     $self->infof("Creating working directory: %s\n", $self->work_dir);
 
-    my $manifest = ExtUtils::Manifest::maniread();
+    my @files = $self->gather_files();
 
-    # clean up
-    {
-        local $ExtUtils::Manifest::Quiet = 1;
-        ExtUtils::Manifest::manicopy($manifest, $self->work_dir);
+    # copying
+    path($self->work_dir)->mkpath;
+    for my $src (@files) {
+        next if -d $src;
+        my $dst = path($self->work_dir, path($src)->relative($self->base_dir));
+        path($dst->dirname)->mkpath;
+        path($src)->copy($dst);
     }
 
     my $guard = pushd($self->work_dir());
     $self->call_trigger('after_setup_workdir');
 
     return $guard;
+}
+
+sub gather_files {
+    my $self = shift;
+    my $rule = Path::Iterator::Rule->new();
+    $rule->skip_vcs();
+    # skip blib
+#   $rule->skip(
+#       $rule->and( sub { $_ eq '.travis.yml' } ),
+#       $rule->and( sub { $_ eq '.gitignore' } ),
+#   );
+    $rule->all($self->base_dir());
 }
 
 sub setup_mb {

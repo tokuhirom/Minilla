@@ -9,6 +9,7 @@ requires 'CPAN::Meta::Check';
 requires 'CPAN::Uploader';
 requires 'Module::Runtime';
 requires 'perl' => '5.0120005';
+requires 'Path::Iterator::Rule';
 
 on 'configure' => sub {
     requires 'Module::Build' => '0.40';
