@@ -4,6 +4,8 @@ requires 'Software::License';
 requires 'ExtUtils::Manifest';
 requires 'JSON::PP';
 requires 'Text::MicroTemplate';
+requires 'Class::Accessor::Lite' => 0.05;
+requires 'CPAN::Meta::Check';
 
 on 'configure' => sub {
     requires 'Module::Build' => '0.40';

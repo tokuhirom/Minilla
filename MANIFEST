@@ -1,4 +1,3 @@
-.build/Build.PL
 .travis.yml
 bin/minya
 Build.PL

@@ -18,6 +18,10 @@ use Data::Dumper; # serializer
 use Module::CPANfile;
 use Text::MicroTemplate;
 
+use Class::Accessor::Lite 0.05 (
+    rw => [qw(minya_json cpanfile base_dir work_dir work_dir_base debug)],
+);
+
 use constant { SUCCESS => 0, INFO => 1, WARN => 2, ERROR => 3 };
 
 our $Colors = {
@@ -46,6 +50,7 @@ sub run {
         "h|help"    => sub { unshift @commands, 'help' },
         "v|version" => sub { unshift @commands, 'version' },
         "color!"    => \$self->{color},
+        "debug!"    => \$self->{debug},
         "verbose!"  => \$self->{verbose},
     );
  
@@ -56,7 +61,24 @@ sub run {
  
     if ($call) {
         try {
-            $self->$call(@commands);
+            $self->minya_json($self->find_file('minya.json'));
+            $self->cpanfile(Module::CPANfile->load($self->find_file('cpanfile')));
+            $self->base_dir(File::Basename::dirname($self->minya_json));
+            $self->work_dir_base($self->_build_work_dir_base);
+            $self->verify_dependencies([qw(develop)], 'requires');
+            for (grep { -d $_ } $self->work_dir_base()->children) {
+                $self->print("Removing $_\n", INFO);
+                $_->remove_tree({safe => 0});
+            }
+            $self->work_dir($self->work_dir_base->child(randstr(8)));
+
+            {
+                my $guard = pushd($self->base_dir);
+                $self->$call(@commands);
+            }
+            unless ($self->debug) {
+                $self->work_dir->remove_tree({safe => 0});
+            }
         } catch {
             /Minya::Error::CommandExit/ and return;
             die $_;
@@ -66,9 +88,29 @@ sub run {
     }
 }
 
+sub verify_dependencies {
+    my ($self, $phases, $type) = @_;
+    require CPAN::Meta::Check;
+    my @err = CPAN::Meta::Check::verify_dependencies($self->cpanfile->prereqs, $phases, $type);
+    $self->print("Warning: $_\n", ERROR) for @err;
+}
+
+sub _build_work_dir_base {
+    my $self = shift;
+    my $dirname = $^O eq 'MSWin32' ? '_build' : '.build';
+    path($self->base_dir(), $dirname);
+}
+
+sub randstr {
+    my $len = shift;
+    my @chars = ("a".."z","A".."Z",0..9);
+    my $ret = '';
+    join('', map { $chars[int(rand(scalar(@chars)))] } 1..$len);
+}
+
 sub read_config {
     my ($self) = @_;
-    my $path = $self->find_file('minya.json');
+    my $path = $self->minya_json;
     my $conf = JSON::PP::decode_json(path($path)->slurp_utf8);
 
     # validation
@@ -85,6 +127,7 @@ sub cmd_test {
         \@args,
     );
 
+    $self->verify_dependencies([qw(test runtime)], $_) for qw(requires recommends);
     $self->cmd('prove', '-l', '-r', 't', 'xt');
 }
 
@@ -96,11 +139,12 @@ sub render {
         template => $tmpl,
     );
     my $src = $mt->code();
-    my $code = eval $src;
+    my $code = eval $src; ## no critic.
     $self->error("Cannot compile template: $@\n") if $@;
     $code->(@args);
 }
 
+# Can I make dist directly without M::B?
 sub cmd_dist {
     my ($self, @args) = @_;
 
@@ -110,7 +154,6 @@ sub cmd_dist {
         'notest!' => \$notest,
     );
 
-    $self->error(sprintf("There is no cpanfile: %s\n", Cwd::getcwd())) unless -f 'cpanfile';
     my $guard = $self->setup_mb();
     
     $self->cmd($^X, 'Build.PL');
@@ -120,29 +163,17 @@ sub cmd_dist {
     $self->cmd($^X, 'Build', 'dist');
 }
 
+# TODO: install by EU::Install?
 sub cmd_install {
     my $self = shift;
-    my $guard = pushd($self->base_dir());
-    {
-        my $guard2 = $self->setup_mb();
-        $self->cmd($^X, 'Build.PL');
-        $self->cmd($^X, 'Build', 'install');
-    }
-    path($guard, '_minya')->remove_tree({safe => 0});
+
+    my $guard = $self->setup_mb();
+    $self->cmd($^X, 'Build.PL');
+    $self->cmd($^X, 'Build', 'install');
 }
 
-sub base_dir {
+sub setup_workdir {
     my $self = shift;
-    my $cpanfile = $self->find_file('cpanfile');
-    return File::Basename::dirname($cpanfile);
-}
-
-sub setup_mb {
-    my ($self) = @_;
-
-    my $cpanfile = Module::CPANfile->load($self->find_file('cpanfile'));
-
-    my $config = $self->read_config();
 
     unless (-e 'MANIFEST') {
         $self->error("There is no MANIFEST file\n");
@@ -150,16 +181,21 @@ sub setup_mb {
     my $manifest = ExtUtils::Manifest::maniread();
 
     # clean up
-    $self->print("Building _minya\n", INFO);
-    path('_minya')->remove_tree({safe => 0});
-    path('_minya')->mkpath();
+    ExtUtils::Manifest::manicopy($manifest, $self->work_dir);
 
-    ExtUtils::Manifest::manicopy($manifest, '_minya');
+    return pushd($self->work_dir);
+}
 
-    my $guard = pushd('_minya');
+sub setup_mb {
+    my ($self) = @_;
+
+    my $config = $self->read_config();
+
+    my $guard = $self->setup_workdir();
 
     local $Data::Dumper::Terse = 1;
-    path('Build.PL')->spew($self->render(<<'...', $config, $cpanfile->prereq_specs));
+    warn path('Build.PL')->absolute;
+    path('Build.PL')->spew($self->render(<<'...', $config, $self->cpanfile->prereq_specs));
 ? my $config = shift;
 ? my $prereq = shift;
 ? use Data::Dumper;
