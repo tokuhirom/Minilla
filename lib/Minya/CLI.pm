@@ -143,7 +143,10 @@ my $builder = Module::Build->new(
     name        => '<?= $config->{name} ?>',
     license     => '<?= $config->{license} || "unknown" ?>',
     script_files => <?= Dumper($config->{script_files}) ?>,
-    configure_requires => <?= Dumper(+{ 'Module::Build' => 0.40, %{$prereq->{configure_requires} || {} } }) ?>,
+    # TODO: more deps.
+    configure_requires => <?= Dumper(+{ 'Module::Build' => 0.40, %{$prereq->{configure}->{requires} || {} } }) ?>,
+    requires => <?= Dumper(+{ %{$prereq->{runtime}->{requires} || {} } }) ?>,
+    build_requires => <?= Dumper(+{ %{$prereq->{build}->{requires} || {} } }) ?>,
     module_name => 'Minya',
 
     test_files => 't/',
