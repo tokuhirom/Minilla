@@ -21,6 +21,7 @@ use CPAN::Meta::Check;
 use Data::OptList;
 use Software::License;
 use Path::Iterator::Rule;
+use Archive::Tar;
 use Class::Trigger qw(
     after_setup_workdir
 );
@@ -231,13 +232,29 @@ sub cmd_dist {
 
     $self->cmd($^X, 'Build.PL');
     $self->cmd($^X, 'Build', 'distmeta');
-    $self->cmd($^X, 'Build', 'manifest');
+
+    my @files = map { path($_)->relative($self->work_dir) } $self->gather_files($self->work_dir);
+
+    $self->infof("Writing MANIFEST file\n");
+    {
+        path('MANIFEST')->spew(join("\n", @files));
+    }
+
     unless ($notest) {
         local $ENV{RELEASE_TESTING} = 1;
         $self->verify_dependencies([qw(test)], $_) for qw(requires recommends);
         $self->cmd('prove', '-r', '-l', 't', 'xt');
     }
-    $self->cmd($^X, 'Build', 'dist');
+
+    # Create tar ball
+    my $tarball = $self->config->{name} . '-' . $self->config->{version} . '.tar.gz';
+
+    path($self->base_dir, $tarball)->remove;
+
+    my $tar = Archive::Tar->new;
+    $tar->add_files(@files);
+    $tar->write(path($self->base_dir, $tarball), COMPRESS_GZIP);
+    $self->infof("Wrote %s\n", $tarball);
 }
 
 # TODO: install by EU::Install?
@@ -254,7 +271,7 @@ sub setup_workdir {
 
     $self->infof("Creating working directory: %s\n", $self->work_dir);
 
-    my @files = $self->gather_files();
+    my @files = $self->gather_files($self->base_dir);
 
     # copying
     path($self->work_dir)->mkpath;
@@ -272,8 +289,11 @@ sub setup_workdir {
 }
 
 sub gather_files {
-    my $self = shift;
-    my $rule = Path::Iterator::Rule->new();
+    my ($self, $root) = @_;
+
+    my $rule = Path::Iterator::Rule->new(
+        relative => 1,
+    );
     $rule->skip_vcs();
     $rule->skip_dirs('_build', '.build', 'blib');
     # skip blib
@@ -285,9 +305,11 @@ sub gather_files {
             qr/\A\..*\.sw[op]\z/, # vim swap files
             'MYMETA.yml',
             'MYMETA.json',
+            '*.bak',
+            sprintf("%s-%s.tar.gz", $self->config->{name}, $self->config->{version}),
         ),
     );
-    $rule->all($self->base_dir());
+    $rule->all($root);
 }
 
 sub setup_mb {
