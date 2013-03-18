@@ -1,7 +1,6 @@
 requires 'parent'                        => '0';
 requires 'Module::Build' => 0.40;
 requires 'Software::License';
-requires 'ExtUtils::Manifest';
 requires 'JSON::PP';
 requires 'Text::MicroTemplate';
 requires 'Class::Accessor::Lite' => 0.05;

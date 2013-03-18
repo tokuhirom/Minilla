@@ -11,7 +11,6 @@ use Cwd ();
 use File::Temp;
 use File::pushd;
 use Path::Tiny;
-use ExtUtils::Manifest;
 use JSON::PP;
 use Data::Dumper; # serializer
 use Module::CPANfile;
@@ -231,8 +230,8 @@ sub cmd_dist {
     path('LICENSE')->spew($self->license->fulltext);
 
     $self->cmd($^X, 'Build.PL');
-    $self->cmd($^X, 'Build', 'manifest');
     $self->cmd($^X, 'Build', 'distmeta');
+    $self->cmd($^X, 'Build', 'manifest');
     unless ($notest) {
         local $ENV{RELEASE_TESTING} = 1;
         $self->verify_dependencies([qw(test)], $_) for qw(requires recommends);
@@ -252,10 +251,6 @@ sub cmd_install {
 
 sub setup_workdir {
     my $self = shift;
-
-    unless (-e 'MANIFEST') {
-        $self->error("There is no MANIFEST file\n");
-    }
 
     $self->infof("Creating working directory: %s\n", $self->work_dir);
 
@@ -280,11 +275,18 @@ sub gather_files {
     my $self = shift;
     my $rule = Path::Iterator::Rule->new();
     $rule->skip_vcs();
+    $rule->skip_dirs('_build', '.build', 'blib');
     # skip blib
-#   $rule->skip(
-#       $rule->and( sub { $_ eq '.travis.yml' } ),
-#       $rule->and( sub { $_ eq '.gitignore' } ),
-#   );
+    $rule->skip(
+        $rule->new->name(
+            '.travis.yml',
+            '.gitignore',
+            '.DS_Store',
+            qr/\A\..*\.sw[op]\z/, # vim swap files
+            'MYMETA.yml',
+            'MYMETA.json',
+        ),
+    );
     $rule->all($self->base_dir());
 }
 
