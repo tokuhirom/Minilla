@@ -217,13 +217,22 @@ sub cmd_release {
 sub cmd_dist {
     my ($self, @args) = @_;
 
-    my $notest;
+    my $test = 1;
     $self->parse_options(
         \@args,
-        'notest!' => \$notest,
+        'test!' => \$test,
     );
 
+    $self->build_dist($test);
+}
+
+sub build_dist {
+    my ($self, $test) = @_;
+
     $self->verify_dependencies([qw(runtime)], $_) for qw(requires recommends);
+    if ($test) {
+        $self->verify_dependencies([qw(test)], $_) for qw(requires recommends);
+    }
 
     my $guard = $self->setup_mb();
 
@@ -240,9 +249,8 @@ sub cmd_dist {
         path('MANIFEST')->spew(join("\n", @files));
     }
 
-    unless ($notest) {
+    if ($test) {
         local $ENV{RELEASE_TESTING} = 1;
-        $self->verify_dependencies([qw(test)], $_) for qw(requires recommends);
         $self->cmd('prove', '-r', '-l', 't', 'xt');
     }
 
@@ -255,15 +263,16 @@ sub cmd_dist {
     $tar->add_files(@files);
     $tar->write(path($self->base_dir, $tarball), COMPRESS_GZIP);
     $self->infof("Wrote %s\n", $tarball);
+
+    return $tarball;
 }
 
 # TODO: install by EU::Install?
 sub cmd_install {
     my $self = shift;
 
-    my $guard = $self->setup_mb();
-    $self->cmd($^X, 'Build.PL');
-    $self->cmd($^X, 'Build', 'install');
+    my $tar = $self->build_dist();
+    $self->cmd('cpanm', $tar);
 }
 
 sub setup_workdir {
