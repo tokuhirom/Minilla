@@ -109,9 +109,38 @@ sub cmd_dist {
         \@args,
         'notest!' => \$notest,
     );
-    
+
     $self->error(sprintf("There is no cpanfile: %s\n", Cwd::getcwd())) unless -f 'cpanfile';
-    my $cpanfile = Module::CPANfile->load('cpanfile');
+    my $guard = $self->setup_mb();
+    
+    $self->cmd($^X, 'Build.PL');
+    unless ($notest) {
+        $self->cmd($^X, 'Build', 'disttest');
+    }
+    $self->cmd($^X, 'Build', 'dist');
+}
+
+sub cmd_install {
+    my $self = shift;
+    my $guard = pushd($self->base_dir());
+    {
+        my $guard2 = $self->setup_mb();
+        $self->cmd($^X, 'Build.PL');
+        $self->cmd($^X, 'Build', 'install');
+    }
+    path($guard, '_minya')->remove_tree({safe => 0});
+}
+
+sub base_dir {
+    my $self = shift;
+    my $cpanfile = $self->find_file('cpanfile');
+    return File::Basename::dirname($cpanfile);
+}
+
+sub setup_mb {
+    my ($self) = @_;
+
+    my $cpanfile = Module::CPANfile->load($self->find_file('cpanfile'));
 
     my $config = $self->read_config();
 
@@ -121,12 +150,13 @@ sub cmd_dist {
     my $manifest = ExtUtils::Manifest::maniread();
 
     # clean up
-    path('_minya')->remove_tree();
+    $self->print("Building _minya\n", INFO);
+    path('_minya')->remove_tree({safe => 0});
     path('_minya')->mkpath();
 
     ExtUtils::Manifest::manicopy($manifest, '_minya');
 
-    my $d = pushd('_minya');
+    my $guard = pushd('_minya');
 
     local $Data::Dumper::Terse = 1;
     path('Build.PL')->spew($self->render(<<'...', $config, $cpanfile->prereq_specs));
@@ -157,11 +187,7 @@ my $builder = Module::Build->new(
 );
 $builder->create_build_script();
 ...
-    $self->cmd($^X, 'Build.PL');
-    unless ($notest) {
-        $self->cmd($^X, 'Build', 'disttest');
-    }
-    $self->cmd($^X, 'Build', 'dist');
+    return $guard;
 }
 
 sub cmd {
