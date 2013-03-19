@@ -2,6 +2,7 @@ package Minya::CLI;
 use strict;
 use warnings;
 use utf8;
+use Minya;
 use Getopt::Long;
 use Minya::Errors;
 use Try::Tiny;
@@ -18,6 +19,7 @@ use Text::MicroTemplate;
 use Minya::Util;
 use Module::Runtime qw(require_module);
 use CPAN::Meta::Check;
+use YAML::Tiny;
 use Data::OptList;
 use Software::License;
 use Path::Iterator::Rule;
@@ -135,7 +137,7 @@ sub load_plugins {
 
 sub verify_dependencies {
     my ($self, $phases, $type) = @_;
-    my @err = CPAN::Meta::Check::verify_dependencies($self->cpanfile->prereqs, $phases, $type);
+    my @err = CPAN::Meta::Check::verify_dependencies(CPAN::Meta::Prereqs->new($self->prereq_specs), $phases, $type);
     for (@err) {
         if (/Module '([^']+)' is not installed/ && $self->auto_install) {
             my $module = $1;
@@ -191,14 +193,15 @@ sub render {
     $code->(@args);
 }
 
+# XXX is it works?
 sub register_prereqs {
     my ($self, $phase, $type, $module, $version) = @_;
-    if (my $current = $self->{$phase}->{$type}->{$module}) {
+    if (my $current = $self->prereq_specs->{$phase}->{$type}->{$module}) {
         if (version->parse($current) < version->parse($version)) {
-            $self->{$phase}->{$type}->{$module} = $version;
+            $self->prereq_specs->{$phase}->{$type}->{$module} = $version;
         }
     } else {
-        $self->{$phase}->{$type}->{$module} = $version;
+        $self->prereq_specs->{$phase}->{$type}->{$module} = $version;
     }
 }
 
@@ -305,8 +308,26 @@ sub build_dist {
     # Generate license file
     path('LICENSE')->spew($self->license->fulltext);
 
-    $self->cmd($^X, 'Build.PL');
-    $self->cmd($^X, 'Build', 'distmeta');
+    # Generate meta file
+    {
+        my $dat = {
+            "meta-spec" => {
+                "version" => "2",
+                "url"     => "http://search.cpan.org/perldoc?CPAN::Meta::Spec"
+            },
+        };
+
+        $dat->{abstract} = $self->config->{abstract};
+        $dat->{author} = [$self->config->{author}];
+        $dat->{dynamic_config} = 0;
+        $dat->{license} = $self->license->meta2_name;
+        $dat->{version} = $self->config->{version};
+        $dat->{name} = $self->config->{name};
+        $dat->{prereqs} = $self->prereq_specs;
+        $dat->{generated_by} = "Minya/$Minya::VERSION";
+        path('META.yml')->spew(YAML::Tiny::Dump(CPAN::Meta::Converter->new($dat)->convert(version => 1.4)));
+        path('META.json')->spew(JSON::PP->new->indent->encode(CPAN::Meta::Converter->new($dat)->convert(version => 2)));
+    }
 
     my @files = map { path($_)->relative($self->work_dir) } $self->gather_files($self->work_dir);
 
