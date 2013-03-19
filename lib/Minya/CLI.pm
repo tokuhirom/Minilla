@@ -26,12 +26,13 @@ use Path::Iterator::Rule;
 use File::HomeDir;
 use Archive::Tar;
 use ExtUtils::MakeMaker qw(prompt);
+use TOML qw(from_toml to_toml);
 use Class::Trigger qw(
     after_setup_workdir
 );
 
 use Class::Accessor::Lite 0.05 (
-    rw => [qw(minya_json base_dir work_dir work_dir_base debug config auto_install prereq_specs license)],
+    rw => [qw(minya_toml base_dir work_dir work_dir_base debug config auto_install prereq_specs license)],
 );
 
 require Win32::Console::ANSI if $^O eq 'MSWin32';
@@ -80,11 +81,12 @@ sub run {
             if ($call eq 'cmd_new' || $call eq 'cmd_setup' || $call eq 'cmd_help') {
                 $self->$call(@commands);
             } else {
-                $self->minya_json($self->find_file('minya.json'));
+                $self->minya_toml($self->find_file('minya.toml'))
+                    or $self->error("There is no minya.toml\n");
                 $self->config($self->load_config());
                 my $cpanfile = Module::CPANfile->load($self->find_file('cpanfile'));
                 $self->prereq_specs($cpanfile->prereq_specs);
-                $self->base_dir(File::Basename::dirname($self->minya_json));
+                $self->base_dir(File::Basename::dirname($self->minya_toml));
                 $self->work_dir_base($self->_build_work_dir_base)->mkpath;
                 $self->load_plugins();
                 $self->init_license();
@@ -158,12 +160,16 @@ sub _build_work_dir_base {
 
 sub load_config {
     my ($self) = @_;
-    my $path = $self->minya_json;
-    my $conf = JSON::PP::decode_json(path($path)->slurp_utf8);
+    my $path = $self->minya_toml;
+
+    my ($conf, $err) = from_toml(path($path)->slurp_utf8);
+    if ($err) {
+        $self->error("TOML error in $path: $err");
+    }
 
     # validation
     for (qw(name author version license)) {
-        $conf->{$_} || $self->error("Missing $_ in minya.json\n");
+        $conf->{$_} || $self->error("Missing $_ in minya.toml\n");
     }
     if ($conf->{version} =~ /\A[0-9]+\.[0-9]+\.[0-9]+\z/) {
         $conf->{version} = 'v' . $conf->{version};
@@ -249,7 +255,7 @@ use warnings;
 /.build/
 /_build/
 ...
-    path($dist, 'minya.json')->spew(JSON::PP->new->ascii(1)->indent->encode(+{
+    path($dist, 'minya.toml')->spew(to_toml(+{
         name => $dist,
         author => $self->global_config->{'user_name'},
         copyright_holder => $self->global_config->{'user_name'},

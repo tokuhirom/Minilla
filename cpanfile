@@ -15,6 +15,10 @@ requires 'YAML::Tiny';
 requires 'App::cpanminus';
 requires 'Module::CPANfile';
 
+# 0.09 is broken.
+requires 'git://github.com/tokuhirom/toml.git';
+# requires 'TOML';
+
 on 'configure' => sub {
     requires 'Module::Build' => '0.40';
 };
