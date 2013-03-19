@@ -13,6 +13,7 @@ requires 'Archive::Tar';
 requires 'File::HomeDir';
 requires 'YAML::Tiny';
 requires 'Module::Install::CPANfile';
+requires 'App::cpanminus';
 
 on 'configure' => sub {
     requires 'Module::Build' => '0.40';
