@@ -233,10 +233,22 @@ sub global_config {
 sub cmd_new {
     my ($self, @args) = @_;
 
+    my $username;
+    my $email;
     $self->parse_options(
         \@args,
+        username => \$username,
+        email => \$email,
     );
     my $module = shift @args or $self->error("Missing module name\n");
+    $username ||= `git config user.name`;
+    $username =~ s/\n$//;
+    $email ||= `git config user.email`;
+    $email =~ s/\n$//;
+
+    unless ($username) {
+        $self->error("Please set user.name in git, or use `--username` option.");
+    }
 
     # $module = "Foo::Bar"
     # $suffix = "Bar"
@@ -259,16 +271,21 @@ use warnings;
 /.build/
 /_build/
 ...
-    path($dist, 'minya.toml')->spew(to_toml(+{
-        name => $dist,
-        author => $self->global_config->{'user_name'},
-        copyright_holder => $self->global_config->{'user_name'},
-        version => '0.0.1',
-        license => $self->global_config->{'license'} || 'Perl_5',
-        "Test::Pod" => {},
-        "Test::CPANMeta" => {},
-        "Test::MinimumVersion" => {},
-    }));
+
+    path( $dist, 'minya.toml' )->spew(
+        to_toml(
+            +{
+                name                   => $dist,
+                author                 => $username,
+                copyright_holder       => $username,
+                version                => '0.0.1',
+                license                => 'Perl_5',
+                "Test::Pod"            => {},
+                "Test::CPANMeta"       => {},
+                "Test::MinimumVersion" => {},
+            }
+        )
+    );
     path($dist, 't')->mkpath;
     path($dist, 't', '00_compile.t')->spew(sprintf(<<'...', $module));
 use strict;
