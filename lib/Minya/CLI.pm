@@ -439,11 +439,10 @@ my $builder = Module::Build->new(
     dist_version => '<?= $config->{version} ?>',
     license     => '<?= $self->license->meta_yml_name || "unknown" ?>',
     script_files => <?= Dumper($config->{script_files}) ?>,
-    # TODO: more deps.
     configure_requires => <?= Dumper(+{ 'Module::Build' => 0.40, %{$prereq->{configure}->{requires} || {} } }) ?>,
     requires => <?= Dumper(+{ %{$prereq->{runtime}->{requires} || {} } }) ?>,
     build_requires => <?= Dumper(+{ %{$prereq->{build}->{requires} || {} } }) ?>,
-    test_files => (-d '.git' || $ENV{RELEASE_TESTING}) ? 't/ xt/' : 't/',
+    test_files => 't/',
 
     recursive_test_files => 1,
 
