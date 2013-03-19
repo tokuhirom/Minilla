@@ -31,7 +31,7 @@ use Class::Trigger qw(
 );
 
 use Class::Accessor::Lite 0.05 (
-    rw => [qw(minya_json cpanfile base_dir work_dir work_dir_base debug config auto_install prereq_specs license)],
+    rw => [qw(minya_json base_dir work_dir work_dir_base debug config auto_install prereq_specs license)],
 );
 
 use constant { SUCCESS => 0, INFO => 1, WARN => 2, ERROR => 3 };
@@ -81,8 +81,8 @@ sub run {
             } else {
                 $self->minya_json($self->find_file('minya.json'));
                 $self->config($self->load_config());
-                $self->cpanfile(Module::CPANfile->load($self->find_file('cpanfile')));
-                $self->prereq_specs($self->cpanfile->prereq_specs);
+                my $cpanfile = Module::CPANfile->load($self->find_file('cpanfile'));
+                $self->prereq_specs($cpanfile->prereq_specs);
                 $self->base_dir(File::Basename::dirname($self->minya_json));
                 $self->work_dir_base($self->_build_work_dir_base)->mkpath;
                 $self->load_plugins();
