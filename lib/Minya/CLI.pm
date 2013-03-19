@@ -21,9 +21,6 @@ use Module::Runtime qw(require_module);
 use Archive::Tar;
 use ExtUtils::MakeMaker qw(prompt);
 use TOML qw(from_toml to_toml);
-use Class::Trigger qw(
-    after_setup_workdir
-);
 
 use Class::Accessor::Lite 0.05 (
     rw => [qw(minya_toml base_dir work_dir work_dir_base debug config auto_install prereq_specs license)],
@@ -575,6 +572,20 @@ sub error {
 sub parse_options {
     my ( $self, $args, @spec ) = @_;
     Getopt::Long::GetOptionsFromArray( $args, @spec );
+}
+
+{
+    my %triggers;
+    sub add_trigger {
+        my ($class, $name, $code) = @_;
+        push @{$triggers{$name}}, $code;
+    }
+    sub call_trigger {
+        my ($self, $name, @args) = @_;
+        for (@{$triggers{$name}}) {
+            $_->($self, @args);
+        }
+    }
 }
 
 1;

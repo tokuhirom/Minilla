@@ -10,7 +10,6 @@ requires 'App::cpanminus';
 requires 'Module::CPANfile';
 requires 'File::pushd';
 requires 'Path::Tiny';
-requires 'Class::Trigger';
 
 recommends 'CPAN::Uploader';
 recommends 'Software::License';
