@@ -4,6 +4,7 @@ copyright_holder = "Tokuhiro Matsuno"
 version = "0.0.1"
 license = "Perl_5"
 script_files = ['bin/minya']
+abstract = "CPAN authoring tool"
 
 [Test::Pod]
 [Test::CPANMeta]

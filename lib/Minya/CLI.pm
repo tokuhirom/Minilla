@@ -19,8 +19,6 @@ use Text::MicroTemplate;
 use Minya::Util;
 use Module::Runtime qw(require_module);
 use CPAN::Meta::Check;
-use YAML::Tiny;
-use Data::OptList;
 use Software::License;
 use File::Find::Rule;
 use File::HomeDir;
@@ -169,7 +167,7 @@ sub load_config {
     }
 
     # validation
-    for (qw(name author version license)) {
+    for (qw(name author version license abstract)) {
         $conf->{$_} || $self->error("Missing $_ in minya.toml\n");
     }
     if ($conf->{version} =~ /\A[0-9]+\.[0-9]+\.[0-9]+\z/) {
@@ -341,8 +339,15 @@ sub build_dist {
         $dat->{name} = $self->config->{name};
         $dat->{prereqs} = $self->prereq_specs;
         $dat->{generated_by} = "Minya/$Minya::VERSION";
-        path('META.yml')->spew(YAML::Tiny::Dump(CPAN::Meta::Converter->new($dat)->convert(version => 1.4)));
-        path('META.json')->spew(JSON::PP->new->indent->encode(CPAN::Meta::Converter->new($dat)->convert(version => 2)));
+        $dat->{release_status} = 'stable'; # TODO: --trial
+
+        my $meta = CPAN::Meta->new($dat);
+        $meta->save('META.yml', {
+            version => 1.4,
+        });
+        $meta->save('META.json', {
+            version => 2.0,
+        });
     }
 
     my @files = map { path($_)->relative($self->work_dir) } $self->gather_files($self->work_dir);
