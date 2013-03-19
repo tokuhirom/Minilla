@@ -391,7 +391,7 @@ sub build_dist {
         $dat->{dynamic_config} = 0;
         $dat->{license} = $self->license->meta2_name;
         $dat->{version} = $self->config->{version};
-        $dat->{name} = $self->config->{name} || Minya::Metadata->name_from($self->config->{main_module});
+        $dat->{name} = $self->config->{name};
         $dat->{prereqs} = $self->prereq_specs;
         $dat->{generated_by} = "Minya/$Minya::VERSION";
         $dat->{release_status} = 'stable'; # TODO: --trial
