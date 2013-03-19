@@ -76,7 +76,7 @@ sub run {
  
     if ($call) {
         try {
-            if ($call eq 'cmd_new' || $call eq 'cmd_help') {
+            if ($call eq 'cmd_new' || $call eq 'cmd_setup' || $call eq 'cmd_help') {
                 $self->$call(@commands);
             } else {
                 $self->minya_json($self->find_file('minya.json'));
@@ -303,7 +303,10 @@ sub build_dist {
         $self->verify_dependencies([qw(test)], $_) for qw(requires recommends);
     }
 
-    my $guard = $self->setup_mb();
+    my $work_dir = $self->setup_workdir();
+
+    $self->infof("Generating Build.PL\n");
+    path('Build.PL')->spew($self->generate_build_pl());
 
     # Generate license file
     path('LICENSE')->spew($self->license->fulltext);
@@ -409,19 +412,17 @@ sub gather_files {
     $rule->all($root);
 }
 
-sub setup_mb {
+sub generate_build_pl {
     my ($self) = @_;
 
     my $config = $self->config();
-
-    my $guard = $self->setup_workdir();
 
     # TODO: Equivalent to M::I::GithubMeta is required?
     # TODO: ShareDir?
 
     # Should I use EU::MM instead of M::B?
     local $Data::Dumper::Terse = 1;
-    path('Build.PL')->spew($self->render(<<'...', $config, $self->prereq_specs, $self));
+    return $self->render(<<'...', $config, $self->prereq_specs, $self);
 ? my $config = shift;
 ? my $prereq = shift;
 ? my $self = shift;
@@ -450,7 +451,6 @@ my $builder = Module::Build->new(
 );
 $builder->create_build_script();
 ...
-    return $guard;
 }
 
 sub cmd {

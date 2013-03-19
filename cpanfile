@@ -16,9 +16,6 @@ requires 'Module::Install::CPANfile';
 
 on 'configure' => sub {
     requires 'Module::Build' => '0.40';
-    requires 'Module::Build::Pluggable';
-    requires 'Module::Build::Pluggable::CPANfile';
-    requires 'Module::Build::Pluggable::GithubMeta';
     requires 'Module::CPANfile';
 };
 
