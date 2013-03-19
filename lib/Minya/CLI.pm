@@ -241,6 +241,10 @@ use warnings;
 
 1;
 ...
+    path($dist, '.gitignore')->spew(<<'...');
+/.build/
+/_build/
+...
     path($dist, 'minya.json')->spew(JSON::PP->new->ascii(1)->indent->encode(+{
         name => $dist,
         author => $self->global_config->{'user_name'},
