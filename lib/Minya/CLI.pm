@@ -34,6 +34,8 @@ use Class::Accessor::Lite 0.05 (
     rw => [qw(minya_json base_dir work_dir work_dir_base debug config auto_install prereq_specs license)],
 );
 
+require Win32::Console::ANSI if $^O eq 'MSWin32';
+
 use constant { SUCCESS => 0, INFO => 1, WARN => 2, ERROR => 3 };
 
 our $Colors = {
