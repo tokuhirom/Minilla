@@ -8,7 +8,7 @@ requires 'Class::Accessor::Lite' => 0.05;
 requires 'CPAN::Meta::Check';
 requires 'CPAN::Uploader';
 requires 'Module::Runtime';
-requires 'Path::Iterator::Rule';
+requires 'File::Find::Rule';
 requires 'Archive::Tar';
 requires 'File::HomeDir';
 requires 'YAML::Tiny';

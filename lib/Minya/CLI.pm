@@ -22,7 +22,7 @@ use CPAN::Meta::Check;
 use YAML::Tiny;
 use Data::OptList;
 use Software::License;
-use Path::Iterator::Rule;
+use File::Find::Rule;
 use File::HomeDir;
 use Archive::Tar;
 use ExtUtils::MakeMaker qw(prompt);
@@ -404,14 +404,15 @@ sub setup_workdir {
 sub gather_files {
     my ($self, $root) = @_;
 
-    my $rule = Path::Iterator::Rule->new(
-        relative => 1,
-    );
-    $rule->skip_vcs();
-    $rule->skip_dirs('_build', '.build', 'blib');
-    # skip blib
-    $rule->skip(
+    my $rule = File::Find::Rule->new();
+    $rule->file->not(
         $rule->new->name(
+            '.git',
+            '.svn',
+            'CVS',
+            '_build',
+            '.build',
+            'blib',
             '.travis.yml',
             '.gitignore',
             '.DS_Store',
@@ -420,9 +421,8 @@ sub gather_files {
             'MYMETA.json',
             '*.bak',
             sprintf("%s-*.tar.gz", $self->config->{name}),
-        ),
-    );
-    $rule->all($root);
+        )
+    )->in($root);
 }
 
 sub generate_build_pl {
