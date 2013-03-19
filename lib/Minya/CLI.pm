@@ -128,9 +128,10 @@ sub init_license {
 
 sub load_plugins {
     my $self = shift;
-    for ( @{Data::OptList::mkopt( $self->config->{plugins} || [] )} ) {
-        my $pkg = $_->[0];
-        my $config = $_->[1];
+
+    for ( grep /\A[A-Z]/, keys %{$self->config} ) {
+        my $pkg = $_;
+        my $config = $self->config->{$_};
         my $klass = $pkg =~ s!^\+!! ? $pkg : "Minya::Plugin::$pkg";
         $self->infof( "Loading plugin: %s\n", $klass );
         require_module($klass);
@@ -261,11 +262,9 @@ use warnings;
         copyright_holder => $self->global_config->{'user_name'},
         version => '0.0.1',
         license => $self->global_config->{'license'} || 'Perl_5',
-        "plugins" => [
-            "Test::Pod",
-            "Test::CPANMeta",
-            "Test::MinimumVersion"
-        ]
+        "Test::Pod" => {},
+        "Test::CPANMeta" => {},
+        "Test::MinimumVersion" => {},
     }));
     path($dist, 't')->mkpath;
     path($dist, 't', '00_compile.t')->spew(sprintf(<<'...', $module));
