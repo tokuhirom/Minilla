@@ -18,7 +18,6 @@ use Module::CPANfile;
 use Text::MicroTemplate;
 use Minya::Util;
 use Module::Runtime qw(require_module);
-use CPAN::Meta::Check;
 use Software::License;
 use File::Find::Rule;
 use Archive::Tar;
@@ -138,14 +137,17 @@ sub load_plugins {
 
 sub verify_dependencies {
     my ($self, $phases, $type) = @_;
-    my @err = CPAN::Meta::Check::verify_dependencies(CPAN::Meta::Prereqs->new($self->prereq_specs), $phases, $type);
-    for (@err) {
-        if (/Module '([^']+)' is not installed/ && $self->auto_install) {
-            my $module = $1;
-            $self->print("Installing $module\n");
-            $self->cmd('cpanm', $module)
-        } else {
-            $self->print("Warning: $_\n", ERROR);
+
+    if (eval q{require CPAN::Meta::Check; 1;}) {
+        my @err = CPAN::Meta::Check::verify_dependencies(CPAN::Meta::Prereqs->new($self->prereq_specs), $phases, $type);
+        for (@err) {
+            if (/Module '([^']+)' is not installed/ && $self->auto_install) {
+                my $module = $1;
+                $self->print("Installing $module\n");
+                $self->cmd('cpanm', $module)
+            } else {
+                $self->print("Warning: $_\n", ERROR);
+            }
         }
     }
 }
