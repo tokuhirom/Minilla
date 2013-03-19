@@ -410,7 +410,7 @@ sub gather_files {
             'MYMETA.yml',
             'MYMETA.json',
             '*.bak',
-            sprintf("%s-%s.tar.gz", $self->config->{name}, $self->config->{version}),
+            sprintf("%s-*.tar.gz", $self->config->{name}),
         ),
     );
     $rule->all($root);
