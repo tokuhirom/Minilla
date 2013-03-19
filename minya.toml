@@ -1,7 +1,5 @@
 main_module = "lib/Minya.pm"
 
-author = "Tokuhiro Matsuno"
-copyright_holder = "Tokuhiro Matsuno"
 license = "Perl_5"
 script_files = ["bin/minya"]
 

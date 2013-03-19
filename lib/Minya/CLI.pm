@@ -309,11 +309,7 @@ $author C<< < >>$emailC<< > >>
     path( $dist, 'minya.toml' )->spew(
         to_toml(
             +{
-                name                   => $dist,
-                author                 => $username,
-                copyright_holder       => $username,
-                version                => $version,
-                license                => 'Perl_5',
+                main_module => "lib/$path",
                 "Test::Pod"            => {},
                 "Test::CPANMeta"       => {},
                 "Test::MinimumVersion" => {},
