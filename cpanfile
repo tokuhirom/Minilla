@@ -26,4 +26,5 @@ on 'test' => sub {
 
 on 'develop' => sub {
     # Dependencies for developers
+    recommends 'Test::Kwalitee';
 };

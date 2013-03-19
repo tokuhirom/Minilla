@@ -1,5 +1,5 @@
 {
-    "name": "Minya",
+    "name":"Minya",
     "author": "Tokuhiro Matsuno",
     "copyright_holder": "Tokuhiro Matsuno",
     "version": "0.0.1",
@@ -8,6 +8,7 @@
     "plugins": [
         "Test::Pod",
         "Test::CPANMeta",
+        "Test::Kwalitee",
         "Test::MinimumVersion"
     ]
 }

@@ -142,7 +142,7 @@ sub verify_dependencies {
     for (@err) {
         if (/Module '([^']+)' is not installed/ && $self->auto_install) {
             my $module = $1;
-            $self->print("Installing $module");
+            $self->print("Installing $module\n");
             $self->cmd('cpanm', $module)
         } else {
             $self->print("Warning: $_\n", ERROR);
