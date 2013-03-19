@@ -70,7 +70,7 @@ sub run {
  
     if ($call) {
         try {
-            if ($call eq 'cmd_new' || $call eq 'cmd_setup' || $call eq 'cmd_help') {
+            if ($cmd eq 'new' || $cmd eq 'setup' || $cmd eq 'help') {
                 $self->$call(@commands);
             } else {
                 $self->minya_toml($self->find_file('minya.toml'))
