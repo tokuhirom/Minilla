@@ -11,6 +11,7 @@ requires 'Module::CPANfile';
 requires 'File::pushd';
 requires 'Path::Tiny';
 
+recommends 'Pod::Escapes';
 recommends 'CPAN::Uploader';
 recommends 'Software::License';
 recommends 'CPAN::Meta::Check';

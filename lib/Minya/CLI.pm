@@ -75,9 +75,10 @@ sub run {
             } else {
                 $self->minya_toml($self->find_file('minya.toml'))
                     or $self->error("There is no minya.toml\n");
-                $self->config($self->load_config());
                 my $cpanfile = Module::CPANfile->load($self->find_file('cpanfile'));
-                $self->prereq_specs($cpanfile->prereq_specs);
+                $self->prereq_specs($cpanfile->prereq_specs)
+                    or die "Missing prereq_specs";
+                $self->config($self->load_config());
                 $self->base_dir(File::Basename::dirname($self->minya_toml));
                 $self->work_dir_base($self->_build_work_dir_base)->mkpath;
                 $self->load_plugins();
@@ -179,6 +180,8 @@ sub load_config {
     } else {
         $self->warnf("Cannot determine perl version info from $conf->{main_module}\n");
     }
+    $conf->{author} ||= Minya::Metadata->author($conf->{main_module})
+        or $self->error("Missing author in main_module");
 
     # TODO author_from
     # TODO licnese_from
