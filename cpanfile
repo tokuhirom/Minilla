@@ -10,6 +10,7 @@ requires 'Module::Runtime';
 requires 'perl' => '5.0120005';
 requires 'Path::Iterator::Rule';
 requires 'Archive::Tar';
+requires 'File::HomeDir';
 requires 'Module::Install::CPANfile';
 
 on 'configure' => sub {

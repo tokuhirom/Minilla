@@ -21,7 +21,9 @@ use CPAN::Meta::Check;
 use Data::OptList;
 use Software::License;
 use Path::Iterator::Rule;
+use File::HomeDir;
 use Archive::Tar;
+use ExtUtils::MakeMaker qw(prompt);
 use Class::Trigger qw(
     after_setup_workdir
 );
@@ -157,10 +159,9 @@ sub load_config {
     my $conf = JSON::PP::decode_json(path($path)->slurp_utf8);
 
     # validation
-    $conf->{'name'} || $self->error("Missing name in minya.json\n");
-    $conf->{'author'} || $self->error("Missing author in minya.json\n");
-    $conf->{'version'} || $self->error("Missing version in minya.json\n");
-    $conf->{'license'} || $self->error("Missing license in minya.json\n");
+    for (qw(name author version license)) {
+        $conf->{$_} || $self->error("Missing $_ in minya.json\n");
+    }
 
     return $conf;
 }
@@ -201,10 +202,45 @@ sub register_prereqs {
     }
 }
 
+sub global_config {
+    my $self = shift;
+    my $path = path(File::HomeDir->my_home, '.minyarc');
+    if (-e $path) {
+        JSON::PP::decode_json($path->slurp);
+    } else {
+        +{}
+    }
+}
+
 # Make new dist
 sub cmd_new {
     my ($self, @args) = @_;
-    ...
+
+    $self->parse_options(
+        \@args,
+    );
+    my $module = shift @args or $self->error("Missing module name\n");
+    path($module)->mkpath;
+    my $path = $module;
+       $path =~ s!::!-!g;
+       $path =~ s!-!/!g;
+    path(path($module, 'lib', $path)->dirname)->mkpath;
+    path($module, 'lib', $path . '.pm')->spew(sprintf(<<'...', $module));
+package %s;
+use strict;
+use warnings;
+
+1;
+...
+    $self->infof("Finished to create $module\n");
+}
+
+sub cmd_setup {
+    my ($self, @args) = @_;
+    my $global_config = $self->global_config();
+    $global_config->{user_name} = prompt("User name: ", $global_config->{user_name});
+    $global_config->{email} = prompt("User E-mail: ", $global_config->{email});
+    path(File::HomeDir->my_home, '.minyarc')->spew(JSON::PP->new->ascii(1)->encode($global_config));
 }
 
 # release to CPAN by CPAN::Uploader
@@ -267,7 +303,6 @@ sub build_dist {
     return $tarball;
 }
 
-# TODO: install by EU::Install?
 sub cmd_install {
     my $self = shift;
 
