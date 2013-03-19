@@ -8,6 +8,7 @@ requires 'Module::Runtime';
 requires 'Archive::Tar';
 requires 'App::cpanminus';
 requires 'Module::CPANfile';
+requires 'Exception::Tiny';
 
 recommends 'CPAN::Uploader';
 recommends 'Software::License';
