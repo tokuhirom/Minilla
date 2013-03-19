@@ -9,7 +9,6 @@ requires 'CPAN::Meta::Check';
 requires 'Module::Runtime';
 requires 'File::Find::Rule';
 requires 'Archive::Tar';
-requires 'File::HomeDir';
 requires 'App::cpanminus';
 requires 'Module::CPANfile';
 
@@ -28,5 +27,5 @@ on 'test' => sub {
 
 on 'develop' => sub {
     # Dependencies for developers
-    recommends 'Test::Kwalitee';
+    # recommends 'Test::Kwalitee';
 };

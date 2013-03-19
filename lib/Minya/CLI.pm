@@ -21,7 +21,6 @@ use Module::Runtime qw(require_module);
 use CPAN::Meta::Check;
 use Software::License;
 use File::Find::Rule;
-use File::HomeDir;
 use Archive::Tar;
 use ExtUtils::MakeMaker qw(prompt);
 use TOML qw(from_toml to_toml);
@@ -214,9 +213,13 @@ sub register_prereqs {
     }
 }
 
+sub home_dir {
+    $ENV{HOME} || $ENV{PERL_MINYA_HOME} || $self->error("Please set HOME or PERL_MINYA_HOME to environment variable.");
+}
+
 sub global_config {
     my $self = shift;
-    my $path = path(File::HomeDir->my_home, '.minyarc');
+    my $path = path($self->home_dir, '.minyarc');
     if (-e $path) {
         JSON::PP::decode_json($path->slurp);
     } else {
@@ -284,7 +287,7 @@ sub cmd_setup {
     $global_config->{user_name} = prompt("User name:", $global_config->{user_name});
     $global_config->{email} = prompt("User E-mail:", $global_config->{email});
     $global_config->{license} = prompt("License:", $global_config->{license} || 'Perl_5');
-    path(File::HomeDir->my_home, '.minyarc')->spew(JSON::PP->new->ascii(1)->encode($global_config));
+    path($self->home_dir, '.minyarc')->spew(JSON::PP->new->ascii(1)->encode($global_config));
 }
 
 # release to CPAN by CPAN::Uploader
