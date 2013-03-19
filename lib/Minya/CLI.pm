@@ -376,6 +376,8 @@ sub build_dist {
         $dat->{generated_by} = "Minya/$Minya::VERSION";
         $dat->{release_status} = 'stable'; # TODO: --trial
 
+        # TODO: provides
+
         my $meta = CPAN::Meta->new($dat);
         $meta->save('META.yml', {
             version => 1.4,
@@ -404,7 +406,7 @@ sub build_dist {
     path($self->base_dir, $tarball)->remove;
 
     my $tar = Archive::Tar->new;
-    $tar->add_files(@files);
+    $tar->add_data(path($self->config->{name} . '-' . $self->config->{version}, $_), path($_)->slurp) for @files;
     $tar->write(path($self->base_dir, $tarball), COMPRESS_GZIP);
     $self->infof("Wrote %s\n", $tarball);
 

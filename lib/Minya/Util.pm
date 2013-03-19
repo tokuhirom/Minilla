@@ -5,7 +5,7 @@ use utf8;
 
 use parent qw(Exporter);
 
-our @EXPORT = qw(randstr);
+our @EXPORT = qw(randstr slurp);
 
 sub randstr {
     my $len = shift;
