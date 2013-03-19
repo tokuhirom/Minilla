@@ -211,21 +211,6 @@ sub register_prereqs {
     }
 }
 
-sub home_dir {
-    my $self = shift;
-    $ENV{HOME} || $ENV{PERL_MINYA_HOME} || $self->error("Please set HOME or PERL_MINYA_HOME to environment variable.");
-}
-
-sub global_config {
-    my $self = shift;
-    my $path = path($self->home_dir, '.minyarc');
-    if (-e $path) {
-        JSON::PP::decode_json($path->slurp);
-    } else {
-        +{}
-    }
-}
-
 # Make new dist
 sub cmd_new {
     my ($self, @args) = @_;
@@ -335,15 +320,6 @@ use_ok $_ for qw(
 done_testing;
 ...
     $self->infof("Finished to create $module\n");
-}
-
-sub cmd_setup {
-    my ($self, @args) = @_;
-    my $global_config = $self->global_config();
-    $global_config->{user_name} = prompt("User name:", $global_config->{user_name});
-    $global_config->{email} = prompt("User E-mail:", $global_config->{email});
-    $global_config->{license} = prompt("License:", $global_config->{license} || 'Perl_5');
-    path($self->home_dir, '.minyarc')->spew(JSON::PP->new->ascii(1)->encode($global_config));
 }
 
 # release to CPAN by CPAN::Uploader
