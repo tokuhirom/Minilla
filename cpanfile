@@ -6,7 +6,6 @@ requires 'JSON::PP';
 requires 'Text::MicroTemplate';
 requires 'Class::Accessor::Lite' => 0.05;
 requires 'CPAN::Meta::Check';
-requires 'CPAN::Uploader';
 requires 'Module::Runtime';
 requires 'File::Find::Rule';
 requires 'Archive::Tar';
