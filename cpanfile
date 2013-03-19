@@ -12,12 +12,11 @@ requires 'Path::Iterator::Rule';
 requires 'Archive::Tar';
 requires 'File::HomeDir';
 requires 'YAML::Tiny';
-requires 'Module::Install::CPANfile';
 requires 'App::cpanminus';
+requires 'Module::CPANfile';
 
 on 'configure' => sub {
     requires 'Module::Build' => '0.40';
-    requires 'Module::CPANfile';
 };
 
 on 'test' => sub {
@@ -27,5 +26,4 @@ on 'test' => sub {
 
 on 'develop' => sub {
     # Dependencies for developers
-    requires 'Devel::NYTProf';
 };
