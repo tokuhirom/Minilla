@@ -11,15 +11,19 @@ __END__
 
 =head1 NAME
 
-Minya - ...
+Minya - CPAN module authoring tool
 
 =head1 SYNOPSIS
 
-  use Minya;
+    minya new     - Create new dist
+    minya setup   - Setup global config
+    minya test    - Run test cases
+    minya dist    - Make tar ball
+    minya install - Install dist to your system
 
 =head1 DESCRIPTION
 
-Minya is
+Minya is CPAN module authoring tool.
 
 B<THIS IS A DEVELOPMENT RELEASE. API MAY CHANGE WITHOUT NOTICE>.
 
@@ -31,12 +35,10 @@ B<THIS IS A DEVELOPMENT RELEASE. API MAY CHANGE WITHOUT NOTICE>.
 
 =head1 TODO
 
-    minya new
     minya release
     M::I::Repository
     M::I::GithubMeta
-    Create META.yml by own
-    create tar ball by own
+    'provides' section in meta
 
 =head1 AUTHOR
 

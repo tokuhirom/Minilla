@@ -62,7 +62,6 @@ sub run {
     );
     $p->getoptions(
         "h|help"    => sub { unshift @commands, 'help' },
-        "v|version" => sub { unshift @commands, 'version' },
         "color!"    => \$self->{color},
         "debug!"    => \$self->{debug},
         "verbose!"  => \$self->{verbose},
@@ -163,6 +162,9 @@ sub load_config {
     # validation
     for (qw(name author version license)) {
         $conf->{$_} || $self->error("Missing $_ in minya.json\n");
+    }
+    if ($conf->{version} =~ /\A[0-9]+\.[0-9]+\.[0-9]+\z/) {
+        $conf->{version} = 'v' . $conf->{version};
     }
 
     return $conf;
