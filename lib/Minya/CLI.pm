@@ -266,9 +266,13 @@ $module is ...
 
 =head1 LICENSE
 
+Copyright (C) $author
+
+This software is licensed under the same terms as Perl itself.
+
 =head1 AUTHOR
 
-$module <$email>
+$author C<< < >>$emailC<< > >>
 
 ...
     $module_pm =~ s!(\$\w+)!$1!gee;
