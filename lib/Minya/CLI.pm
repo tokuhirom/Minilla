@@ -20,6 +20,7 @@ use Minya::Util;
 use Module::Runtime qw(require_module);
 use Archive::Tar;
 use ExtUtils::MakeMaker qw(prompt);
+use Minya::Metadata;
 use TOML qw(from_toml to_toml);
 
 use Class::Accessor::Lite 0.05 (
@@ -164,9 +165,28 @@ sub load_config {
     }
 
     # validation
-    for (qw(name author version license abstract)) {
-        $conf->{$_} || $self->error("Missing $_ in minya.toml\n");
+    $conf->{main_module} || $self->error("Missing main_module in minya.toml\n");
+
+    # fill from main_module
+    $conf->{name} ||= Minya::Metadata->name($conf->{main_module})
+        or $self->error("Missing name in main_module");
+    $conf->{abstract} ||= Minya::Metadata->abstract($conf->{name}, $conf->{main_module})
+        or $self->error("Missing abstract in main_module");
+    $conf->{version} ||= Minya::Metadata->version($conf->{main_module})
+        or $self->error("Missing version in main_module");
+    if (my $perl_version = Minya::Metadata->perl_version($conf->{main_module})) {
+        $self->register_prereqs(runtime => 'requires' => perl => $perl_version);
+    } else {
+        $self->warnf("Cannot determine perl version info from $conf->{main_module}\n");
     }
+
+    # TODO author_from
+    # TODO licnese_from
+
+    $self->infof("Name: %s\n", $conf->{name});
+    $self->infof("Abstract: %s\n", $conf->{abstract});
+    $self->infof("Version: %s\n", $conf->{version});
+
     if ($conf->{version} =~ /\A[0-9]+\.[0-9]+\.[0-9]+\z/) {
         $conf->{version} = 'v' . $conf->{version};
     }
@@ -375,7 +395,7 @@ sub build_dist {
         $dat->{dynamic_config} = 0;
         $dat->{license} = $self->license->meta2_name;
         $dat->{version} = $self->config->{version};
-        $dat->{name} = $self->config->{name};
+        $dat->{name} = $self->config->{name} || Minya::Metadata->name_from($self->config->{main_module});
         $dat->{prereqs} = $self->prereq_specs;
         $dat->{generated_by} = "Minya/$Minya::VERSION";
         $dat->{release_status} = 'stable'; # TODO: --trial
@@ -529,6 +549,11 @@ sub cmd_help {
 sub infof {
     my $self = shift;
     $self->printf(@_, INFO);
+}
+
+sub warnf {
+    my $self = shift;
+    $self->printf(@_, WARN);
 }
 
 sub printf {

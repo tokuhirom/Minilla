@@ -1,10 +1,9 @@
-name = "Minya"
+main_module = "lib/Minya.pm"
+
 author = "Tokuhiro Matsuno"
 copyright_holder = "Tokuhiro Matsuno"
-version = "0.0.1"
 license = "Perl_5"
-script_files = ['bin/minya']
-abstract = "CPAN authoring tool"
+script_files = ["bin/minya"]
 
 [Test::Pod]
 [Test::CPANMeta]
