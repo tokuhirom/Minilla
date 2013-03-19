@@ -220,18 +220,30 @@ sub cmd_new {
         \@args,
     );
     my $module = shift @args or $self->error("Missing module name\n");
-    path($module)->mkpath;
-    my $path = $module;
-       $path =~ s!::!-!g;
-       $path =~ s!-!/!g;
-    path(path($module, 'lib', $path)->dirname)->mkpath;
-    path($module, 'lib', $path . '.pm')->spew(sprintf(<<'...', $module));
+
+    # $module = "Foo::Bar"
+    # $suffix = "Bar"
+    # $dist   = "Foo-Bar"
+    # $path   = "Foo/Bar.pm"
+    my @pkg    = split /::/, $module;
+    my $suffix = $pkg[ @pkg - 1 ];
+    my $dist   = join "-", @pkg;
+    my $path   = join( "/", @pkg ) . ".pm";
+    ( my $dir = $dist ) =~ s/^App-//;
+    path(path($dist, 'lib', $path)->dirname)->mkpath;
+    path($dist, 'lib', $path)->spew(sprintf(<<'...', $module));
 package %s;
 use strict;
 use warnings;
 
 1;
 ...
+    path($dist, 'minya.json')->spew(JSON::PP->new->ascii(1)->indent->encode(+{
+        name => $dist,
+        author => $self->global_config->{'user_name'},
+        copyright_holder => $self->global_config->{'user_name'},
+        version => '0.0.1',
+    }));
     $self->infof("Finished to create $module\n");
 }
 
