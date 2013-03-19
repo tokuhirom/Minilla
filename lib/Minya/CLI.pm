@@ -273,6 +273,7 @@ sub cmd_install {
 
     my $tar = $self->build_dist();
     $self->cmd('cpanm', $tar);
+    path($tar)->remove unless $self->debug;
 }
 
 sub setup_workdir {
