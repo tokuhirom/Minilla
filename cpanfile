@@ -1,11 +1,10 @@
-# requires 'perl' => '5.0120005';
+requires 'perl' => '5.0120005';
 requires 'parent'                        => '0';
 requires 'Module::Build' => 0.40;
 requires 'JSON::PP';
 requires 'Text::MicroTemplate';
 requires 'Class::Accessor::Lite' => 0.05;
 requires 'Module::Runtime';
-requires 'File::Find::Rule';
 requires 'Archive::Tar';
 requires 'App::cpanminus';
 requires 'Module::CPANfile';

@@ -18,7 +18,6 @@ use Module::CPANfile;
 use Text::MicroTemplate;
 use Minya::Util;
 use Module::Runtime qw(require_module);
-use File::Find::Rule;
 use Archive::Tar;
 use ExtUtils::MakeMaker qw(prompt);
 use TOML qw(from_toml to_toml);
@@ -138,7 +137,7 @@ sub load_plugins {
 sub verify_dependencies {
     my ($self, $phases, $type) = @_;
 
-    if (eval q{require CPAN::Meta::Check; 1;}) {
+    if (eval q{require CPAN::Meta::Check; 1;}) { ## no critic
         my @err = CPAN::Meta::Check::verify_dependencies(CPAN::Meta::Prereqs->new($self->prereq_specs), $phases, $type);
         for (@err) {
             if (/Module '([^']+)' is not installed/ && $self->auto_install) {
@@ -216,6 +215,7 @@ sub register_prereqs {
 }
 
 sub home_dir {
+    my $self = shift;
     $ENV{HOME} || $ENV{PERL_MINYA_HOME} || $self->error("Please set HOME or PERL_MINYA_HOME to environment variable.");
 }
 
@@ -355,7 +355,8 @@ sub build_dist {
         });
     }
 
-    my @files = map { path($_)->relative($self->work_dir) } $self->gather_files($self->work_dir);
+    my @files = $self->gather_files();
+    push @files, qw(Build.PL LICENSE META.json META.yml);
 
     $self->infof("Writing MANIFEST file\n");
     {
@@ -393,7 +394,7 @@ sub setup_workdir {
 
     $self->infof("Creating working directory: %s\n", $self->work_dir);
 
-    my @files = $self->gather_files($self->base_dir);
+    my @files = $self->gather_files();
 
     # copying
     path($self->work_dir)->mkpath;
@@ -412,27 +413,10 @@ sub setup_workdir {
 }
 
 sub gather_files {
-    my ($self, $root) = @_;
-
-    my $rule = File::Find::Rule->new();
-    $rule->file->not(
-        $rule->new->name(
-            '.git',
-            '.svn',
-            'CVS',
-            '_build',
-            '.build',
-            'blib',
-            '.travis.yml',
-            '.gitignore',
-            '.DS_Store',
-            qr/\A\..*\.sw[op]\z/, # vim swap files
-            'MYMETA.yml',
-            'MYMETA.json',
-            '*.bak',
-            sprintf("%s-*.tar.gz", $self->config->{name}),
-        )
-    )->in($root);
+    my ($self) = @_;
+    my $root = $self->base_dir;
+    my $guard = pushd($root);
+    my @files = map { path($_)->relative($root) } split /\n/, `git ls-files`;
 }
 
 sub generate_build_pl {
