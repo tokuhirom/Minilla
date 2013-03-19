@@ -182,9 +182,8 @@ sub load_config {
     }
     $conf->{author} ||= Minya::Metadata->author($conf->{main_module})
         or $self->error("Missing author in main_module");
-
-    # TODO author_from
-    # TODO licnese_from
+    $conf->{license} ||= Minya::Metadata->license($conf->{main_module})
+        or $self->error("Missing license in main_module");
 
     $self->infof("Name: %s\n", $conf->{name});
     $self->infof("Abstract: %s\n", $conf->{abstract});

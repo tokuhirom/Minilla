@@ -130,5 +130,50 @@ sub author {
     }
 }
 
+
+#Stolen from M::B
+sub _extract_license {
+    my $pod = shift;
+    my $matched;
+    return __extract_license(
+        ($matched) = $pod =~ m/
+            (=head \d \s+ L(?i:ICEN[CS]E|ICENSING)\b.*?)
+            (=head \d.*|=cut.*|)\z
+        /xms
+    ) || __extract_license(
+        ($matched) = $pod =~ m/
+            (=head \d \s+ (?:C(?i:OPYRIGHTS?)|L(?i:EGAL))\b.*?)
+            (=head \d.*|=cut.*|)\z
+        /xms
+    );
+}
+ 
+sub __extract_license {
+    my $license_text = shift or return;
+    my @phrases      = (
+        '(?:under )?the same (?:terms|license) as (?:perl|the perl (?:\d )?programming language)' => 'Perl_5', 1,
+        '(?:under )?the terms of (?:perl|the perl programming language) itself' => 'Perl_5', 1,
+        'Artistic and GPL'                   => 'Perl_5',       1,
+    );
+    while ( my ($pattern, $license, $osi) = splice(@phrases, 0, 3) ) {
+        $pattern =~ s#\s+#\\s+#gs;
+        if ( $license_text =~ /\b$pattern\b/i ) {
+            return $license;
+        }
+    }
+    return '';
+}
+
+sub license {
+    my ($class, $file) = @_;
+
+    if (my $license = _extract_license(slurp($file))) {
+        return $license;
+    } else {
+        warn "Cannot determine license info from $_[0]\n";
+        return 'unknown';
+    }
+}
+
 1;
 
