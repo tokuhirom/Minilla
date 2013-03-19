@@ -7,6 +7,5 @@ script_files = ['bin/minya']
 
 [Test::Pod]
 [Test::CPANMeta]
-[Test::Kwalitee]
 [Test::MinimumVersion]
 
