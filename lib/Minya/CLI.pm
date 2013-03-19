@@ -127,7 +127,7 @@ sub load_plugins {
     for ( grep /\A[A-Z]/, keys %{$self->config} ) {
         my $pkg = $_;
         my $config = $self->config->{$_};
-        my $klass = $pkg =~ s!^\+!! ? $pkg : "Minya::Plugin::$pkg";
+        my $klass = $pkg =~ s/^\+// ? $pkg : "Minya::Plugin::$pkg";
         $self->infof( "Loading plugin: %s\n", $klass );
         require_module($klass);
         $klass->init($self, $config);
