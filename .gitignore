@@ -17,3 +17,6 @@ META.json
 META.yml
 README
 /.build/
+carton.lock
+/local/
+/.carton/
