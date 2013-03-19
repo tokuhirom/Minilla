@@ -4,7 +4,11 @@ use warnings;
 use utf8;
 
 package Minya::Error::CommandExit;
-use parent qw(Exception::Tiny);
+sub throw {
+    my $class = shift;
+    my $self = bless {}, $class;
+    die $self;
+}
 
 1;
 

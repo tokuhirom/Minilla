@@ -8,7 +8,6 @@ requires 'Module::Runtime';
 requires 'Archive::Tar';
 requires 'App::cpanminus';
 requires 'Module::CPANfile';
-requires 'Exception::Tiny';
 requires 'File::pushd';
 requires 'Path::Tiny';
 requires 'Class::Trigger';
