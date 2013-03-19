@@ -308,7 +308,7 @@ sub build_dist {
     $self->infof("Generating Build.PL\n");
     path('Build.PL')->spew($self->generate_build_pl());
 
-    # Generate license file
+    $self->infof("Generating license file\n");
     path('LICENSE')->spew($self->license->fulltext);
 
     # Generate meta file
