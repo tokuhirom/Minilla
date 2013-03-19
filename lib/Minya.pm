@@ -25,6 +25,8 @@ Minya - CPAN module authoring tool
 
 Minya is CPAN module authoring tool.
 
+    (M::I - inc) + shipit + (dzil - plugins)
+
 B<THIS IS A DEVELOPMENT RELEASE. API MAY CHANGE WITHOUT NOTICE>.
 
 =head1 FEATURES

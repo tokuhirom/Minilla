@@ -1,7 +1,6 @@
 # requires 'perl' => '5.0120005';
 requires 'parent'                        => '0';
 requires 'Module::Build' => 0.40;
-requires 'Software::License';
 requires 'JSON::PP';
 requires 'Text::MicroTemplate';
 requires 'Class::Accessor::Lite' => 0.05;
@@ -11,6 +10,8 @@ requires 'Archive::Tar';
 requires 'App::cpanminus';
 requires 'Module::CPANfile';
 
+recommends 'CPAN::Uploader';
+recommends 'Software::License';
 recommends 'CPAN::Meta::Check';
 
 # 0.09 is broken.

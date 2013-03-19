@@ -18,7 +18,6 @@ use Module::CPANfile;
 use Text::MicroTemplate;
 use Minya::Util;
 use Module::Runtime qw(require_module);
-use Software::License;
 use File::Find::Rule;
 use Archive::Tar;
 use ExtUtils::MakeMaker qw(prompt);
@@ -113,6 +112,7 @@ sub run {
 sub init_license {
     my $self = shift;
 
+    require Software::License;
     my $klass = "Software::License::" . $self->config->{license};
     require_module($klass);
     $self->license(
