@@ -175,7 +175,7 @@ sub cmd_test {
 
     my $guard = $self->setup_workdir();
     $self->verify_dependencies([qw(test runtime)], $_) for qw(requires recommends);
-    $self->cmd($self->config->{test_command} || 'prove -l -r t xt');
+    $self->cmd($self->config->{test_command} || 'prove -l -r t ' . (-d 'xt' ? 'xt' : ''));
 }
 
 sub render {
@@ -243,15 +243,33 @@ use warnings;
         author => $self->global_config->{'user_name'},
         copyright_holder => $self->global_config->{'user_name'},
         version => '0.0.1',
+        license => $self->global_config->{'license'} || 'Perl_5',
+        "plugins" => [
+            "Test::Pod",
+            "Test::CPANMeta",
+            "Test::MinimumVersion"
+        ]
     }));
+    path($dist, 't')->mkpath;
+    path($dist, 't', '00_compile.t')->spew(sprintf(<<'...', $module));
+use strict;
+use Test::More;
+
+use_ok $_ for qw(
+    %s
+);
+
+done_testing;
+...
     $self->infof("Finished to create $module\n");
 }
 
 sub cmd_setup {
     my ($self, @args) = @_;
     my $global_config = $self->global_config();
-    $global_config->{user_name} = prompt("User name: ", $global_config->{user_name});
-    $global_config->{email} = prompt("User E-mail: ", $global_config->{email});
+    $global_config->{user_name} = prompt("User name:", $global_config->{user_name});
+    $global_config->{email} = prompt("User E-mail:", $global_config->{email});
+    $global_config->{license} = prompt("License:", $global_config->{license} || 'Perl_5');
     path(File::HomeDir->my_home, '.minyarc')->spew(JSON::PP->new->ascii(1)->encode($global_config));
 }
 
@@ -299,7 +317,7 @@ sub build_dist {
 
     if ($test) {
         local $ENV{RELEASE_TESTING} = 1;
-        $self->cmd('prove', '-r', '-l', 't', 'xt');
+        $self->cmd('prove', '-r', '-l', 't', (-d 'xt' ? 'xt' : ()));
     }
 
     # Create tar ball
@@ -340,6 +358,7 @@ sub setup_workdir {
     }
 
     my $guard = pushd($self->work_dir());
+    path('xt')->mkpath;
     $self->call_trigger('after_setup_workdir');
 
     return $guard;
