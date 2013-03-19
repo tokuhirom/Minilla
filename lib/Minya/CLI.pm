@@ -246,6 +246,8 @@ sub cmd_new {
     $email ||= `git config user.email`;
     $email =~ s/\n$//;
 
+    my $version = '0.0.1';
+
     unless ($username) {
         $self->error("Please set user.name in git, or use `--username` option.");
     }
@@ -260,16 +262,42 @@ sub cmd_new {
     my $path   = join( "/", @pkg ) . ".pm";
     ( my $dir = $dist ) =~ s/^App-//;
     path(path($dist, 'lib', $path)->dirname)->mkpath;
-    path($dist, 'lib', $path)->spew(sprintf(<<'...', $module));
-package %s;
+
+    my $VERSION = '$VERSION';
+
+    my $module_pm = <<'...';
+package $module;
 use strict;
 use warnings;
+our $VERSION = '$version';
 
 1;
+__END__
+
+=head1 NAME
+
+$module - It's new $module
+
+=head1 DESCRIPTION
+
+$module is ...
+
+=head1 LICENSE
+
+=head1 AUTHOR
+
+$module <$email>
+
 ...
+    $module_pm =~ s!(\$\w+)!$1!gee;
+    path($dist, 'lib', $path)->spew($module_pm);
+
     path($dist, '.gitignore')->spew(<<'...');
 /.build/
 /_build/
+/carton.lock
+/.carton/
+/local/
 ...
 
     path( $dist, 'minya.toml' )->spew(
@@ -278,7 +306,7 @@ use warnings;
                 name                   => $dist,
                 author                 => $username,
                 copyright_holder       => $username,
-                version                => '0.0.1',
+                version                => $version,
                 license                => 'Perl_5',
                 "Test::Pod"            => {},
                 "Test::CPANMeta"       => {},
@@ -286,6 +314,18 @@ use warnings;
             }
         )
     );
+
+    path($dist, 'cpanfile')->spew(<<'...');
+requires 'perl' => '5.008005';
+
+on test => sub {
+    requires 'Test::More' => 0.58;
+};
+
+on configure => sub {
+    requires 'Module::Build' => 0.40;
+};
+...
     path($dist, 't')->mkpath;
     path($dist, 't', '00_compile.t')->spew(sprintf(<<'...', $module));
 use strict;
