@@ -40,6 +40,8 @@ sub run {
     });
     $uploader->upload_file($tar);
 
+    path($tar)->remove unless $self->debug;
+
     # TODO commit
     # TODO tag
     # TODO push tags
