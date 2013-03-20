@@ -6,6 +6,7 @@ use Path::Tiny;
 use TOML qw(to_toml);
 use CPAN::Meta;
 use File::pushd;
+use Time::Piece;
 
 sub run {
     my ($self, @args) = @_;
@@ -128,6 +129,15 @@ done_testing;
     path('Build.PL')->spew(<<'...');
 use Module::Build::Tiny ;
 Build_PL();
+...
+
+    my $date = gmtime->strftime('%Y-%m-%dT%H:%M:%SZ');
+    path('Changes')->spew(<<"...");
+Revision history for Perl extension $dist
+
+0.0.1 $date
+
+    - original version
 ...
 
     my $data = {
