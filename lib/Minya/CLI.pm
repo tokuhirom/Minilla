@@ -74,13 +74,14 @@ sub run {
             if ($cmd eq 'new' || $cmd eq 'setup' || $cmd eq 'help') {
                 $self->$call(@commands);
             } else {
-                $self->minya_toml($self->find_file('minya.toml'))
+                my $config_file = $self->find_file('minya.toml')
                     or $self->error("There is no minya.toml\n");
+
                 my $cpanfile = Module::CPANfile->load($self->find_file('cpanfile'));
                 $self->prereq_specs($cpanfile->prereq_specs)
                     or die "Missing prereq_specs";
-                $self->config($self->load_config());
-                $self->base_dir(File::Basename::dirname($self->minya_toml));
+                $self->config($self->load_config($config_file));
+                $self->base_dir(path($config_file)->dirname);
                 $self->work_dir_base($self->_build_work_dir_base)->mkpath;
                 $self->load_plugins();
                 $self->init_license();
@@ -158,8 +159,7 @@ sub _build_work_dir_base {
 }
 
 sub load_config {
-    my ($self) = @_;
-    my $path = $self->minya_toml;
+    my ($self, $path) = @_;
 
     my ($conf, $err) = from_toml(path($path)->slurp_utf8);
     if ($err) {
