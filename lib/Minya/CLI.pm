@@ -28,6 +28,7 @@ use Minya::Config;
 use Minya::CLI::New;
 use Minya::CLI::Help;
 use Minya::CLI::Test;
+use Minya::CLI::Release;
 
 require Win32::Console::ANSI if $^O eq 'MSWin32';
 
@@ -132,8 +133,7 @@ sub verify_dependencies {
 }
 
 sub cmd_test {
-    my ($self, @args) = @_;
-    Minya::CLI::Test->run($self, @args);
+    shift->Minya::CLI::Test::run(@_);
 }
 
 sub render {
@@ -151,51 +151,14 @@ sub render {
 
 # Make new dist
 sub cmd_new {
-    my ($self, @args) = @_;
-    $self->Minya::CLI::New::run(@args);
+    shift->Minya::CLI::New::run(@_);
 }
 
 # release to CPAN by CPAN::Uploader
 sub cmd_release {
-    my ($self, @args) = @_;
-
-    require CPAN::Uploader;
-
-    my $test = 1;
-    $self->parse_options(
-        \@args,
-        'test!' => \$test,
-    );
-
-    # perl-revision command is included in Perl::Version.
-    $self->cmd('perl-reversion', '-bump');
-
-    my $version = Minya::Metadata->new(source => $self->config->{main_module})->version;
-
-    until (path('Changes')->slurp =~ /^$version/) {
-        if (prompt("There is no $version, do you want to edit changes file?", 'y') =~ /y/i) {
-            edit_file('Changes');
-        } else {
-            $self->error("Giving up!");
-        }
-    }
-
-    my $tar = $self->build_dist($test);
-
-    $self->infof("Upload to CPAN\n");
-    my $config = CPAN::Uploader->read_config_file();
-    my $uploader = CPAN::Uploader->new(+{
-        tar => $tar,
-        %$config
-    });
-    $uploader->upload_file($tar);
-
-    # TODO commit
-    # TODO tag
-    # TODO push tags
+    shift->Minya::CLI::Release::run(@_);
 }
 
-# Can I make dist directly without M::B?
 sub cmd_dist {
     my ($self, @args) = @_;
 
