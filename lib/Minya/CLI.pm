@@ -13,7 +13,7 @@ use Module::CPANfile;
 
 use Minya;
 use Minya::Errors;
-use Minya::Util;
+use Minya::Util qw(randstr);
 use Minya::Config;
 
 use Minya::CLI::New;

@@ -6,8 +6,7 @@ use autodie;
 
 use parent qw(Exporter);
 
-our @EXPORT = qw(randstr slurp spew edit_file);
-our @EXPORT_OK = qw(find_file module_name2path slurp_utf8);
+our @EXPORT_OK = qw(find_file module_name2path slurp_utf8 randstr slurp spew edit_file);
 
 sub module_name2path {
     local $_ = shift;

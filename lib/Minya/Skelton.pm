@@ -10,7 +10,7 @@ use CPAN::Meta;
 use Data::Section::Simple qw(get_data_section);
 
 use Minya::License;
-use Minya::Util;
+use Minya::Util qw(spew);
 
 use Moo;
 
