@@ -1,0 +1,50 @@
+{
+   "abstract" : "CPAN module authoring tool",
+   "author" : [
+      "Tokuhiro Matsuno <tokuhirom AAJKLFJEF@ GMAIL COM>"
+   ],
+   "dynamic_config" : 0,
+   "generated_by" : "Minya/0.0.14, CPAN::Meta::Converter version 2.120921",
+   "license" : [
+      "perl_5"
+   ],
+   "meta-spec" : {
+      "url" : "http://search.cpan.org/perldoc?CPAN::Meta::Spec",
+      "version" : "2"
+   },
+   "name" : "Minya",
+   "prereqs" : {
+      "configure" : {
+         "requires" : {
+            "Module::Build" : "0.40"
+         }
+      },
+      "runtime" : {
+         "recommends" : {
+            "CPAN::Meta::Check" : "0",
+            "CPAN::Uploader" : "0",
+            "Perl::Version" : "0",
+            "Pod::Escapes" : "0"
+         },
+         "requires" : {
+            "App::cpanminus" : "0",
+            "Archive::Tar" : "0",
+            "File::pushd" : "0",
+            "Module::CPANfile" : "0",
+            "Moo" : "1.001",
+            "Path::Tiny" : "0",
+            "TOML" : "0.91",
+            "parent" : "0",
+            "perl" : "5.0120005"
+         }
+      },
+      "test" : {
+         "requires" : {
+            "Test::More" : "0.98",
+            "Test::Requires" : "0"
+         }
+      }
+   },
+   "release_status" : "stable",
+   "version" : "v0.0.14"
+}
