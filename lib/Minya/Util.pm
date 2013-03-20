@@ -7,6 +7,7 @@ use autodie;
 use parent qw(Exporter);
 
 our @EXPORT = qw(randstr slurp edit_file);
+our @EXPORT_OK = qw(find_file);
 
 sub randstr {
     my $len = shift;
@@ -27,6 +28,21 @@ sub edit_file {
     system( $editor, $file );
 }
 
+sub find_file {
+    my ($file) = @_;
+
+    my $dir = Cwd::getcwd();
+    my %seen;
+    while ( -d $dir ) {
+        return undef if $seen{$dir}++;    # guard from deep recursion
+        if ( -f "$dir/$file" ) {
+            return "$dir/$file";
+        }
+        $dir = dirname($dir);
+    }
+
+    return undef;
+}
 
 1;
 

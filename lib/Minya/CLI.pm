@@ -23,6 +23,7 @@ use ExtUtils::MakeMaker qw(prompt);
 use Minya::Metadata;
 use TOML qw(from_toml to_toml);
 use Minya::CLI::New;
+use Minya::CLI::Help;
 
 use Class::Accessor::Lite 0.05 (
     rw => [qw(minya_toml base_dir work_dir work_dir_base debug config auto_install prereq_specs license)],
@@ -475,8 +476,7 @@ sub find_file {
 
 sub cmd_help {
     my $self = shift;
-    my $module = $_[0] ? ( "Minya::Doc::" . ucfirst $_[0] ) : "Minya";
-    system "perldoc", $module;
+    Minya::CLI::Help->run(@_);
 }
 
 sub infof {
