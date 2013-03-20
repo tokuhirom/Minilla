@@ -8,7 +8,7 @@ use Minya::Metadata;
 
 use Moo;
 
-has [qw(main_module name abstract version perl_version author license)] => (
+has [qw(name abstract version perl_version author license)] => (
     is => 'ro',
     required => 1,
 );
@@ -17,7 +17,7 @@ has [qw(share_dir script_files)] => (
     is => 'ro',
 );
 
-has license_meta2 => (
+has [qw(license_meta2 dist_name)] => (
     is => 'lazy',
 );
 
@@ -32,13 +32,18 @@ sub load {
     }
 
     # validation
-    my $main_module = $conf->{main_module} || $c->error("Missing main_module in minya.toml\n");
+    my $module_name = $conf->{name} || $c->error("Missing name in minya.toml\n");
 
     # fill from main_module
+    my $source = do {
+        local $_ = $module_name;
+        s!::!/!;
+        "lib/$_.pm";
+    };
     my $metadata = Minya::Metadata->new(
-        source => $main_module,
+        source => $source,
     );
-    for my $key (qw(name abstract version perl_version author license)) {
+    for my $key (qw(abstract version perl_version author license)) {
         $conf->{$key} ||= $metadata->$key()
             or $c->error("Missing $key in main_module");
     }
@@ -60,6 +65,14 @@ sub _build_license_meta2 {
         Perl_5 => 'perl_5',
         unknown => 'unknown',
     }->{$self->license} or die "Unknown license: $self->{license}";
+}
+
+sub _build_dist_name {
+    my $self = shift;
+
+    my $dist_name = $self->name;
+    $dist_name =~ s!::!-!g;
+    $dist_name;
 }
 
 1;

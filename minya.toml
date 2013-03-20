@@ -1,2 +1,2 @@
-main_module = "lib/Minya.pm"
+name = "Minya"
 script_files = ["bin/minya"]

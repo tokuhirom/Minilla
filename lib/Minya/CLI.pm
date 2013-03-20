@@ -166,7 +166,7 @@ sub generate_meta {
         author         => [ $self->config->author ],
         dynamic_config => 0,
         version        => $self->config->version,
-        name           => $self->config->name,
+        name           => $self->config->dist_name,
         prereqs        => $self->prereq_specs,
         generated_by   => "Minya/$Minya::VERSION",
         release_status => $release_status || 'stable',

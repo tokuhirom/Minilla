@@ -133,8 +133,8 @@ sub generate_build_pl {
             dynamic_config => 0,
 
             no_index           => { 'directory' => ['inc'] },
-            name               => $config->name,
-            dist_name          => $config->name,
+            module_name        => $config->name,
+            dist_name          => $config->dist_name,
             dist_version       => $config->version,
             license            => $config->license,
             script_files       => $config->script_files,
@@ -160,9 +160,9 @@ use strict;
 use Module::Build;
 use %s;
 
-my $builder = Module::Build->new(
+my $builder = Module::Build->new(%%{
 %s
-);
+});
 $builder->create_build_script();
 ...
 }
