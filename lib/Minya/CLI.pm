@@ -12,14 +12,11 @@ use Cwd ();
 use File::Temp;
 use File::pushd;
 use Path::Tiny;
-use JSON::PP;
 use Data::Dumper; # serializer
 use Module::CPANfile;
 use Minya::Util;
-use Module::Runtime qw(require_module);
 use ExtUtils::MakeMaker qw(prompt);
 use Minya::Metadata;
-use TOML qw(from_toml to_toml);
 
 use Minya::Config;
 use Minya::WorkDir;
