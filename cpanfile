@@ -17,7 +17,6 @@ requires 'Moo' => 1.001000;
 recommends 'Perl::Version';
 recommends 'Pod::Escapes';
 recommends 'CPAN::Uploader';
-recommends 'Software::License';
 recommends 'CPAN::Meta::Check';
 
 requires 'TOML' => 0.91;

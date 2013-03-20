@@ -30,7 +30,7 @@ use Minya::CLI::Help;
 use Minya::CLI::Test;
 
 use Class::Accessor::Lite 0.05 (
-    rw => [qw(work_dir work_dir_base debug license)],
+    rw => [qw(work_dir work_dir_base debug)],
 );
 
 require Win32::Console::ANSI if $^O eq 'MSWin32';
@@ -102,7 +102,6 @@ sub run {
                     or $self->error("There is no minya.toml\n");
 
                 $self->work_dir_base($self->_build_work_dir_base)->mkpath;
-                $self->init_license();
                 $self->verify_dependencies([qw(develop)], 'requires');
                 for (grep { -d $_ } $self->work_dir_base()->children) {
                     $self->print("Removing $_\n", INFO);
@@ -125,19 +124,6 @@ sub run {
     } else {
         $self->error("Could not find command '$cmd'\n");
     }
-}
-
-sub init_license {
-    my $self = shift;
-
-    require Software::License;
-    my $klass = "Software::License::" . $self->config->{license};
-    require_module($klass);
-    $self->license(
-        $klass->new({
-            holder => $self->config->{copyright_holder} || $self->config->{author}
-        })
-    );
 }
 
 sub verify_dependencies {
@@ -264,9 +250,6 @@ sub build_dist {
     $self->infof("Generating Build.PL\n");
     path('Build.PL')->spew($self->generate_build_pl());
 
-    $self->infof("Generating license file\n");
-    path('LICENSE')->spew($self->license->fulltext);
-
     # Generate meta file
     {
         # TODO: provides
@@ -313,12 +296,13 @@ sub generate_meta {
             "version" => "2",
             "url"     => "http://search.cpan.org/perldoc?CPAN::Meta::Spec"
         },
+        license => $self->config->license_meta2,
+        abstract => $self->config->abstract,
     };
 
     $dat->{abstract} = $self->config->{abstract};
     $dat->{author} = [$self->config->{author}];
     $dat->{dynamic_config} = 0;
-    $dat->{license} = $self->license->meta2_name;
     $dat->{version} = $self->config->{version};
     $dat->{name} = $self->config->{name};
     $dat->{prereqs} = $self->prereq_specs;
@@ -423,7 +407,7 @@ my $builder = Module::Build->new(
     name        => '<?= $config->{name} ?>',
     dist_name   => '<?= $config->{name} ?>',
     dist_version => '<?= $config->{version} ?>',
-    license     => '<?= $self->license->meta_yml_name || "unknown" ?>',
+    license     => '<?= $self->config->license || "unknown" ?>',
     script_files => <?= Dumper($config->{script_files}) ?>,
     configure_requires => <?= Dumper(+{ 'Module::Build' => 0.40, %{$prereq->{configure}->{requires} || {} } }) ?>,
     requires => <?= Dumper(+{ %{$prereq->{runtime}->{requires} || {} } }) ?>,

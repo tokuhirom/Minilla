@@ -12,6 +12,10 @@ has [qw(main_module name abstract version perl_version author license)] => (
     required => 1,
 );
 
+has license_meta2 => (
+    is => 'lazy',
+);
+
 no Moo;
 
 sub load {
@@ -43,6 +47,14 @@ sub load {
     }
 
     return $class->new($conf);
+}
+
+sub _build_license_meta2 {
+    my ($self) = @_;
+    +{
+        Perl_5 => 'perl_5',
+        unknown => 'unknown',
+    }->{$self->license} or die "Unknown license: $self->{license}";
 }
 
 1;
