@@ -2,9 +2,7 @@ package Minya::CLI;
 use strict;
 use warnings;
 use utf8;
-use Minya;
 use Getopt::Long;
-use Minya::Errors;
 use Try::Tiny;
 use Term::ANSIColor qw(colored);
 use File::Basename;
@@ -14,10 +12,11 @@ use File::pushd;
 use Path::Tiny;
 use Data::Dumper; # serializer
 use Module::CPANfile;
-use Minya::Util;
 use ExtUtils::MakeMaker qw(prompt);
-use Minya::Metadata;
 
+use Minya;
+use Minya::Errors;
+use Minya::Util;
 use Minya::Config;
 use Minya::WorkDir;
 
@@ -63,12 +62,34 @@ has [qw(base_dir config prereq_specs work_dir_base work_dir)] => (
 
 no Moo;
 
-sub new {
-    my $class = shift;
+sub _build_base_dir {
+    my $self = shift;
+    my $toml = $self->find_file('minya.toml')
+        or $self->error("There is no minya.toml");
+    return path($toml)->dirname();
+}
 
-    bless {
-        auto_install => 1,
-    }, $class;
+sub _build_config {
+    my $self = shift;
+    Minya::Config->load($self, path($self->base_dir, 'minya.toml'));
+}
+
+sub _build_prereq_specs {
+    my $self = shift;
+
+    my $cpanfile = Module::CPANfile->load(path($self->base_dir, 'cpanfile'));
+    return $cpanfile->prereq_specs;
+}
+
+sub _build_work_dir_base {
+    my $self = shift;
+    my $dirname = $^O eq 'MSWin32' ? '_build' : '.build';
+    path($self->base_dir(), $dirname);
+}
+
+sub _build_work_dir {
+    my $self = shift;
+    $self->work_dir_base->child(randstr(8));
 }
 
 sub run {
@@ -110,11 +131,6 @@ sub run {
     }
 }
 
-sub verify_develop_requrires {
-    my $self = shift;
-    $self->verify_dependencies([qw(develop)], 'requires');
-}
-
 sub verify_dependencies {
     my ($self, $phases, $type) = @_;
 
@@ -135,11 +151,6 @@ sub verify_dependencies {
 sub build_dist {
     my ($self, $test) = @_;
 
-    $self->verify_dependencies([qw(runtime)], $_) for qw(requires recommends);
-    if ($test) {
-        $self->verify_dependencies([qw(test)], $_) for qw(requires recommends);
-    }
-
     my $work_dir = Minya::WorkDir->new(dir => $self->work_dir);
     $work_dir->setup($self);
     return $work_dir->build_tar_ball($self, $test);
@@ -153,14 +164,14 @@ sub generate_meta {
             "version" => "2",
             "url"     => "http://search.cpan.org/perldoc?CPAN::Meta::Spec"
         },
-        license => $self->config->license_meta2,
-        abstract => $self->config->abstract,
-        author => [$self->config->author],
+        license        => $self->config->license_meta2,
+        abstract       => $self->config->abstract,
+        author         => [ $self->config->author ],
         dynamic_config => 0,
-        version => $self->config->version,
-        name => $self->config->name,
-        prereqs => $self->prereq_specs,
-        generated_by => "Minya/$Minya::VERSION",
+        version        => $self->config->version,
+        name           => $self->config->name,
+        prereqs        => $self->prereq_specs,
+        generated_by   => "Minya/$Minya::VERSION",
         release_status => $release_status || 'stable',
     };
 
@@ -234,36 +245,6 @@ sub error {
 sub parse_options {
     my ( $self, $args, @spec ) = @_;
     Getopt::Long::GetOptionsFromArray( $args, @spec );
-}
-
-sub _build_base_dir {
-    my $self = shift;
-    my $toml = $self->find_file('minya.toml')
-        or $self->error("There is no minya.toml");
-    return path($toml)->dirname();
-}
-
-sub _build_config {
-    my $self = shift;
-    Minya::Config->load($self, path($self->base_dir, 'minya.toml'));
-}
-
-sub _build_prereq_specs {
-    my $self = shift;
-
-    my $cpanfile = Module::CPANfile->load(path($self->base_dir, 'cpanfile'));
-    return $cpanfile->prereq_specs;
-}
-
-sub _build_work_dir_base {
-    my $self = shift;
-    my $dirname = $^O eq 'MSWin32' ? '_build' : '.build';
-    path($self->base_dir(), $dirname);
-}
-
-sub _build_work_dir {
-    my $self = shift;
-    $self->work_dir_base->child(randstr(8));
 }
 
 1;

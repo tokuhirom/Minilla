@@ -4,12 +4,11 @@ use warnings;
 use utf8;
 use Path::Tiny;
 use ExtUtils::MakeMaker qw(prompt);
+use CPAN::Uploader;
 use Minya::Util qw(edit_file);
 
 sub run {
     my ($self, @args) = @_;
-
-    require CPAN::Uploader;
 
     my $test = 1;
     $self->parse_options(

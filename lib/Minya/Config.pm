@@ -4,6 +4,7 @@ use warnings;
 use utf8;
 use Path::Tiny;
 use TOML qw(from_toml);
+use Minya::Metadata;
 
 use Moo;
 
