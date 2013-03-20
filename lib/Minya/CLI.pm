@@ -222,7 +222,6 @@ sub render {
     $code->(@args);
 }
 
-# XXX is it works?
 sub register_prereqs {
     my ($self, $phase, $type, $module, $version) = @_;
     if (my $current = $self->prereq_specs->{$phase}->{$type}->{$module}) {
