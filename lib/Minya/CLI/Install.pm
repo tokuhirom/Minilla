@@ -3,6 +3,7 @@ use strict;
 use warnings;
 use utf8;
 use Path::Tiny;
+use Minya::WorkDir;
 
 sub run {
     my ($self, @args) = @_;
@@ -13,7 +14,7 @@ sub run {
         'test!' => \$test,
     );
 
-    my $tar = $self->build_dist($test);
+    my $tar = Minya::WorkDir->make_tar_ball($self, $test);
     $self->cmd('cpanm', ($self->verbose ? '--verbose' : ()), $tar);
     path($tar)->remove unless $self->debug;
 }

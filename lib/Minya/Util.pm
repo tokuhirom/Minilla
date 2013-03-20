@@ -7,7 +7,13 @@ use autodie;
 use parent qw(Exporter);
 
 our @EXPORT = qw(randstr slurp spew edit_file);
-our @EXPORT_OK = qw(find_file);
+our @EXPORT_OK = qw(find_file module_name2path slurp_utf8);
+
+sub module_name2path {
+    local $_ = shift;
+    s!::!/!;
+    "lib/$_.pm";
+}
 
 sub randstr {
     my $len = shift;
@@ -19,6 +25,12 @@ sub randstr {
 sub slurp {
     my $fname = shift;
     open my $fh, '<', $fname;
+    do { local $/; <$fh> }
+}
+
+sub slurp_utf8 {
+    my $fname = shift;
+    open my $fh, '<:encoding(UTF-8)', $fname;
     do { local $/; <$fh> }
 }
 

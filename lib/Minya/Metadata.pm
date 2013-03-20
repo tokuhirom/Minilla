@@ -3,6 +3,7 @@ use strict;
 use warnings;
 use utf8;
 use Minya::Util qw(slurp);
+use Carp;
 
 use Moo;
 
@@ -12,6 +13,10 @@ has [qw(name version abstract perl_version author license)] => (
 
 has source => (
     is => 'rw',
+    isa => sub {
+        defined $_[0] or Carp::confess("source should not be undef");
+        -f $_[0] or Carp::confess("source file not found: '$_[0]'");
+    },
     required => 1,
 );
 

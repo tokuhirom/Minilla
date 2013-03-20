@@ -2,13 +2,14 @@ package Minya::Config;
 use strict;
 use warnings;
 use utf8;
-use Path::Tiny;
 use TOML qw(from_toml);
+
 use Minya::Metadata;
+use Minya::Util qw(module_name2path slurp_utf8);
 
 use Moo;
 
-has [qw(name abstract version perl_version author license)] => (
+has [qw(name abstract version perl_version author license metadata)] => (
     is => 'ro',
     required => 1,
 );
@@ -26,7 +27,7 @@ no Moo;
 sub load {
     my ($class, $c, $path) = @_;
 
-    my ($conf, $err) = from_toml(path($path)->slurp_utf8);
+    my ($conf, $err) = from_toml(slurp_utf8($path));
     if ($err) {
         $c->error("TOML error in $path: $err");
     }
@@ -35,14 +36,10 @@ sub load {
     my $module_name = $conf->{name} || $c->error("Missing name in minya.toml\n");
 
     # fill from main_module
-    my $source = do {
-        local $_ = $module_name;
-        s!::!/!;
-        "lib/$_.pm";
-    };
     my $metadata = Minya::Metadata->new(
-        source => $source,
+        source => module_name2path($module_name),
     );
+    $conf->{metadata} = $metadata;
     for my $key (qw(abstract version perl_version author license)) {
         $conf->{$key} ||= $metadata->$key()
             or $c->error("Missing $key in main_module");

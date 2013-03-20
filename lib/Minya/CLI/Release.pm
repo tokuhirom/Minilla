@@ -19,7 +19,7 @@ sub run {
     # perl-revision command is included in Perl::Version.
     $self->cmd('perl-reversion', '-bump');
 
-    my $version = Minya::Metadata->new(source => $self->config->{main_module})->version;
+    my $version = $self->config->metadata->version;
 
     until (path('Changes')->slurp =~ /^$version/m) {
         if (prompt("There is no $version, do you want to edit changes file?", 'y') =~ /y/i) {
@@ -29,7 +29,7 @@ sub run {
         }
     }
 
-    my $tar = $self->build_dist($test);
+    my $tar = Minya::WorkDir->make_tar_ball($self, $test);
 
     $self->infof("Upload to CPAN\n");
     my $config = CPAN::Uploader->read_config_file();

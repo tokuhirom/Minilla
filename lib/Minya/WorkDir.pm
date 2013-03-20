@@ -15,6 +15,14 @@ has dir => (
 
 no Moo;
 
+sub make_tar_ball {
+    my ($class, $c, $test) = @_;
+
+    my $work_dir = Minya::WorkDir->new(dir => $c->work_dir);
+    $work_dir->setup($c);
+    return $work_dir->build_tar_ball($c, $test);
+}
+
 sub as_string {
     my $self = shift;
     $self->dir;

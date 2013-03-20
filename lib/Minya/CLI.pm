@@ -145,14 +145,6 @@ sub verify_dependencies {
     }
 }
 
-sub build_dist {
-    my ($self, $test) = @_;
-
-    my $work_dir = Minya::WorkDir->new(dir => $self->work_dir);
-    $work_dir->setup($self);
-    return $work_dir->build_tar_ball($self, $test);
-}
-
 sub generate_meta {
     my ($self, $release_status) = @_;
 
