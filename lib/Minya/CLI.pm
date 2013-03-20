@@ -7,12 +7,9 @@ use Try::Tiny;
 use Term::ANSIColor qw(colored);
 use File::Basename;
 use Cwd ();
-use File::Temp;
 use File::pushd;
 use Path::Tiny;
-use Data::Dumper; # serializer
 use Module::CPANfile;
-use ExtUtils::MakeMaker qw(prompt);
 
 use Minya;
 use Minya::Errors;
