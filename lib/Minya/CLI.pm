@@ -277,26 +277,8 @@ sub build_dist {
 
     # Generate meta file
     {
-        my $dat = {
-            "meta-spec" => {
-                "version" => "2",
-                "url"     => "http://search.cpan.org/perldoc?CPAN::Meta::Spec"
-            },
-        };
-
-        $dat->{abstract} = $self->config->{abstract};
-        $dat->{author} = [$self->config->{author}];
-        $dat->{dynamic_config} = 0;
-        $dat->{license} = $self->license->meta2_name;
-        $dat->{version} = $self->config->{version};
-        $dat->{name} = $self->config->{name};
-        $dat->{prereqs} = $self->prereq_specs;
-        $dat->{generated_by} = "Minya/$Minya::VERSION";
-        $dat->{release_status} = 'stable'; # TODO: --trial
-
         # TODO: provides
-
-        my $meta = CPAN::Meta->new($dat);
+        my $meta = $self->generate_meta();
         $meta->save('META.yml', {
             version => 1.4,
         });
@@ -329,6 +311,30 @@ sub build_dist {
     $self->infof("Wrote %s\n", $tarball);
 
     return $tarball;
+}
+
+sub generate_meta {
+    my ($self, $release_status) = @_;
+
+    my $dat = {
+        "meta-spec" => {
+            "version" => "2",
+            "url"     => "http://search.cpan.org/perldoc?CPAN::Meta::Spec"
+        },
+    };
+
+    $dat->{abstract} = $self->config->{abstract};
+    $dat->{author} = [$self->config->{author}];
+    $dat->{dynamic_config} = 0;
+    $dat->{license} = $self->license->meta2_name;
+    $dat->{version} = $self->config->{version};
+    $dat->{name} = $self->config->{name};
+    $dat->{prereqs} = $self->prereq_specs;
+    $dat->{generated_by} = "Minya/$Minya::VERSION";
+    $dat->{release_status} = $release_status || 'stable';
+
+    my $meta = CPAN::Meta->new($dat);
+    return $meta;
 }
 
 sub cmd_install {

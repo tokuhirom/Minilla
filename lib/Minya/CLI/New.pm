@@ -4,6 +4,8 @@ use warnings;
 use utf8;
 use Path::Tiny;
 use TOML qw(to_toml);
+use CPAN::Meta;
+use File::pushd;
 
 sub run {
     my ($self, @args) = @_;
@@ -36,7 +38,10 @@ sub run {
     my $dist   = join "-", @pkg;
     my $path   = join( "/", @pkg ) . ".pm";
     ( my $dir = $dist ) =~ s/^App-//;
+
     path(path($dist, 'lib', $path)->dirname)->mkpath;
+
+    my $guard = pushd($dist);
 
     my $VERSION = '$VERSION';
     my $author = $username;
@@ -75,9 +80,9 @@ $author $<lt> $email E<gt>
 
 ...
     $module_pm =~ s!(\$\w+)!$1!gee;
-    path($dist, 'lib', $path)->spew($module_pm);
+    path('lib', $path)->spew($module_pm);
 
-    path($dist, '.gitignore')->spew(<<'...');
+    path('.gitignore')->spew(<<'...');
 /.build/
 /_build/
 /carton.lock
@@ -85,7 +90,7 @@ $author $<lt> $email E<gt>
 /local/
 ...
 
-    path( $dist, 'minya.toml' )->spew(
+    path('minya.toml' )->spew(
         to_toml(
             +{
                 main_module => "lib/$path",
@@ -96,7 +101,7 @@ $author $<lt> $email E<gt>
         )
     );
 
-    path($dist, 'cpanfile')->spew(<<'...');
+    path('cpanfile')->spew(<<'...');
 requires 'perl' => '5.008005';
 
 on test => sub {
@@ -104,11 +109,11 @@ on test => sub {
 };
 
 on configure => sub {
-    requires 'Module::Build' => 0.40;
+    requires 'Module::Build::Tiny';
 };
 ...
-    path($dist, 't')->mkpath;
-    path($dist, 't', '00_compile.t')->spew(sprintf(<<'...', $module));
+    path('t')->mkpath;
+    path('t', '00_compile.t')->spew(sprintf(<<'...', $module));
 use strict;
 use Test::More;
 
@@ -118,6 +123,29 @@ use_ok $_ for qw(
 
 done_testing;
 ...
+
+    # Generate Build.PL and META.json for installable git repo.
+    path('Build.PL')->spew(<<'...');
+use Module::Build::Tiny ;
+Build_PL();
+...
+
+    my $data = {
+        "meta-spec" => {
+            "version" => "2",
+            "url"     => "http://search.cpan.org/perldoc?CPAN::Meta::Spec"
+        },
+        abstract => "blah blah blah",
+        author => $author,
+        dynamic_config => 0,
+        license => 'perl_5',
+        version => $version,
+        name => $dist,
+        prereqs => Module::CPANfile->load('cpanfile')->prereq_specs,
+        generated_by => "Minya/$Minya::VERSION",
+        release_status => 'unstable',
+    };
+    CPAN::Meta->new($data)->save('META.json', {version => '2.0'});
 
     $self->infof("Finished to create $module\n");
 }

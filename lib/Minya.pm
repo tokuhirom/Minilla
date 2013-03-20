@@ -41,6 +41,7 @@ B<THIS IS A DEVELOPMENT RELEASE. API MAY CHANGE WITHOUT NOTICE>.
     M::I::Repository
     M::I::GithubMeta
     'provides' section in meta
+    # TODO: --trial
 
 =head1 AUTHOR
 
