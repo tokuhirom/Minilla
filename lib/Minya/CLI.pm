@@ -29,10 +29,6 @@ use Minya::CLI::New;
 use Minya::CLI::Help;
 use Minya::CLI::Test;
 
-use Class::Accessor::Lite 0.05 (
-    rw => [qw(work_dir work_dir_base debug)],
-);
-
 require Win32::Console::ANSI if $^O eq 'MSWin32';
 
 use constant { SUCCESS => 0, INFO => 1, WARN => 2, ERROR => 3 };
@@ -53,12 +49,16 @@ has color => (
     },
 );
 
+has debug => (
+    is => 'rw',
+);
+
 has auto_install => (
     is => 'rw',
     default => sub { 1 },
 );
 
-has [qw(base_dir config prereq_specs)] => (
+has [qw(base_dir config prereq_specs work_dir_base work_dir)] => (
     is => 'lazy',
 );
 
@@ -95,27 +95,10 @@ sub run {
  
     if ($call) {
         try {
-            if ($cmd eq 'new' || $cmd eq 'setup' || $cmd eq 'help') {
-                $self->$call(@commands);
-            } else {
-                my $config_file = $self->find_file('minya.toml')
-                    or $self->error("There is no minya.toml\n");
+            $self->$call(@commands);
 
-                $self->work_dir_base($self->_build_work_dir_base)->mkpath;
-                $self->verify_dependencies([qw(develop)], 'requires');
-                for (grep { -d $_ } $self->work_dir_base()->children) {
-                    $self->print("Removing $_\n", INFO);
-                    $_->remove_tree({safe => 0});
-                }
-                $self->work_dir($self->work_dir_base->child(randstr(8)));
-
-                {
-                    my $guard = pushd($self->base_dir);
-                    $self->$call(@commands);
-                }
-                unless ($self->debug) {
-                    $self->work_dir_base->remove_tree({safe => 0});
-                }
+            unless ($self->debug) {
+                $self->work_dir_base->remove_tree({safe => 0});
             }
         } catch {
             /Minya::Error::CommandExit/ and return;
@@ -124,6 +107,11 @@ sub run {
     } else {
         $self->error("Could not find command '$cmd'\n");
     }
+}
+
+sub verify_develop_requrires {
+    my $self = shift;
+    $self->verify_dependencies([qw(develop)], 'requires');
 }
 
 sub verify_dependencies {
@@ -143,12 +131,6 @@ sub verify_dependencies {
     }
 }
 
-sub _build_work_dir_base {
-    my $self = shift;
-    my $dirname = $^O eq 'MSWin32' ? '_build' : '.build';
-    path($self->base_dir(), $dirname);
-}
-
 sub cmd_test {
     my ($self, @args) = @_;
     Minya::CLI::Test->run($self, @args);
@@ -165,17 +147,6 @@ sub render {
     my $code = eval $src; ## no critic.
     $self->error("Cannot compile template: $@\n") if $@;
     $code->(@args);
-}
-
-sub register_prereqs {
-    my ($self, $phase, $type, $module, $version) = @_;
-    if (my $current = $self->prereq_specs->{$phase}->{$type}->{$module}) {
-        if (version->parse($current) < version->parse($version)) {
-            $self->prereq_specs->{$phase}->{$type}->{$module} = $version;
-        }
-    } else {
-        $self->prereq_specs->{$phase}->{$type}->{$module} = $version;
-    }
 }
 
 # Make new dist
@@ -503,6 +474,17 @@ sub _build_prereq_specs {
 
     my $cpanfile = Module::CPANfile->load(path($self->base_dir, 'cpanfile'));
     return $cpanfile->prereq_specs;
+}
+
+sub _build_work_dir_base {
+    my $self = shift;
+    my $dirname = $^O eq 'MSWin32' ? '_build' : '.build';
+    path($self->base_dir(), $dirname);
+}
+
+sub _build_work_dir {
+    my $self = shift;
+    $self->work_dir_base->child(randstr(8));
 }
 
 1;
