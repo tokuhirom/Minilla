@@ -159,16 +159,14 @@ sub generate_meta {
         },
         license => $self->config->license_meta2,
         abstract => $self->config->abstract,
+        author => [$self->config->author],
+        dynamic_config => 0,
+        version => $self->config->version,
+        name => $self->config->name,
+        prereqs => $self->prereq_specs,
+        generated_by => "Minya/$Minya::VERSION",
+        release_status => $release_status || 'stable',
     };
-
-    $dat->{abstract} = $self->config->{abstract};
-    $dat->{author} = [$self->config->{author}];
-    $dat->{dynamic_config} = 0;
-    $dat->{version} = $self->config->{version};
-    $dat->{name} = $self->config->{name};
-    $dat->{prereqs} = $self->prereq_specs;
-    $dat->{generated_by} = "Minya/$Minya::VERSION";
-    $dat->{release_status} = $release_status || 'stable';
 
     # TODO: provides
 
