@@ -268,6 +268,7 @@ sub cmd_new {
     path(path($dist, 'lib', $path)->dirname)->mkpath;
 
     my $VERSION = '$VERSION';
+    my $author = $username;
 
     my $module_pm = <<'...';
 package $module;
@@ -282,6 +283,10 @@ __END__
 
 $module - It's new $module
 
+=head1 SYNOPSIS
+    
+    use $module;
+
 =head1 DESCRIPTION
 
 $module is ...
@@ -290,11 +295,12 @@ $module is ...
 
 Copyright (C) $author
 
-This software is licensed under the same terms as Perl itself.
+This library is free software; you can redistribute it and/or modify
+it under the same terms as Perl itself.
 
 =head1 AUTHOR
 
-$author C<< < >>$emailC<< > >>
+$author $<lt> $email E<gt>
 
 ...
     $module_pm =~ s!(\$\w+)!$1!gee;
