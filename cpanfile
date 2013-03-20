@@ -11,6 +11,9 @@ requires 'Module::CPANfile';
 requires 'File::pushd';
 requires 'Path::Tiny';
 
+# Modules required by minya new/minya dist/minya release are optional.
+# It's good for contributors
+recommends 'Perl::Version';
 recommends 'Pod::Escapes';
 recommends 'CPAN::Uploader';
 recommends 'Software::License';

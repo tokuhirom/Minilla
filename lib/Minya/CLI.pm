@@ -251,6 +251,9 @@ sub cmd_release {
         'test!' => \$test,
     );
 
+    # perl-revision command is included in Perl::Version.
+    $self->cmd('perl-reversion', '-bump');
+
     my $tar = $self->build_dist($test);
 
     $self->infof("Upload to CPAN\n");
