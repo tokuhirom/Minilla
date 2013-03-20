@@ -243,7 +243,24 @@ sub cmd_new {
 # release to CPAN by CPAN::Uploader
 sub cmd_release {
     my ($self, @args) = @_;
-    ...
+
+    require CPAN::Uploader;
+
+    my $test = 1;
+    $self->parse_options(
+        \@args,
+        'test!' => \$test,
+    );
+
+    my $tar = $self->build_dist($test);
+
+    $self->infof("Upload to CPAN\n");
+    my $config = CPAN::Uploader->read_config_file();
+    my $uploader = CPAN::Uploader->new(+{
+        tar => $tar,
+        %$config
+    });
+    $uploader->upload_file($tar);
 }
 
 # Can I make dist directly without M::B?

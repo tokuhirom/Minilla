@@ -37,7 +37,6 @@ B<THIS IS A DEVELOPMENT RELEASE. API MAY CHANGE WITHOUT NOTICE>.
 
 =head1 TODO
 
-    minya release
     M::I::Repository
     M::I::GithubMeta
     'provides' section in meta
