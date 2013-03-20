@@ -7,6 +7,7 @@ use TOML qw(to_toml);
 use CPAN::Meta;
 use File::pushd;
 use Time::Piece;
+use Minya::License;
 
 sub run {
     my ($self, @args) = @_;
@@ -139,6 +140,8 @@ Revision history for Perl extension $dist
 
     - original version
 ...
+
+    path('LICENSE')->spew(Minya::License->perl_5($author, $email));
 
     my $data = {
         "meta-spec" => {
