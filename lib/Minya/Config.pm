@@ -12,7 +12,7 @@ has [qw(main_module name abstract version perl_version author license)] => (
     required => 1,
 );
 
-has script_files => (
+has [qw(share_dir script_files)] => (
     is => 'ro',
 );
 

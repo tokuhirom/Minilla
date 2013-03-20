@@ -119,19 +119,6 @@ all_pod_files_ok();
 ...
 }
 
-sub render {
-    my ($self, $tmpl, @args) = @_;
-    my $mt = Text::MicroTemplate->new(
-        escape_func => sub { $_[0] },
-        package_name => __PACKAGE__,
-        template => $tmpl,
-    );
-    my $src = $mt->code();
-    my $code = eval $src; ## no critic.
-    $self->error("Cannot compile template: $@\n") if $@;
-    $code->(@args);
-}
-
 sub generate_build_pl {
     my ($self, $c ) = @_;
 
@@ -142,8 +129,7 @@ sub generate_build_pl {
 
     my $config = $c->config;
     my $prereq = $c->prereq_specs;
-    my $args = Dumper(
-        +{
+    my $args = +{
             dynamic_config => 0,
 
             no_index           => { 'directory' => ['inc'] },
@@ -166,8 +152,9 @@ sub generate_build_pl {
             recursive_test_files => 1,
 
             create_readme => 1,
-        }
-    );
+    };
+    $args->{share_dir} = $config->share_dir if $config->share_dir;
+    $args = Dumper($args);
     return sprintf(<<'...', $config->perl_version, $args);
 use strict;
 use Module::Build;

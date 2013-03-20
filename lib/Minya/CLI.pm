@@ -15,7 +15,6 @@ use Path::Tiny;
 use JSON::PP;
 use Data::Dumper; # serializer
 use Module::CPANfile;
-use Text::MicroTemplate;
 use Minya::Util;
 use Module::Runtime qw(require_module);
 use ExtUtils::MakeMaker qw(prompt);
