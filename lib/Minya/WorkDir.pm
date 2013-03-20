@@ -77,12 +77,12 @@ sub build_tar_ball {
     }
 
     # Create tar ball
-    my $tarball = $c->config->{name} . '-' . $c->config->{version} . '.tar.gz';
-
-    path($c->base_dir, $tarball)->remove;
+    my $tarball = sprintf('%s-%s.tar.gz', $c->config->name, $c->config->version);
 
     my $tar = Archive::Tar->new;
-    $tar->add_data(path($c->config->{name} . '-' . $c->config->{version}, $_), path($_)->slurp) for @files;
+    for (@files) {
+        $tar->add_data(path($c->config->{name} . '-' . $c->config->{version}, $_), path($_)->slurp);
+    }
     $tar->write(path($c->base_dir, $tarball), COMPRESS_GZIP);
     $c->infof("Wrote %s\n", $tarball);
 
