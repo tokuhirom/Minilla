@@ -1,7 +1,2 @@
 main_module = "lib/Minya.pm"
 script_files = ["bin/minya"]
-
-[Test::Pod]
-[Test::CPANMeta]
-[Test::MinimumVersion]
-

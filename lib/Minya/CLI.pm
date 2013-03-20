@@ -102,7 +102,6 @@ sub run {
                     or $self->error("There is no minya.toml\n");
 
                 $self->work_dir_base($self->_build_work_dir_base)->mkpath;
-                $self->load_plugins();
                 $self->init_license();
                 $self->verify_dependencies([qw(develop)], 'requires');
                 for (grep { -d $_ } $self->work_dir_base()->children) {
@@ -139,19 +138,6 @@ sub init_license {
             holder => $self->config->{copyright_holder} || $self->config->{author}
         })
     );
-}
-
-sub load_plugins {
-    my $self = shift;
-
-    for ( grep /\A[A-Z]/, keys %{$self->config} ) {
-        my $pkg = $_;
-        my $config = $self->config->{$_};
-        my $klass = $pkg =~ s/^\+// ? $pkg : "Minya::Plugin::$pkg";
-        $self->infof( "Loading plugin: %s\n", $klass );
-        require_module($klass);
-        $klass->init($self, $config);
-    }
 }
 
 sub verify_dependencies {
@@ -369,9 +355,37 @@ sub setup_workdir {
 
     my $guard = pushd($self->work_dir());
     path('xt')->mkpath;
-    $self->call_trigger('after_setup_workdir');
+
+    $self->write_release_tests();
 
     return $guard;
+}
+
+sub write_release_tests {
+    my $self = shift;
+
+    path('xt/minimum_version.t')->spew(<<'...');
+use Test::More;
+eval "use Test::MinimumVersion 0.101080";
+plan skip_all => "Test::MinimumVersion required for testing perl minimum version" if $@;
+all_minimum_version_from_metayml_ok();
+...
+
+    path('xt/cpan_meta.t')->spew(<<'...');
+use Test::More;
+eval "use Test::CPAN::Meta";
+plan skip_all => "Test::CPAN::Meta required for testing META.yml" if $@;
+plan skip_all => "There is no META.yml" unless -f "META.yml";
+meta_yaml_ok();
+...
+
+    path('xt/pod.t')->spew(<<'...');
+use strict;
+use Test::More;
+eval "use Test::Pod 1.41";
+plan skip_all => "Test::Pod 1.41 required for testing POD" if $@;
+all_pod_files_ok();
+...
 }
 
 sub gather_files {
@@ -486,20 +500,6 @@ sub error {
 sub parse_options {
     my ( $self, $args, @spec ) = @_;
     Getopt::Long::GetOptionsFromArray( $args, @spec );
-}
-
-{
-    my %triggers;
-    sub add_trigger {
-        my ($class, $name, $code) = @_;
-        push @{$triggers{$name}}, $code;
-    }
-    sub call_trigger {
-        my ($self, $name, @args) = @_;
-        for (@{$triggers{$name}}) {
-            $_->($self, @args);
-        }
-    }
 }
 
 sub _build_base_dir {
