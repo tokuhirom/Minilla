@@ -6,6 +6,7 @@ requires 'Module::CPANfile';
 requires 'File::pushd';
 requires 'Path::Tiny';
 requires 'Moo' => 1.001000;
+requires 'Data::Section::Simple';
 
 # Modules required by minya new/minya dist/minya release are optional.
 # It's good for contributors
