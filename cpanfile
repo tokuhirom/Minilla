@@ -1,6 +1,5 @@
-requires 'perl' => '5.0120005';
-requires 'parent'                        => '0';
-requires 'Module::Build' => 0.40;
+requires 'perl'   => '5.0120005';
+requires 'parent' => '0';
 requires 'Archive::Tar';
 requires 'App::cpanminus';
 requires 'Module::CPANfile';
