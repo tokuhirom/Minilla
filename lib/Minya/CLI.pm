@@ -174,21 +174,10 @@ sub load_config {
     my $metadata = Minya::Metadata->new(
         source => $main_module,
     );
-    $conf->{name} ||= $metadata->name
-        or $self->error("Missing name in main_module");
-    $conf->{abstract} ||= $metadata->abstract
-        or $self->error("Missing abstract in main_module");
-    $conf->{version} ||= $metadata->version
-        or $self->error("Missing version in main_module");
-    if (my $perl_version = $metadata->perl_version()) {
-        $self->register_prereqs(runtime => 'requires' => perl => $perl_version);
-    } else {
-        $self->warnf("Cannot determine perl version info from $conf->{main_module}\n");
+    for my $key (qw(name abstract version perl_version author license)) {
+        $conf->{$key} ||= $metadata->$key()
+            or $self->error("Missing $key in main_module");
     }
-    $conf->{author} ||= $metadata->author
-        or $self->error("Missing author in main_module");
-    $conf->{license} ||= $metadata->license
-        or $self->error("Missing license in main_module");
 
     $self->infof("Name: %s\n", $conf->{name});
     $self->infof("Abstract: %s\n", $conf->{abstract});
@@ -422,6 +411,8 @@ sub generate_build_pl {
 
     # Should I use EU::MM instead of M::B?
     local $Data::Dumper::Terse = 1;
+    # Set perl_version
+#   $self->register_prereqs(runtime => 'requires' => perl => $perl_version);
     return $self->render(<<'...', $config, $self->prereq_specs, $self);
 ? my $config = shift;
 ? my $prereq = shift;
