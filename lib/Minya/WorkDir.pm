@@ -146,7 +146,10 @@ sub generate_build_pl {
                 perl => $config->perl_version,
                 %{ $prereq->{runtime}->{requires} || {} },
             },
-            build_requires => +{ %{ $prereq->{build}->{requires} || {} }, },
+            build_requires => +{
+                %{ $prereq->{test}->{requires} || {} }, ## When M::B support TEST_REQUIRES?
+                %{ $prereq->{build}->{requires} || {} },
+            },
             test_files => 't/',
 
             recursive_test_files => 1,
