@@ -10,7 +10,7 @@ requires 'App::cpanminus';
 requires 'Module::CPANfile';
 requires 'File::pushd';
 requires 'Path::Tiny';
-requires 'Moo';
+requires 'Moo' => 1.001000;
 
 # Modules required by minya new/minya dist/minya release are optional.
 # It's good for contributors

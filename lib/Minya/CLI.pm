@@ -22,11 +22,15 @@ use Archive::Tar;
 use ExtUtils::MakeMaker qw(prompt);
 use Minya::Metadata;
 use TOML qw(from_toml to_toml);
+
+use Minya::Config;
+
 use Minya::CLI::New;
 use Minya::CLI::Help;
+use Minya::CLI::Test;
 
 use Class::Accessor::Lite 0.05 (
-    rw => [qw(minya_toml base_dir work_dir work_dir_base debug config auto_install prereq_specs license)],
+    rw => [qw(work_dir work_dir_base debug license)],
 );
 
 require Win32::Console::ANSI if $^O eq 'MSWin32';
@@ -40,11 +44,30 @@ our $Colors = {
     ERROR,   => 'red',
 };
 
+use Moo;
+
+has color => (
+    is => 'rw',
+    default => sub {
+        -t STDOUT ? 1 : 0
+    },
+);
+
+has auto_install => (
+    is => 'rw',
+    default => sub { 1 },
+);
+
+has [qw(base_dir config prereq_specs)] => (
+    is => 'lazy',
+);
+
+no Moo;
+
 sub new {
     my $class = shift;
 
     bless {
-        color => -t STDOUT ? 1 : 0,
         auto_install => 1,
     }, $class;
 }
@@ -78,11 +101,6 @@ sub run {
                 my $config_file = $self->find_file('minya.toml')
                     or $self->error("There is no minya.toml\n");
 
-                my $cpanfile = Module::CPANfile->load($self->find_file('cpanfile'));
-                $self->prereq_specs($cpanfile->prereq_specs)
-                    or die "Missing prereq_specs";
-                $self->config($self->load_config($config_file));
-                $self->base_dir(path($config_file)->dirname);
                 $self->work_dir_base($self->_build_work_dir_base)->mkpath;
                 $self->load_plugins();
                 $self->init_license();
@@ -159,47 +177,9 @@ sub _build_work_dir_base {
     path($self->base_dir(), $dirname);
 }
 
-sub load_config {
-    my ($self, $path) = @_;
-
-    my ($conf, $err) = from_toml(path($path)->slurp_utf8);
-    if ($err) {
-        $self->error("TOML error in $path: $err");
-    }
-
-    # validation
-    my $main_module = $conf->{main_module} || $self->error("Missing main_module in minya.toml\n");
-
-    # fill from main_module
-    my $metadata = Minya::Metadata->new(
-        source => $main_module,
-    );
-    for my $key (qw(name abstract version perl_version author license)) {
-        $conf->{$key} ||= $metadata->$key()
-            or $self->error("Missing $key in main_module");
-    }
-
-    $self->infof("Name: %s\n", $conf->{name});
-    $self->infof("Abstract: %s\n", $conf->{abstract});
-    $self->infof("Version: %s\n", $conf->{version});
-
-    if ($conf->{version} =~ /\A[0-9]+\.[0-9]+\.[0-9]+\z/) {
-        $conf->{version} = 'v' . $conf->{version};
-    }
-
-    return $conf;
-}
-
 sub cmd_test {
     my ($self, @args) = @_;
-
-    $self->parse_options(
-        \@args,
-    );
-
-    my $guard = $self->setup_workdir();
-    $self->verify_dependencies([qw(test runtime)], $_) for qw(requires recommends);
-    $self->cmd($self->config->{test_command} || 'prove -l -r t ' . (-d 'xt' ? 'xt' : ''));
+    Minya::CLI::Test->run($self, @args);
 }
 
 sub render {
@@ -520,6 +500,25 @@ sub parse_options {
             $_->($self, @args);
         }
     }
+}
+
+sub _build_base_dir {
+    my $self = shift;
+    my $toml = $self->find_file('minya.toml')
+        or $self->error("There is no minya.toml");
+    return path($toml)->dirname();
+}
+
+sub _build_config {
+    my $self = shift;
+    Minya::Config->load($self, path($self->base_dir, 'minya.toml'));
+}
+
+sub _build_prereq_specs {
+    my $self = shift;
+
+    my $cpanfile = Module::CPANfile->load(path($self->base_dir, 'cpanfile'));
+    return $cpanfile->prereq_specs;
 }
 
 1;
