@@ -18,12 +18,12 @@ use Module::CPANfile;
 use Text::MicroTemplate;
 use Minya::Util;
 use Module::Runtime qw(require_module);
-use Archive::Tar;
 use ExtUtils::MakeMaker qw(prompt);
 use Minya::Metadata;
 use TOML qw(from_toml to_toml);
 
 use Minya::Config;
+use Minya::WorkDir;
 
 use Minya::CLI::New;
 use Minya::CLI::Help;
@@ -106,7 +106,8 @@ sub run {
             }
         } catch {
             /Minya::Error::CommandExit/ and return;
-            die $_;
+            $self->print($_, ERROR);
+            exit 1;
         }
     } else {
         $self->error("Could not find command '$cmd'\n");
@@ -135,19 +136,6 @@ sub verify_dependencies {
     }
 }
 
-sub render {
-    my ($self, $tmpl, @args) = @_;
-    my $mt = Text::MicroTemplate->new(
-        escape_func => sub { $_[0] },
-        package_name => __PACKAGE__,
-        template => $tmpl,
-    );
-    my $src = $mt->code();
-    my $code = eval $src; ## no critic.
-    $self->error("Cannot compile template: $@\n") if $@;
-    $code->(@args);
-}
-
 sub build_dist {
     my ($self, $test) = @_;
 
@@ -156,47 +144,9 @@ sub build_dist {
         $self->verify_dependencies([qw(test)], $_) for qw(requires recommends);
     }
 
-    my $work_dir = $self->setup_workdir();
-
-    $self->infof("Generating Build.PL\n");
-    path('Build.PL')->spew($self->generate_build_pl());
-
-    # Generate meta file
-    {
-        # TODO: provides
-        my $meta = $self->generate_meta();
-        $meta->save('META.yml', {
-            version => 1.4,
-        });
-        $meta->save('META.json', {
-            version => 2.0,
-        });
-    }
-
-    my @files = $self->gather_files();
-    push @files, qw(Build.PL LICENSE META.json META.yml);
-
-    $self->infof("Writing MANIFEST file\n");
-    {
-        path('MANIFEST')->spew(join("\n", @files));
-    }
-
-    if ($test) {
-        local $ENV{RELEASE_TESTING} = 1;
-        $self->cmd('prove', '-r', '-l', 't', (-d 'xt' ? 'xt' : ()));
-    }
-
-    # Create tar ball
-    my $tarball = $self->config->{name} . '-' . $self->config->{version} . '.tar.gz';
-
-    path($self->base_dir, $tarball)->remove;
-
-    my $tar = Archive::Tar->new;
-    $tar->add_data(path($self->config->{name} . '-' . $self->config->{version}, $_), path($_)->slurp) for @files;
-    $tar->write(path($self->base_dir, $tarball), COMPRESS_GZIP);
-    $self->infof("Wrote %s\n", $tarball);
-
-    return $tarball;
+    my $work_dir = Minya::WorkDir->new(dir => $self->work_dir);
+    $work_dir->setup($self);
+    return $work_dir->build_tar_ball($self, $test);
 }
 
 sub generate_meta {
@@ -220,59 +170,10 @@ sub generate_meta {
     $dat->{generated_by} = "Minya/$Minya::VERSION";
     $dat->{release_status} = $release_status || 'stable';
 
+    # TODO: provides
+
     my $meta = CPAN::Meta->new($dat);
     return $meta;
-}
-
-sub setup_workdir {
-    my $self = shift;
-
-    $self->infof("Creating working directory: %s\n", $self->work_dir);
-
-    my @files = $self->gather_files();
-
-    # copying
-    path($self->work_dir)->mkpath;
-    for my $src (@files) {
-        next if -d $src;
-        my $dst = path($self->work_dir, path($src)->relative($self->base_dir));
-        path($dst->dirname)->mkpath;
-        path($src)->copy($dst);
-    }
-
-    my $guard = pushd($self->work_dir());
-    path('xt')->mkpath;
-
-    $self->write_release_tests();
-
-    return $guard;
-}
-
-sub write_release_tests {
-    my $self = shift;
-
-    path('xt/minimum_version.t')->spew(<<'...');
-use Test::More;
-eval "use Test::MinimumVersion 0.101080";
-plan skip_all => "Test::MinimumVersion required for testing perl minimum version" if $@;
-all_minimum_version_from_metayml_ok();
-...
-
-    path('xt/cpan_meta.t')->spew(<<'...');
-use Test::More;
-eval "use Test::CPAN::Meta";
-plan skip_all => "Test::CPAN::Meta required for testing META.yml" if $@;
-plan skip_all => "There is no META.yml" unless -f "META.yml";
-meta_yaml_ok();
-...
-
-    path('xt/pod.t')->spew(<<'...');
-use strict;
-use Test::More;
-eval "use Test::Pod 1.41";
-plan skip_all => "Test::Pod 1.41 required for testing POD" if $@;
-all_pod_files_ok();
-...
 }
 
 sub gather_files {
@@ -280,49 +181,6 @@ sub gather_files {
     my $root = $self->base_dir;
     my $guard = pushd($root);
     my @files = map { path($_)->relative($root) } split /\n/, `git ls-files`;
-}
-
-sub generate_build_pl {
-    my ($self) = @_;
-
-    my $config = $self->config();
-
-    # TODO: Equivalent to M::I::GithubMeta is required?
-    # TODO: ShareDir?
-
-    # Should I use EU::MM instead of M::B?
-    local $Data::Dumper::Terse = 1;
-    # Set perl_version
-#   $self->register_prereqs(runtime => 'requires' => perl => $perl_version);
-    return $self->render(<<'...', $config, $self->prereq_specs, $self);
-? my $config = shift;
-? my $prereq = shift;
-? my $self = shift;
-? use Data::Dumper;
-use strict;
-use Module::Build;
-use <?= $prereq->{runtime}->{requires}->{perl} || '5.008001' ?>;
-
-my $builder = Module::Build->new(
-    dynamic_config       => 0,
-
-    no_index    => { 'directory' => [ 'inc' ] },
-    name        => '<?= $config->{name} ?>',
-    dist_name   => '<?= $config->{name} ?>',
-    dist_version => '<?= $config->{version} ?>',
-    license     => '<?= $self->config->license || "unknown" ?>',
-    script_files => <?= Dumper($config->{script_files}) ?>,
-    configure_requires => <?= Dumper(+{ 'Module::Build' => 0.40, %{$prereq->{configure}->{requires} || {} } }) ?>,
-    requires => <?= Dumper(+{ %{$prereq->{runtime}->{requires} || {} } }) ?>,
-    build_requires => <?= Dumper(+{ %{$prereq->{build}->{requires} || {} } }) ?>,
-    test_files => 't/',
-
-    recursive_test_files => 1,
-
-    create_readme  => 1,
-);
-$builder->create_build_script();
-...
 }
 
 sub cmd {
