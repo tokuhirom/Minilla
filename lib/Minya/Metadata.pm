@@ -4,12 +4,25 @@ use warnings;
 use utf8;
 use Minya::Util qw(slurp);
 
+use Moo;
+
+has [qw(name version abstract perl_version author license)] => (
+    is => 'lazy',
+);
+
+has source => (
+    is => 'rw',
+    required => 1,
+);
+
+no Moo;
+
 # Taken from Module::Install::Metadata
-sub name {
-    my ($class, $file) = @_;
+sub _build_name {
+    my ($self) = @_;
 
     if (
-        slurp($file) =~ m/
+        slurp($self->source) =~ m/
         ^ \s*
         package \s*
         ([\w:]+)
@@ -20,19 +33,20 @@ sub name {
         $name =~ s{::}{-}g;
         return wantarray ? ($name, $module_name) : $name;
     } else {
-        die("Cannot determine name from $file\n");
+        die("Cannot determine name from @{[ $self->source ]}\n");
     }
 }
 
-sub abstract {
-    my ($class, $name, $file) = @_;
+sub _build_abstract {
+    my ($self) = @_;
     require ExtUtils::MM_Unix;
-    bless( { DISTNAME => $name }, 'ExtUtils::MM_Unix' )->parse_abstract($file);
+    bless( { DISTNAME => $self->name }, 'ExtUtils::MM_Unix' )->parse_abstract($self->source);
 }
 
-sub version {
-    my ($class, $file) = @_;
-    ExtUtils::MM_Unix->parse_version($file);
+sub _build_version {
+    my ($self) = @_;
+    require ExtUtils::MM_Unix;
+    ExtUtils::MM_Unix->parse_version($self->source);
 }
 
 
@@ -54,10 +68,10 @@ sub _extract_perl_version {
     }
 }
  
-sub perl_version {
-    my ($class, $file) = @_;
+sub _build_perl_version {
+    my ($self) = @_;
 
-    my $perl_version = _extract_perl_version(slurp($file));
+    my $perl_version = _extract_perl_version(slurp($self->source));
     if ($perl_version) {
         return $perl_version;
     } else {
@@ -65,11 +79,10 @@ sub perl_version {
     }
 }
 
+sub _build_author {
+    my ($self) = @_;
 
-sub author {
-    my ($self, $file) = @_;
-
-    my $content = slurp($file);
+    my $content = slurp($self->source);
     if ($content =~ m/
         =head \d \s+ (?:authors?)\b \s*
         ([^\n]*)
@@ -164,10 +177,10 @@ sub __extract_license {
     return '';
 }
 
-sub license {
-    my ($class, $file) = @_;
+sub _build_license {
+    my ($self) = @_;
 
-    if (my $license = _extract_license(slurp($file))) {
+    if (my $license = _extract_license(slurp($self->source))) {
         return $license;
     } else {
         warn "Cannot determine license info from $_[0]\n";

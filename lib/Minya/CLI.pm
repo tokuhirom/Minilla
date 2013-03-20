@@ -168,23 +168,26 @@ sub load_config {
     }
 
     # validation
-    $conf->{main_module} || $self->error("Missing main_module in minya.toml\n");
+    my $main_module = $conf->{main_module} || $self->error("Missing main_module in minya.toml\n");
 
     # fill from main_module
-    $conf->{name} ||= Minya::Metadata->name($conf->{main_module})
+    my $metadata = Minya::Metadata->new(
+        source => $main_module,
+    );
+    $conf->{name} ||= $metadata->name
         or $self->error("Missing name in main_module");
-    $conf->{abstract} ||= Minya::Metadata->abstract($conf->{name}, $conf->{main_module})
+    $conf->{abstract} ||= $metadata->abstract
         or $self->error("Missing abstract in main_module");
-    $conf->{version} ||= Minya::Metadata->version($conf->{main_module})
+    $conf->{version} ||= $metadata->version
         or $self->error("Missing version in main_module");
-    if (my $perl_version = Minya::Metadata->perl_version($conf->{main_module})) {
+    if (my $perl_version = $metadata->perl_version()) {
         $self->register_prereqs(runtime => 'requires' => perl => $perl_version);
     } else {
         $self->warnf("Cannot determine perl version info from $conf->{main_module}\n");
     }
-    $conf->{author} ||= Minya::Metadata->author($conf->{main_module})
+    $conf->{author} ||= $metadata->author
         or $self->error("Missing author in main_module");
-    $conf->{license} ||= Minya::Metadata->license($conf->{main_module})
+    $conf->{license} ||= $metadata->license
         or $self->error("Missing license in main_module");
 
     $self->infof("Name: %s\n", $conf->{name});
@@ -255,7 +258,7 @@ sub cmd_release {
     # perl-revision command is included in Perl::Version.
     $self->cmd('perl-reversion', '-bump');
 
-    my $version = Minya::Metadata->version($self->config->{main_module});
+    my $version = Minya::Metadata->new(source => $self->config->{main_module})->version;
 
     until (path('Changes')->slurp =~ /^$version/) {
         if (prompt("There is no $version, do you want to edit changes file?", 'y') =~ /y/i) {
