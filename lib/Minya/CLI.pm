@@ -44,7 +44,7 @@ has color => (
     },
 );
 
-has debug => (
+has [qw(debug verbose)] => (
     is => 'rw',
 );
 

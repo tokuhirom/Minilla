@@ -14,7 +14,7 @@ sub run {
     );
 
     my $tar = $self->build_dist($test);
-    $self->cmd('cpanm', $tar);
+    $self->cmd('cpanm', ($self->verbose ? '--verbose' : ()), $tar);
     path($tar)->remove unless $self->debug;
 }
 
