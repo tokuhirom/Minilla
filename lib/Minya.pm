@@ -2,7 +2,7 @@ package Minya;
 use strict;
 use warnings;
 use 5.008005;
-our $VERSION = '0.0.2';
+our $VERSION = '0.0.8';
 
 1;
 __END__

@@ -6,7 +6,7 @@ use autodie;
 
 use parent qw(Exporter);
 
-our @EXPORT = qw(randstr slurp);
+our @EXPORT = qw(randstr slurp edit_file);
 
 sub randstr {
     my $len = shift;
@@ -20,6 +20,13 @@ sub slurp {
     open my $fh, '<', $fname;
     do { local $/; <$fh> }
 }
+
+sub edit_file {
+    my ($file) = @_;
+    my $editor = $ENV{"EDITOR"} || "vi";
+    system( $editor, $file );
+}
+
 
 1;
 

@@ -254,6 +254,16 @@ sub cmd_release {
     # perl-revision command is included in Perl::Version.
     $self->cmd('perl-reversion', '-bump');
 
+    my $version = Minya::Metadata->version($self->config->{main_module});
+
+    until (path('Changes')->slurp =~ /^$version/) {
+        if (prompt("There is no $version, do you want to edit changes file?", 'y') =~ /y/i) {
+            edit_file('Changes');
+        } else {
+            $self->error("Giving up!");
+        }
+    }
+
     my $tar = $self->build_dist($test);
 
     $self->infof("Upload to CPAN\n");
