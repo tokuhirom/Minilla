@@ -12,6 +12,10 @@ has [qw(main_module name abstract version perl_version author license)] => (
     required => 1,
 );
 
+has script_files => (
+    is => 'ro',
+);
+
 has license_meta2 => (
     is => 'lazy',
 );
