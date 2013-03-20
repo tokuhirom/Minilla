@@ -19,3 +19,5 @@ README
 carton.lock
 /local/
 /.carton/
+/Acme-Mattn/
+/Minya-v*.tar.gz
