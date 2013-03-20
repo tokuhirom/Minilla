@@ -273,6 +273,10 @@ sub cmd_release {
         %$config
     });
     $uploader->upload_file($tar);
+
+    # TODO commit
+    # TODO tag
+    # TODO push tags
 }
 
 # Can I make dist directly without M::B?
