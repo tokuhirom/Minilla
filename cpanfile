@@ -16,9 +16,7 @@ recommends 'CPAN::Uploader';
 recommends 'Software::License';
 recommends 'CPAN::Meta::Check';
 
-# 0.09 is broken.
-# requires 'git://github.com/tokuhirom/toml.git';
-requires 'TOML';
+requires 'TOML' => 0.91;
 
 on 'configure' => sub {
     requires 'Module::Build' => '0.40';
