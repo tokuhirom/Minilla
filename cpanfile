@@ -2,7 +2,6 @@ requires 'perl' => '5.0120005';
 requires 'parent'                        => '0';
 requires 'Module::Build' => 0.40;
 requires 'JSON::PP';
-requires 'Class::Accessor::Lite' => 0.05;
 requires 'Module::Runtime';
 requires 'Archive::Tar';
 requires 'App::cpanminus';
