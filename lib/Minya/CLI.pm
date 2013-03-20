@@ -27,8 +27,10 @@ use Minya::Config;
 
 use Minya::CLI::New;
 use Minya::CLI::Help;
+use Minya::CLI::Dist;
 use Minya::CLI::Test;
 use Minya::CLI::Release;
+use Minya::CLI::Install;
 
 require Win32::Console::ANSI if $^O eq 'MSWin32';
 
@@ -92,10 +94,11 @@ sub run {
     push @commands, @ARGV;
  
     my $cmd = shift @commands || 'help';
-    my $call = $self->can("cmd_$cmd");
  
-    if ($call) {
+    ## no critic
+    if (eval sprintf("require Minya::CLI::%s; 1;", ucfirst($cmd))) {
         try {
+            my $call = sprintf("Minya::CLI::%s::run", ucfirst($cmd));
             $self->$call(@commands);
 
             unless ($self->debug) {
@@ -132,10 +135,6 @@ sub verify_dependencies {
     }
 }
 
-sub cmd_test {
-    shift->Minya::CLI::Test::run(@_);
-}
-
 sub render {
     my ($self, $tmpl, @args) = @_;
     my $mt = Text::MicroTemplate->new(
@@ -147,28 +146,6 @@ sub render {
     my $code = eval $src; ## no critic.
     $self->error("Cannot compile template: $@\n") if $@;
     $code->(@args);
-}
-
-# Make new dist
-sub cmd_new {
-    shift->Minya::CLI::New::run(@_);
-}
-
-# release to CPAN by CPAN::Uploader
-sub cmd_release {
-    shift->Minya::CLI::Release::run(@_);
-}
-
-sub cmd_dist {
-    my ($self, @args) = @_;
-
-    my $test = 1;
-    $self->parse_options(
-        \@args,
-        'test!' => \$test,
-    );
-
-    $self->build_dist($test);
 }
 
 sub build_dist {
@@ -245,14 +222,6 @@ sub generate_meta {
 
     my $meta = CPAN::Meta->new($dat);
     return $meta;
-}
-
-sub cmd_install {
-    my $self = shift;
-
-    my $tar = $self->build_dist();
-    $self->cmd('cpanm', $tar);
-    path($tar)->remove unless $self->debug;
 }
 
 sub setup_workdir {
@@ -378,11 +347,6 @@ sub find_file {
 
     my $cwd = Cwd::getcwd;
     $self->error("$file not found in $cwd.");
-}
-
-sub cmd_help {
-    my $self = shift;
-    Minya::CLI::Help->run(@_);
 }
 
 sub infof {
