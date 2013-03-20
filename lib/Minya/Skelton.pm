@@ -55,7 +55,7 @@ sub generate {
         license => 'perl_5',
         version => $self->version,
         name => $self->dist,
-        prereqs => Module::CPANfile->load('cpanfile')->prereq_specs,
+        prereqs => Module::CPANfile->load(catfile($self->dist, 'cpanfile'))->prereq_specs,
         generated_by => "Minya/$Minya::VERSION",
         release_status => 'unstable',
     };
