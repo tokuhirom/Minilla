@@ -7,20 +7,41 @@ use Archive::Tar;
 use File::pushd;
 use Data::Dumper; # serializer
 
+use Minya::FileGatherer;
+
 use Moo;
 
 has dir => (
     is => 'ro',
+    required => 1,
+);
+
+has c => (
+    is       => 'ro',
+    required => 1,
+);
+
+has files => (
+    is => 'lazy',
 );
 
 no Moo;
 
+sub _build_files {
+    my $self = shift;
+
+    my @files = Minya::FileGatherer->gather_files(
+        $self->c->base_dir
+    );
+    \@files;
+}
+
 sub make_tar_ball {
     my ($class, $c, $test) = @_;
 
-    my $work_dir = Minya::WorkDir->new(dir => $c->work_dir);
-    $work_dir->setup($c);
-    return $work_dir->build_tar_ball($c, $test);
+    my $work_dir = Minya::WorkDir->new(dir => $c->work_dir, c => $c);
+    $work_dir->setup();
+    return $work_dir->build_tar_ball($test);
 }
 
 sub as_string {
@@ -29,17 +50,15 @@ sub as_string {
 }
 
 sub setup {
-    my ($self, $c) = @_;
+    my ($self) = @_;
 
-    $c->infof("Creating working directory: %s\n", $self->dir);
-
-    my @files = $c->gather_files();
+    $self->c->infof("Creating working directory: %s\n", $self->dir);
 
     # copying
     path($self->dir)->mkpath;
-    for my $src (@files) {
+    for my $src (@{$self->files}) {
         next if -d $src;
-        my $dst = path($self->dir, path($src)->relative($c->base_dir));
+        my $dst = path($self->dir, path($src)->relative($self->c->base_dir));
         path($dst->dirname)->mkpath;
         path($src)->copy($dst);
     }
@@ -48,21 +67,23 @@ sub setup {
 }
 
 sub build_tar_ball {
-    my ($self, $c, $test) = @_;
+    my ($self, $test) = @_;
 
-    $c->verify_dependencies([qw(runtime)], $_) for qw(requires recommends);
+    my $c = $self->c;
+
+    $self->c->verify_dependencies([qw(runtime)], $_) for qw(requires recommends);
     if ($test) {
-        $c->verify_dependencies([qw(test)], $_) for qw(requires recommends);
+        $self->c->verify_dependencies([qw(test)], $_) for qw(requires recommends);
     }
 
     my $guard = pushd($self->dir);
 
-    $c->infof("Generating Build.PL\n");
-    path('Build.PL')->spew($self->generate_build_pl($c));
+    $self->c->infof("Generating Build.PL\n");
+    path('Build.PL')->spew($self->generate_build_pl());
 
     # Generate meta file
     {
-        my $meta = $c->generate_meta();
+        my $meta = $self->c->generate_meta();
         $meta->save('META.yml', {
             version => 1.4,
         });
@@ -71,28 +92,28 @@ sub build_tar_ball {
         });
     }
 
-    my @files = $c->gather_files();
+    my @files = @{$self->files};
     push @files, qw(Build.PL LICENSE META.json META.yml);
 
-    $c->infof("Writing MANIFEST file\n");
+    $self->c->infof("Writing MANIFEST file\n");
     {
         path('MANIFEST')->spew(join("\n", @files));
     }
 
     if ($test) {
         local $ENV{RELEASE_TESTING} = 1;
-        $c->cmd('prove', '-r', '-l', 't', (-d 'xt' ? 'xt' : ()));
+        $self->c->cmd('prove', '-r', '-l', 't', (-d 'xt' ? 'xt' : ()));
     }
 
     # Create tar ball
-    my $tarball = sprintf('%s-%s.tar.gz', $c->config->name, $c->config->version);
+    my $tarball = sprintf('%s-%s.tar.gz', $self->c->config->name, $self->c->config->version);
 
     my $tar = Archive::Tar->new;
     for (@files) {
-        $tar->add_data(path($c->config->{name} . '-' . $c->config->{version}, $_), path($_)->slurp);
+        $tar->add_data(path($self->c->config->{name} . '-' . $self->c->config->{version}, $_), path($_)->slurp);
     }
-    $tar->write(path($c->base_dir, $tarball), COMPRESS_GZIP);
-    $c->infof("Wrote %s\n", $tarball);
+    $tar->write(path($self->c->base_dir, $tarball), COMPRESS_GZIP);
+    $self->c->infof("Wrote %s\n", $tarball);
 
     return $tarball;
 }
@@ -128,15 +149,15 @@ all_pod_files_ok();
 }
 
 sub generate_build_pl {
-    my ($self, $c ) = @_;
+    my ($self, ) = @_;
 
     # TODO: Equivalent to M::I::GithubMeta is required?
     # TODO: ShareDir?
 
     local $Data::Dumper::Terse = 1;
 
-    my $config = $c->config;
-    my $prereq = $c->prereq_specs;
+    my $config = $self->c->config;
+    my $prereq = $self->c->prereq_specs;
     my $args = +{
             dynamic_config => 0,
 

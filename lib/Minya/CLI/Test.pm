@@ -4,6 +4,7 @@ use warnings;
 use utf8;
 use Module::CPANfile;
 use File::pushd;
+use Minya::WorkDir;
 
 sub run {
     my ($self, @args) = @_;
@@ -12,7 +13,7 @@ sub run {
         \@args,
     );
 
-    my $work_dir = Minya::WorkDir->new(dir => $self->work_dir);
+    my $work_dir = Minya::WorkDir->new(c => $self, dir => $self->work_dir);
     $work_dir->setup($self);
     $self->verify_dependencies([qw(develop test runtime)], $_) for qw(requires recommends);
 

@@ -15,7 +15,6 @@ use Minya;
 use Minya::Errors;
 use Minya::Util;
 use Minya::Config;
-use Minya::WorkDir;
 
 use Minya::CLI::New;
 use Minya::CLI::Help;
@@ -168,13 +167,6 @@ sub generate_meta {
 
     my $meta = CPAN::Meta->new($dat);
     return $meta;
-}
-
-sub gather_files {
-    my ($self) = @_;
-    my $root = $self->base_dir;
-    my $guard = pushd($root);
-    my @files = map { path($_)->relative($root) } split /\n/, `git ls-files`;
 }
 
 sub cmd {
