@@ -6,7 +6,7 @@ use autodie;
 
 use parent qw(Exporter);
 
-our @EXPORT_OK = qw(find_file module_name2path slurp_utf8 randstr slurp spew edit_file);
+our @EXPORT_OK = qw(find_dir find_file module_name2path slurp_utf8 randstr slurp spew edit_file);
 
 sub module_name2path {
     local $_ = shift;
@@ -53,6 +53,22 @@ sub find_file {
     while ( -d $dir ) {
         return undef if $seen{$dir}++;    # guard from deep recursion
         if ( -f "$dir/$file" ) {
+            return "$dir/$file";
+        }
+        $dir = dirname($dir);
+    }
+
+    return undef;
+}
+
+sub find_dir {
+    my ($file) = @_;
+
+    my $dir = Cwd::getcwd();
+    my %seen;
+    while ( -d $dir ) {
+        return undef if $seen{$dir}++;    # guard from deep recursion
+        if ( -d "$dir/$file" ) {
             return "$dir/$file";
         }
         $dir = dirname($dir);

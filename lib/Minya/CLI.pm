@@ -14,6 +14,7 @@ use Module::CPANfile;
 use Minya;
 use Minya::Errors;
 use Minya::Config;
+use Minya::Util qw(find_dir);
 
 use Minya::CLI::New;
 use Minya::CLI::Help;
@@ -59,8 +60,8 @@ no Moo;
 
 sub _build_base_dir {
     my $self = shift;
-    my $toml = $self->find_file('minya.toml')
-        or $self->error(sprintf("There is no minya.toml(%s)", Cwd::getcwd()));
+    my $toml = find_dir('.git')
+        or $self->error(sprintf("Current directory is not in git(%s)", Cwd::getcwd()));
     return File::Spec->rel2abs(path($toml)->dirname());
 }
 
@@ -114,23 +115,6 @@ sub cmd {
     $self->print("@_\n", INFO);
     system(@_) == 0
         or $self->error("Giving up.\n");
-}
-
-sub find_file {
-    my ($self, $file) = @_;
-
-    my $dir = Cwd::getcwd();
-    my %seen;
-    while ( -d $dir ) {
-        return undef if $seen{$dir}++;    # guard from deep recursion
-        if ( -f "$dir/$file" ) {
-            return "$dir/$file";
-        }
-        $dir = dirname($dir);
-    }
-
-    my $cwd = Cwd::getcwd;
-    $self->error("$file not found in $cwd.");
 }
 
 sub infof {

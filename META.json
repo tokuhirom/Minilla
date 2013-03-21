@@ -4,7 +4,7 @@
       "Tokuhiro Matsuno <tokuhirom AAJKLFJEF@ GMAIL COM>"
    ],
    "dynamic_config" : 0,
-   "generated_by" : "Minya/0.0.14, CPAN::Meta::Converter version 2.120921",
+   "generated_by" : "Minya/0.0.36, CPAN::Meta::Converter version 2.120921",
    "license" : [
       "perl_5"
    ],
@@ -56,5 +56,5 @@
          "url" : "git://github.com/tokuhirom/Minya.git"
       }
    },
-   "version" : "v0.0.14"
+   "version" : "v0.0.36"
 }

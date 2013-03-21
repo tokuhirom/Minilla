@@ -4,6 +4,7 @@ use warnings;
 use utf8;
 use TOML qw(from_toml);
 
+use File::Basename qw(basename);
 use Minya::Metadata;
 use Minya::Util qw(module_name2path slurp_utf8);
 
@@ -34,7 +35,12 @@ sub load {
     }
 
     # validation
-    my $module_name = $conf->{name} || $c->error("Missing name in minya.toml\n");
+    $conf->{name} ||= do {
+        local $_ = basename($c->base_dir);
+        $_ =~ s!\Ap5-!!;
+        $_;
+    };
+    my $module_name = $conf->{name};
 
     # fill from main_module
     my $metadata = Minya::Metadata->new(
