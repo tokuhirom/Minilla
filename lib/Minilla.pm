@@ -63,6 +63,12 @@ Is there a reason to remove ppport.h from repo?
 
 Your excecutables must be in F<script/>. It's L<Module::Build::Tiny>'s rule.
 
+=item Why minil only supports git?
+
+I think git is a best VC for CPAN modules, for now.
+
+If you want to use another version control system, you can use L<Moth>.
+
 =item HOW TO SWITCH FROM M::I/M::B?
 
 You can use experimental `minya migrate` command.
