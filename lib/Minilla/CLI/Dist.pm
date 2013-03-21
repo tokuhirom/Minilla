@@ -13,7 +13,8 @@ sub run {
         'test!' => \$test,
     );
 
-    Minilla::WorkDir->make_tar_ball($self, $test);
+    my $work_dir = Minilla::WorkDir->instance($self);
+    return $work_dir->dist();
 }
 
 1;

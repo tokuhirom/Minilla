@@ -14,7 +14,9 @@ sub run {
         'test!' => \$test,
     );
 
-    my $tar = Minilla::WorkDir->make_tar_ball($self, $test);
+    my $work_dir = Minilla::WorkDir->instance($self);
+    my $tar = $work_dir->dist();
+
     $self->cmd('cpanm', ($self->verbose ? '--verbose' : ()), $tar);
     path($tar)->remove unless $self->debug;
 }
