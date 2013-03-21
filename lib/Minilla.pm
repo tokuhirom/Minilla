@@ -19,6 +19,7 @@ Minilla - CPAN module authoring tool
     minil test    - Run test cases
     minil dist    - Make tar ball
     minil install - Install dist to your system
+    minil release - Release dist to CPAN
 
 =head1 DESCRIPTION
 
