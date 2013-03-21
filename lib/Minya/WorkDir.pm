@@ -70,7 +70,6 @@ sub make_tar_ball {
     my ($class, $c, $test) = @_;
 
     my $work_dir = Minya::WorkDir->new(base_dir => $c->base_dir, c => $c);
-    $work_dir->setup();
     return $work_dir->build_tar_ball($test);
 }
 
@@ -79,7 +78,7 @@ sub as_string {
     $self->dir;
 }
 
-sub setup {
+sub BUILD {
     my ($self) = @_;
 
     $self->c->infof("Creating working directory: %s\n", $self->dir);

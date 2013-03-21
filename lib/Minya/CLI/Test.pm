@@ -14,8 +14,10 @@ sub run {
         \@args,
     );
 
-    my $work_dir = Minya::WorkDir->new(c => $self, base_dir => $self->base_dir);
-    $work_dir->setup($self);
+    my $work_dir = Minya::WorkDir->new(
+        c        => $self,
+        base_dir => $self->base_dir
+    );
 
     my $verifier = Minya::PrereqVerifier->new(
         base_dir => $self->base_dir,
