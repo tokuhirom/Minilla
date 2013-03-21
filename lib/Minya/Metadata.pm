@@ -4,11 +4,17 @@ use warnings;
 use utf8;
 use Minya::Util qw(slurp);
 use Carp;
+use Module::Metadata;
 
 use Moo;
 
-has [qw(name version abstract perl_version author license)] => (
+has [qw(abstract perl_version author license)] => (
     is => 'lazy',
+);
+
+has metadata => (
+    is => 'lazy',
+    handles => [qw(name version)],
 );
 
 has source => (
@@ -22,38 +28,17 @@ has source => (
 
 no Moo;
 
-# Taken from Module::Install::Metadata
-sub _build_name {
-    my ($self) = @_;
-
-    if (
-        slurp($self->source) =~ m/
-        ^ \s*
-        package \s*
-        ([\w:]+)
-        \s* ;
-        /ixms
-    ) {
-        my ($name, $module_name) = ($1, $1);
-        $name =~ s{::}{-}g;
-        return wantarray ? ($name, $module_name) : $name;
-    } else {
-        die("Cannot determine name from @{[ $self->source ]}\n");
-    }
+sub _build_metadata {
+    my $self = shift;
+    Module::Metadata->new_from_file($self->source, collect_pod => 1);
 }
 
+# Taken from Module::Install::Metadata
 sub _build_abstract {
     my ($self) = @_;
     require ExtUtils::MM_Unix;
     bless( { DISTNAME => $self->name }, 'ExtUtils::MM_Unix' )->parse_abstract($self->source);
 }
-
-sub _build_version {
-    my ($self) = @_;
-    require ExtUtils::MM_Unix;
-    ExtUtils::MM_Unix->parse_version($self->source);
-}
-
 
 sub _extract_perl_version {
     if (
