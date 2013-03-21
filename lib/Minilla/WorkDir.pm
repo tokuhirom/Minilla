@@ -225,7 +225,6 @@ all_pod_files_ok();
 sub generate_build_pl {
     my ($self, ) = @_;
 
-    # TODO: Equivalent to M::I::GithubMeta is required?
     # TODO: ShareDir?
 
     local $Data::Dumper::Terse = 1;
