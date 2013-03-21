@@ -54,6 +54,9 @@ B<THIS IS A DEVELOPMENT RELEASE. API MAY CHANGE WITHOUT NOTICE>.
     perl -i -pe 's!^META.json\n$!!' .gitignore
     echo '.build/' >> .gitignore
 
+    # remove .shipit
+    if [ -f '.shipit' ]; then git rm .shipit; fi
+
     # add things
     git add .
 
