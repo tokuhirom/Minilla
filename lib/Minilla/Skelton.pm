@@ -137,7 +137,7 @@ my $builder = Module::Build->new(
     name        => '<% dist %>',
     module_name => '<% module %>',
 
-    script_files => [glob('bin/*')],
+    script_files => [glob('script/*')],
 
     test_files           => ((-d '.git' || $ENV{RELEASE_TESTING}) && -d 'xt') ? 't/ xt/' : 't/',
     recursive_test_files => 1,

@@ -6,7 +6,7 @@ use File::Spec;
 use File::Path;
 
 my $lib = File::Spec->rel2abs('lib');
-my $bin = File::Spec->rel2abs('bin/minil');
+my $bin = File::Spec->rel2abs('script/minil');
 
 rmtree('Acme-Foo');
 
