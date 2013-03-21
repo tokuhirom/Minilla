@@ -19,7 +19,7 @@ recommends 'CPAN::Meta::Check';
 requires 'TOML' => 0.91;
 
 on 'configure' => sub {
-    requires 'Module::Build' => '0.40';
+    requires 'Module::Build::Tiny';
 };
 
 on 'test' => sub {
