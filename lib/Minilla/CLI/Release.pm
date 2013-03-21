@@ -27,6 +27,7 @@ sub run {
     );
 
     my @steps = qw(
+        CheckUntrackedFiles
         BumpVersion
         CheckChangeLog
         DistTest
