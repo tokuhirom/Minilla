@@ -38,6 +38,7 @@ sub generate {
     $self->render('Changes');
     $self->render('minil.toml');
     $self->render('t/00_compile.t');
+    $self->render('.travis.yml');
 
     $self->write_file('.gitignore', get_data_section('.gitignore'));
     $self->write_file('LICENSE', Minilla::License->perl_5($self->author, $self->email));
@@ -185,6 +186,12 @@ Revision history for Perl extension <% dist %>
 0.0.1 <% date %>
 
     - original version
+
+@@ .travis.yml
+language: perl
+perl:
+  - 5.16
+  - 5.14
 
 @@ Module.pm
 package <% module %>;
