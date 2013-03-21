@@ -4,7 +4,7 @@
       "Tokuhiro Matsuno <tokuhirom AAJKLFJEF@ GMAIL COM>"
    ],
    "dynamic_config" : 0,
-   "generated_by" : "Minya/0.0.36, CPAN::Meta::Converter version 2.120921",
+   "generated_by" : "Minilla/0.0.36, CPAN::Meta::Converter version 2.120921",
    "license" : [
       "perl_5"
    ],
@@ -12,7 +12,7 @@
       "url" : "http://search.cpan.org/perldoc?CPAN::Meta::Spec",
       "version" : "2"
    },
-   "name" : "Minya",
+   "name" : "Minilla",
    "prereqs" : {
       "configure" : {
          "requires" : {
@@ -50,10 +50,10 @@
    },
    "release_status" : "unstable",
    "resources" : {
-      "homepage" : "git://github.com/tokuhirom/Minya/tree",
+      "homepage" : "git://github.com/tokuhirom/Minilla/tree",
       "repository" : {
          "type" : "git",
-         "url" : "git://github.com/tokuhirom/Minya.git"
+         "url" : "git://github.com/tokuhirom/Minilla.git"
       }
    },
    "version" : "v0.0.36"

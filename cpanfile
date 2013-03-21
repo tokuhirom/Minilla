@@ -9,7 +9,7 @@ requires 'Moo' => 1.001000;
 requires 'Data::Section::Simple';
 requires 'Module::Metadata';
 
-# Modules required by minya new/minya dist/minya release are optional.
+# Modules required by minil new/minil dist/minil release are optional.
 # It's good for contributors
 recommends 'Perl::Version';
 recommends 'Pod::Escapes';

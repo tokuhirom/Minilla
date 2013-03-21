@@ -6,7 +6,7 @@ use Test::AllModules;
 
 BEGIN {
     all_ok(
-        search_path => 'Minya',
+        search_path => 'Minilla',
         check       => sub {
             my $class = shift;
             my $ret = eval "use $class;1;";

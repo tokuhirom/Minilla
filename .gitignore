@@ -22,3 +22,6 @@ carton.lock
 /Acme-Mattn/
 /Minya-v*.tar.gz
 /Acme-Foo/
+/nytprof.out
+/nytprof/
+/_build_params

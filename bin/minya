@@ -1,7 +1,0 @@
-#!/usr/bin/env perl
-use strict;
-use warnings;
-use Minya::CLI;
-
-Minya::CLI->new()->run(@ARGV);
-
