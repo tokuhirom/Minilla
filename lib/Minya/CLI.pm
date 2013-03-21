@@ -114,7 +114,7 @@ sub run {
             my $call = sprintf("Minya::CLI::%s::run", ucfirst($cmd));
             $self->$call(@commands);
 
-            unless ($self->debug) {
+            if (!$self->debug && $self->{work_dir}) {
                 $self->work_dir_base->remove_tree({safe => 0});
             }
         } catch {
