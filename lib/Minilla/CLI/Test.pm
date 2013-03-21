@@ -31,4 +31,17 @@ sub run {
 }
 
 1;
+__END__
+
+=head1 NAME
+
+Minilla::CLI::Test - Run test casees
+
+=head1 SYNOPSIS
+
+    % minil test
+
+=head1 DESCRIPTION
+
+This subcommand run test cases.
 

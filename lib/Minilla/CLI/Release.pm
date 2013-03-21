@@ -43,4 +43,20 @@ sub run {
 }
 
 1;
+__END__
+
+=head1 NAME
+
+Minilla::CLI::Release - Release the module to CPAN!
+
+=head1 SYNOPSIS
+
+    % minil release
+
+        --no-test         Do not run test scripts
+        --no-bump         Do not bump up version
+
+=head1 DESCRIPTION
+
+This subcommand release the module to CPAN.
 

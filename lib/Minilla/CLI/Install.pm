@@ -20,4 +20,19 @@ sub run {
 }
 
 1;
+__END__
+
+=head1 NAME
+
+Minilla::CLI::Install - Install the dist to system
+
+=head1 SYNOPSIS
+
+    % minil install
+
+        --no-test Do not run test
+
+=head1 DESCRIPTION
+
+This subcommand install the dist for your system.
 

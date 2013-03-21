@@ -17,4 +17,17 @@ sub run {
 }
 
 1;
+__END__
+
+=head1 NAME
+
+Minilla::CLI::Dist - Make tar ball distribution
+
+=head1 SYNOPSIS
+
+    % minil dist
+
+=head1 DESCRIPTION
+
+This subcommand makes distribution tar ball.
 

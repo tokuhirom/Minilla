@@ -30,4 +30,17 @@ sub run {
 }
 
 1;
+__END__
+
+=head1 NAME
+
+Minilla::CLI::Meta - Regenerate META.json
+
+=head1 SYNOPSIS
+
+    % minil meta
+
+=head1 DESCRIPTION
+
+This module generate META.json file from the repository.
 

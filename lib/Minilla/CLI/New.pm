@@ -80,4 +80,21 @@ sub run {
 }
 
 1;
+__END__
+
+=head1 NAME
+
+Minilla::CLI::New - Generate new module skelton
+
+=head1 SYNOPSIS
+
+    # Create new app using Module::Build::Tiny(default)
+    % minil new MyApp
+
+    # Create new app using Module::Build
+    % minil new MyApp --mb
+
+=head1 DESCRIPTION
+
+This module creates module skelton to current directory.
 
