@@ -12,10 +12,12 @@ sub run {
 
     my $username;
     my $email;
+    my $mb = 0;
     $self->parse_options(
         \@args,
         username => \$username,
-        email => \$email,
+        email    => \$email,
+        mb       => \$mb, # use MB
     );
     my $module = shift @args or $self->error("Missing module name\n");
     $username ||= `git config user.name`;
@@ -52,6 +54,7 @@ sub run {
         module  => $module,
         version => $version,
         email   => $email,
+        mb      => $mb,
         c       => $self,
     );
     $skelton->generate();
@@ -61,12 +64,17 @@ sub run {
     {
         my $guard = pushd($dist);
         $self->cmd('git', 'init');
-        $self->cmd('git', 'add', '.');
-        $self->cmd('git', 'commit', '-m', 'initial import');
     }
 
     # generate metafile after initialize git repo
     $skelton->generate_metafile();
+
+    # and commit all things
+    {
+        my $guard = pushd($dist);
+        $self->cmd('git', 'add', '.');
+        $self->cmd('git', 'commit', '-m', 'initial import');
+    }
 
     $self->infof("Finished to create $module\n");
 }

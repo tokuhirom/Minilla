@@ -15,7 +15,7 @@ use Minilla::Util qw(spew);
 
 use Moo;
 
-has [qw(c dist author path module version email)] => (
+has [qw(mb c dist author path module version email)] => (
     is       => 'ro',
     required => 1,
 );
@@ -40,11 +40,16 @@ sub generate {
     $self->render('t/00_compile.t');
 
     $self->write_file('.gitignore', get_data_section('.gitignore'));
-    $self->write_file('cpanfile', get_data_section('cpanfile'));
     $self->write_file('LICENSE', Minilla::License->perl_5($self->author, $self->email));
 
     # Generate Build.PL and META.json for installable git repo.
-    $self->write_file('Build.PL', get_data_section('Build.PL'));
+    if ($self->mb) {
+        $self->write_file('cpanfile', get_data_section('cpanfile-MB'));
+        $self->render('Build-MB.PL', 'Build.PL');
+    } else {
+        $self->write_file('cpanfile', get_data_section('cpanfile-Tiny'));
+        $self->render('Build-Tiny.PL', 'Build.PL');
+    }
 }
 
 # Generate META.json
@@ -86,17 +91,70 @@ sub write_file {
 1;
 __DATA__
 
-@@ Build.PL
+@@ Build-Tiny.PL
 use Module::Build::Tiny;
 Build_PL();
 
-@@ cpanfile
+@@ cpanfile-Tiny
 on test => sub {
     requires 'Test::More' => 0.58;
 };
 
 on configure => sub {
     requires 'Module::Build::Tiny';
+};
+
+
+@@ Build-MB.PL
+use strict;
+use Module::Build;
+use Module::CPANfile;
+use File::Basename;
+use File::Spec;
+
+use 5.008005;
+
+my $cpanfile = Module::CPANfile->load('cpanfile');
+my $prereqs = $cpanfile->prereq_specs;
+
+my $builder = Module::Build->new(
+    license              => 'perl',
+    dynamic_config       => 0,
+
+    requires             => {
+        perl => '5.008005',
+        %{ $prereqs->{runtime}->{requires} || {} },
+    },
+    configure_requires => {
+        %{ $prereqs->{runtime}->{requires}  || {}},
+    },
+    build_requires => {
+        %{ $prereqs->{build}->{requires}  || {}},
+        %{ $prereqs->{test}->{requires}   || {}},
+    },
+
+    no_index    => { 'directory' => [ 'inc' ] },
+    name        => '<% dist %>',
+    module_name => '<% module %>',
+
+    script_files => [glob('bin/*')],
+
+    test_files           => ((-d '.git' || $ENV{RELEASE_TESTING}) && -d 'xt') ? 't/ xt/' : 't/',
+    recursive_test_files => 1,
+
+    create_readme  => 1,
+    create_license => 0,
+);
+$builder->create_build_script();
+
+@@ cpanfile-MB
+on test => sub {
+    requires 'Test::More' => 0.58;
+};
+
+on configure => sub {
+    requires 'Module::Build' => 0.40;
+    requires 'Module::CPANfile';
 };
 
 @@ .gitignore
