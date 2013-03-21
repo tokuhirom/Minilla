@@ -41,6 +41,8 @@ B<THIS IS A DEVELOPMENT RELEASE. API MAY CHANGE WITHOUT NOTICE>.
 
 =head1 HOW TO SWITCH FROM M::I/M::B?
 
+(I will add `minil migrate` but not implemented yet.)
+
     # Switch to M::B::Tiny for git instllable repo.
     echo 'use Module::Build::Tiny; Build_PL()' > Build.PL
 
@@ -75,9 +77,13 @@ If you want to pluggable thing, it's already exist dzil :P
 
 You can set 'homepage' key in your minil.toml file.
 
+=item Should I add (META.json|Build.PL) to repository?
+
+Yes. You need to add it for git installable repo.
+
 =item How do I manage ppport.h?
 
-Is there a reson to ignore ppport.h from repo?
+Is there a reason to remove ppport.h from repo?
 
 =back
 
