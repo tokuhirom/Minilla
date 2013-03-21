@@ -48,5 +48,11 @@
       }
    },
    "release_status" : "unstable",
+   "resources" : {
+      "repository" : {
+         "type" : "git",
+         "url" : "git://github.com/tokuhirom/Minya.git"
+      }
+   },
    "version" : "v0.0.14"
 }

@@ -32,6 +32,15 @@ sub generate {
         release_status => $release_status || 'stable',
     };
 
+    if ( `git remote show -n origin` =~ /URL: (.*)$/m ) {
+        # XXX Make it public clone URL, but this only works with github
+        my $git_url = $1;
+        $git_url =~ s![\w\-]+\@([^:]+):!git://$1/!;
+        $dat->{resources}->{repository} = +{
+            url => $git_url,
+        };
+    }
+
     # TODO: provides
 
     my $meta = CPAN::Meta->new($dat);
