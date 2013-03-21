@@ -128,9 +128,6 @@ sub build {
 
     my $guard = pushd($self->dir);
 
-    $self->c->infof("Generating Build.PL\n");
-    path('Build.PL')->spew($self->generate_build_pl());
-
     # Generate meta file
     {
         my $meta = Minilla::CPANMeta->new(
@@ -219,62 +216,6 @@ use Test::More;
 eval "use Test::Pod 1.41";
 plan skip_all => "Test::Pod 1.41 required for testing POD" if $@;
 all_pod_files_ok();
-...
-}
-
-sub generate_build_pl {
-    my ($self, ) = @_;
-
-    # TODO: ShareDir?
-
-    local $Data::Dumper::Terse = 1;
-
-    my $config = $self->c->config;
-    my $prereq = $self->prereq_specs;
-    my @bin = map { "$_" } grep { [splitdir(dirname("$_"))]->[0] eq 'bin' } @{$self->files};
-    $self->c->infof("Binaries: @bin\n") if @bin;
-
-    my $args = +{
-            dynamic_config => 0,
-
-            no_index           => { 'directory' => ['inc'] },
-            module_name        => $config->name,
-            dist_name          => $config->dist_name,
-            dist_version       => $config->version,
-            license            => $config->license,
-            script_files       => [
-                @bin,
-                @{ $config->script_files || [] },
-            ],
-            configure_requires => +{
-                'Module::Build' => 0.40,
-                %{ $prereq->{configure}->{requires} || {} }
-            },
-            requires => +{
-                perl => $config->perl_version,
-                %{ $prereq->{runtime}->{requires} || {} },
-            },
-            build_requires => +{
-                %{ $prereq->{test}->{requires} || {} }, ## When M::B support TEST_REQUIRES?
-                %{ $prereq->{build}->{requires} || {} },
-            },
-            test_files => 't/',
-
-            recursive_test_files => 1,
-
-            create_readme => 1,
-    };
-    $args->{share_dir} = $config->share_dir if $config->share_dir;
-    $args = Dumper($args);
-    return sprintf(<<'...', $config->perl_version, $args);
-use strict;
-use Module::Build;
-use %s;
-
-my $builder = Module::Build->new(%%{
-%s
-});
-$builder->create_build_script();
 ...
 }
 
