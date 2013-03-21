@@ -145,7 +145,6 @@ sub build {
     }
 
     my @files = @{$self->files};
-    push @files, qw(Build.PL LICENSE META.json META.yml);
 
     $self->c->infof("Writing MANIFEST file\n");
     {
@@ -181,7 +180,7 @@ sub dist {
         my $tarball = sprintf('%s-%s.tar.gz', $self->c->config->name, $self->c->config->version);
 
         my $tar = Archive::Tar->new;
-        for (@{$self->files}) {
+        for (@{$self->files}, qw(Build.PL LICENSE META.json META.yml MANIFEST)) {
             $tar->add_data(path($self->c->config->{name} . '-' . $self->c->config->{version}, $_), path($_)->slurp);
         }
         $tar->write(path($self->c->base_dir, $tarball), COMPRESS_GZIP);
