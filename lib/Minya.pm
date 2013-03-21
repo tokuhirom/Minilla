@@ -42,6 +42,16 @@ B<THIS IS A DEVELOPMENT RELEASE. API MAY CHANGE WITHOUT NOTICE>.
     'provides' section in meta
     # TODO: --trial
 
+=head1 FAQ
+
+=over 4
+
+=item Why don't you provide plugin support?
+
+If you want to pluggable thing, it's already exist dzil :P
+
+=back
+
 =head1 AUTHOR
 
 Tokuhiro Matsuno E<lt>tokuhirom AAJKLFJEF@ GMAIL COME<gt>
