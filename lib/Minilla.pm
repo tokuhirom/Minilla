@@ -40,6 +40,27 @@ B<THIS IS A DEVELOPMENT RELEASE. API MAY CHANGE WITHOUT NOTICE>.
     'provides' section in meta
     # TODO: --trial
 
+=head1 HOW TO SWITCH FROM M::I?
+
+    # Switch to M::B::Tiny for git instllable repo.
+    echo 'use Module::Build::Tiny; Build_PL()' > Build.PL
+
+    # MANIFEST, MANIFEST.SKIP is no longer needed.
+    git add MANIFEST MANIFEST.SKIP
+
+    # generate META.json
+    minil meta
+
+    # remove META.json from ignored file list
+    perl -i -pe 's!^META.json\n$!!' .gitignore
+    echo '.build/' >> .gitignore
+
+    # add things
+    git add .
+
+    # And commit to repo!
+    git commit -m 'minil!'
+
 =head1 FAQ
 
 =over 4
