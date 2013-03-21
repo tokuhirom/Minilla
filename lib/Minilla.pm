@@ -36,7 +36,6 @@ B<THIS IS A DEVELOPMENT RELEASE. API MAY CHANGE WITHOUT NOTICE>.
 
 =head1 TODO
 
-    'provides' section in meta
     # TODO: --trial
 
 =head1 HOW TO SWITCH FROM M::I/M::B?
