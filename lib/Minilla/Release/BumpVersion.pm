@@ -24,10 +24,12 @@ sub run {
         }
         $c->cmd('perl-reversion', @opts);
 
-        my $config = Minilla::Config->load($c, find_file('minil.toml'));
-        my $newver = $config->metadata->version;
-        if (exists_tagged_version($newver)) {
-            $c->error("Sorry, version '$newver' is already tagged.  Stopping.\n");
+        unless ($opts->{dry_run}) {
+            my $config = Minilla::Config->load($c, find_file('minil.toml'));
+            my $newver = $config->metadata->version;
+            if (exists_tagged_version($newver)) {
+                $c->error("Sorry, version '$newver' is already tagged.  Stopping.\n");
+            }
         }
     } else {
         $c->infof('Skipped bump up');
