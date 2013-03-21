@@ -16,7 +16,6 @@ Minilla - CPAN module authoring tool
 =head1 SYNOPSIS
 
     minil new     - Create new dist
-    minil setup   - Setup global config
     minil test    - Run test cases
     minil dist    - Make tar ball
     minil install - Install dist to your system
@@ -40,7 +39,7 @@ B<THIS IS A DEVELOPMENT RELEASE. API MAY CHANGE WITHOUT NOTICE>.
     'provides' section in meta
     # TODO: --trial
 
-=head1 HOW TO SWITCH FROM M::I?
+=head1 HOW TO SWITCH FROM M::I/M::B?
 
     # Switch to M::B::Tiny for git instllable repo.
     echo 'use Module::Build::Tiny; Build_PL()' > Build.PL
