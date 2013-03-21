@@ -18,7 +18,7 @@ sub run {
 
     my $guard = pushd($self->base_dir);
 
-    my $cpanfile = Module::CPANfile->load(catfile($self->base_dir, 'cpanfile'));
+    my $cpanfile = Module::CPANfile->load('cpanfile');
     my $meta = Minya::CPANMeta->new(
         config       => $self->config,
         prereq_specs => $cpanfile->prereq_specs,
