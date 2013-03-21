@@ -8,6 +8,7 @@ use File::Basename qw(dirname);
 use Time::Piece;
 use CPAN::Meta;
 use Data::Section::Simple qw(get_data_section);
+use File::pushd;
 
 use Minya::License;
 use Minya::Util qw(spew);
@@ -40,28 +41,22 @@ sub generate {
 
     $self->write_file('.gitignore', get_data_section('.gitignore'));
     $self->write_file('cpanfile', get_data_section('cpanfile'));
+    $self->write_file('LICENSE', Minya::License->perl_5($self->author, $self->email));
 
     # Generate Build.PL and META.json for installable git repo.
     $self->write_file('Build.PL', get_data_section('Build.PL'));
 
-    my $data = {
-        "meta-spec" => {
-            "version" => "2",
-            "url"     => "http://search.cpan.org/perldoc?CPAN::Meta::Spec"
-        },
-        abstract => "blah blah blah",
-        author => $self->author,
-        dynamic_config => 0,
-        license => 'perl_5',
-        version => $self->version,
-        name => $self->dist,
-        prereqs => Module::CPANfile->load(catfile($self->dist, 'cpanfile'))->prereq_specs,
-        generated_by => "Minya/$Minya::VERSION",
-        release_status => 'unstable',
-    };
-    CPAN::Meta->new($data)->save(catfile($self->dist, 'META.json'), {version => '2.0'});
-
-    $self->write_file('LICENSE', Minya::License->perl_5($self->author, $self->email));
+    # Generate META.json
+    {
+        my $guard = pushd($self->dist);
+        my $config = Minya::Config->load($self->c, catfile('minya.toml'));
+        my $prereq_specs = Module::CPANfile->load('cpanfile')->prereq_specs;
+        my $meta = Minya::CPANMeta->new(
+            config => $config,
+            prereq_specs => $prereq_specs
+        )->generate('unstable');
+        $meta->save('META.json', {version => 2.0});
+    }
 }
 
 sub render {
@@ -93,8 +88,6 @@ use Module::Build::Tiny;
 Build_PL();
 
 @@ cpanfile
-requires 'perl' => '5.008005';
-
 on test => sub {
     requires 'Test::More' => 0.58;
 };
@@ -134,6 +127,7 @@ Revision history for Perl extension <% dist %>
 package <% module %>;
 use strict;
 use warnings;
+use 5.008005;
 our $VERSION = '<% version %>';
 
 1;

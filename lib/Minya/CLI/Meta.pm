@@ -3,6 +3,7 @@ use strict;
 use warnings;
 use utf8;
 use Path::Tiny;
+use Minya::CPANMeta;
 
 sub run {
     my ($self, @args) = @_;
@@ -11,7 +12,10 @@ sub run {
         \@args,
     );
 
-    my $meta = $self->generate_meta();
+    my $meta = Minya::CPANMeta->new(
+        config       => $self->config,
+        prereq_specs => $self->prereq_specs,
+    )->generate('unstable');
     $meta->save('META.json', {
         version => '2.0'
     });

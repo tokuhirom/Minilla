@@ -7,6 +7,7 @@ use Archive::Tar;
 use File::pushd;
 use Data::Dumper; # serializer
 
+use Minya::CPANMeta;
 use Minya::FileGatherer;
 
 use Moo;
@@ -83,7 +84,10 @@ sub build_tar_ball {
 
     # Generate meta file
     {
-        my $meta = $self->c->generate_meta();
+        my $meta = Minya::CPANMeta->new(
+            config       => $self->c->config,
+            prereq_specs => $self->c->prereq_specs,
+        )->generate('stable');
         $meta->save('META.yml', {
             version => 1.4,
         });
