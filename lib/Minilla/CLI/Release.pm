@@ -15,12 +15,15 @@ sub run {
     my $opts = {
         test => 1,
         bump => 1,
+        trial => 0,
+        dry_run => 0,
     };
     $self->parse_options(
         \@args,
         'test!' => \$opts->{test},
         'bump!' => \$opts->{bump},
         'trial!' => \$opts->{trial},
+        'dry-run!' => \$opts->{dry_run},
     );
 
     my @steps = qw(
@@ -56,6 +59,8 @@ Minilla::CLI::Release - Release the module to CPAN!
 
         --no-test         Do not run test scripts
         --no-bump         Do not bump up version
+        --trial           Trial release
+        --dry-run         Dry run mode
 
 =head1 DESCRIPTION
 
