@@ -106,7 +106,8 @@ sub run {
             exit 1;
         }
     } else {
-        $self->error("Could not find command '$cmd'\n");
+        $self->print("Could not find command '$cmd'\n", ERROR);
+        exit 2;
     }
 }
 
