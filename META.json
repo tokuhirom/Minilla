@@ -29,6 +29,7 @@
          "requires" : {
             "App::cpanminus" : "0",
             "Archive::Tar" : "0",
+            "Data::Section::Simple" : "0",
             "File::pushd" : "0",
             "Module::CPANfile" : "0",
             "Moo" : "1.001",
@@ -40,11 +41,12 @@
       },
       "test" : {
          "requires" : {
+            "Test::AllModules" : "0",
             "Test::More" : "0.98",
             "Test::Requires" : "0"
          }
       }
    },
-   "release_status" : "stable",
+   "release_status" : "unstable",
    "version" : "v0.0.14"
 }
