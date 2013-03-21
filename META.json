@@ -49,6 +49,7 @@
    },
    "release_status" : "unstable",
    "resources" : {
+      "homepage" : "git://github.com/tokuhirom/Minya/tree",
       "repository" : {
          "type" : "git",
          "url" : "git://github.com/tokuhirom/Minya.git"

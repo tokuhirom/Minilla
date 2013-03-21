@@ -14,7 +14,8 @@ has [qw(name abstract version perl_version author license metadata)] => (
     required => 1,
 );
 
-has [qw(share_dir script_files)] => (
+# Optional things in minya.toml
+has [qw(share_dir script_files homepage)] => (
     is => 'ro',
 );
 

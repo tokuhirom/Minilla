@@ -15,6 +15,7 @@ sub run {
     my $meta = Minya::CPANMeta->new(
         config       => $self->config,
         prereq_specs => $self->prereq_specs,
+        base_dir     => $self->base_dir,
     )->generate('unstable');
     $meta->save('META.json', {
         version => '2.0'

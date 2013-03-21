@@ -3,10 +3,11 @@ use strict;
 use warnings;
 use utf8;
 use CPAN::Meta;
+use File::pushd;
 
 use Moo;
 
-has [qw(config prereq_specs)] => (
+has [qw(config prereq_specs base_dir)] => (
     is => 'ro',
     required => 1,
 );
@@ -32,13 +33,27 @@ sub generate {
         release_status => $release_status || 'stable',
     };
 
-    if ( `git remote show -n origin` =~ /URL: (.*)$/m ) {
-        # XXX Make it public clone URL, but this only works with github
-        my $git_url = $1;
-        $git_url =~ s![\w\-]+\@([^:]+):!git://$1/!;
-        $dat->{resources}->{repository} = +{
-            url => $git_url,
-        };
+    {
+        my $guard = pushd($self->base_dir);
+        if ( `git remote show -n origin` =~ /URL: (.*)$/m && $1 ne 'origin' ) {
+            # XXX Make it public clone URL, but this only works with github
+            my $git_url = $1;
+            $git_url =~ s![\w\-]+\@([^:]+):!git://$1/!;
+            if ($git_url =~ /github\.com/) {
+                my $http_url = $git_url;
+                $http_url =~ s![\w\-]+\@([^:]+):!https://$1/!;
+                $http_url =~ s!\.git$!/tree!;
+                $dat->{resources}->{repository} = +{
+                    url => $git_url,
+                };
+                $dat->{resources}->{homepage} = $self->config->homepage || $http_url;
+            } else {
+                # normal repository
+                $dat->{resources}->{repository} = +{
+                    url => $git_url,
+                };
+            }
+        }
     }
 
     # TODO: provides

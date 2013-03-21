@@ -45,7 +45,7 @@ sub run {
 
     my $author = $username;
 
-    Minya::Skelton->new(
+    my $skelton = Minya::Skelton->new(
         dist    => $dist,
         path    => $path,
         author  => $username,
@@ -53,8 +53,10 @@ sub run {
         version => $version,
         email   => $email,
         c       => $self,
-    )->generate();
+    );
+    $skelton->generate();
 
+    # init git repo
     $self->infof("Initializing psgi $module\n");
     {
         my $guard = pushd($dist);
@@ -62,6 +64,9 @@ sub run {
         $self->cmd('git', 'add', '.');
         $self->cmd('git', 'commit', '-m', 'initial import');
     }
+
+    # generate metafile after initialize git repo
+    $skelton->generate_metafile();
 
     $self->infof("Finished to create $module\n");
 }

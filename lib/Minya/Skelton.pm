@@ -45,18 +45,21 @@ sub generate {
 
     # Generate Build.PL and META.json for installable git repo.
     $self->write_file('Build.PL', get_data_section('Build.PL'));
+}
 
-    # Generate META.json
-    {
-        my $guard = pushd($self->dist);
-        my $config = Minya::Config->load($self->c, catfile('minya.toml'));
-        my $prereq_specs = Module::CPANfile->load('cpanfile')->prereq_specs;
-        my $meta = Minya::CPANMeta->new(
-            config => $config,
-            prereq_specs => $prereq_specs
-        )->generate('unstable');
-        $meta->save('META.json', {version => 2.0});
-    }
+# Generate META.json
+sub generate_metafile {
+    my $self = shift;
+
+    my $guard = pushd($self->dist);
+    my $config = Minya::Config->load($self->c, catfile('minya.toml'));
+    my $prereq_specs = Module::CPANfile->load('cpanfile')->prereq_specs;
+    my $meta = Minya::CPANMeta->new(
+        config => $config,
+        prereq_specs => $prereq_specs,
+        base_dir     => '.',
+    )->generate('unstable');
+    $meta->save('META.json', {version => 2.0});
 }
 
 sub render {

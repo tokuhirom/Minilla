@@ -37,8 +37,6 @@ B<THIS IS A DEVELOPMENT RELEASE. API MAY CHANGE WITHOUT NOTICE>.
 
 =head1 TODO
 
-    M::I::Repository
-    M::I::GithubMeta
     'provides' section in meta
     # TODO: --trial
 
@@ -49,6 +47,10 @@ B<THIS IS A DEVELOPMENT RELEASE. API MAY CHANGE WITHOUT NOTICE>.
 =item Why don't you provide plugin support?
 
 If you want to pluggable thing, it's already exist dzil :P
+
+=item How can I specify custom homepage in META?
+
+You can set 'homepage' key in your minya.toml file.
 
 =back
 
