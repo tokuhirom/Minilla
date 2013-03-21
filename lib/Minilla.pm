@@ -85,6 +85,10 @@ Yes. You need to add it for git installable repo.
 
 Is there a reason to remove ppport.h from repo?
 
+=item How can I install script files?
+
+Your excecutables must be in F<script/>. It's L<Module::Build::Tiny>'s rule.
+
 =back
 
 =head1 AUTHOR

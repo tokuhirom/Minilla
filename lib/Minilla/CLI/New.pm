@@ -98,3 +98,15 @@ Minilla::CLI::New - Generate new module skelton
 
 This module creates module skelton to current directory.
 
+=head1 OPTIONS
+
+=over 4
+
+=item --mb
+
+Generate skelton using L<Module::Build>
+(Default Build.PL uses L<Module::Build::Tiny>)
+
+It's useful for XS modules.
+
+=back
