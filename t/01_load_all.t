@@ -1,6 +1,7 @@
 use strict;
 use warnings;
 use utf8;
+use Test::More;
 use Test::AllModules;
 
 BEGIN {
@@ -8,7 +9,9 @@ BEGIN {
         search_path => 'Minya',
         check       => sub {
             my $class = shift;
-            eval "use $class;1;";
+            my $ret = eval "use $class;1;";
+            diag $@ if $@;
+            $ret;
         },
     );
 }
