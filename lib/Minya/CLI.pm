@@ -42,7 +42,7 @@ has color => (
     },
 );
 
-has [qw(debug verbose)] => (
+has [qw(debug verbose dry_run)] => (
     is => 'rw',
 );
 
@@ -83,6 +83,7 @@ sub run {
         "debug!"    => \$self->{debug},
         "verbose!"  => \$self->{verbose},
         "auto-install!"  => \$self->{auto_install},
+        "dry-run!"       => \$self->{dry_run},
     );
  
     push @commands, @ARGV;

@@ -7,6 +7,7 @@ eval q{
         'TestingAndDebugging::ProhibitNoStrict',
         'ControlStructures::ProhibitMutatingListFunctions',
         'InputOutput::ProhibitInteractiveTest',
+        'BuiltinFunctions::ProhibitStringyEval',
     ]
 };
 plan skip_all => "Test::Perl::Critic 1.02+ is not installed." if $@;

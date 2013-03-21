@@ -18,30 +18,27 @@ sub run {
         'test!' => \$test,
     );
 
-    # perl-revision command is included in Perl::Version.
-    $self->cmd('perl-reversion', '-bump');
-
-    my $version = $self->config->metadata->version;
-
-    until (path('Changes')->slurp =~ /^$version/m) {
-        if (prompt("There is no $version, do you want to edit changes file?", 'y') =~ /y/i) {
-            edit_file('Changes');
+    my @steps = qw(
+        BumpVersion
+        CheckChangeLog
+        DistTest
+        MakeDist
+        Commit
+        Tag
+        UploadToCPAN
+    );
+    for (@steps) {
+        my $klass = "Minya::Release::$_";
+        if (eval "require ${klass}; 1") {
+            my $meth = "${klass}::run";
+            $klass->run($self, @args);
         } else {
-            $self->error("Giving up!");
+            $self->error("Error while loading $_: $@");
         }
     }
 
-    my $tar = Minya::WorkDir->make_tar_ball($self, $test);
-
-    $self->infof("Upload to CPAN\n");
-    my $config = CPAN::Uploader->read_config_file();
-    my $uploader = CPAN::Uploader->new(+{
-        tar => $tar,
-        %$config
-    });
-    $uploader->upload_file($tar);
-
-    path($tar)->remove unless $self->debug;
+    my $work_dir = Minya::WorkDir->instance($self);
+    $work_dir->dist($self, $test);
 
     # TODO commit
     # TODO tag

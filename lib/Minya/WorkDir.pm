@@ -31,17 +31,38 @@ has files => (
     is => 'lazy',
 );
 
-has prereq_specs => (
+has [qw(prereq_specs verifier)] => (
     is => 'lazy',
 );
 
 no Moo;
+
+{
+    our $INSTANCE;
+    sub instance {
+        my ($class, $c) = @_;
+        $INSTANCE ||= Minya::WorkDir->new(
+            base_dir => $c->base_dir,
+            c => $c,
+        );
+    }
+}
 
 sub DEMOLISH {
     my $self = shift;
     unless ($self->c->debug) {
         path(path($self->dir)->dirname)->remove_tree({safe => 0});
     }
+}
+
+sub _build_verifier {
+    my $self = shift;
+
+    my $verifier = Minya::PrereqVerifier->new(
+        base_dir     => $self->base_dir,
+        c            => $self->c,
+        auto_install => $self->c->auto_install,
+    );
 }
 
 sub _build_dir {
@@ -69,8 +90,11 @@ sub _build_files {
 sub make_tar_ball {
     my ($class, $c, $test) = @_;
 
-    my $work_dir = Minya::WorkDir->new(base_dir => $c->base_dir, c => $c);
-    return $work_dir->build_tar_ball($test);
+    my $work_dir = Minya::WorkDir->new(
+        base_dir => $c->base_dir,
+        c        => $c,
+    );
+    return $work_dir->dist($test);
 }
 
 sub as_string {
@@ -95,20 +119,10 @@ sub BUILD {
     $self->write_release_tests();
 }
 
-sub build_tar_ball {
-    my ($self, $test) = @_;
+sub build {
+    my ($self) = @_;
 
-    my $c = $self->c;
-
-    my $verifier = Minya::PrereqVerifier->new(
-        base_dir     => $self->base_dir,
-        c            => $self->c,
-        auto_install => $self->c->auto_install,
-    );
-    $verifier->verify([qw(runtime)], $_) for qw(requires recommends);
-    if ($test) {
-        $verifier->verify([qw(test)], $_) for qw(requires recommends);
-    }
+    return if $self->{build}++;
 
     my $guard = pushd($self->dir);
 
@@ -137,23 +151,44 @@ sub build_tar_ball {
     {
         path('MANIFEST')->spew(join("\n", @files));
     }
+}
 
-    if ($test) {
+sub dist_test {
+    my $self = shift;
+
+    $self->build();
+
+    $self->verifier->verify([qw(runtime)], $_) for qw(requires recommends);
+    $self->verifier->verify([qw(test)], $_) for qw(requires recommends);
+
+    {
         local $ENV{RELEASE_TESTING} = 1;
         $self->c->cmd('prove', '-r', '-l', 't', (-d 'xt' ? 'xt' : ()));
     }
+}
 
-    # Create tar ball
-    my $tarball = sprintf('%s-%s.tar.gz', $self->c->config->name, $self->c->config->version);
+sub dist {
+    my ($self) = @_;
 
-    my $tar = Archive::Tar->new;
-    for (@files) {
-        $tar->add_data(path($self->c->config->{name} . '-' . $self->c->config->{version}, $_), path($_)->slurp);
-    }
-    $tar->write(path($self->c->base_dir, $tarball), COMPRESS_GZIP);
-    $self->c->infof("Wrote %s\n", $tarball);
+    $self->{tarball} ||= do {
+        my $c = $self->c;
 
-    return $tarball;
+        $self->build();
+
+        my $guard = pushd($self->dir);
+
+        # Create tar ball
+        my $tarball = sprintf('%s-%s.tar.gz', $self->c->config->name, $self->c->config->version);
+
+        my $tar = Archive::Tar->new;
+        for (@{$self->files}) {
+            $tar->add_data(path($self->c->config->{name} . '-' . $self->c->config->{version}, $_), path($_)->slurp);
+        }
+        $tar->write(path($self->c->base_dir, $tarball), COMPRESS_GZIP);
+        $self->c->infof("Wrote %s\n", $tarball);
+
+        $tarball;
+    };
 }
 
 sub write_release_tests {
