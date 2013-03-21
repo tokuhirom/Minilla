@@ -12,10 +12,14 @@ use Minilla::WorkDir;
 sub run {
     my ($self, @args) = @_;
 
-    my $test = 1;
+    my $opts = {
+        test => 1,
+        bump => 1,
+    };
     $self->parse_options(
         \@args,
-        'test!' => \$test,
+        'test!' => \$opts->{test},
+        'bump!' => \$opts->{bump},
     );
 
     my @steps = qw(
@@ -31,18 +35,11 @@ sub run {
         my $klass = "Minilla::Release::$_";
         if (eval "require ${klass}; 1") {
             my $meth = "${klass}::run";
-            $klass->run($self, @args);
+            $klass->run($self, $opts);
         } else {
             $self->error("Error while loading $_: $@");
         }
     }
-
-    my $work_dir = Minilla::WorkDir->instance($self);
-    $work_dir->dist($self, $test);
-
-    # TODO commit
-    # TODO tag
-    # TODO push tags
 }
 
 1;
