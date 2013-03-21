@@ -75,6 +75,10 @@ If you want to pluggable thing, it's already exist dzil :P
 
 You can set 'homepage' key in your minil.toml file.
 
+=item How do I manage ppport.h?
+
+Is there a reson to ignore ppport.h from repo?
+
 =back
 
 =head1 AUTHOR
