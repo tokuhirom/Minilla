@@ -71,14 +71,14 @@ If you want to use another version control system, you can use L<Moth>.
 
 =item HOW TO SWITCH FROM M::I/M::B?
 
-You can use experimental `minya migrate` command.
+You can use experimental `minil migrate` command.
 Please look L<Minilla::CLI::Migrate>.
 
 =back
 
 =head1 AUTHOR
 
-Tokuhiro Matsuno E<lt>tokuhirom AAJKLFJEF@ GMAIL COME<gt>
+Tokuhiro Matsuno E<lt>tokuhirom AAJKLFJEF@ gmail.comE<gt>
 
 =head1 SEE ALSO
 
