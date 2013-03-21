@@ -2,7 +2,10 @@ package Minya::CLI::New;
 use strict;
 use warnings;
 use utf8;
+use File::pushd;
+
 use Minya::Skelton;
+
 
 sub run {
     my ($self, @args) = @_;
@@ -37,7 +40,7 @@ sub run {
     ( my $dir = $dist ) =~ s/^App-//;
 
     if (-d $dist) {
-        $self->error("There is $dist.");
+        $self->error("There is $dist/\n");
     }
 
     my $author = $username;
@@ -51,6 +54,14 @@ sub run {
         email   => $email,
         c       => $self,
     )->generate();
+
+    $self->infof("Initializing psgi $module\n");
+    {
+        my $guard = pushd($dist);
+        $self->cmd('git', 'init');
+        $self->cmd('git', 'add', '.');
+        $self->cmd('git', 'commit', '-m', 'initial import');
+    }
 
     $self->infof("Finished to create $module\n");
 }
