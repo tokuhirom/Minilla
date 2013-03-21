@@ -2,7 +2,7 @@ package Minilla;
 use strict;
 use warnings;
 use 5.008005;
-our $VERSION = '0.0.37';
+our $VERSION = '0.0.39';
 
 1;
 __END__

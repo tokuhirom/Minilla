@@ -30,7 +30,7 @@ sub load {
     my ($class, $c, $path) = @_;
 
     my $conf;
-    if (-f $path) {
+    if (defined($path) && -f $path) {
         my $err;
         ($conf, $err) = from_toml(slurp_utf8($path));
         if ($err) {

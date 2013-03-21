@@ -3,6 +3,7 @@ use strict;
 use warnings;
 use utf8;
 use autodie;
+use File::Basename ();
 
 use parent qw(Exporter);
 
@@ -56,7 +57,7 @@ sub find_file {
         if ( -f "$dir/$file" ) {
             return "$dir/$file";
         }
-        $dir = dirname($dir);
+        $dir = File::Basename::dirname($dir);
     }
 
     return undef;
@@ -72,7 +73,7 @@ sub find_dir {
         if ( -d "$dir/$file" ) {
             return "$dir/$file";
         }
-        $dir = dirname($dir);
+        $dir = File::Basename::dirname($dir);
     }
 
     return undef;

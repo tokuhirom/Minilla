@@ -3,6 +3,7 @@ use strict;
 use warnings;
 use utf8;
 use ExtUtils::MakeMaker qw(prompt);
+use Minilla::Util qw(find_file);
 
 sub run {
     my ($self, $c, $opts) = @_;
@@ -22,10 +23,25 @@ sub run {
             push @opts, '-dryrun';
         }
         $c->cmd('perl-reversion', @opts);
+
+        my $config = Minilla::Config->load($c, find_file('minil.toml'));
+        my $newver = $config->metadata->version;
+        if (exists_tagged_version($newver)) {
+            $c->error("Sorry, version '$newver' is already tagged.  Stopping.\n");
+        }
     } else {
         $c->infof('Skipped bump up');
     }
 }
 
+sub exists_tagged_version {
+    my ( $ver ) = @_;
+
+    my $x       = `git tag -l $ver`;
+    chomp $x;
+    return !!$x;
+}
+
 1;
+
 

@@ -12,7 +12,8 @@ sub run {
     my $version = $c->config->metadata->version;
 
     until (path('Changes')->slurp =~ /^$version/m) {
-        if (prompt("There is no $version, do you want to edit changes file?", 'y') =~ /y/i) {
+        $c->infof("No mention of version '$version' in changelog file 'Changes'\n");
+        if (prompt("Edit file?", 'y') =~ /y/i) {
             edit_file('Changes');
         } else {
             $c->error("Giving up!");
