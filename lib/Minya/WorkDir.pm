@@ -87,6 +87,7 @@ sub build_tar_ball {
         my $meta = Minya::CPANMeta->new(
             config       => $self->c->config,
             prereq_specs => $self->c->prereq_specs,
+            base_dir     => '.',
         )->generate('stable');
         $meta->save('META.yml', {
             version => 1.4,
