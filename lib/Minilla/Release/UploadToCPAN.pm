@@ -13,6 +13,13 @@ sub run {
         $c->infof("Dry run\n");
     } else {
         $c->infof("Upload to CPAN\n");
+
+        my $orig_file = $tar;
+        $tar =~ s/\.(tar\.gz|tgz|tar.bz2|tbz|zip)$/-TRIAL.$1/
+          or die "Distfile doesn't match supported archive format: $orig_file";
+        $c->infof("renaming $orig_file -> $tar for TRIAL release\n");
+        rename $orig_file, $tar or $c->error("Renaming $orig_file -> $tar failed: $!\n");
+
         my $config = CPAN::Uploader->read_config_file();
         my $uploader = CPAN::Uploader->new(+{
             tar => $tar,

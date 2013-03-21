@@ -20,6 +20,7 @@ sub run {
         \@args,
         'test!' => \$opts->{test},
         'bump!' => \$opts->{bump},
+        'trial!' => \$opts->{trial},
     );
 
     my @steps = qw(
