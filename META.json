@@ -32,6 +32,7 @@
             "Data::Section::Simple" : "0",
             "File::pushd" : "0",
             "Module::CPANfile" : "0",
+            "Module::Metadata" : "0",
             "Moo" : "1.001",
             "Path::Tiny" : "0",
             "TOML" : "0.91",

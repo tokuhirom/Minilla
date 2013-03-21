@@ -4,6 +4,8 @@ use warnings;
 use utf8;
 use CPAN::Meta;
 use File::pushd;
+use Module::Metadata;
+use File::Spec;
 
 use Moo;
 
@@ -32,6 +34,12 @@ sub generate {
         generated_by   => "Minya/$Minya::VERSION",
         release_status => $release_status || 'stable',
     };
+    if ($release_status ne 'unstable') {
+        $dat->{provides} = Module::Metadata->provides(
+            dir     => File::Spec->catdir($self->base_dir, 'lib'),
+            version => 2
+        );
+    }
 
     {
         my $guard = pushd($self->base_dir);
