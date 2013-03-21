@@ -61,7 +61,7 @@ no Moo;
 sub _build_base_dir {
     my $self = shift;
     my $toml = $self->find_file('minya.toml')
-        or $self->error("There is no minya.toml");
+        or $self->error(sprintf("There is no minya.toml(%s)", Cwd::getcwd()));
     return path($toml)->dirname();
 }
 
