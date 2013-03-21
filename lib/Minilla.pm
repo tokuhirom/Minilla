@@ -39,32 +39,6 @@ B<THIS IS A DEVELOPMENT RELEASE. API MAY CHANGE WITHOUT NOTICE>.
 
     # TODO: --trial
 
-=head1 HOW TO SWITCH FROM M::I/M::B?
-
-(I will add `minil migrate` but not implemented yet.)
-
-    # Switch to M::B::Tiny for git instllable repo.
-    echo 'use Module::Build::Tiny; Build_PL()' > Build.PL
-
-    # MANIFEST, MANIFEST.SKIP is no longer needed.
-    git add MANIFEST MANIFEST.SKIP
-
-    # generate META.json
-    minil meta
-
-    # remove META.json from ignored file list
-    perl -i -pe 's!^META.json\n$!!' .gitignore
-    echo '.build/' >> .gitignore
-
-    # remove .shipit
-    if [ -f '.shipit' ]; then git rm .shipit; fi
-
-    # add things
-    git add .
-
-    # And commit to repo!
-    git commit -m 'minil!'
-
 =head1 FAQ
 
 =over 4
@@ -88,6 +62,11 @@ Is there a reason to remove ppport.h from repo?
 =item How can I install script files?
 
 Your excecutables must be in F<script/>. It's L<Module::Build::Tiny>'s rule.
+
+=item HOW TO SWITCH FROM M::I/M::B?
+
+You can use experimental `minya migrate` command.
+Please look L<Minilla::CLI::Migrate>.
 
 =back
 

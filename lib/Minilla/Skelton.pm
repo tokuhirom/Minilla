@@ -89,6 +89,14 @@ sub write_file {
     spew($path, $content);
 }
 
+sub render_build_mb_pl {
+    my ($self, $args) = @_;
+
+    my $content = get_data_section('Build-MB.PL');
+    $content =~ s!<%\s*([a-z_]+)\s*%>!$args->{$1}!ge;
+    return $content;
+}
+
 1;
 __DATA__
 
@@ -104,7 +112,6 @@ on test => sub {
 on configure => sub {
     requires 'Module::Build::Tiny';
 };
-
 
 @@ Build-MB.PL
 use strict;
