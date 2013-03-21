@@ -13,8 +13,11 @@ rmtree('Acme-Foo');
 is(minya('new', 'Acme::Foo'), 0);
 chdir('Acme-Foo');
 
+is(minya('meta'), 0);
 is(minya('test'), 0);
 is(minya('dist'), 0);
+
+rmtree('Acme-Foo');
 
 done_testing;
 

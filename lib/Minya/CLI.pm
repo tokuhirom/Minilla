@@ -13,7 +13,6 @@ use Module::CPANfile;
 
 use Minya;
 use Minya::Errors;
-use Minya::Util qw(randstr);
 use Minya::Config;
 
 use Minya::CLI::New;
@@ -52,7 +51,7 @@ has auto_install => (
     default => sub { 1 },
 );
 
-has [qw(base_dir config prereq_specs work_dir_base work_dir)] => (
+has [qw(base_dir config)] => (
     is => 'lazy',
 );
 
@@ -68,24 +67,6 @@ sub _build_base_dir {
 sub _build_config {
     my $self = shift;
     Minya::Config->load($self, path($self->base_dir, 'minya.toml'));
-}
-
-sub _build_prereq_specs {
-    my $self = shift;
-
-    my $cpanfile = Module::CPANfile->load(path($self->base_dir, 'cpanfile'));
-    return $cpanfile->prereq_specs;
-}
-
-sub _build_work_dir_base {
-    my $self = shift;
-    my $dirname = $^O eq 'MSWin32' ? '_build' : '.build';
-    path($self->base_dir(), $dirname);
-}
-
-sub _build_work_dir {
-    my $self = shift;
-    $self->work_dir_base->child(randstr(8));
 }
 
 sub run {
@@ -124,23 +105,6 @@ sub run {
         }
     } else {
         $self->error("Could not find command '$cmd'\n");
-    }
-}
-
-sub verify_dependencies {
-    my ($self, $phases, $type) = @_;
-
-    if (eval q{require CPAN::Meta::Check; 1;}) { ## no critic
-        my @err = CPAN::Meta::Check::verify_dependencies(CPAN::Meta::Prereqs->new($self->prereq_specs), $phases, $type);
-        for (@err) {
-            if (/Module '([^']+)' is not installed/ && $self->auto_install) {
-                my $module = $1;
-                $self->print("Installing $module\n");
-                $self->cmd('cpanm', $module)
-            } else {
-                $self->print("Warning: $_\n", ERROR);
-            }
-        }
     }
 }
 

@@ -7,14 +7,19 @@ use Archive::Tar;
 use File::pushd;
 use Data::Dumper; # serializer
 
+use Minya::Util qw(randstr);
 use Minya::CPANMeta;
 use Minya::FileGatherer;
 
 use Moo;
 
-has dir => (
+has base_dir => (
     is => 'ro',
     required => 1,
+);
+
+has dir => (
+    is => 'lazy',
 );
 
 has c => (
@@ -26,7 +31,31 @@ has files => (
     is => 'lazy',
 );
 
+has prereq_specs => (
+    is => 'lazy',
+);
+
 no Moo;
+
+sub DEMOLISH {
+    my $self = shift;
+    unless ($self->c->debug) {
+        path(path($self->dir)->dirname)->remove_tree({safe => 0});
+    }
+}
+
+sub _build_dir {
+    my $self = shift;
+    my $dirname = $^O eq 'MSWin32' ? '_build' : '.build';
+    path($self->base_dir(), $dirname, randstr(8));
+}
+
+sub _build_prereq_specs {
+    my $self = shift;
+
+    my $cpanfile = Module::CPANfile->load(path($self->base_dir, 'cpanfile'));
+    return $cpanfile->prereq_specs;
+}
 
 sub _build_files {
     my $self = shift;
@@ -40,7 +69,7 @@ sub _build_files {
 sub make_tar_ball {
     my ($class, $c, $test) = @_;
 
-    my $work_dir = Minya::WorkDir->new(dir => $c->work_dir, c => $c);
+    my $work_dir = Minya::WorkDir->new(base_dir => $c->base_dir, c => $c);
     $work_dir->setup();
     return $work_dir->build_tar_ball($test);
 }
@@ -72,9 +101,14 @@ sub build_tar_ball {
 
     my $c = $self->c;
 
-    $self->c->verify_dependencies([qw(runtime)], $_) for qw(requires recommends);
+    my $verifier = Minya::PrereqVerifier->new(
+        base_dir     => $self->base_dir,
+        c            => $self->c,
+        auto_install => $self->c->auto_install,
+    );
+    $verifier->verify([qw(runtime)], $_) for qw(requires recommends);
     if ($test) {
-        $self->c->verify_dependencies([qw(test)], $_) for qw(requires recommends);
+        $verifier->verify([qw(test)], $_) for qw(requires recommends);
     }
 
     my $guard = pushd($self->dir);
@@ -86,7 +120,7 @@ sub build_tar_ball {
     {
         my $meta = Minya::CPANMeta->new(
             config       => $self->c->config,
-            prereq_specs => $self->c->prereq_specs,
+            prereq_specs => $self->prereq_specs,
             base_dir     => '.',
         )->generate('stable');
         $meta->save('META.yml', {
@@ -162,7 +196,7 @@ sub generate_build_pl {
     local $Data::Dumper::Terse = 1;
 
     my $config = $self->c->config;
-    my $prereq = $self->c->prereq_specs;
+    my $prereq = $self->prereq_specs;
     my $args = +{
             dynamic_config => 0,
 
