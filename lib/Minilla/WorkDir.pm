@@ -6,6 +6,8 @@ use Path::Tiny;
 use Archive::Tar;
 use File::pushd;
 use Data::Dumper; # serializer
+use File::Spec::Functions qw(splitdir);
+use File::Basename qw(dirname);
 
 use Minilla::Util qw(randstr);
 use Minilla::CPANMeta;
@@ -230,6 +232,9 @@ sub generate_build_pl {
 
     my $config = $self->c->config;
     my $prereq = $self->prereq_specs;
+    my @bin = map { "$_" } grep { [splitdir(dirname("$_"))]->[0] eq 'bin' } @{$self->files};
+    $self->c->infof("Binaries: @bin\n") if @bin;
+
     my $args = +{
             dynamic_config => 0,
 
@@ -238,7 +243,10 @@ sub generate_build_pl {
             dist_name          => $config->dist_name,
             dist_version       => $config->version,
             license            => $config->license,
-            script_files       => $config->script_files,
+            script_files       => [
+                @bin,
+                @{ $config->script_files || [] },
+            ],
             configure_requires => +{
                 'Module::Build' => 0.40,
                 %{ $prereq->{configure}->{requires} || {} }

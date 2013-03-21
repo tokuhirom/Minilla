@@ -29,22 +29,41 @@ no Moo;
 sub load {
     my ($class, $c, $path) = @_;
 
-    my ($conf, $err) = from_toml(slurp_utf8($path));
-    if ($err) {
-        $c->error("TOML error in $path: $err");
+    my $conf;
+    if (-f $path) {
+        my $err;
+        ($conf, $err) = from_toml(slurp_utf8($path));
+        if ($err) {
+            $c->error("TOML error in $path: $err");
+        }
+
+        unless ($conf->{name}) {
+            $c->infof("Missing name in minil.toml. Detecting name from directory name.\n");
+            $conf->{name} ||= do {
+                local $_ = basename($c->base_dir);
+                $_ =~ s!\Ap5-!!;
+                $_;
+            };
+        }
+    } else {
+        $c->infof("There is no minil.toml. Detecting project name from directory name.\n");
+        $conf->{name} ||= do {
+            local $_ = basename($c->base_dir);
+            $_ =~ s!\Ap5-!!;
+            $_;
+        };
     }
 
-    # validation
-    $conf->{name} ||= do {
-        local $_ = basename($c->base_dir);
-        $_ =~ s!\Ap5-!!;
-        $_;
-    };
-    my $module_name = $conf->{name};
+    my $module_name = $conf->{name}
+        or $c->error("Cannot detect module name from minil.toml or directory name\n");
 
     # fill from main_module
+    my $source_path = module_name2path($module_name);
+    unless (-e $source_path) {
+        $c->error(sprintf("%s not found.\n", $source_path));
+    }
     my $metadata = Minilla::Metadata->new(
-        source => module_name2path($module_name),
+        source => $source_path,
     );
     $conf->{metadata} = $metadata;
     for my $key (qw(abstract version perl_version author license)) {

@@ -11,6 +11,7 @@ our @EXPORT_OK = qw(find_dir find_file module_name2path slurp_utf8 randstr slurp
 sub module_name2path {
     local $_ = shift;
     s!::!/!;
+    s!-!/!;
     "lib/$_.pm";
 }
 
