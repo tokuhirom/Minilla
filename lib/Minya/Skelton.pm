@@ -105,6 +105,8 @@ on configure => sub {
 /carton.lock
 /.carton/
 /local/
+/nytprof.out
+/nytprof/
 
 @@ t/00_compile.t
 use strict;
