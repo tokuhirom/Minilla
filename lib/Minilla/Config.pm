@@ -58,7 +58,7 @@ sub load {
         or $c->error("Cannot detect module name from minil.toml or directory name\n");
 
     # fill from main_module
-    my $source_path = module_name2path($module_name);
+    my $source_path = $class->detect_source_path($module_name);
     unless (-e $source_path) {
         $c->error(sprintf("%s not found.\n", $source_path));
     }
@@ -96,6 +96,26 @@ sub _build_dist_name {
     my $dist_name = $self->name;
     $dist_name =~ s!::!-!g;
     $dist_name;
+}
+
+sub _module_name2path {
+    local $_ = shift;
+    s!::!/!;
+    s!-!/!;
+    "lib/$_.pm";
+}
+
+use File::Glob qw(:bsd_glob);
+sub detect_source_path {
+    my ($self, $module_name) = @_;
+    my $path = _module_name2path($module_name);
+    return $path if -f $path;
+
+    # search modules in case sensitive rule.
+    $path = bsd_glob($path, GLOB_NOCASE);
+    return $path if -f $path;
+
+    return undef;
 }
 
 1;

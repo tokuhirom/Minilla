@@ -7,14 +7,8 @@ use File::Basename ();
 
 use parent qw(Exporter);
 
-our @EXPORT_OK = qw(find_dir find_file module_name2path slurp_utf8 randstr slurp spew edit_file);
+our @EXPORT_OK = qw(find_dir find_file slurp_utf8 randstr slurp spew edit_file);
 
-sub module_name2path {
-    local $_ = shift;
-    s!::!/!;
-    s!-!/!;
-    "lib/$_.pm";
-}
 
 sub randstr {
     my $len = shift;
