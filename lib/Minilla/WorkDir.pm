@@ -114,10 +114,7 @@ sub build {
 
     # Generate meta file
     {
-        my $meta = Minilla::Project->new(
-            c   => $self->c,
-            dir => '.',
-        )->cpan_meta('stable');
+        my $meta = $self->project->cpan_meta('stable');
         $meta->save('META.yml', {
             version => 1.4,
         });
