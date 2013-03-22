@@ -26,13 +26,15 @@ sub run {
 
     # M::B::Tiny protocol
     if (-d 'bin' && !-e 'script') {
-        path('bin')->move('script');
+        $self->cmd('git mv bin script');
     }
     # TODO move top level *.pm to lib/?
 
     _remove_unused_files($self);
     _migrate_gitignore($self);
     _migrate_meta_json($self);
+
+    $self->cmd('git add META.json');
 }
 
 sub _generate_license {
@@ -51,6 +53,7 @@ sub _migrate_cpanfile {
             $self->infof("M::B::Tiny was detected. I hope META.json is already exists here\n");
         } else {
             $self->cmd($^X, 'Build.PL');
+            $self->cmd($^X, 'Build', 'build');
             $self->cmd($^X, 'Build', 'distmeta');
         }
     } elsif (-f 'Makefile.PL') {
