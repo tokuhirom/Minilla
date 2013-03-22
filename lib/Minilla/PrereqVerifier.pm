@@ -35,7 +35,7 @@ sub verify {
             if (/Module '([^']+)' is not installed/ && $self->auto_install) {
                 my $module = $1;
                 $self->c->print("Installing $module\n");
-                $self->cmd('cpanm', $module)
+                $self->c->cmd('cpanm', $module)
             } else {
                 $self->c->print("Warning: $_\n", ERROR);
             }
