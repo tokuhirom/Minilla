@@ -82,8 +82,6 @@ sub migrate_cpanfile {
             $self->c->infof("M::B::Tiny was detected. I hope META.json is already exists here\n");
         } else {
             $self->c->cmd($^X, 'Build.PL');
-            $self->c->cmd($^X, 'Build', 'build');
-            $self->c->cmd($^X, 'Build', 'distmeta');
         }
     } elsif (-f 'Makefile.PL') {
         $self->c->cmd($^X, 'Makefile.PL');
@@ -92,11 +90,11 @@ sub migrate_cpanfile {
         $self->c->error("There is no Build.PL/Makefile.PL");
     }
 
-    unless (-f 'META.json') {
-        $self->c->error("Cannot generate META.json\n");
+    unless (-f 'MYMETA.json') {
+        $self->c->error("Build.PL/Makefile.PL does not generates MYMETA.json\n");
     }
 
-    my $meta = CPAN::Meta->load_file('META.json');
+    my $meta = CPAN::Meta->load_file('MYMETA.json');
     my $prereqs = $meta->effective_prereqs->as_string_hash;
 
     if ($self->use_mb_tiny) {
