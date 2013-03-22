@@ -77,38 +77,64 @@ sub run {
     }
 
     # remove some unusable files
-    for my $file (qw(Makfile.PL MANIFEST MANIFEST.SKIP .shipit)) {
+    for my $file (qw(
+        Makefile.PL
+        MANIFEST
+        MANIFEST.SKIP
+        .shipit
+        xt/97_podspell.t
+        xt/99_pod.t
+    )) {
         if (-f $file) {
-            $self->cmd("git rm -f $file");
+            $self->cmd("git rm $file");
         }
     }
 
-    # generate metafile
-    {
-        my $cpanfile = Module::CPANfile->load('cpanfile');
-        Minilla::CPANMeta->new(
-            config => $self->config,
-            prereq_specs => $cpanfile->prereq_specs,
-            base_dir => $self->base_dir,
-        )->generate('unstable')->save(
-            'META.json' => {
-                version => 2.0
-            }
-        );
+    _migrate_gitignore($self);
+    _migrate_meta_json($self);
+}
+
+sub _migrate_meta_json {
+    my $self = shift;
+
+    my $cpanfile = Module::CPANfile->load('cpanfile');
+    Minilla::CPANMeta->new(
+        config       => $self->config,
+        prereq_specs => $cpanfile->prereq_specs,
+        base_dir     => $self->base_dir,
+    )->generate('unstable')->save(
+        'META.json' => {
+            version => 2.0
+        }
+    );
+}
+
+sub _migrate_gitignore {
+    my $self = shift;
+
+    my @lines;
+    
+    if (-f '.gitignore') {
+        @lines = path('.gitignore')->lines({chomp => 1});
     }
 
-    # update gitignore file
-    {
-        my @lines = path('.gitignore')->lines({chomp => 1});
-        # remove META.json from ignored file list
-           @lines = grep !/^META\.json$/, @lines;
-        for my $fname (qw/.build _build_params/) {
-            unless (grep /\A$fname\z/, @lines) {
-                push @lines, $fname;
-            }
+    # remove META.json from ignored file list
+        @lines = grep !/^META\.json$/, @lines;
+
+    # Add some lines
+    for my $fname (qw(
+        .build
+        _build_params
+        /Build
+        !Build/
+        !META.json
+    )) {
+        unless (grep /\A$fname\z/, @lines) {
+            push @lines, $fname;
         }
-        path('.gitignore')->spew(join('', map { "$_\n" } @lines));
     }
+
+    path('.gitignore')->spew(join('', map { "$_\n" } @lines));
 }
 
 1;
