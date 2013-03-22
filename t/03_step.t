@@ -16,6 +16,7 @@ ok(-f 'Acme-Foo/Build.PL');
 ok(-f 'Acme-Foo/.travis.yml');
 {
     my $guard = pushd('Acme-Foo');
+    is(minil('migrate'), 0);
     is(minil('meta'), 0);
     is(minil('test'), 0);
     is(minil('dist'), 0);

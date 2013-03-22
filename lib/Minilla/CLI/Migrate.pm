@@ -21,11 +21,20 @@ sub run {
         _migrate_cpanfile($self, $tiny);
     }
 
+    _generate_license($self);
     _generate_build_pl($self, $tiny);
 
     _remove_unused_files($self);
     _migrate_gitignore($self);
     _migrate_meta_json($self);
+}
+
+sub _generate_license {
+    my $self = shift;
+
+    unless (-f 'LICENSE') {
+        path('LICENSE')->spew($self->config->metadata->license->fulltext());
+    }
 }
 
 sub _migrate_cpanfile {
