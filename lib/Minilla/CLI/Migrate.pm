@@ -24,6 +24,12 @@ sub run {
     _generate_license($self);
     _generate_build_pl($self, $tiny);
 
+    # M::B::Tiny protocol
+    if (-d 'bin') {
+        path('bin')->rename('script');
+    }
+    # TODO move top level *.pm to lib/?
+
     _remove_unused_files($self);
     _migrate_gitignore($self);
     _migrate_meta_json($self);
