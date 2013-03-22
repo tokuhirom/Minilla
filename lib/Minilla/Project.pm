@@ -22,7 +22,9 @@ has c => (
 );
 
 has dir => (
-    is => 'lazy',
+    is => 'rw',
+    builder => 1,
+    trigger => 1,
     required => 1,
 );
 
@@ -49,6 +51,13 @@ sub _build_dir {
     return $base_dir;
 }
 
+sub _trigger_dir {
+    my ($self, $dir) = @_;
+    unless (File::Spec->file_name_is_absolute($dir)) {
+        $self->dir(File::Spec->rel2abs($dir));
+    }
+}
+
 sub config {
     my $self = shift;
 
@@ -73,7 +82,8 @@ sub _build_metadata {
     my $name;
     if (my $conf = $self->config) {
         $name = $conf->{name};
-    } else {
+    }
+    unless (defined $name) {
         $c->infof("There is no minil.toml. Detecting project name from directory name.\n");
         $name = do {
             local $_ = basename($self->dir);
@@ -81,8 +91,11 @@ sub _build_metadata {
             $_;
         };
     }
+    if ($name eq '.') { Carp::confess("Heh? " . $self->dir); }
 
-    $name || $c->error("Cannot detect distribution name from minil.toml or directory name\n");
+    unless ($name) {
+        $c->errorf("Cannot detect distribution name from minil.toml or directory name(cwd: %s, dir:%s)\n", Cwd::getcwd(), $self->dir);
+    }
 
     # fill from main_module
     my $source_path = $self->detect_source_path($name);
