@@ -105,12 +105,29 @@ use Module::Build::Tiny;
 Build_PL();
 
 @@ cpanfile-Tiny
+requires 'parent';
+
 on test => sub {
     requires 'Test::More' => 0.58;
 };
 
 on configure => sub {
     requires 'Module::Build::Tiny';
+};
+
+on 'develop' => sub {
+    # xt/minimum_bersion.t
+    requires 'Test::MinimumVersion' => '0.101080';
+
+    # xt/cpan_meta.t
+    requires 'Test::CPAN::Meta';
+
+    # xt/pod.t
+    requires 'Test::Pod' => 1.41;
+
+    # xt/spelling.t
+    requires 'Test::Spelling';
+    requires 'Pod::Wordlist::hanekomu';
 };
 
 @@ Build-MB.PL
@@ -156,13 +173,30 @@ my $builder = Module::Build->new(
 $builder->create_build_script();
 
 @@ cpanfile-MB
+requires 'parent';
+
 on test => sub {
-    requires 'Test::More' => 0.58;
+    requires 'Test::More' => 0.98;
 };
 
 on configure => sub {
     requires 'Module::Build' => 0.40;
     requires 'Module::CPANfile';
+};
+
+on 'develop' => sub {
+    # xt/minimum_bersion.t
+    requires 'Test::MinimumVersion' => '0.101080';
+
+    # xt/cpan_meta.t
+    requires 'Test::CPAN::Meta';
+
+    # xt/pod.t
+    requires 'Test::Pod' => 1.41;
+
+    # xt/spelling.t
+    requires 'Test::Spelling';
+    requires 'Pod::Wordlist::hanekomu';
 };
 
 @@ .gitignore
