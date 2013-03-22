@@ -4,10 +4,8 @@
       "Tokuhiro Matsuno <tokuhirom AAJKLFJEF@ gmail.com>"
    ],
    "dynamic_config" : 0,
-   "generated_by" : "Minilla/0.0.44, CPAN::Meta::Converter version 2.120921",
-   "license" : [
-      "perl_5"
-   ],
+   "generated_by" : "Minilla/0.0.44",
+   "license" : "perl_5",
    "meta-spec" : {
       "url" : "http://search.cpan.org/perldoc?CPAN::Meta::Spec",
       "version" : "2"
@@ -16,38 +14,39 @@
    "prereqs" : {
       "configure" : {
          "requires" : {
-            "Module::Build::Tiny" : "0"
+            "Module::Build::Tiny" : 0
          }
       },
       "runtime" : {
          "recommends" : {
-            "CPAN::Meta::Check" : "0",
-            "CPAN::Uploader" : "0",
-            "Perl::Version" : "0",
-            "Pod::Escapes" : "0",
-            "Pod::Wordlist::hanekomu" : "0",
-            "Test::Pod" : "0",
-            "Test::Spelling" : "0"
+            "CPAN::Meta::Check" : 0,
+            "CPAN::Uploader" : 0,
+            "Perl::Version" : 0,
+            "Pod::Escapes" : 0,
+            "Pod::Wordlist::hanekomu" : 0,
+            "Software::License" : 0,
+            "Test::Pod" : 0,
+            "Test::Spelling" : 0
          },
          "requires" : {
-            "App::cpanminus" : "0",
-            "Archive::Tar" : "0",
-            "Data::Section::Simple" : "0",
-            "File::pushd" : "0",
-            "Module::CPANfile" : "0",
-            "Module::Metadata" : "0",
-            "Moo" : "1.001",
-            "Path::Tiny" : "0",
-            "TOML" : "0.91",
-            "parent" : "0",
+            "App::cpanminus" : 0,
+            "Archive::Tar" : 0,
+            "Data::Section::Simple" : 0,
+            "File::pushd" : 0,
+            "Module::CPANfile" : 0,
+            "Module::Metadata" : 0,
+            "Moo" : 1.001,
+            "Path::Tiny" : 0,
+            "TOML" : 0.91,
+            "parent" : 0,
             "perl" : "5.0120005"
          }
       },
       "test" : {
          "requires" : {
-            "Test::AllModules" : "0",
+            "Test::AllModules" : 0,
             "Test::More" : "0.98",
-            "Test::Requires" : "0"
+            "Test::Requires" : 0
          }
       }
    },
@@ -55,7 +54,6 @@
    "resources" : {
       "homepage" : "git://github.com/tokuhirom/Minilla/tree",
       "repository" : {
-         "type" : "git",
          "url" : "git://github.com/tokuhirom/Minilla.git"
       }
    },
