@@ -4,7 +4,7 @@ use warnings;
 use utf8;
 use File::pushd;
 
-use Minilla::Skelton;
+use Minilla::Skeleton;
 
 
 sub run {
@@ -12,10 +12,12 @@ sub run {
 
     my $username;
     my $email;
+    my $mb = 0;
     $self->parse_options(
         \@args,
         username => \$username,
-        email => \$email,
+        email    => \$email,
+        mb       => \$mb, # use MB
     );
     my $module = shift @args or $self->error("Missing module name\n");
     $username ||= `git config user.name`;
@@ -45,13 +47,14 @@ sub run {
 
     my $author = $username;
 
-    my $skelton = Minilla::Skelton->new(
+    my $skelton = Minilla::Skeleton->new(
         dist    => $dist,
         path    => $path,
         author  => $username,
         module  => $module,
         version => $version,
         email   => $email,
+        mb      => $mb,
         c       => $self,
     );
     $skelton->generate();
@@ -61,15 +64,49 @@ sub run {
     {
         my $guard = pushd($dist);
         $self->cmd('git', 'init');
-        $self->cmd('git', 'add', '.');
-        $self->cmd('git', 'commit', '-m', 'initial import');
     }
 
     # generate metafile after initialize git repo
     $skelton->generate_metafile();
 
+    # and commit all things
+    {
+        my $guard = pushd($dist);
+        $self->cmd('git', 'add', '.');
+        $self->cmd('git', 'commit', '-m', 'initial import');
+    }
+
     $self->infof("Finished to create $module\n");
 }
 
 1;
+__END__
 
+=head1 NAME
+
+Minilla::CLI::New - Generate new module skeleton
+
+=head1 SYNOPSIS
+
+    # Create new app using Module::Build::Tiny(default)
+    % minil new MyApp
+
+    # Create new app using Module::Build
+    % minil new MyApp --mb
+
+=head1 DESCRIPTION
+
+This module creates module skeleton to current directory.
+
+=head1 OPTIONS
+
+=over 4
+
+=item C<--mb>
+
+Generate skeleton using L<Module::Build>
+(Default Build.PL uses L<Module::Build::Tiny>)
+
+It's useful for XS modules.
+
+=back

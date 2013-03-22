@@ -3,17 +3,12 @@ use strict;
 use warnings;
 use utf8;
 use autodie;
+use File::Basename ();
 
 use parent qw(Exporter);
 
-our @EXPORT_OK = qw(find_dir find_file module_name2path slurp_utf8 randstr slurp spew edit_file);
+our @EXPORT_OK = qw(find_dir find_file slurp_utf8 randstr slurp spew edit_file);
 
-sub module_name2path {
-    local $_ = shift;
-    s!::!/!;
-    s!-!/!;
-    "lib/$_.pm";
-}
 
 sub randstr {
     my $len = shift;
@@ -56,7 +51,7 @@ sub find_file {
         if ( -f "$dir/$file" ) {
             return "$dir/$file";
         }
-        $dir = dirname($dir);
+        $dir = File::Basename::dirname($dir);
     }
 
     return undef;
@@ -72,7 +67,7 @@ sub find_dir {
         if ( -d "$dir/$file" ) {
             return "$dir/$file";
         }
-        $dir = dirname($dir);
+        $dir = File::Basename::dirname($dir);
     }
 
     return undef;

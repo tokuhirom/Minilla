@@ -8,6 +8,7 @@ use File::pushd;
 use Data::Dumper; # serializer
 use File::Spec::Functions qw(splitdir);
 use File::Basename qw(dirname);
+use Data::Section::Simple qw(get_data_section);
 
 use Minilla::Util qw(randstr);
 use Minilla::CPANMeta;
@@ -89,16 +90,6 @@ sub _build_files {
     \@files;
 }
 
-sub make_tar_ball {
-    my ($class, $c, $test) = @_;
-
-    my $work_dir = Minilla::WorkDir->new(
-        base_dir => $c->base_dir,
-        c        => $c,
-    );
-    return $work_dir->dist($test);
-}
-
 sub as_string {
     my $self = shift;
     $self->dir;
@@ -127,9 +118,6 @@ sub build {
     return if $self->{build}++;
 
     my $guard = pushd($self->dir);
-
-    $self->c->infof("Generating Build.PL\n");
-    path('Build.PL')->spew($self->generate_build_pl());
 
     # Generate meta file
     {
@@ -198,86 +186,63 @@ sub write_release_tests {
     my $guard = pushd($self->dir);
     path('xt')->mkpath;
 
-    path('xt/minimum_version.t')->spew(<<'...');
+    my $name = $self->c->config->name;
+    for my $file (qw(
+        xt/minimum_version.t
+        xt/cpan_meta.t
+        xt/pod.t
+        xt/spelling.t
+    )) {
+        my $content = get_data_section($file);
+        $content =~s!<<DIST>>!$name!g;
+        path($file)->spew($content);
+    }
+}
+
+1;
+__DATA__
+
+@@ xt/minimum_version.t
 use Test::More;
 eval "use Test::MinimumVersion 0.101080";
 plan skip_all => "Test::MinimumVersion required for testing perl minimum version" if $@;
 all_minimum_version_from_metayml_ok();
-...
 
-    path('xt/cpan_meta.t')->spew(<<'...');
+@@ xt/cpan_meta.t
 use Test::More;
 eval "use Test::CPAN::Meta";
 plan skip_all => "Test::CPAN::Meta required for testing META.yml" if $@;
 plan skip_all => "There is no META.yml" unless -f "META.yml";
 meta_yaml_ok();
-...
 
-    path('xt/pod.t')->spew(<<'...');
+@@ xt/pod.t
 use strict;
 use Test::More;
 eval "use Test::Pod 1.41";
 plan skip_all => "Test::Pod 1.41 required for testing POD" if $@;
 all_pod_files_ok();
-...
-}
 
-sub generate_build_pl {
-    my ($self, ) = @_;
-
-    # TODO: Equivalent to M::I::GithubMeta is required?
-    # TODO: ShareDir?
-
-    local $Data::Dumper::Terse = 1;
-
-    my $config = $self->c->config;
-    my $prereq = $self->prereq_specs;
-    my @bin = map { "$_" } grep { [splitdir(dirname("$_"))]->[0] eq 'bin' } @{$self->files};
-    $self->c->infof("Binaries: @bin\n") if @bin;
-
-    my $args = +{
-            dynamic_config => 0,
-
-            no_index           => { 'directory' => ['inc'] },
-            module_name        => $config->name,
-            dist_name          => $config->dist_name,
-            dist_version       => $config->version,
-            license            => $config->license,
-            script_files       => [
-                @bin,
-                @{ $config->script_files || [] },
-            ],
-            configure_requires => +{
-                'Module::Build' => 0.40,
-                %{ $prereq->{configure}->{requires} || {} }
-            },
-            requires => +{
-                perl => $config->perl_version,
-                %{ $prereq->{runtime}->{requires} || {} },
-            },
-            build_requires => +{
-                %{ $prereq->{test}->{requires} || {} }, ## When M::B support TEST_REQUIRES?
-                %{ $prereq->{build}->{requires} || {} },
-            },
-            test_files => 't/',
-
-            recursive_test_files => 1,
-
-            create_readme => 1,
-    };
-    $args->{share_dir} = $config->share_dir if $config->share_dir;
-    $args = Dumper($args);
-    return sprintf(<<'...', $config->perl_version, $args);
+@@ xt/spelling.t
 use strict;
-use Module::Build;
-use %s;
+use Test::More;
+use File::Spec;
+eval q{ use Test::Spelling };
+plan skip_all => "Test::Spelling is not installed." if $@;
+eval q{ use Pod::Wordlist::hanekomu };
+plan skip_all => "Pod::Wordlist::hanekomu is not installed." if $@;
 
-my $builder = Module::Build->new(%%{
-%s
-});
-$builder->create_build_script();
-...
+plan skip_all => "no ENV[HOME]" unless $ENV{HOME};
+plan skip_all => "no ~/.aspell.en.pws" unless -e File::Spec->catfile($ENV{HOME}, '.aspell.en.pws');
+
+add_stopwords('<<DIST>>');
+
+$ENV{LANG} = 'C';
+my $has_aspell;
+foreach my $path (split(/:/, $ENV{PATH})) {
+    -x "$path/aspell" and $has_aspell++, last;
 }
+plan skip_all => "no aspell" unless $has_aspell;
+plan skip_all => "no english dict for aspell" unless `aspell dump dicts` =~ /en/;
 
-1;
-
+set_spell_cmd('aspell list -l en');
+all_pod_files_spelling_ok('lib');

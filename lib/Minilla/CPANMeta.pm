@@ -18,6 +18,7 @@ no Moo;
 
 sub generate {
     my ($self, $release_status) = @_;
+    $release_status ||= 'stable';
 
     my $dat = {
         "meta-spec" => {

@@ -13,8 +13,25 @@ sub run {
         'test!' => \$test,
     );
 
-    Minilla::WorkDir->make_tar_ball($self, $test);
+    my $work_dir = Minilla::WorkDir->instance($self);
+    if ($test) {
+        $work_dir->dist_test();
+    }
+    return $work_dir->dist();
 }
 
 1;
+__END__
+
+=head1 NAME
+
+Minilla::CLI::Dist - Make tar ball distribution
+
+=head1 SYNOPSIS
+
+    % minil dist
+
+=head1 DESCRIPTION
+
+This subcommand makes distribution tar ball.
 

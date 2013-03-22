@@ -2,7 +2,7 @@ package Minilla;
 use strict;
 use warnings;
 use 5.008005;
-our $VERSION = '0.0.36';
+our $VERSION = '0.0.44';
 
 1;
 __END__
@@ -16,10 +16,10 @@ Minilla - CPAN module authoring tool
 =head1 SYNOPSIS
 
     minil new     - Create new dist
-    minil setup   - Setup global config
     minil test    - Run test cases
     minil dist    - Make tar ball
     minil install - Install dist to your system
+    minil release - Release dist to CPAN
 
 =head1 DESCRIPTION
 
@@ -37,7 +37,6 @@ B<THIS IS A DEVELOPMENT RELEASE. API MAY CHANGE WITHOUT NOTICE>.
 
 =head1 TODO
 
-    'provides' section in meta
     # TODO: --trial
 
 =head1 FAQ
@@ -52,11 +51,34 @@ If you want to pluggable thing, it's already exist dzil :P
 
 You can set 'homepage' key in your minil.toml file.
 
+=item Should I add (META.json|Build.PL) to repository?
+
+Yes. You need to add it for git installable repo.
+
+=item How do I manage ppport.h?
+
+Is there a reason to remove ppport.h from repo?
+
+=item How can I install script files?
+
+Your executables must be in F<script/>. It's L<Module::Build::Tiny>'s rule.
+
+=item Why minil only supports git?
+
+I think git is a best VC for CPAN modules, for now.
+
+If you want to use another version control system, you can use L<Moth>.
+
+=item HOW TO SWITCH FROM M::I/M::B?
+
+You can use experimental `minil migrate` command.
+Please look L<Minilla::CLI::Migrate>.
+
 =back
 
 =head1 AUTHOR
 
-Tokuhiro Matsuno E<lt>tokuhirom AAJKLFJEF@ GMAIL COME<gt>
+Tokuhiro Matsuno E<lt>tokuhirom AAJKLFJEF@ gmail.comE<gt>
 
 =head1 SEE ALSO
 

@@ -20,7 +20,7 @@ carton.lock
 /local/
 /.carton/
 /Acme-Mattn/
-/Minya-v*.tar.gz
+/Minilla-v*.tar.gz
 /Acme-Foo/
 /nytprof.out
 /nytprof/

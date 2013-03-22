@@ -14,10 +14,30 @@ sub run {
         'test!' => \$test,
     );
 
-    my $tar = Minilla::WorkDir->make_tar_ball($self, $test);
+    my $work_dir = Minilla::WorkDir->instance($self);
+    if ($test) {
+        $work_dir->dist_test();
+    }
+    my $tar = $work_dir->dist();
+
     $self->cmd('cpanm', ($self->verbose ? '--verbose' : ()), $tar);
     path($tar)->remove unless $self->debug;
 }
 
 1;
+__END__
+
+=head1 NAME
+
+Minilla::CLI::Install - Install the dist to system
+
+=head1 SYNOPSIS
+
+    % minil install
+
+        --no-test Do not run test
+
+=head1 DESCRIPTION
+
+This subcommand install the dist for your system.
 
