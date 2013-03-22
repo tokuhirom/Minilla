@@ -10,7 +10,7 @@ use CPAN::Meta;
 use Data::Section::Simple qw(get_data_section);
 use File::pushd;
 
-use Minilla::License;
+use Minilla::License::Perl_5;
 use Minilla::Util qw(spew);
 
 use Moo;
@@ -41,7 +41,9 @@ sub generate {
     $self->render('.travis.yml');
 
     $self->write_file('.gitignore', get_data_section('.gitignore'));
-    $self->write_file('LICENSE', Minilla::License->perl_5($self->author, $self->email));
+    $self->write_file('LICENSE', Minilla::License::Perl_5->new(
+        holder => sprintf('%s <%s>', $self->author, $self->email)
+    )->fulltext);
 
     # Generate Build.PL and META.json for installable git repo.
     if ($self->mb) {

@@ -16,6 +16,9 @@ recommends 'Pod::Escapes';
 recommends 'CPAN::Uploader';
 recommends 'CPAN::Meta::Check';
 
+# Module required for license otherwise Perl_5 license.
+recommends 'Software::License';
+
 # release testing
 recommends 'Test::Pod';
 recommends 'Test::Spelling';
