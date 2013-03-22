@@ -25,3 +25,10 @@ carton.lock
 /nytprof.out
 /nytprof/
 /_build_params
+.build
+_build_params
+/Build
+!Build/
+!META.json
+Minilla-*.tar.gz
+Minilla-*
