@@ -13,6 +13,7 @@ sub run {
     }
 
     $c->cmd('git', 'tag', $ver);
+    $c->cmd('git', "push", 'origin', tag => $ver);
 }
 
 1;

@@ -26,6 +26,7 @@ sub run {
         'dry-run!' => \$opts->{dry_run},
     );
 
+    # CheckOrigin
     my @steps = qw(
         CheckUntrackedFiles
         BumpVersion
