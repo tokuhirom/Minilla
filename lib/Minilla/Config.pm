@@ -59,9 +59,10 @@ sub load {
 
     # fill from main_module
     my $source_path = $class->detect_source_path($module_name);
-    unless (-e $source_path) {
-        $c->error(sprintf("%s not found.\n", $source_path));
+    unless (defined($source_path) && -e $source_path) {
+        $c->error(sprintf("%s not found.\n", $source_path || "main module($module_name)"));
     }
+    $c->infof("Retrieving meta data from %s.\n", $source_path);
     my $metadata = Minilla::Metadata->new(
         source => $source_path,
     );
@@ -98,22 +99,46 @@ sub _build_dist_name {
     $dist_name;
 }
 
-sub _module_name2path {
-    local $_ = shift;
-    s!::!/!;
-    s!-!/!;
-    "lib/$_.pm";
+use File::Spec::Functions qw(catdir catfile);
+use DirHandle;
+
+sub _case_insensitive_match {
+    my $path = shift;
+    my @path = File::Spec->splitdir($path);
+    my $realpath = '.';
+    LOOP: for my $part (@path) {
+        my $d = DirHandle->new($realpath)
+            or do {
+            # warn "Cannot open dirhandle";
+            return;
+        };
+        while (defined($_ = $d->read)) {
+            if (uc($_) eq uc($part)) {
+                $realpath = catfile($realpath, $_);
+                next LOOP;
+            }
+        }
+
+        # does not match
+        # warn "Does not match: $part in $realpath";
+        return undef;
+    }
+    return $realpath;
 }
 
-use File::Glob qw(:bsd_glob);
 sub detect_source_path {
-    my ($self, $module_name) = @_;
-    my $path = _module_name2path($module_name);
-    return $path if -f $path;
+    my ($self, $dir) = @_;
 
-    # search modules in case sensitive rule.
-    $path = bsd_glob($path, GLOB_NOCASE);
-    return $path if -f $path;
+    for my $path ("App::$dir", $dir) {
+        $path =~ s!::!/!;
+        $path =~ s!-!/!;
+        $path = "lib/${path}.pm";
+
+        return $path if -f $path;
+
+        $path = _case_insensitive_match($path);
+        return $path if defined($path);
+    }
 
     return undef;
 }
