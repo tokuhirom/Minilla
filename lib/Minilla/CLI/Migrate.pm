@@ -125,6 +125,15 @@ sub _remove_unused_files {
             $self->cmd("git rm $file");
         }
     }
+
+    for my $file (qw(
+        MANIFEST.SKIP.bak
+        MANIFEST.bak
+    )) {
+        if (-f $file) {
+            path($file)->remove;
+        }
+    }
 }
 
 sub _migrate_meta_json {
@@ -154,6 +163,7 @@ sub _migrate_gitignore {
     # remove META.json from ignored file list
         @lines = grep !/^META\.json$/, @lines;
 
+    my $tarpattern = sprintf('%s-*.tar.gz', $self->config->name);
     # Add some lines
     for my $fname (qw(
         .build
@@ -161,7 +171,7 @@ sub _migrate_gitignore {
         /Build
         !Build/
         !META.json
-    )) {
+    ), $tarpattern) {
         unless (grep /\A$fname\z/, @lines) {
             push @lines, $fname;
         }

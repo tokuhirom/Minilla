@@ -104,6 +104,7 @@ sub BUILD {
     path($self->dir)->mkpath;
     for my $src (@{$self->files}) {
         next if -d $src;
+        $self->c->infof("Copying %s\n", $src);
         my $dst = path($self->dir, path($src)->relative($self->c->base_dir));
         path($dst->dirname)->mkpath;
         path($src)->copy($dst);
@@ -173,10 +174,10 @@ sub dist {
         for (@{$self->files}, qw(Build.PL LICENSE META.json META.yml MANIFEST)) {
             $tar->add_data(path($self->c->config->{name} . '-' . $self->c->config->{version}, $_), path($_)->slurp);
         }
-        $tar->write(path($self->c->base_dir, $tarball), COMPRESS_GZIP);
+        $tar->write(path($tarball), COMPRESS_GZIP);
         $self->c->infof("Wrote %s\n", $tarball);
 
-        $tarball;
+        path($tarball)->absolute;
     };
 }
 
