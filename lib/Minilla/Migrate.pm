@@ -71,7 +71,13 @@ sub generate_license {
 
     unless (-f 'LICENSE') {
         path('LICENSE')->spew($self->project->metadata->license->fulltext());
+        $self->git_add(qw(LICENSE));
     }
+}
+
+sub git_add {
+    my ($self, @files) = @_;
+    $self->c->cmd(qw(git add), @files);
 }
 
 sub migrate_cpanfile {
@@ -141,6 +147,8 @@ sub generate_build_pl {
             module => $module,
         }));
     }
+
+    $self->git_add(qw(Build.PL));
 }
 
 sub remove_unused_files {
@@ -209,6 +217,8 @@ sub migrate_gitignore {
     }
 
     path('.gitignore')->spew(join('', map { "$_\n" } @lines));
+
+    $self->git_add(qw(.gitignore));
 }
 
 
