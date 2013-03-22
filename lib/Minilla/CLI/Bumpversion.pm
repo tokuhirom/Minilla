@@ -28,8 +28,10 @@ sub run {
     $self->cmd('perl-reversion', @opts);
 
     unless ($dry_run) {
-        my $config = Minilla::Config->load($self, find_file('minil.toml'));
-        my $newver = $config->metadata->version;
+        my $project = Minilla::Project->load(
+            c => $self,
+        );
+        my $newver = $project->metadata->version;
         if (exists_tagged_version($newver)) {
             $self->error("Sorry, version '$newver' is already tagged.  Stopping.\n");
         }

@@ -12,7 +12,10 @@ use Minilla::Util qw(slurp spew);
 sub run {
     my ($self, @args) = @_;
 
-    my $base = pushd($self->base_dir());
+    my $project = Minilla::Project->new(
+        c => $self,
+    );
+    my $base = pushd($project->dir);
 
     my $tiny = (0+(File::Find::Rule->file()->name(qr/\.(c|xs)$/)->in('.')) == 0);
 
@@ -21,19 +24,27 @@ sub run {
         _migrate_cpanfile($self, $tiny);
     }
 
-    _generate_license($self);
-    _generate_build_pl($self, $tiny);
+    _generate_license($self, $project);
+    _generate_build_pl($self, $project, $tiny);
+
+    # M::B::Tiny protocol
+    if (-d 'bin' && !-e 'script') {
+        $self->cmd('git mv bin script');
+    }
+    # TODO move top level *.pm to lib/?
 
     _remove_unused_files($self);
-    _migrate_gitignore($self);
-    _migrate_meta_json($self);
+    _migrate_gitignore($self, $project);
+    _migrate_meta_json($self, $project);
+
+    $self->cmd('git add META.json');
 }
 
 sub _generate_license {
-    my $self = shift;
+    my ($self, $project) = @_;
 
     unless (-f 'LICENSE') {
-        path('LICENSE')->spew($self->config->metadata->license->fulltext());
+        path('LICENSE')->spew($project->metadata->license->fulltext());
     }
 }
 
@@ -45,6 +56,7 @@ sub _migrate_cpanfile {
             $self->infof("M::B::Tiny was detected. I hope META.json is already exists here\n");
         } else {
             $self->cmd($^X, 'Build.PL');
+            $self->cmd($^X, 'Build', 'build');
             $self->cmd($^X, 'Build', 'distmeta');
         }
     } elsif (-f 'Makefile.PL') {
@@ -86,11 +98,12 @@ sub _migrate_cpanfile {
 }
 
 sub _generate_build_pl {
-    my ($self, $tiny) = @_;
+    my ($self, $project, $tiny) = @_;
+
     if ($tiny) {
         path('Build.PL')->spew("use Module::Build::Tiny;\nBuild_PL()");
     } else {
-        my $dist = path($self->base_dir)->basename;
+        my $dist = path($project->dir)->basename;
            $dist =~ s/^p5-//;
         (my $module = $dist) =~ s!-!::!g;
         path('Build.PL')->spew(Minilla::Skeleton->render_build_mb_pl({
@@ -116,17 +129,21 @@ sub _remove_unused_files {
             $self->cmd("git rm $file");
         }
     }
+
+    for my $file (qw(
+        MANIFEST.SKIP.bak
+        MANIFEST.bak
+    )) {
+        if (-f $file) {
+            path($file)->remove;
+        }
+    }
 }
 
 sub _migrate_meta_json {
-    my $self = shift;
+    my ($self, $project) = @_;
 
-    my $cpanfile = Module::CPANfile->load('cpanfile');
-    Minilla::CPANMeta->new(
-        config       => $self->config,
-        prereq_specs => $cpanfile->prereq_specs,
-        base_dir     => $self->base_dir,
-    )->generate('unstable')->save(
+    $project->cpan_meta('unstable')->save(
         'META.json' => {
             version => 2.0
         }
@@ -134,7 +151,7 @@ sub _migrate_meta_json {
 }
 
 sub _migrate_gitignore {
-    my $self = shift;
+    my ($self, $project) = @_;
 
     my @lines;
     
@@ -145,6 +162,7 @@ sub _migrate_gitignore {
     # remove META.json from ignored file list
         @lines = grep !/^META\.json$/, @lines;
 
+    my $tarpattern = sprintf('%s-*.tar.gz', $project->name);
     # Add some lines
     for my $fname (qw(
         .build
@@ -152,7 +170,7 @@ sub _migrate_gitignore {
         /Build
         !Build/
         !META.json
-    )) {
+    ), $tarpattern) {
         unless (grep /\A$fname\z/, @lines) {
             push @lines, $fname;
         }

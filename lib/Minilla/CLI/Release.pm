@@ -24,10 +24,15 @@ sub run {
         'dry-run!' => \$opts->{dry_run},
     );
 
+    my $project = Minilla::Project->new(
+        c => $self,
+    );
+
     # CheckOrigin
     my @steps = qw(
         CheckUntrackedFiles
         CheckChangeLog
+        RegenerateMeta
         DistTest
         MakeDist
         Commit
@@ -38,7 +43,7 @@ sub run {
         my $klass = "Minilla::Release::$_";
         if (eval "require ${klass}; 1") {
             my $meth = "${klass}::run";
-            $klass->run($self, $opts);
+            $klass->run($self, $opts, $project);
         } else {
             $self->error("Error while loading $_: $@");
         }

@@ -2,7 +2,8 @@ package Minilla::CLI::Dist;
 use strict;
 use warnings;
 use utf8;
-use Minilla::WorkDir;
+use Minilla::Project;
+use Path::Tiny;
 
 sub run {
     my ($self, @args) = @_;
@@ -13,11 +14,16 @@ sub run {
         'test!' => \$test,
     );
 
-    my $work_dir = Minilla::WorkDir->instance($self);
+    my $project = Minilla::Project->new(
+        c => $self
+    );
+    my $work_dir = $project->work_dir;
     if ($test) {
         $work_dir->dist_test();
     }
-    return $work_dir->dist();
+    my $tar = $work_dir->dist();
+    my $dst = path($project->dir, path($tar)->basename);
+    path($tar)->copy($dst);
 }
 
 1;
