@@ -26,7 +26,7 @@ sub run {
 
     # M::B::Tiny protocol
     if (-d 'bin' && !-e 'script') {
-        path('bin')->mvoe('script');
+        path('bin')->move('script');
     }
     # TODO move top level *.pm to lib/?
 
