@@ -101,8 +101,6 @@ sub BUILD {
         path($dst->dirname)->mkpath;
         path($src)->copy($dst);
     }
-
-    $self->write_release_tests();
 }
 
 sub build {
@@ -136,11 +134,14 @@ sub dist_test {
 
     $self->build();
 
+    $self->write_release_tests();
+
     $self->project->verify_prereqs([qw(runtime)], $_) for qw(requires recommends);
     $self->project->verify_prereqs([qw(test)], $_) for qw(requires recommends);
 
     {
         local $ENV{RELEASE_TESTING} = 1;
+        my $guard = pushd($self->dir);
         $self->c->cmd('prove', '-r', '-l', 't', (-d 'xt' ? 'xt' : ()));
     }
 }
@@ -182,6 +183,7 @@ sub write_release_tests {
         xt/pod.t
         xt/spelling.t
     )) {
+        $self->c->infof("Writing release tests: %s\n", $file);
         my $content = get_data_section($file);
         $content =~s!<<DIST>>!$name!g;
         path($file)->spew($content);
