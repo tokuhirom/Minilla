@@ -25,8 +25,8 @@ sub run {
     _generate_build_pl($self, $tiny);
 
     # M::B::Tiny protocol
-    if (-d 'bin') {
-        path('bin')->rename('script');
+    if (-d 'bin' && !-e 'script') {
+        path('bin')->mvoe('script');
     }
     # TODO move top level *.pm to lib/?
 
