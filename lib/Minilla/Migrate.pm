@@ -100,11 +100,13 @@ sub migrate_cpanfile {
     my $prereqs = $meta->effective_prereqs->as_string_hash;
 
     if ($self->use_mb_tiny) {
-        delete $prereqs->{configure}->{runtime}->{'Module::Build'};
-        $prereqs->{configure}->{runtime}->{'Module::Build::Tiny'} = 0;
+        $self->c->infof("Using Module::Build::Tiny\n");
+        delete $prereqs->{configure}->{requires}->{'Module::Build'};
+        $prereqs->{configure}->{requires}->{'Module::Build::Tiny'} = 0;
     } else {
-        $prereqs->{configure}->{runtime}->{'Module::Build'}    = 0.40;
-        $prereqs->{configure}->{runtime}->{'Module::CPANfile'} = 0;
+        $self->c->infof("Using Module::Build (Because this distribution uses xs)\n");
+        $prereqs->{configure}->{requires}->{'Module::Build'}    = 0.40;
+        $prereqs->{configure}->{requires}->{'Module::CPANfile'} = 0;
     }
 
     my $ret = '';
@@ -127,7 +129,7 @@ sub generate_build_pl {
     my ($self) = @_;
 
     if ($self->use_mb_tiny) {
-        path('Build.PL')->spew("use Module::Build::Tiny;\nBuild_PL()");
+        path('Build.PL')->spew("use Module::Build::Tiny;\nBuild_PL()\n");
     } else {
         my $dist = path($self->project->dir)->basename;
            $dist =~ s/^p5-//;
