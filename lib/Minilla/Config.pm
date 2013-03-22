@@ -6,7 +6,7 @@ use TOML qw(from_toml);
 
 use File::Basename qw(basename);
 use Minilla::Metadata;
-use Minilla::Util qw(module_name2path slurp_utf8);
+use Minilla::Util qw(slurp_utf8);
 
 use Moo;
 
