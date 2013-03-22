@@ -132,6 +132,12 @@ sub error {
     Minilla::Error::CommandExit->throw;
 }
 
+sub errorf {
+    my($self, @msg) = @_;
+    $self->printf(@msg, ERROR);
+    Minilla::Error::CommandExit->throw;
+}
+
 sub parse_options {
     my ( $self, $args, @spec ) = @_;
     Getopt::Long::GetOptionsFromArray( $args, @spec );
