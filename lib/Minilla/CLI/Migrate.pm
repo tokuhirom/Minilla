@@ -18,52 +18,66 @@ sub run {
 
     # Generate cpanfile from Build.PL
     unless (-f 'cpanfile') {
-        if (-f 'Build.PL') {
-            if (slurp('Build.PL') =~ /Module::Build::Tiny/) {
-                $self->infof("M::B::Tiny was detected. I hope META.json is already exists here\n");
-            } else {
-                $self->cmd($^X, 'Build.PL');
-                $self->cmd($^X, 'Build', 'distmeta');
-            }
-        } elsif (-f 'Makefile.PL') {
-            $self->cmd($^X, 'Makefile.PL');
-            $self->cmd('make metafile');
-        } else {
-            $self->error("There is no Build.PL/Makefile.PL");
-        }
-
-        unless (-f 'META.json') {
-            $self->error("Cannot generate META.json\n");
-        }
-
-        my $meta = CPAN::Meta->load_file('META.json');
-        my $prereqs = $meta->effective_prereqs->as_string_hash;
-
-        if ($tiny) {
-            delete $prereqs->{configure}->{runtime}->{'Module::Build'};
-            $prereqs->{configure}->{runtime}->{'Module::Build::Tiny'} = 0;
-        } else {
-            $prereqs->{configure}->{runtime}->{'Module::Build'}    = 0.40;
-            $prereqs->{configure}->{runtime}->{'Module::CPANfile'} = 0;
-        }
-
-        my $ret = '';
-        for my $phase (qw(runtime configure build develop)) {
-            my $indent = $phase eq 'runtime' ? '' : '    ';
-            $ret .= "on $phase => sub {\n" unless $phase eq 'runtime';
-            for my $type (qw(requires recommends)) {
-                while (my ($k, $version) = each %{$prereqs->{$phase}->{$type}}) {
-                    $ret .= "${indent}$type '$k' => '$version';\n";
-                }
-            }
-            $ret .= "};\n\n" unless $phase eq 'runtime';
-        }
-        spew('cpanfile', $ret);
-
-        $self->cmd('git add cpanfile');
+        _migrate_cpanfile($self, $tiny);
     }
 
-    # make Build.PL
+    _generate_build_pl($self, $tiny);
+
+    _remove_unused_files($self);
+    _migrate_gitignore($self);
+    _migrate_meta_json($self);
+}
+
+sub _migrate_cpanfile {
+    my ($self, $tiny) = @_;
+
+    if (-f 'Build.PL') {
+        if (slurp('Build.PL') =~ /Module::Build::Tiny/) {
+            $self->infof("M::B::Tiny was detected. I hope META.json is already exists here\n");
+        } else {
+            $self->cmd($^X, 'Build.PL');
+            $self->cmd($^X, 'Build', 'distmeta');
+        }
+    } elsif (-f 'Makefile.PL') {
+        $self->cmd($^X, 'Makefile.PL');
+        $self->cmd('make metafile');
+    } else {
+        $self->error("There is no Build.PL/Makefile.PL");
+    }
+
+    unless (-f 'META.json') {
+        $self->error("Cannot generate META.json\n");
+    }
+
+    my $meta = CPAN::Meta->load_file('META.json');
+    my $prereqs = $meta->effective_prereqs->as_string_hash;
+
+    if ($tiny) {
+        delete $prereqs->{configure}->{runtime}->{'Module::Build'};
+        $prereqs->{configure}->{runtime}->{'Module::Build::Tiny'} = 0;
+    } else {
+        $prereqs->{configure}->{runtime}->{'Module::Build'}    = 0.40;
+        $prereqs->{configure}->{runtime}->{'Module::CPANfile'} = 0;
+    }
+
+    my $ret = '';
+    for my $phase (qw(runtime configure build develop)) {
+        my $indent = $phase eq 'runtime' ? '' : '    ';
+        $ret .= "on $phase => sub {\n" unless $phase eq 'runtime';
+        for my $type (qw(requires recommends)) {
+            while (my ($k, $version) = each %{$prereqs->{$phase}->{$type}}) {
+                $ret .= "${indent}$type '$k' => '$version';\n";
+            }
+        }
+        $ret .= "};\n\n" unless $phase eq 'runtime';
+    }
+    spew('cpanfile', $ret);
+
+    $self->cmd('git add cpanfile');
+}
+
+sub _generate_build_pl {
+    my ($self, $tiny) = @_;
     if ($tiny) {
         path('Build.PL')->spew("use Module::Build::Tiny;\nBuild_PL()");
     } else {
@@ -75,6 +89,10 @@ sub run {
             module => $module,
         }));
     }
+}
+
+sub _remove_unused_files {
+    my $self = shift;
 
     # remove some unusable files
     for my $file (qw(
@@ -89,9 +107,6 @@ sub run {
             $self->cmd("git rm $file");
         }
     }
-
-    _migrate_gitignore($self);
-    _migrate_meta_json($self);
 }
 
 sub _migrate_meta_json {
