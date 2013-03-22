@@ -21,10 +21,10 @@ sub run {
     );
 
     # update META.json
-    my $meta = $project->cpan_meta('unstable');
-    $meta->save('META.json', {
-        version => '2.0'
-    });
+    $project->regenerate_meta_json();
+
+    # generate README.md
+    $project->regenerate_readme_mkdn();
 
     # generate project directory
     my $work_dir = $project->work_dir;

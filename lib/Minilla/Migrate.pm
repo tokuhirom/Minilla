@@ -61,9 +61,9 @@ sub run {
 
     $self->remove_unused_files();
     $self->migrate_gitignore();
-    $self->migrate_meta_json();
-
-    $self->c->cmd('git add META.json');
+    $self->project->regenerate_meta_json();
+    $self->project->regenerate_readme_mkdn();
+    $self->git_add(qw(META.json README.mkdn));
 }
 
 sub generate_license {
@@ -178,16 +178,6 @@ sub remove_unused_files {
             path($file)->remove;
         }
     }
-}
-
-sub migrate_meta_json {
-    my ($self) = @_;
-
-    $self->project->cpan_meta('unstable')->save(
-        'META.json' => {
-            version => 2.0
-        }
-    );
 }
 
 sub migrate_gitignore {

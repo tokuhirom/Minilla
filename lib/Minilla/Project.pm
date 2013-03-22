@@ -36,6 +36,10 @@ has dist_name => (
     is => 'lazy',
 );
 
+has main_module_path => (
+    is => 'lazy',
+);
+
 has metadata => (
     is => 'lazy',
     required => 1,
@@ -104,21 +108,27 @@ sub _build_dist_name {
     return $dist_name;
 }
 
-sub _build_metadata {
+sub _build_main_module_path {
     my $self = shift;
     my $c = $self->c;
 
     my $dist_name = $self->dist_name;
-
-    # fill from main_module
     my $source_path = $self->_detect_source_path($dist_name);
     unless (defined($source_path) && -e $source_path) {
         $c->error(sprintf("%s not found.\n", $source_path || "main module($dist_name)"));
     }
 
     $c->infof("Retrieving meta data from %s.\n", $source_path);
+    return $source_path;
+}
+
+sub _build_metadata {
+    my $self = shift;
+    my $c = $self->c;
+
+    # fill from main_module
     my $metadata = Minilla::Metadata->new(
-        source => $source_path,
+        source => $self->main_module_path,
     );
     $c->infof("Name: %s\n", $metadata->name);
     $c->infof("Abstract: %s\n", $metadata->abstract);
@@ -240,6 +250,30 @@ sub cpan_meta {
 
     my $meta = CPAN::Meta->new($dat);
     return $meta;
+}
+
+sub regenerate_meta_json {
+    my $self = shift;
+
+    my $meta = $self->cpan_meta('unstable');
+    $meta->save(File::Spec->catfile($self->dir, 'META.json'), {
+        version => '2.0'
+    });
+}
+
+sub regenerate_readme_mkdn {
+    my $self = shift;
+
+    require Pod::Markdown;
+
+    my $parser = Pod::Markdown->new;
+    $parser->parse_from_file($self->main_module_path);
+
+    my $fname = File::Spec->catfile($self->dir, 'README.mkdn');
+    open my $fh, '>', $fname
+        or $self->errorf("%s: %s\n", $fname, $!);
+    print $fh $parser->as_markdown;
+    close $fh or die "$!\n";
 }
 
 sub verify_prereqs {
