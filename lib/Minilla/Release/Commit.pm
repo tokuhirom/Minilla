@@ -7,8 +7,10 @@ use Minilla::Util qw(find_file);
 sub run {
     my ($self, $c) = @_;
 
-    my $config = Minilla::Config->load($c, find_file('minil.toml'));
-    my $ver = $config->metadata->version;
+    my $project = Minilla::Project->new(
+        c => $c,
+    );
+    my $ver = $project->metadata->version;
 
     my $msg = "Checking in changes prior to tagging of version $ver.\n\nChangelog diff is:\n\n";
     $msg .= `git diff Changes`;

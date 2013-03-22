@@ -3,20 +3,14 @@ use strict;
 use warnings;
 use utf8;
 use File::pushd;
-use Module::CPANfile;
-use Minilla::CPANMeta;
+use Minilla::Project;
 
 sub run {
-    my ($self, $c, $opts) = @_;
+    my ($self, $c, $opts, $project) = @_;
 
-    my $guard = pushd($c->base_dir);
+    my $guard = pushd($project->dir);
 
-    my $cpanfile = Module::CPANfile->load('cpanfile');
-    my $meta = Minilla::CPANMeta->new(
-        config       => $c->config,
-        prereq_specs => $cpanfile->prereq_specs,
-        base_dir     => '.',
-    )->generate('unstable');
+    my $meta = $project->cpan_meta('unstable');
     $meta->save('META.json', {
         version => 2.0,
     });

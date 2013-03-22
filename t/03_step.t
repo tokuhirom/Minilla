@@ -15,11 +15,14 @@ is(minil('new', 'Acme::Foo'), 0);
 ok(-f 'Acme-Foo/Build.PL');
 ok(-f 'Acme-Foo/.travis.yml');
 {
+    local $ENV{PERL_MM_USE_DEFAULT} = 1;
+    local $ENV{PERL_MINILLA_SKIP_CHECK_CHANGE_LOG} = 1;
     my $guard = pushd('Acme-Foo');
     is(minil('migrate'), 0);
     is(minil('meta'), 0);
     is(minil('test'), 0);
     is(minil('dist'), 0);
+    is(minil('release', '--dry-run'), 0);
 }
 
 rmtree('Acme-Foo');
