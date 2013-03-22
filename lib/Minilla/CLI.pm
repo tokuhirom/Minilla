@@ -13,7 +13,7 @@ use Module::CPANfile;
 
 use Minilla;
 use Minilla::Errors;
-use Minilla::Config;
+use Minilla::Project;
 use Minilla::Util qw(find_dir);
 
 use Minilla::CLI::New;
@@ -52,23 +52,7 @@ has auto_install => (
     default => sub { 1 },
 );
 
-has [qw(base_dir config)] => (
-    is => 'lazy',
-);
-
 no Moo;
-
-sub _build_base_dir {
-    my $self = shift;
-    my $toml = find_dir('.git')
-        or $self->error(sprintf("Current directory is not in git(%s)", Cwd::getcwd()));
-    return File::Spec->rel2abs(path($toml)->dirname());
-}
-
-sub _build_config {
-    my $self = shift;
-    Minilla::Config->load($self, path($self->base_dir, 'minil.toml'));
-}
 
 sub run {
     my ($self, @args) = @_;
@@ -145,6 +129,12 @@ sub print {
 sub error {
     my($self, $msg) = @_;
     $self->print($msg, ERROR);
+    Minilla::Error::CommandExit->throw;
+}
+
+sub errorf {
+    my($self, @msg) = @_;
+    $self->printf(@msg, ERROR);
     Minilla::Error::CommandExit->throw;
 }
 

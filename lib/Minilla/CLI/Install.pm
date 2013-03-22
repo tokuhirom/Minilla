@@ -14,7 +14,10 @@ sub run {
         'test!' => \$test,
     );
 
-    my $work_dir = Minilla::WorkDir->instance($self);
+    my $project = Minilla::Project->new(
+        c => $self,
+    );
+    my $work_dir = $project->work_dir();
     if ($test) {
         $work_dir->dist_test();
     }

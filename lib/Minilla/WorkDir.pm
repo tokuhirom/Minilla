@@ -11,12 +11,11 @@ use File::Basename qw(dirname);
 use Data::Section::Simple qw(get_data_section);
 
 use Minilla::Util qw(randstr);
-use Minilla::CPANMeta;
 use Minilla::FileGatherer;
 
 use Moo;
 
-has base_dir => (
+has project => (
     is => 'ro',
     required => 1,
 );
@@ -34,7 +33,7 @@ has files => (
     is => 'lazy',
 );
 
-has [qw(prereq_specs verifier)] => (
+has [qw(prereq_specs)] => (
     is => 'lazy',
 );
 
@@ -44,8 +43,11 @@ no Moo;
     our $INSTANCE;
     sub instance {
         my ($class, $c) = @_;
+        my $project = Minilla::Project->new(
+            c => $c,
+        );
         $INSTANCE ||= Minilla::WorkDir->new(
-            base_dir => $c->base_dir,
+            project => $project,
             c => $c,
         );
     }
@@ -58,26 +60,16 @@ sub DEMOLISH {
     }
 }
 
-sub _build_verifier {
-    my $self = shift;
-
-    my $verifier = Minilla::PrereqVerifier->new(
-        base_dir     => $self->base_dir,
-        c            => $self->c,
-        auto_install => $self->c->auto_install,
-    );
-}
-
 sub _build_dir {
     my $self = shift;
     my $dirname = $^O eq 'MSWin32' ? '_build' : '.build';
-    path($self->base_dir(), $dirname, randstr(8));
+    path($self->project->dir, $dirname, randstr(8));
 }
 
 sub _build_prereq_specs {
     my $self = shift;
 
-    my $cpanfile = Module::CPANfile->load(path($self->base_dir, 'cpanfile'));
+    my $cpanfile = Module::CPANfile->load(path($self->project->dir, 'cpanfile'));
     return $cpanfile->prereq_specs;
 }
 
@@ -85,7 +77,7 @@ sub _build_files {
     my $self = shift;
 
     my @files = Minilla::FileGatherer->gather_files(
-        $self->c->base_dir
+        $self->project->dir
     );
     \@files;
 }
@@ -105,12 +97,10 @@ sub BUILD {
     for my $src (@{$self->files}) {
         next if -d $src;
         $self->c->infof("Copying %s\n", $src);
-        my $dst = path($self->dir, path($src)->relative($self->c->base_dir));
+        my $dst = path($self->dir, path($src)->relative($self->project->dir));
         path($dst->dirname)->mkpath;
         path($src)->copy($dst);
     }
-
-    $self->write_release_tests();
 }
 
 sub build {
@@ -122,11 +112,7 @@ sub build {
 
     # Generate meta file
     {
-        my $meta = Minilla::CPANMeta->new(
-            config       => $self->c->config,
-            prereq_specs => $self->prereq_specs,
-            base_dir     => '.',
-        )->generate('stable');
+        my $meta = $self->project->cpan_meta('stable');
         $meta->save('META.yml', {
             version => 1.4,
         });
@@ -148,11 +134,14 @@ sub dist_test {
 
     $self->build();
 
-    $self->verifier->verify([qw(runtime)], $_) for qw(requires recommends);
-    $self->verifier->verify([qw(test)], $_) for qw(requires recommends);
+    $self->write_release_tests();
+
+    $self->project->verify_prereqs([qw(runtime)], $_) for qw(requires recommends);
+    $self->project->verify_prereqs([qw(test)], $_) for qw(requires recommends);
 
     {
         local $ENV{RELEASE_TESTING} = 1;
+        my $guard = pushd($self->dir);
         $self->c->cmd('prove', '-r', '-l', 't', (-d 'xt' ? 'xt' : ()));
     }
 }
@@ -168,11 +157,11 @@ sub dist {
         my $guard = pushd($self->dir);
 
         # Create tar ball
-        my $tarball = sprintf('%s-%s.tar.gz', $self->c->config->name, $self->c->config->version);
+        my $tarball = sprintf('%s-%s.tar.gz', $self->project->dist_name, $self->project->version);
 
         my $tar = Archive::Tar->new;
         for (@{$self->files}, qw(Build.PL LICENSE META.json META.yml MANIFEST)) {
-            $tar->add_data(path($self->c->config->{name} . '-' . $self->c->config->{version}, $_), path($_)->slurp);
+            $tar->add_data(path($self->project->dist_name . '-' . $self->project->version, $_), path($_)->slurp);
         }
         $tar->write(path($tarball), COMPRESS_GZIP);
         $self->c->infof("Wrote %s\n", $tarball);
@@ -187,13 +176,14 @@ sub write_release_tests {
     my $guard = pushd($self->dir);
     path('xt')->mkpath;
 
-    my $name = $self->c->config->name;
+    my $name = $self->project->dist_name;
     for my $file (qw(
         xt/minimum_version.t
         xt/cpan_meta.t
         xt/pod.t
         xt/spelling.t
     )) {
+        $self->c->infof("Writing release tests: %s\n", $file);
         my $content = get_data_section($file);
         $content =~s!<<DIST>>!$name!g;
         path($file)->spew($content);

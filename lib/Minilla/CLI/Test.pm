@@ -2,10 +2,10 @@ package Minilla::CLI::Test;
 use strict;
 use warnings;
 use utf8;
-use Module::CPANfile;
 use File::pushd;
+
 use Minilla::WorkDir;
-use Minilla::PrereqVerifier;
+use Minilla::Project;
 
 sub run {
     my ($self, @args) = @_;
@@ -14,20 +14,15 @@ sub run {
         \@args,
     );
 
-    my $work_dir = Minilla::WorkDir->new(
-        c        => $self,
-        base_dir => $self->base_dir
-    );
-
-    my $verifier = Minilla::PrereqVerifier->new(
-        base_dir => $self->base_dir,
-        auto_install => $self->auto_install,
+    my $project = Minilla::Project->new(
         c => $self,
     );
-    $verifier->verify( [qw(develop test runtime)], $_ ) for qw(requires recommends);
 
+    $project->verify_prereqs( [qw(develop test runtime)], $_ ) for qw(requires recommends);
+
+    my $work_dir = $project->work_dir;
     my $guard = pushd($work_dir->dir);
-    $self->cmd($self->config->{test_command} || 'prove -l -r t ' . (-d 'xt' ? 'xt' : ''));
+    $self->cmd($project->config->{test_command} || 'prove -l -r t ' . (-d 'xt' ? 'xt' : ''));
 }
 
 1;

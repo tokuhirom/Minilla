@@ -10,6 +10,7 @@ use CPAN::Meta;
 use Data::Section::Simple qw(get_data_section);
 use File::pushd;
 
+use Minilla::Project;
 use Minilla::License::Perl_5;
 use Minilla::Util qw(spew);
 
@@ -60,13 +61,9 @@ sub generate_metafile {
     my $self = shift;
 
     my $guard = pushd($self->dist);
-    my $config = Minilla::Config->load($self->c, catfile('minil.toml'));
-    my $prereq_specs = Module::CPANfile->load('cpanfile')->prereq_specs;
-    my $meta = Minilla::CPANMeta->new(
-        config => $config,
-        prereq_specs => $prereq_specs,
-        base_dir     => '.',
-    )->generate('unstable');
+    my $meta = Minilla::Project->new(
+        c => $self->c
+    )->cpan_meta('unstable');
     $meta->save('META.json', {version => 2.0});
 }
 
