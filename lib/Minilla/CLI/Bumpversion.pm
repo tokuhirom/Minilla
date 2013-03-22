@@ -7,7 +7,7 @@ use Minilla::Util qw(find_file);
 
 sub run {
     my ($self, @args) = @_;
-    my $type = shift @args || 'patch';
+    my $type = shift @args || 'default';
 
     my $dry_run;
     $self->parse_options(
@@ -17,10 +17,11 @@ sub run {
 
     my @opts;
     push @opts, +{
-        'major' => '-bump-revision',
-        'minor' => '-bump-version',
-        'patch' => '-bump-subversion',
-    }->{$type};
+        'default' => '-bump',
+        'major'   => '-bump-revision',
+        'minor'   => '-bump-version',
+        'patch'   => '-bump-subversion',
+    }->{$type} || '-bump';
     if ($dry_run) {
         push @opts, '-dryrun';
     }
