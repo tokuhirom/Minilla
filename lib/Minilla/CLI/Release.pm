@@ -27,7 +27,6 @@ sub run {
     );
 
     my @steps = qw(
-        Spelling
         CheckUntrackedFiles
         BumpVersion
         CheckChangeLog
