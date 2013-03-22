@@ -19,7 +19,7 @@ ok(-f 'Acme-Foo/.travis.yml');
     local $ENV{PERL_MINILLA_SKIP_CHECK_CHANGE_LOG} = 1;
     my $guard = pushd('Acme-Foo');
     is(minil('migrate'), 0);
-    is(minil('meta'), 0);
+    is(minil('build'), 0);
     is(minil('test'), 0);
     is(minil('dist'), 0);
     is(minil('release', '--dry-run'), 0);
