@@ -137,7 +137,7 @@ sub generate_build_pl {
     my ($self) = @_;
 
     if ($self->use_mb_tiny) {
-        path('Build.PL')->spew("use Module::Build::Tiny;\nBuild_PL()\n");
+        path('Build.PL')->spew("use Module::Build::Tiny;\nBuild_PL();\n");
     } else {
         my $dist = path($self->project->dir)->basename;
            $dist =~ s/^p5-//;
@@ -202,7 +202,7 @@ sub migrate_gitignore {
     # remove META.json from ignored file list
         @lines = grep !/^META\.json$/, @lines;
 
-    my $tarpattern = sprintf('%s-*.tar.gz', $self->project->dist_name);
+    my $tarpattern = sprintf('%s-*', $self->project->dist_name);
     # Add some lines
     for my $fname (qw(
         .build
