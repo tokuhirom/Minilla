@@ -14,14 +14,12 @@ sub run {
 
     my $opts = {
         test => 1,
-        bump => 1,
         trial => 0,
         dry_run => 0,
     };
     $self->parse_options(
         \@args,
         'test!' => \$opts->{test},
-        'bump!' => \$opts->{bump},
         'trial!' => \$opts->{trial},
         'dry-run!' => \$opts->{dry_run},
     );
@@ -29,7 +27,6 @@ sub run {
     # CheckOrigin
     my @steps = qw(
         CheckUntrackedFiles
-        BumpVersion
         CheckChangeLog
         DistTest
         MakeDist
