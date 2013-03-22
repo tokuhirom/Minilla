@@ -2,6 +2,7 @@ package Minilla::Release::UploadToCPAN;
 use strict;
 use warnings;
 use utf8;
+use ExtUtils::MakeMaker qw(prompt);
 
 sub run {
     my ($self, $c, $opts) = @_;
@@ -13,6 +14,10 @@ sub run {
         $c->infof("Dry run\n");
     } else {
         $c->infof("Upload to CPAN\n");
+
+        unless (prompt("Release to CPAN?", 'y') =~ /y/i) {
+            $c->error("Giving up!");
+        }
 
         if ($opts->{trial}) {
             my $orig_file = $tar;

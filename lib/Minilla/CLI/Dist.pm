@@ -3,6 +3,7 @@ use strict;
 use warnings;
 use utf8;
 use Minilla::WorkDir;
+use Path::Tiny;
 
 sub run {
     my ($self, @args) = @_;
@@ -17,7 +18,9 @@ sub run {
     if ($test) {
         $work_dir->dist_test();
     }
-    return $work_dir->dist();
+    my $tar = $work_dir->dist();
+    my $dst = path($self->base_dir, path($tar)->basename);
+    path($tar)->copy($dst);
 }
 
 1;

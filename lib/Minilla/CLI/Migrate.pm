@@ -24,9 +24,17 @@ sub run {
     _generate_license($self);
     _generate_build_pl($self, $tiny);
 
+    # M::B::Tiny protocol
+    if (-d 'bin' && !-e 'script') {
+        $self->cmd('git mv bin script');
+    }
+    # TODO move top level *.pm to lib/?
+
     _remove_unused_files($self);
     _migrate_gitignore($self);
     _migrate_meta_json($self);
+
+    $self->cmd('git add META.json');
 }
 
 sub _generate_license {
@@ -45,6 +53,7 @@ sub _migrate_cpanfile {
             $self->infof("M::B::Tiny was detected. I hope META.json is already exists here\n");
         } else {
             $self->cmd($^X, 'Build.PL');
+            $self->cmd($^X, 'Build', 'build');
             $self->cmd($^X, 'Build', 'distmeta');
         }
     } elsif (-f 'Makefile.PL') {
@@ -116,6 +125,15 @@ sub _remove_unused_files {
             $self->cmd("git rm $file");
         }
     }
+
+    for my $file (qw(
+        MANIFEST.SKIP.bak
+        MANIFEST.bak
+    )) {
+        if (-f $file) {
+            path($file)->remove;
+        }
+    }
 }
 
 sub _migrate_meta_json {
@@ -145,6 +163,7 @@ sub _migrate_gitignore {
     # remove META.json from ignored file list
         @lines = grep !/^META\.json$/, @lines;
 
+    my $tarpattern = sprintf('%s-*.tar.gz', $self->config->name);
     # Add some lines
     for my $fname (qw(
         .build
@@ -152,7 +171,7 @@ sub _migrate_gitignore {
         /Build
         !Build/
         !META.json
-    )) {
+    ), $tarpattern) {
         unless (grep /\A$fname\z/, @lines) {
             push @lines, $fname;
         }
