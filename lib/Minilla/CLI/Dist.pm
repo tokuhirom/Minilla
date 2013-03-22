@@ -14,6 +14,9 @@ sub run {
     );
 
     my $work_dir = Minilla::WorkDir->instance($self);
+    if ($test) {
+        $work_dir->dist_test();
+    }
     return $work_dir->dist();
 }
 
