@@ -29,7 +29,7 @@ sub _push_to_origin {
     # git v1.7.10 is required?
     my $branch = `git symbolic-ref --short HEAD`
         or return;
-    $c->infof("Pushing to origin");
+    $c->infof("Pushing to origin\n");
     $c->cmd('git', 'push', 'origin', $branch);
 }
 
