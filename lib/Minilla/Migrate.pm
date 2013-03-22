@@ -201,7 +201,7 @@ sub migrate_gitignore {
         !Build/
         !META.json
     ), $tarpattern) {
-        unless (grep /\A$fname\z/, @lines) {
+        unless (grep /\A\Q$fname\E\z/, @lines) {
             push @lines, $fname;
         }
     }
