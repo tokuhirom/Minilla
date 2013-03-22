@@ -16,6 +16,11 @@ recommends 'Pod::Escapes';
 recommends 'CPAN::Uploader';
 recommends 'CPAN::Meta::Check';
 
+# release testing
+recommends 'Test::Pod';
+recommends 'Test::Spelling';
+recommends 'Pod::Wordlist::hanekomu';
+
 requires 'TOML' => 0.91;
 
 on 'configure' => sub {
