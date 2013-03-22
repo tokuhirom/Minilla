@@ -152,6 +152,8 @@ sub remove_unused_files {
         .shipit
         xt/97_podspell.t
         xt/99_pod.t
+        xt/01_podspell.t    xt/03_pod.t              xt/05_cpan_meta.t
+        xt/04_minimum_version.t  xt/06_meta_author.t
     )) {
         if (-f $file) {
             $self->c->cmd("git rm $file");
