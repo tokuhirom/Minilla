@@ -25,7 +25,7 @@ sub generate {
             "version" => "2",
             "url"     => "http://search.cpan.org/perldoc?CPAN::Meta::Spec"
         },
-        license        => $self->config->license_meta2,
+        license        => $self->config->license->meta2_name,
         abstract       => $self->config->abstract,
         author         => [ $self->config->author ],
         dynamic_config => 0,

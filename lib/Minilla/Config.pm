@@ -20,7 +20,7 @@ has [qw(share_dir script_files homepage)] => (
     is => 'ro',
 );
 
-has [qw(license_meta2 dist_name)] => (
+has [qw(dist_name)] => (
     is => 'lazy',
 );
 
@@ -81,14 +81,6 @@ sub load {
     }
 
     return $class->new($conf);
-}
-
-sub _build_license_meta2 {
-    my ($self) = @_;
-    +{
-        Perl_5 => 'perl_5',
-        unknown => 'unknown',
-    }->{$self->license} or die "Unknown license: $self->{license}";
 }
 
 sub _build_dist_name {

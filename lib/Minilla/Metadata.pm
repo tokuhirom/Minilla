@@ -2,7 +2,7 @@ package Minilla::Metadata;
 use strict;
 use warnings;
 use utf8;
-use Minilla::Util qw(slurp);
+use Minilla::Util qw(slurp require_optional);
 use Carp;
 use Module::Metadata;
 
@@ -135,7 +135,7 @@ sub _build_author {
 
 
 #Stolen from M::B
-sub _extract_license {
+sub _is_perl5_license {
     my $pod = shift;
     my $matched;
     return __extract_license(
@@ -154,27 +154,44 @@ sub _extract_license {
 sub __extract_license {
     my $license_text = shift or return;
     my @phrases      = (
-        '(?:under )?the same (?:terms|license) as (?:perl|the perl (?:\d )?programming language)' => 'Perl_5', 1,
-        '(?:under )?the terms of (?:perl|the perl programming language) itself' => 'Perl_5', 1,
-        'Artistic and GPL'                   => 'Perl_5',       1,
+        '(?:under )?the same (?:terms|license) as (?:perl|the perl (?:\d )?programming language)',
+        '(?:under )?the terms of (?:perl|the perl programming language) itself',
+        'Artistic and GPL'
     );
-    while ( my ($pattern, $license, $osi) = splice(@phrases, 0, 3) ) {
+    for my $pattern (@phrases) {
         $pattern =~ s#\s+#\\s+#gs;
         if ( $license_text =~ /\b$pattern\b/i ) {
-            return $license;
+            return 1;
         }
     }
-    return '';
+    return 0;
 }
 
 sub _build_license {
     my ($self) = @_;
 
-    if (my $license = _extract_license(slurp($self->source))) {
-        return $license;
+    my $pm_text = slurp($self->source);
+    if (_is_perl5_license($pm_text)) {
+        require Minilla::License::Perl_5;
+        return Minilla::License::Perl_5->new({
+            holder => $self->author,
+        });
     } else {
-        warn "Cannot determine license info from $_[0]\n";
-        return 'unknown';
+        require_optional('Software/LicenseUtils.pm', 'Non Perl_5 license support');
+        my (@guesses) = Software::LicenseUtils->guess_license_from_pod($pm_text);
+        if (@guesses) {
+            my $klass = $guesses[0];
+            eval "require $klass; 1" or die $@; ## no critic.
+            $klass->new({
+                holder => $self->author,
+            });
+        } else {
+            warn "Cannot determine license info from $_[0]\n";
+            require Software::License::None;
+            return Software::License::None->new({
+                holder => $self->author,
+            });
+        }
     }
 }
 

@@ -7,8 +7,7 @@ use File::Basename ();
 
 use parent qw(Exporter);
 
-our @EXPORT_OK = qw(find_dir find_file slurp_utf8 randstr slurp spew edit_file);
-
+our @EXPORT_OK = qw(find_dir find_file slurp_utf8 randstr slurp spew edit_file require_optional);
 
 sub randstr {
     my $len = shift;
@@ -71,6 +70,27 @@ sub find_dir {
     }
 
     return undef;
+}
+
+sub require_optional {
+    my ( $file, $feature, $library ) = @_;
+
+    return if exists $INC{$file};
+    unless ( eval { require $file } ) {
+        if ( $@ =~ /^Can't locate/ ) {
+            $library ||= do {
+                local $_ = $file;
+                s/ \.pm \z//xms;
+                s{/}{::}g;
+                $_;
+            };
+            Carp::croak( "$feature requires $library, but it is not available."
+                  . " Please install $library using your prefer CPAN client" );
+        }
+        else {
+            die $@;
+        }
+    }
 }
 
 1;

@@ -10,7 +10,7 @@ use CPAN::Meta;
 use Data::Section::Simple qw(get_data_section);
 use File::pushd;
 
-use Minilla::License;
+use Minilla::License::Perl_5;
 use Minilla::Util qw(spew);
 
 use Moo;
@@ -41,7 +41,9 @@ sub generate {
     $self->render('.travis.yml');
 
     $self->write_file('.gitignore', get_data_section('.gitignore'));
-    $self->write_file('LICENSE', Minilla::License->perl_5($self->author, $self->email));
+    $self->write_file('LICENSE', Minilla::License::Perl_5->new(
+        holder => sprintf('%s <%s>', $self->author, $self->email)
+    )->fulltext);
 
     # Generate Build.PL and META.json for installable git repo.
     if ($self->mb) {
@@ -105,12 +107,29 @@ use Module::Build::Tiny;
 Build_PL();
 
 @@ cpanfile-Tiny
+requires 'parent';
+
 on test => sub {
     requires 'Test::More' => 0.58;
 };
 
 on configure => sub {
     requires 'Module::Build::Tiny';
+};
+
+on 'develop' => sub {
+    # xt/minimum_bersion.t
+    requires 'Test::MinimumVersion' => '0.101080';
+
+    # xt/cpan_meta.t
+    requires 'Test::CPAN::Meta';
+
+    # xt/pod.t
+    requires 'Test::Pod' => 1.41;
+
+    # xt/spelling.t
+    requires 'Test::Spelling';
+    requires 'Pod::Wordlist::hanekomu';
 };
 
 @@ Build-MB.PL
@@ -156,13 +175,30 @@ my $builder = Module::Build->new(
 $builder->create_build_script();
 
 @@ cpanfile-MB
+requires 'parent';
+
 on test => sub {
-    requires 'Test::More' => 0.58;
+    requires 'Test::More' => 0.98;
 };
 
 on configure => sub {
     requires 'Module::Build' => 0.40;
     requires 'Module::CPANfile';
+};
+
+on 'develop' => sub {
+    # xt/minimum_bersion.t
+    requires 'Test::MinimumVersion' => '0.101080';
+
+    # xt/cpan_meta.t
+    requires 'Test::CPAN::Meta';
+
+    # xt/pod.t
+    requires 'Test::Pod' => 1.41;
+
+    # xt/spelling.t
+    requires 'Test::Spelling';
+    requires 'Pod::Wordlist::hanekomu';
 };
 
 @@ .gitignore

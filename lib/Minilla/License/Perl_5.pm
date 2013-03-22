@@ -1,15 +1,30 @@
-package Minilla::License;
+package Minilla::License::Perl_5;
 use strict;
 use warnings;
 use utf8;
 use Time::Piece;
 
-sub perl_5 {
-    my ($class, $name, $email) = @_;
+use Moo;
+
+has holder => (
+    is => 'rw',
+    required => 1,
+);
+
+no Moo;
+
+sub name { 'the same terms as the perl 5 programming language system itself' }
+sub url  { 'http://dev.perl.org/licenses/' }
+sub meta_name  { 'perl' }
+sub meta2_name { 'perl_5' }
+
+sub fulltext {
+    my ($self) = @_;
 
     my $year = localtime->year;
+    my $holder = $self->holder;
     <<"...";
-This software is copyright (c) $year by $name <$email>.
+This software is copyright (c) $year by $holder.
 
 This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.
@@ -23,7 +38,7 @@ b) the "Artistic License"
 
 --- The GNU General Public License, Version 1, February 1989 ---
 
-This software is Copyright (c) $year by $name <$email>.
+This software is Copyright (c) $year by $holder.
 
 This is free software, licensed under:
 
@@ -283,7 +298,7 @@ That's all there is to it!
 
 --- The Artistic License 1.0 ---
 
-This software is Copyright (c) $year by $name <$email>.
+This software is Copyright (c) $year by $holder.
 
 This is free software, licensed under:
 
