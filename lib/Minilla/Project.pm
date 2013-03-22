@@ -32,6 +32,10 @@ has version => (
     is => 'lazy',
 );
 
+has dist_name => (
+    is => 'lazy',
+);
+
 has metadata => (
     is => 'lazy',
     required => 1,
@@ -75,32 +79,41 @@ sub config {
 
 sub homepage { shift->config->{homepage} }
 
-sub _build_metadata {
+sub _build_dist_name {
     my $self = shift;
     my $c = $self->c;
 
-    my $name;
+    my $dist_name;
     if (my $conf = $self->config) {
-        $name = $conf->{name};
+        $dist_name = $conf->{name};
     }
-    unless (defined $name) {
+    unless (defined $dist_name) {
         $c->infof("There is no minil.toml. Detecting project name from directory name.\n");
-        $name = do {
+        $dist_name = do {
             local $_ = basename($self->dir);
             $_ =~ s!\Ap5-!!;
             $_;
         };
     }
-    if ($name eq '.') { Carp::confess("Heh? " . $self->dir); }
+    if ($dist_name eq '.') { Carp::confess("Heh? " . $self->dir); }
 
-    unless ($name) {
+    unless ($dist_name) {
         $c->errorf("Cannot detect distribution name from minil.toml or directory name(cwd: %s, dir:%s)\n", Cwd::getcwd(), $self->dir);
     }
 
+    return $dist_name;
+}
+
+sub _build_metadata {
+    my $self = shift;
+    my $c = $self->c;
+
+    my $dist_name = $self->dist_name;
+
     # fill from main_module
-    my $source_path = $self->detect_source_path($name);
+    my $source_path = $self->_detect_source_path($dist_name);
     unless (defined($source_path) && -e $source_path) {
-        $c->error(sprintf("%s not found.\n", $source_path || "main module($name)"));
+        $c->error(sprintf("%s not found.\n", $source_path || "main module($dist_name)"));
     }
 
     $c->infof("Retrieving meta data from %s.\n", $source_path);
@@ -138,10 +151,10 @@ sub _case_insensitive_match {
     return $realpath;
 }
 
-sub detect_source_path {
+sub _detect_source_path {
     my ($self, $dir) = @_;
 
-    for my $path ("App::$dir", $dir) {
+    for my $path ("App-$dir", $dir) {
         $path =~ s!::!/!;
         $path =~ s!-!/!;
         $path = "lib/${path}.pm";
@@ -187,7 +200,7 @@ sub cpan_meta {
         author         => [ $self->author ],
         dynamic_config => 0,
         version        => $self->version,
-        name           => $self->name,
+        name           => $self->dist_name,
         prereqs        => $cpanfile->prereq_specs,
         generated_by   => "Minilla/$Minilla::VERSION",
         release_status => $release_status || 'stable',

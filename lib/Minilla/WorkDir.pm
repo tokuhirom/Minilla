@@ -156,11 +156,11 @@ sub dist {
         my $guard = pushd($self->dir);
 
         # Create tar ball
-        my $tarball = sprintf('%s-%s.tar.gz', $self->project->name, $self->project->version);
+        my $tarball = sprintf('%s-%s.tar.gz', $self->project->dist_name, $self->project->version);
 
         my $tar = Archive::Tar->new;
         for (@{$self->files}, qw(Build.PL LICENSE META.json META.yml MANIFEST)) {
-            $tar->add_data(path($self->project->name . '-' . $self->project->version, $_), path($_)->slurp);
+            $tar->add_data(path($self->project->dist_name . '-' . $self->project->version, $_), path($_)->slurp);
         }
         $tar->write(path($tarball), COMPRESS_GZIP);
         $self->c->infof("Wrote %s\n", $tarball);
@@ -175,7 +175,7 @@ sub write_release_tests {
     my $guard = pushd($self->dir);
     path('xt')->mkpath;
 
-    my $name = $self->project->name;
+    my $name = $self->project->dist_name;
     for my $file (qw(
         xt/minimum_version.t
         xt/cpan_meta.t

@@ -188,7 +188,7 @@ sub migrate_gitignore {
     # remove META.json from ignored file list
         @lines = grep !/^META\.json$/, @lines;
 
-    my $tarpattern = sprintf('%s-*.tar.gz', $self->project->name);
+    my $tarpattern = sprintf('%s-*.tar.gz', $self->project->dist_name);
     # Add some lines
     for my $fname (qw(
         .build
