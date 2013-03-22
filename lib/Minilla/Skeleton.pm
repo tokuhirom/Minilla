@@ -1,4 +1,4 @@
-package Minilla::Skelton;
+package Minilla::Skeleton;
 use strict;
 use warnings;
 use utf8;

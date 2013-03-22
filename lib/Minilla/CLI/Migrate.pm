@@ -70,7 +70,7 @@ sub run {
         my $dist = path($self->base_dir)->basename;
            $dist =~ s/^p5-//;
         (my $module = $dist) =~ s!-!::!g;
-        path('Build.PL')->spew(Minilla::Skelton->render_build_mb_pl({
+        path('Build.PL')->spew(Minilla::Skeleton->render_build_mb_pl({
             dist   => $dist,
             module => $module,
         }));

@@ -16,6 +16,11 @@ sub run {
         return;
     }
 
+    if (-f 'xt/01_podspell.t') {
+        $c->infof("There is xt/01_podspell.t. Skipping minil's spelling check\n");
+        return;
+    }
+
     local $ENV{LANG} = 'C';
     my $spell_cmd;
     foreach my $path (split(/:/, $ENV{PATH})) {
@@ -80,7 +85,7 @@ __END__
 
 =head1 NAME
 
-Minilla::Release::Spelling - Spellling check step
+Minilla::Release::Spelling - Spelling check step
 
 =head1 DESCRIPTION
 

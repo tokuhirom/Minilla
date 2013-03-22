@@ -4,7 +4,7 @@ use warnings;
 use utf8;
 use File::pushd;
 
-use Minilla::Skelton;
+use Minilla::Skeleton;
 
 
 sub run {
@@ -47,7 +47,7 @@ sub run {
 
     my $author = $username;
 
-    my $skelton = Minilla::Skelton->new(
+    my $skelton = Minilla::Skeleton->new(
         dist    => $dist,
         path    => $path,
         author  => $username,
@@ -84,7 +84,7 @@ __END__
 
 =head1 NAME
 
-Minilla::CLI::New - Generate new module skelton
+Minilla::CLI::New - Generate new module skeleton
 
 =head1 SYNOPSIS
 
@@ -96,15 +96,15 @@ Minilla::CLI::New - Generate new module skelton
 
 =head1 DESCRIPTION
 
-This module creates module skelton to current directory.
+This module creates module skeleton to current directory.
 
 =head1 OPTIONS
 
 =over 4
 
-=item --mb
+=item C<--mb>
 
-Generate skelton using L<Module::Build>
+Generate skeleton using L<Module::Build>
 (Default Build.PL uses L<Module::Build::Tiny>)
 
 It's useful for XS modules.

@@ -61,7 +61,7 @@ Is there a reason to remove ppport.h from repo?
 
 =item How can I install script files?
 
-Your excecutables must be in F<script/>. It's L<Module::Build::Tiny>'s rule.
+Your executables must be in F<script/>. It's L<Module::Build::Tiny>'s rule.
 
 =item Why minil only supports git?
 

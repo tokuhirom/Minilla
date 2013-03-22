@@ -35,7 +35,7 @@ __END__
 
 =head1 NAME
 
-Minilla::CLI::Test - Run test casees
+Minilla::CLI::Test - Run test cases
 
 =head1 SYNOPSIS
 
