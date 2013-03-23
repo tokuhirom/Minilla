@@ -2,7 +2,7 @@ requires 'perl'   => '5.0120005';
 requires 'parent' => '0';
 requires 'Archive::Tar';
 requires 'App::cpanminus', '1.6003';
-requires 'Module::CPANfile';
+requires 'Module::CPANfile', '0.9020';
 requires 'File::pushd';
 requires 'Path::Tiny';
 requires 'Moo' => 1.001000;

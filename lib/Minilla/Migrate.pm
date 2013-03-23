@@ -117,18 +117,8 @@ sub migrate_cpanfile {
         $prereqs->{configure}->{requires}->{'Module::CPANfile'} = 0;
     }
 
-    my $ret = '';
-    for my $phase (qw(runtime configure build test develop)) {
-        my $indent = $phase eq 'runtime' ? '' : '    ';
-        $ret .= "on $phase => sub {\n" unless $phase eq 'runtime';
-        for my $type (qw(requires recommends)) {
-            while (my ($k, $version) = each %{$prereqs->{$phase}->{$type}}) {
-                $ret .= "${indent}$type '$k', '$version';\n";
-            }
-        }
-        $ret .= "};\n\n" unless $phase eq 'runtime';
-    }
-    spew('cpanfile', $ret);
+    my $cpanfile = Module::CPANfile->from_prereqs($prereqs);
+    spew('cpanfile', $cpanfile->to_string);
 
     $self->c->cmd('git add cpanfile');
 }
