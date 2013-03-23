@@ -92,10 +92,8 @@ use Module::Build::Tiny;
 Build_PL();
 
 @@ cpanfile-Tiny
-requires 'parent';
-
 on test => sub {
-    requires 'Test::More' => 0.58;
+    requires 'Test::More' => 0.98;
 };
 
 on configure => sub {
@@ -148,8 +146,6 @@ my $builder = Module::Build->new(
 $builder->create_build_script();
 
 @@ cpanfile-MB
-requires 'parent';
-
 on test => sub {
     requires 'Test::More' => 0.98;
 };
