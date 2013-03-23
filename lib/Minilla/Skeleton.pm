@@ -209,7 +209,7 @@ package <% module %>;
 use strict;
 use warnings;
 use 5.008005;
-our $VERSION = '<% version %>';
+use version; our $VERSION = version->declare("<% version %>");
 
 1;
 <% end %>
