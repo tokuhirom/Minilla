@@ -182,7 +182,7 @@ done_testing;
 @@ Changes
 Revision history for Perl extension <% dist %>
 
-0.0.1 <% date %>
+<% version %> <% date %>
 
     - original version
 
@@ -197,7 +197,7 @@ package <% module %>;
 use strict;
 use warnings;
 use 5.008005;
-use version; our $VERSION = version->declare("<% version %>");
+our $VERSION = "<% version %>";
 
 1;
 <% end %>

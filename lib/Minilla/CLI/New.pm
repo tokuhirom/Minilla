@@ -25,7 +25,7 @@ sub run {
     $email ||= `git config user.email`;
     $email =~ s/\n$//;
 
-    my $version = 'v0.0.1';
+    my $version = '0.01';
 
     unless ($username) {
         $self->error("Please set user.name in git, or use `--username` option.");
