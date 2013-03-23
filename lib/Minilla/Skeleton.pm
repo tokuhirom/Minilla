@@ -55,16 +55,6 @@ sub generate {
     }
 }
 
-# Generate META.json
-sub generate_metafile {
-    my $self = shift;
-
-    my $guard = pushd($self->dist);
-    Minilla::Project->new(
-        c => $self->c
-    )->regenerate_meta_json();
-}
-
 sub render {
     my $self = shift;
     my $tmpl = shift;
@@ -152,7 +142,7 @@ my $builder = Module::Build->new(
     test_files           => ((-d '.git' || $ENV{RELEASE_TESTING}) && -d 'xt') ? 't/ xt/' : 't/',
     recursive_test_files => 1,
 
-    create_readme  => 1,
+    create_readme  => 0,
     create_license => 0,
 );
 $builder->create_build_script();

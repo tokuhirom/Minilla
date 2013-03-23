@@ -59,19 +59,20 @@ sub run {
     );
     $skelton->generate();
 
-    # init git repo
-    $self->infof("Initializing psgi $module\n");
+    $self->infof("Initializing git $module\n");
     {
+        # init git repo
         my $guard = pushd($dist);
         $self->cmd('git', 'init');
-    }
 
-    # generate metafile after initialize git repo
-    $skelton->generate_metafile();
+        # generate project after initialize git repo
+        my $project = Minilla::Project->new(
+            c => $self->c
+        );
+        $project->regenerate_meta_json();
+        $project->regenerate_readme_mkdn();
 
-    # and commit all things
-    {
-        my $guard = pushd($dist);
+        # and commit all things
         $self->cmd('git', 'add', '.');
         $self->cmd('git', 'commit', '-m', 'initial import');
     }
