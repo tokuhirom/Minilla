@@ -61,10 +61,9 @@ sub generate_metafile {
     my $self = shift;
 
     my $guard = pushd($self->dist);
-    my $meta = Minilla::Project->new(
+    Minilla::Project->new(
         c => $self->c
-    )->cpan_meta('unstable');
-    $meta->save('META.json', {version => 2.0});
+    )->regenerate_meta_json();
 }
 
 sub render {
