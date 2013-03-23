@@ -6,27 +6,28 @@ use ExtUtils::MakeMaker qw(prompt);
 use Minilla::Util qw(find_file);
 
 sub run {
-    my ($self, $c, $opts) = @_;
+    my ($self, $c, $opts, $project) = @_;
+
+    my $curver = $project->metadata->version;
 
     # perl-revision command is included in Perl::Version.
-    if ($opts->{bump}) {
-        my $answer = prompt("How bump up version? 0: none, 1: major, 2: minor, 3: patch", 3);
+    if ($ENV{V} || exists_tagged_version($curver)) {
         my @opts;
-        if ($answer =~ /\A[1-3]\z/) {
-            push @opts, +{
-                1 => '-bump-revision',
-                2 => '-bump-version',
-                3 => '-bump-subversion',
-            }->{$answer};
+        if ($ENV{V}) {
+            push @opts, '-set', $ENV{V};
+        } else {
+            push @opts, '-bump';
         }
         if ($opts->{dry_run}) {
             push @opts, '-dryrun';
         }
-        $c->cmd('perl-reversion', @opts);
-
         unless ($opts->{dry_run}) {
-            my $config = Minilla::Config->load($c, find_file('minil.toml'));
-            my $newver = $config->metadata->version;
+            $c->cmd('perl-reversion', @opts);
+
+            # clear old version information
+            $project->clear_metadata();
+
+            my $newver = $project->metadata->version;
             if (exists_tagged_version($newver)) {
                 $c->error("Sorry, version '$newver' is already tagged.  Stopping.\n");
             }

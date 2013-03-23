@@ -31,6 +31,7 @@ sub run {
     # CheckOrigin
     my @steps = qw(
         CheckUntrackedFiles
+        BumpVersion
         CheckChangeLog
         RegenerateMeta
         DistTest
@@ -62,7 +63,6 @@ Minilla::CLI::Release - Release the module to CPAN!
     % minil release
 
         --no-test         Do not run test scripts
-        --no-bump         Do not bump up version
         --trial           Trial release
         --dry-run         Dry run mode
 

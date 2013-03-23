@@ -28,10 +28,6 @@ has dir => (
     required => 1,
 );
 
-has version => (
-    is => 'lazy',
-);
-
 has dist_name => (
     is => 'lazy',
 );
@@ -43,7 +39,8 @@ has main_module_path => (
 has metadata => (
     is => 'lazy',
     required => 1,
-    handles => [qw(name abstract perl_version author license)],
+    handles => [qw(name abstract version perl_version author license)],
+    clearer => 1,
 );
 
 no Moo;
@@ -176,17 +173,6 @@ sub _detect_source_path {
     }
 
     return undef;
-}
-
-sub _build_version {
-    my $self = shift;
-
-    my $metadata = $self->metadata;
-    if ($metadata->version =~ /\A[0-9]+\.[0-9]+\.[0-9]+\z/) {
-        return 'v' . $metadata->version;
-    } else {
-        return $metadata->version;
-    }
 }
 
 sub load_cpanfile {
