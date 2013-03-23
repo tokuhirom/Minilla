@@ -118,7 +118,7 @@ sub migrate_cpanfile {
     }
 
     my $ret = '';
-    for my $phase (qw(runtime configure build develop)) {
+    for my $phase (qw(runtime configure build test develop)) {
         my $indent = $phase eq 'runtime' ? '' : '    ';
         $ret .= "on $phase => sub {\n" unless $phase eq 'runtime';
         for my $type (qw(requires recommends)) {
