@@ -37,7 +37,6 @@ sub generate {
     $self->render('Module.pm', 'lib', $self->path);
 
     $self->render('Changes');
-    $self->render('minil.toml');
     $self->render('t/00_compile.t');
     $self->render('.travis.yml');
 
@@ -215,9 +214,6 @@ use_ok $_ for qw(
 );
 
 done_testing;
-
-@@ minil.toml
-name = "<% module %>"
 
 @@ Changes
 Revision history for Perl extension <% dist %>
