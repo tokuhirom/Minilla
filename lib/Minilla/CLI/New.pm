@@ -67,7 +67,7 @@ sub run {
 
         # generate project after initialize git repo
         my $project = Minilla::Project->new(
-            c => $self->c
+            c => $self
         );
         $project->regenerate_meta_json();
         $project->regenerate_readme_md();
