@@ -162,8 +162,8 @@ sub _detect_source_path {
     my ($self, $dir) = @_;
 
     for my $path ("App-$dir", $dir) {
-        $path =~ s!::!/!;
-        $path =~ s!-!/!;
+        $path =~ s!::!/!g;
+        $path =~ s!-!/!g;
         $path = "lib/${path}.pm";
 
         return $path if -f $path;
