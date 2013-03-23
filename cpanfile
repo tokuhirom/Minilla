@@ -23,6 +23,9 @@ recommends 'Software::License';
 recommends 'Test::Pod';
 recommends 'Test::Spelling';
 recommends 'Pod::Wordlist::hanekomu';
+recommends 'Test::MinimumVersion' => '0.101080';
+recommends 'Test::CPAN::Meta';
+recommends 'Pod::Wordlist::hanekomu';
 
 requires 'TOML' => 0.91;
 

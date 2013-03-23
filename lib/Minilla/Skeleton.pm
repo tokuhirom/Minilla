@@ -113,18 +113,6 @@ on configure => sub {
 };
 
 on 'develop' => sub {
-    # xt/minimum_bersion.t
-    requires 'Test::MinimumVersion' => '0.101080';
-
-    # xt/cpan_meta.t
-    requires 'Test::CPAN::Meta';
-
-    # xt/pod.t
-    requires 'Test::Pod' => 1.41;
-
-    # xt/spelling.t
-    requires 'Test::Spelling';
-    requires 'Pod::Wordlist::hanekomu';
 };
 
 @@ Build-MB.PL
