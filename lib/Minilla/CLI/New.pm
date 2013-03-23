@@ -70,7 +70,7 @@ sub run {
             c => $self->c
         );
         $project->regenerate_meta_json();
-        $project->regenerate_readme_mkdn();
+        $project->regenerate_readme_md();
 
         # and commit all things
         $self->cmd('git', 'add', '.');

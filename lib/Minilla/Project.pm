@@ -261,7 +261,7 @@ sub regenerate_meta_json {
     });
 }
 
-sub regenerate_readme_mkdn {
+sub regenerate_readme_md {
     my $self = shift;
 
     require Pod::Markdown;
@@ -269,7 +269,7 @@ sub regenerate_readme_mkdn {
     my $parser = Pod::Markdown->new;
     $parser->parse_from_file($self->main_module_path);
 
-    my $fname = File::Spec->catfile($self->dir, 'README.mkdn');
+    my $fname = File::Spec->catfile($self->dir, 'README.md');
     open my $fh, '>', $fname
         or $self->errorf("%s: %s\n", $fname, $!);
     print $fh $parser->as_markdown;

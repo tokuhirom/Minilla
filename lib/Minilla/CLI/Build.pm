@@ -24,7 +24,7 @@ sub run {
     $project->regenerate_meta_json();
 
     # generate README.md
-    $project->regenerate_readme_mkdn();
+    $project->regenerate_readme_md();
 
     # generate project directory
     my $work_dir = $project->work_dir;
