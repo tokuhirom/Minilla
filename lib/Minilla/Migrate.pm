@@ -123,7 +123,7 @@ sub migrate_cpanfile {
         $ret .= "on $phase => sub {\n" unless $phase eq 'runtime';
         for my $type (qw(requires recommends)) {
             while (my ($k, $version) = each %{$prereqs->{$phase}->{$type}}) {
-                $ret .= "${indent}$type '$k' => '$version';\n";
+                $ret .= "${indent}$type '$k', '$version';\n";
             }
         }
         $ret .= "};\n\n" unless $phase eq 'runtime';
