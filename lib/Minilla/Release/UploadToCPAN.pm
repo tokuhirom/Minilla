@@ -15,8 +15,8 @@ sub run {
     my $work_dir = Minilla::WorkDir->instance($c);
     my $tar = $work_dir->dist;
 
-    if ($c->dry_run) {
-        $c->infof("Dry run. You don't need the module to CPAN\n");
+    if ($c->dry_run || $ENV{FAKE_RELEASE}) {
+        $c->infof("Dry run. You don't need the module upload to CPAN\n");
     } else {
         $c->infof("Upload to CPAN\n");
 
