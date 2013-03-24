@@ -177,7 +177,7 @@ sub generate_build_pl {
     my ($self) = @_;
 
     if ($self->use_mb_tiny) {
-        path('Build.PL')->spew("use Module::Build::Tiny;\nBuild_PL();\n");
+        path('Build.PL')->spew("use 5.008001; use Module::Build::Tiny;\nBuild_PL();\n");
     } else {
         my $dist = path($self->project->dir)->basename;
            $dist =~ s/^p5-//;
