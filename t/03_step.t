@@ -17,12 +17,17 @@ ok(-f 'Acme-Foo/.travis.yml');
 {
     local $ENV{PERL_MM_USE_DEFAULT} = 1;
     local $ENV{PERL_MINILLA_SKIP_CHECK_CHANGE_LOG} = 1;
+    local $ENV{FAKE_RELEASE} = 1;
     my $guard = pushd('Acme-Foo');
     is(minil('migrate'), 0);
     is(minil('build'), 0);
     is(minil('test'), 0);
     is(minil('dist'), 0);
-    is(minil('release', '--dry-run'), 0);
+    if (eval "require CPAN::Uploader; 1") {
+        is(minil('release', '--dry-run'), 0);
+    } else {
+        diag "CPAN::Upoader is not installed?, skip releng tests";
+    }
 }
 
 rmtree('Acme-Foo');
