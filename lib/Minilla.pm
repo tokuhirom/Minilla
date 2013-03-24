@@ -78,7 +78,7 @@ Please look L<Minilla::CLI::Migrate>.
 
 =head1 AUTHOR
 
-Tokuhiro Matsuno E<lt>tokuhirom AAJKLFJEF@ gmail.comE<gt>
+Tokuhiro Matsuno E<lt> tokuhirom @ gmail.com E<gt>
 
 =head1 SEE ALSO
 

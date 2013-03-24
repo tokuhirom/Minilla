@@ -42,7 +42,7 @@ __END__
 
 =head1 NAME
 
-Minilla::CLI::Build - Build dist dir
+Minilla::CLI::Build - Build dist directory
 
 =head1 SYNOPSIS
 

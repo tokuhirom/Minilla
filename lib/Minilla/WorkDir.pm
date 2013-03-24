@@ -127,14 +127,14 @@ sub build {
     {
         path('MANIFEST')->spew(join("\n", @files));
     }
+
+    Minilla::ReleaseTest->write_release_tests($self->project, $self->dir);
 }
 
 sub dist_test {
     my $self = shift;
 
     $self->build();
-
-    Minilla::ReleaseTest->write_release_tests($self->project, $self->dir);
 
     $self->project->verify_prereqs([qw(runtime)], $_) for qw(requires recommends);
     $self->project->verify_prereqs([qw(test)], $_) for qw(requires recommends);
