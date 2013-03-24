@@ -85,7 +85,11 @@ sub dist_ini2minil_toml {
             chrome => Dist::Zilla::Chrome::Term->new(),
         )
     );
-    my $conf = $sequence->section_named('_')->payload;
+    my $conf = do {
+        # Note. dist.ini using @Milla does not have '_' section.
+        my $section = $sequence->section_named('_');
+        $section ? $section->payload : +{};
+    };
 
     my $dst = +{};
     for my $key (qw(name author version license)) {
