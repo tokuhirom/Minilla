@@ -91,6 +91,9 @@ sub run {
         }
     } else {
         $self->print("Could not find command '$cmd'\n", ERROR);
+        if ($@ !~ /^Can't locate/) {
+            $self->print("$@\n", ERROR);
+        }
         exit 2;
     }
 }
@@ -116,7 +119,7 @@ sub printf {
     my $self = shift;
     my $type = pop;
     my($temp, @args) = @_;
-    $self->print(sprintf($temp, @args), $type);
+    $self->print(sprintf($temp, map { defined($_) ? $_ : '-' } @args), $type);
 }
  
 sub print {
