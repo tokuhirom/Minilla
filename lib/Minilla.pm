@@ -39,6 +39,24 @@ B<THIS IS A DEVELOPMENT RELEASE. API MAY CHANGE WITHOUT NOTICE>.
 
     # TODO: --trial
 
+=head1 CONFIGURATION
+
+Minilla uses B<Convention over Configuration>.
+
+But, you can write configurations to I<minil.toml> file by L<TOML|https://github.com/mojombo/toml>.
+
+=over 4
+
+=item name
+
+You can write 'name' instead of detecting project name from directory name.
+
+=item no_github_issues
+
+Minilla sets bugtracker as github issues by default. But if you want to use RT, you can set this variable.
+
+=back
+
 =head1 FAQ
 
 =over 4

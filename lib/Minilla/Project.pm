@@ -238,6 +238,11 @@ sub cpan_meta {
                 $http_url =~ s![\w\-]+\@([^:]+):!https://$1/!;
                 $http_url =~ s!\Agit://!https://!;
                 $http_url =~ s!\.git$!!;
+                unless ($self->config->{no_github_issues}) {
+                    $dat->{resources}->{bugtracker} = +{
+                        web => "$http_url/issues",
+                    };
+                }
                 $dat->{resources}->{repository} = +{
                     url => $git_url,
                     web => $http_url,
