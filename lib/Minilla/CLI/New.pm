@@ -72,9 +72,8 @@ sub run {
         $project->regenerate_meta_json();
         $project->regenerate_readme_md();
 
-        # and commit all things
+        # and git add all things
         $self->cmd('git', 'add', '.');
-        $self->cmd('git', 'commit', '-m', 'initial import');
     }
 
     $self->infof("Finished to create $module\n");
