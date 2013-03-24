@@ -236,9 +236,11 @@ sub cpan_meta {
             if ($git_url =~ /github\.com/) {
                 my $http_url = $git_url;
                 $http_url =~ s![\w\-]+\@([^:]+):!https://$1/!;
-                $http_url =~ s!\.git$!/tree!;
+                $http_url =~ s!\Agit://!https://!;
+                $http_url =~ s!\.git$!!;
                 $dat->{resources}->{repository} = +{
                     url => $git_url,
+                    web => $http_url,
                 };
                 $dat->{resources}->{homepage} = $self->homepage || $http_url;
             } else {
