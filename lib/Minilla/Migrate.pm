@@ -99,6 +99,8 @@ sub dist_ini2minil_toml {
     }
     my $toml = to_toml($dst);
     spew( 'minil.toml' => $toml );
+    $self->git_add('minil.toml');
+    $self->git_rm('dist.ini');
 
     $self->project->clear_metadata();
 }
@@ -110,6 +112,11 @@ sub generate_license {
         path('LICENSE')->spew($self->project->metadata->license->fulltext());
         $self->git_add(qw(LICENSE));
     }
+}
+
+sub git_rm {
+    my ($self, @files) = @_;
+    $self->c->cmd(qw(git rm), @files);
 }
 
 sub git_add {
