@@ -2,6 +2,7 @@ use strict;
 use warnings;
 use utf8;
 use Test::More;
+use Test::Requires qw(Dist::Zilla);
 use Minilla::CLI;
 use File::Temp qw(tempdir);
 use File::Copy::Recursive qw(rcopy);
