@@ -9,6 +9,7 @@ requires 'Moo' => 1.001000;
 requires 'Data::Section::Simple';
 requires 'Module::Metadata';
 requires 'File::Copy::Recursive';
+requires 'Pod::Markdown';
 
 # Modules required by minil new/minil dist/minil release are optional.
 # It's good for contributors
