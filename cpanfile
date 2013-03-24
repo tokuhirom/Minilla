@@ -10,6 +10,7 @@ requires 'Data::Section::Simple';
 requires 'Module::Metadata';
 requires 'File::Copy::Recursive';
 requires 'Pod::Markdown';
+requires 'File::Find::Rule'; # File::File is good enough?
 
 # Modules required by minil new/minil dist/minil release are optional.
 # It's good for contributors
