@@ -97,9 +97,11 @@ sub dist_ini2minil_toml {
             $dst->{$key} = $val;
         }
     }
-    my $toml = to_toml($dst);
-    spew( 'minil.toml' => $toml );
-    $self->git_add('minil.toml');
+    if (%$dst) {
+        my $toml = to_toml($dst);
+        spew( 'minil.toml' => $toml );
+        $self->git_add('minil.toml');
+    }
     $self->git_rm('dist.ini');
 
     $self->project->clear_metadata();
