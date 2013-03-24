@@ -10,6 +10,7 @@ use Path::Tiny;
 use DirHandle;
 use File::pushd;
 
+use Minilla::License;
 use Minilla::Logger;
 use Minilla::Metadata;
 use Minilla::Util qw(slurp_utf8 find_dir);
@@ -39,11 +40,21 @@ has main_module_path => (
 has metadata => (
     is => 'lazy',
     required => 1,
-    handles => [qw(name abstract version perl_version author license)],
+    handles => [qw(name perl_version author license)],
     clearer => 1,
 );
 
 no Moo;
+
+sub version {
+    my $self = shift;
+    $self->config->{version} || $self->metadata->version;
+}
+
+sub abstract {
+    my $self = shift;
+    $self->config->{abstract} || $self->metadata->abstract;
+}
 
 sub _build_dir {
     my $self = shift;
@@ -123,9 +134,15 @@ sub _build_metadata {
     my $self = shift;
     my $c = $self->c;
 
+    my $config = +{%{$self->config}};
+    if (my $license = delete $config->{license}) {
+        $config->{_license_name} = $license;
+    }
+
     # fill from main_module
     my $metadata = Minilla::Metadata->new(
         source => $self->main_module_path,
+        %$config,
     );
     $c->infof("Name: %s\n", $metadata->name);
     $c->infof("Abstract: %s\n", $metadata->abstract);

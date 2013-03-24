@@ -12,6 +12,10 @@ has [qw(abstract perl_version author license)] => (
     is => 'lazy',
 );
 
+has '_license_name' => (
+    is => 'ro',
+);
+
 has metadata => (
     is => 'lazy',
     handles => [qw(name version)],
@@ -36,8 +40,20 @@ sub _build_metadata {
 # Taken from Module::Install::Metadata
 sub _build_abstract {
     my ($self) = @_;
-    require ExtUtils::MM_Unix;
-    bless( { DISTNAME => $self->name }, 'ExtUtils::MM_Unix' )->parse_abstract($self->source);
+
+    # find by EU::MM
+    {
+        require ExtUtils::MM_Unix;
+        my $abstract = bless( { DISTNAME => $self->name }, 'ExtUtils::MM_Unix' )->parse_abstract($self->source);
+        return $abstract if $abstract;
+    }
+    # find dzil style '# ABSTRACT: '
+    {
+        if (slurp($self->source) =~ /^\s*#+\s*ABSTRACT:\s*(.+)$/m) {
+            return $1;
+        }
+    }
+    return;
 }
 
 sub _extract_perl_version {
@@ -128,7 +144,7 @@ sub _build_author {
         }
         return $author;
     } else {
-        warn "Cannot determine author info from $_[0]\n";
+        warn "Cannot determine author info from @{[ $_[0]->source ]}\n";
         return;
     }
 }
@@ -167,17 +183,40 @@ sub __extract_license {
     return 0;
 }
 
+sub _guess_license_class_by_name {
+    my ($name) = @_;
+
+    if ($name eq 'Perl_5') {
+        return 'Minilla::License::Perl_5'
+    } else {
+        my $meta_str = qq!{"license":"$name"}!;
+        require_optional('Software/LicenseUtils.pm', 'Non Perl_5 license support');
+        my (@guesses) = Software::LicenseUtils->guess_license_from_meta($meta_str);
+        unless (@guesses) {
+            Carp::confess("License $name is not supported yet.");
+        }
+        my $klass = shift @guesses;
+        eval "require $klass; 1" or die $@; ## no critic.
+        return $klass;
+    }
+}
+
 sub _build_license {
     my ($self) = @_;
 
     my $pm_text = slurp($self->source);
-    if (_is_perl5_license($pm_text)) {
+    if ($self->_license_name) {
+        _guess_license_class_by_name($self->_license_name)->new({
+            holder => $self->author,
+        });
+    } elsif (_is_perl5_license($pm_text)) {
         require Minilla::License::Perl_5;
         return Minilla::License::Perl_5->new({
             holder => $self->author,
         });
     } else {
         require_optional('Software/LicenseUtils.pm', 'Non Perl_5 license support');
+
         my (@guesses) = Software::LicenseUtils->guess_license_from_pod($pm_text);
         if (@guesses) {
             my $klass = $guesses[0];
@@ -186,10 +225,10 @@ sub _build_license {
                 holder => $self->author,
             });
         } else {
-            warn "Cannot determine license info from $_[0]\n";
+            warn "Cannot determine license info from @{[ $_[0]->source ]}\n";
             require Software::License::None;
             return Software::License::None->new({
-                holder => $self->author,
+                holder => $self->author || 'unknown',
             });
         }
     }

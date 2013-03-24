@@ -7,8 +7,9 @@ use File::pushd;
 use CPAN::Meta;
 use Path::Tiny;
 use File::Find::Rule;
+use TOML qw(to_toml);
 
-use Minilla::Util qw(slurp spew);
+use Minilla::Util qw(slurp spew require_optional);
 
 use Moo;
 
@@ -59,11 +60,43 @@ sub run {
     }
     # TODO move top level *.pm to lib/?
 
+    if (-f 'dist.ini') {
+        $self->dist_ini2minil_toml();
+    }
+
     $self->remove_unused_files();
     $self->migrate_gitignore();
     $self->project->regenerate_meta_json();
     $self->project->regenerate_readme_md();
     $self->git_add(qw(META.json README.md));
+}
+
+sub dist_ini2minil_toml {
+    my $self = shift;
+
+    $self->c->infof("Converting dist.ini to minil.toml\n");
+
+    require_optional( 'Config/MVP/Reader/INI.pm', 'Migrate dzil repo' );
+    require_optional( 'Dist/Zilla/MVP/Assembler.pm', 'Migrate dzil repo' );
+    require_optional( 'Dist/Zilla/Chrome/Term.pm', 'Migrate dzil repo' );
+    my $sequence = Config::MVP::Reader::INI->read_into_assembler(
+        'dist.ini',
+        Dist::Zilla::MVP::Assembler->new(
+            chrome => Dist::Zilla::Chrome::Term->new(),
+        )
+    );
+    my $conf = $sequence->section_named('_')->payload;
+
+    my $dst = +{};
+    for my $key (qw(name author version license)) {
+        if ( defined(my $val = $conf->{$key}) ) {
+            $dst->{$key} = $val;
+        }
+    }
+    my $toml = to_toml($dst);
+    spew( 'minil.toml' => $toml );
+
+    $self->project->clear_metadata();
 }
 
 sub generate_license {
@@ -96,11 +129,15 @@ sub migrate_cpanfile {
         $self->c->cmd($^X, 'Makefile.PL');
         $self->c->cmd('make metafile');
         $metafile = 'MYMETA.json';
+    } elsif (-f 'dist.ini') {
+        my %orig = map { $_ => 1 } glob('*/META.yml');
+        $self->c->cmd('dzil build');
+        ($metafile) = grep { !$orig{$_} } glob('*/META.yml');
     } else {
-        $self->c->error("There is no Build.PL/Makefile.PL");
+        $self->c->errorf("There is no Build.PL/Makefile.PL/dist.ini: %s\n", Cwd::getcwd());
     }
 
-    unless (-f $metafile) {
+    unless (defined($metafile) && -f $metafile) {
         $self->c->error("Build.PL/Makefile.PL does not generates $metafile\n");
     }
 
