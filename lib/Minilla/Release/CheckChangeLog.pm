@@ -15,6 +15,7 @@ sub run {
 
     if ($ENV{PERL_MINILLA_SKIP_CHECK_CHANGE_LOG}) {
         $c->infof("Okay, you are debugging now.\n");
+        return;
     }
 
     until (path('Changes')->slurp =~ /^$version/m) {
