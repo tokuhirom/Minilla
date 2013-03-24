@@ -1,4 +1,5 @@
 language: perl
+test: perl Build.PL && ./Build build && ./Build test
 perl:
   - 5.16
   - 5.14
