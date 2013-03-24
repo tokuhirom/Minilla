@@ -147,9 +147,11 @@ sub migrate_cpanfile {
     if ($self->use_mb_tiny) {
         $self->c->infof("Using Module::Build::Tiny\n");
         delete $prereqs->{configure}->{requires}->{'Module::Build'};
+        delete $prereqs->{configure}->{requires}->{'ExtUtils::MakeMaker'};
         $prereqs->{configure}->{requires}->{'Module::Build::Tiny'} = 0;
     } else {
         $self->c->infof("Using Module::Build (Because this distribution uses xs)\n");
+        delete $prereqs->{configure}->{requires}->{'ExtUtils::MakeMaker'};
         $prereqs->{configure}->{requires}->{'Module::Build'}    = 0.40;
         $prereqs->{configure}->{requires}->{'Module::CPANfile'} = 0;
     }
