@@ -4,6 +4,8 @@ use warnings;
 use utf8;
 use ExtUtils::MakeMaker qw(prompt);
 
+use Minilla::Util qw(require_optional);
+
 sub run {
     my ($self, $c, $opts) = @_;
 
