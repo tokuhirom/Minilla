@@ -7,6 +7,9 @@ use ExtUtils::MakeMaker qw(prompt);
 sub run {
     my ($self, $c, $opts) = @_;
 
+    require_optional('CPAN/Uploader.pm',
+        'Release engineering');
+
     my $work_dir = Minilla::WorkDir->instance($c);
     my $tar = $work_dir->dist;
 
