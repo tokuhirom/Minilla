@@ -4,13 +4,15 @@ use warnings;
 use utf8;
 use Path::Tiny;
 use ExtUtils::MakeMaker qw(prompt);
-use CPAN::Uploader;
 
-use Minilla::Util qw(edit_file);
+use Minilla::Util qw(edit_file require_optional);
 use Minilla::WorkDir;
 
 sub run {
     my ($self, @args) = @_;
+
+    require_optional('CPAN/Uploader.pm',
+        'Release engineering');
 
     my $opts = {
         test => 1,
