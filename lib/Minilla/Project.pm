@@ -10,7 +10,6 @@ use Path::Tiny;
 use DirHandle;
 use File::pushd;
 
-use Minilla::License;
 use Minilla::Logger;
 use Minilla::Metadata;
 use Minilla::Util qw(slurp_utf8 find_dir);
