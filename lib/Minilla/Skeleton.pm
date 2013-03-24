@@ -207,7 +207,7 @@ our $VERSION = "<% version %>";
 <% module %> - It's new $module
 
 =head1 SYNOPSIS
-    
+
     use <% module %>;
 
 =head1 DESCRIPTION
