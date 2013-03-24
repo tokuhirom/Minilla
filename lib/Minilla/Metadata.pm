@@ -215,19 +215,25 @@ sub _build_license {
             holder => $self->author,
         });
     } else {
-        require_optional('Software/LicenseUtils.pm', 'Non Perl_5 license support');
-
-        my (@guesses) = Software::LicenseUtils->guess_license_from_pod($pm_text);
-        if (@guesses) {
-            my $klass = $guesses[0];
-            eval "require $klass; 1" or die $@; ## no critic.
-            $klass->new({
-                holder => $self->author,
-            });
+        if (eval "require Software::LicenseUtils; 1") {
+            my (@guesses) = Software::LicenseUtils->guess_license_from_pod($pm_text);
+            if (@guesses) {
+                my $klass = $guesses[0];
+                eval "require $klass; 1" or die $@; ## no critic.
+                $klass->new({
+                    holder => $self->author,
+                });
+            } else {
+                warn "Cannot determine license info from @{[ $_[0]->source ]}\n";
+                require Minilla::License::Unknown;
+                return Minilla::License::Unknown->new({
+                    holder => $self->author || 'unknown',
+                });
+            }
         } else {
-            warn "Cannot determine license info from @{[ $_[0]->source ]}\n";
-            require Software::License::None;
-            return Software::License::None->new({
+            warn "Software::License is needed when you want to use non Perl_5 license.\n";
+            require Minilla::License::Unknown;
+            return Minilla::License::Unknown->new({
                 holder => $self->author || 'unknown',
             });
         }
