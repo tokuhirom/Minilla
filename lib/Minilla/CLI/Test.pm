@@ -37,10 +37,7 @@ sub run {
     $project->verify_prereqs( [qw(develop test runtime)], $_ ) for qw(requires recommends);
 
     my $work_dir = $project->work_dir;
-    $work_dir->build();
-
-    my $guard = pushd($work_dir->dir);
-    $self->cmd($project->config->{test_command} || 'prove -l -r t ' . (-d 'xt' ? 'xt' : ''));
+    $work_dir->dist_test();
 }
 
 1;

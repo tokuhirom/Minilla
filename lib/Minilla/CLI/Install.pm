@@ -19,6 +19,7 @@ sub run {
     );
     my $work_dir = $project->work_dir();
     if ($test) {
+        local $ENV{RELEASE_TESTING} = 1;
         $work_dir->dist_test();
     }
     my $tar = $work_dir->dist();

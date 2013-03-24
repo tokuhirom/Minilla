@@ -140,7 +140,6 @@ sub dist_test {
     $self->project->verify_prereqs([qw(test)], $_) for qw(requires recommends);
 
     {
-        local $ENV{RELEASE_TESTING} = 1;
         my $guard = pushd($self->dir);
         $self->c->cmd('prove', '-r', '-l', 't', (-d 'xt' ? 'xt' : ()));
     }
