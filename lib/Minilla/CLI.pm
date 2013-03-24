@@ -91,7 +91,7 @@ sub run {
         }
     } else {
         $self->print("Could not find command '$cmd'\n", ERROR);
-        if ($@ !~ /^Can't locate/) {
+        if ($@ !~ /^Can't locate Minilla/) {
             $self->print("$@\n", ERROR);
         }
         exit 2;
