@@ -32,3 +32,5 @@ _build_params
 !META.json
 Minilla-*.tar.gz
 Minilla-*
+/.build
+/Minilla-*

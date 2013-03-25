@@ -118,7 +118,7 @@ sub generate_license {
 
 sub git_rm {
     my ($self, @files) = @_;
-    $self->c->cmd(qw(git rm), @files);
+    $self->c->cmd(qw(git rm -f), @files);
 }
 
 sub git_add {
@@ -179,7 +179,7 @@ sub generate_build_pl {
     my ($self) = @_;
 
     if ($self->use_mb_tiny) {
-        path('Build.PL')->spew("use 5.008001; use Module::Build::Tiny;\nBuild_PL();\n");
+        path('Build.PL')->spew("use 5.008001;\nuse Module::Build::Tiny;\nBuild_PL();\n");
     } else {
         my $dist = path($self->project->dir)->basename;
            $dist =~ s/^p5-//;
