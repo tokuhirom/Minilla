@@ -159,6 +159,10 @@ Tokuhiro Matsuno E<lt> tokuhirom @ gmail.com E<gt>
 
 Tatsuhiko Miyagawa
 
+=head1 THANKS TO
+
+RJBS, the author of L<Dist::Zilla>. L<Dist::Zilla> points CPAN authorizing tool.
+
 =head1 SEE ALSO
 
 =head1 LICENSE
