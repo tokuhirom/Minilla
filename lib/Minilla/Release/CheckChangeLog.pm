@@ -18,7 +18,7 @@ sub run {
         return;
     }
 
-    until (path('Changes')->slurp =~ /^\{\{\$NEXT\}\}\n+[ \t]*\S/m) {
+    until (path('Changes')->slurp =~ /^\{\{\$NEXT\}\}\n+[ \t]+\S/m) {
         $c->infof("No mention of version '$version' in changelog file 'Changes'\n");
         if (prompt("Edit file?", 'y') =~ /y/i) {
             edit_file('Changes');
