@@ -142,7 +142,7 @@ sub dist_test {
 
     {
         my $guard = pushd($self->dir);
-        cmd('prove', '-r', '-l', 't', (-d 'xt' ? 'xt' : ()));
+        cmd('prove', '-r', '-l', (-d 't' ? 't' : ()), (-d 'xt' ? 'xt' : ()));
     }
 }
 
