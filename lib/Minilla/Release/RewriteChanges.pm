@@ -2,7 +2,7 @@ package Minilla::Release::RewriteChanges;
 use strict;
 use warnings;
 use utf8;
-use Minilla::Util qw(slurp_raw);
+use Minilla::Util qw(slurp_raw spew_raw);
 
 sub run {
     my ($self, $project, $opts) = @_;
