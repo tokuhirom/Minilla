@@ -3,17 +3,20 @@ use strict;
 use warnings;
 use utf8;
 
+use Minilla::Util qw(cmd);
+use Minilla::Logger;
+
 sub run {
-    my ($class, $c, $opts, $project) = @_;
+    my ($self, $project, $opts) = @_;
 
     my $ver = $project->version;
-    if ( $c->dry_run ) {
-        $c->infof("DRY-RUN.  Would have tagged version $ver.\n");
+    if ( $opts->{dry_run} ) {
+        infof("DRY-RUN.  Would have tagged version $ver.\n");
         return;
     }
 
-    $c->cmd('git', 'tag', $ver);
-    $c->cmd('git', "push", 'origin', tag => $ver);
+    cmd('git', 'tag', $ver);
+    cmd('git', "push", 'origin', tag => $ver);
 }
 
 1;

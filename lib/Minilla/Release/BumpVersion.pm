@@ -3,7 +3,9 @@ use strict;
 use warnings;
 use utf8;
 use ExtUtils::MakeMaker qw(prompt);
-use Minilla::Util qw(find_file require_optional);
+
+use Minilla::Util qw(find_file require_optional cmd);
+use Minilla::Logger;
 
 sub init {
     require_optional(
@@ -12,7 +14,7 @@ sub init {
 }
 
 sub run {
-    my ($self, $c, $opts, $project) = @_;
+    my ($self, $project, $opts) = @_;
 
     my $curver = $project->metadata->version;
 
@@ -35,18 +37,18 @@ sub run {
                 push @opts, '-dryrun';
             }
             unless ($opts->{dry_run}) {
-                $c->cmd('perl-reversion', @opts);
+                cmd('perl-reversion', @opts);
 
                 # clear old version information
                 $project->clear_metadata();
                 my $newver = $project->metadata->version;
                 if (exists_tagged_version($newver)) {
-                    $c->error("Sorry, version '$newver' is already tagged.  Stopping.\n");
+                    errorf("Sorry, version '%s' is already tagged.  Stopping.\n", $newver);
                 }
             }
         }
     } else {
-        $c->infof('Skipped bump up');
+        infof('Skipped bump up');
     }
 }
 

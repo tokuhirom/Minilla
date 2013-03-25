@@ -3,9 +3,11 @@ use strict;
 use warnings;
 use utf8;
 
-use Minilla::Project;
 use Path::Tiny;
 use File::Copy::Recursive qw(rcopy);
+
+use Minilla::Project;
+use Minilla::Logger;
 
 sub run {
     my ($self, @args) = @_;
@@ -16,9 +18,7 @@ sub run {
         'test!' => \$test,
     );
 
-    my $project = Minilla::Project->new(
-        c => $self
-    );
+    my $project = Minilla::Project->new();
 
     # update META.json
     $project->regenerate_meta_json();
@@ -31,10 +31,10 @@ sub run {
     $work_dir->build();
 
     my $dst = sprintf("%s-%s", $project->dist_name, $project->version);
-    $self->infof("Copying %s to %s\n", $work_dir->dir, $dst);
+    infof("Copying %s to %s\n", $work_dir->dir, $dst);
     path($dst)->remove_tree();
     rcopy($work_dir->dir => $dst)
-        or $self->error("$!\n");
+        or errorf("%s\n", $!);
 }
 
 1;

@@ -3,12 +3,14 @@ use strict;
 use warnings;
 use utf8;
 
+use Minilla::Logger;
+
 sub run {
-    my ($self, $c) = @_;
+    my ($self, $project, $opts) = @_;
 
     if ( my $unk = `git ls-files -z --others --exclude-standard` ) {
         $unk =~ s/\0/\n/g;
-        $c->error("Unknown local files:\n$unk\n\nUpdate .gitignore, or git add them\n");
+        errorf("Unknown local files:\n$unk\n\nUpdate .gitignore, or git add them\n");
     }
 }
 

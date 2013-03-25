@@ -10,14 +10,10 @@ use File::Find::Rule;
 use TOML qw(to_toml);
 
 use Minilla::Gitignore;
-use Minilla::Util qw(slurp spew require_optional);
+use Minilla::Util qw(slurp spew require_optional cmd);
+use Minilla::Logger;
 
 use Moo;
-
-has c => (
-    is => 'ro',
-    required => 1,
-);
 
 has use_mb_tiny => (
     is => 'lazy',
@@ -31,10 +27,7 @@ no Moo;
 
 sub _build_project {
     my $self = shift;
-
-    Minilla::Project->new(
-        c => $self->c,
-    );
+    Minilla::Project->new();
 }
 
 sub _build_use_mb_tiny {
@@ -57,7 +50,7 @@ sub run {
 
     # M::B::Tiny protocol
     if (-d 'bin' && !-e 'script') {
-        $self->c->cmd('git mv bin script');
+        cmd('git mv bin script');
     }
     # TODO move top level *.pm to lib/?
 
@@ -75,7 +68,7 @@ sub run {
 sub dist_ini2minil_toml {
     my $self = shift;
 
-    $self->c->infof("Converting dist.ini to minil.toml\n");
+    infof("Converting dist.ini to minil.toml\n");
 
     require_optional( 'Config/MVP/Reader/INI.pm', 'Migrate dzil repo' );
     require_optional( 'Dist/Zilla/MVP/Assembler.pm', 'Migrate dzil repo' );
@@ -119,12 +112,12 @@ sub generate_license {
 
 sub git_rm {
     my ($self, @files) = @_;
-    $self->c->cmd(qw(git rm -f), @files);
+    cmd(qw(git rm -f), @files);
 }
 
 sub git_add {
     my ($self, @files) = @_;
-    $self->c->cmd(qw(git add), @files);
+    cmd(qw(git add), @files);
 }
 
 sub migrate_cpanfile {
@@ -133,38 +126,38 @@ sub migrate_cpanfile {
     my $metafile;
     if (-f 'Build.PL') {
         if (slurp('Build.PL') =~ /Module::Build::Tiny/) {
-            $self->c->infof("M::B::Tiny was detected. I hope META.json is already exists here\n");
+            infof("M::B::Tiny was detected. I hope META.json is already exists here\n");
             $metafile = 'META.json';
         } else {
-            $self->c->cmd($^X, 'Build.PL');
+            cmd($^X, 'Build.PL');
             $metafile = 'MYMETA.json';
         }
     } elsif (-f 'Makefile.PL') {
-        $self->c->cmd($^X, 'Makefile.PL');
-        $self->c->cmd('make metafile');
+        cmd($^X, 'Makefile.PL');
+        cmd('make metafile');
         $metafile = 'MYMETA.json';
     } elsif (-f 'dist.ini') {
         my %orig = map { $_ => 1 } glob('*/META.yml');
-        $self->c->cmd('dzil build');
+        cmd('dzil build');
         ($metafile) = grep { !$orig{$_} } glob('*/META.yml');
     } else {
-        $self->c->errorf("There is no Build.PL/Makefile.PL/dist.ini: %s\n", Cwd::getcwd());
+        errorf("There is no Build.PL/Makefile.PL/dist.ini: %s\n", Cwd::getcwd());
     }
 
     unless (defined($metafile) && -f $metafile) {
-        $self->c->error("Build.PL/Makefile.PL does not generates $metafile\n");
+        errorf("Build.PL/Makefile.PL does not generates %s\n", $metafile);
     }
 
     my $meta = CPAN::Meta->load_file($metafile);
     my $prereqs = $meta->effective_prereqs->as_string_hash;
 
     if ($self->use_mb_tiny) {
-        $self->c->infof("Using Module::Build::Tiny\n");
+        infof("Using Module::Build::Tiny\n");
         delete $prereqs->{configure}->{requires}->{'Module::Build'};
         delete $prereqs->{configure}->{requires}->{'ExtUtils::MakeMaker'};
         $prereqs->{configure}->{requires}->{'Module::Build::Tiny'} = 0;
     } else {
-        $self->c->infof("Using Module::Build (Because this distribution uses xs)\n");
+        infof("Using Module::Build (Because this distribution uses xs)\n");
         delete $prereqs->{configure}->{requires}->{'ExtUtils::MakeMaker'};
         $prereqs->{configure}->{requires}->{'Module::Build'}    = 0.40;
         $prereqs->{configure}->{requires}->{'Module::CPANfile'} = 0;
@@ -173,7 +166,7 @@ sub migrate_cpanfile {
     my $cpanfile = Module::CPANfile->from_prereqs($prereqs);
     spew('cpanfile', $cpanfile->to_string);
 
-    $self->c->cmd('git add cpanfile');
+    $self->git_add('cpanfile');
 }
 
 sub generate_build_pl {
@@ -209,7 +202,7 @@ sub remove_unused_files {
         xt/04_minimum_version.t  xt/06_meta_author.t
     )) {
         if (-f $file) {
-            $self->c->cmd("git rm $file");
+            cmd("git rm $file");
         }
     }
 

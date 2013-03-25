@@ -10,9 +10,7 @@ use Minilla::Project;
 sub run {
     my $self = shift;
 
-    my $project = Minilla::Project->new(
-        c => $self,
-    );
+    my $project = Minilla::Project->new();
     my @targets = grep { -e $_ } (
         glob(sprintf("%s-*", $project->dist_name)),
         'blib',

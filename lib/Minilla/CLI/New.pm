@@ -5,12 +5,14 @@ use utf8;
 use File::pushd;
 use File::Path qw(mkpath);
 
+use Minilla::Util qw(cmd);
+use Minilla::Logger;
+
 sub run {
     my ($self, @args) = @_;
 
     my $username;
     my $email;
-    my $mb = 0;
     my $profile = 'Default';
     $self->parse_options(
         \@args,
@@ -18,7 +20,7 @@ sub run {
         email    => \$email,
         'p|profile=s' => \$profile,
     );
-    my $module = shift @args or $self->error("Missing module name\n");
+    my $module = shift @args or errorf("Missing module name\n");
     $username ||= `git config user.name`;
     $username =~ s/\n$//;
     $email ||= `git config user.email`;
@@ -27,7 +29,7 @@ sub run {
     my $version = '0.01';
 
     unless ($username) {
-        $self->error("Please set user.name in git, or use `--username` option.");
+        errorf("Please set user.name in git, or use `--username` option.\n");
     }
 
     # $module = "Foo::Bar"
@@ -41,7 +43,7 @@ sub run {
     ( my $dir = $dist ) =~ s/^App-//;
 
     if (-d $dist) {
-        $self->error("There is $dist/\n");
+        errorf("There is %s/\n", $dist);
     }
 
     my $author = $username;
@@ -56,8 +58,6 @@ sub run {
         module  => $module,
         version => $version,
         email   => $email,
-        mb      => $mb,
-        c       => $self,
     );
     {
         mkpath($dist);
@@ -65,21 +65,19 @@ sub run {
         $skelton->generate();
 
         # init git repo
-        $self->infof("Initializing git $module\n");
-        $self->cmd('git', 'init');
+        infof("Initializing git $module\n");
+        cmd('git', 'init');
 
         # generate project after initialize git repo
-        my $project = Minilla::Project->new(
-            c => $self
-        );
+        my $project = Minilla::Project->new();
         $project->regenerate_meta_json();
         $project->regenerate_readme_md();
 
         # and git add all things
-        $self->cmd('git', 'add', '.');
+        cmd('git', 'add', '.');
     }
 
-    $self->infof("Finished to create $module\n");
+    infof("Finished to create $module\n");
 }
 
 1;
@@ -94,8 +92,8 @@ Minilla::CLI::New - Generate new module skeleton
     # Create new app using Module::Build::Tiny(default)
     % minil new MyApp
 
-    # Create new app using Module::Build
-    % minil new MyApp --mb
+    # Create new app using XS
+    % minil new -p XS MyApp
 
 =head1 DESCRIPTION
 

@@ -5,7 +5,7 @@ use utf8;
 use Minilla::Project;
 
 sub run {
-    my ($self, $c, $opts, $project) = @_;
+    my ($self, $project, $opts) = @_;
 
     $project->regenerate_meta_json();
 }

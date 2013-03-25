@@ -10,17 +10,13 @@ use Path::Tiny;
 use DirHandle;
 use File::pushd;
 use CPAN::Meta;
+use Module::CPANfile;
 
 use Minilla::Logger;
 use Minilla::Metadata;
-use Minilla::Util qw(slurp_utf8 find_dir);
+use Minilla::Util qw(slurp_utf8 find_dir cmd);
 
 use Moo;
-
-has c => (
-    is => 'rw',
-    required => 1,
-);
 
 has dir => (
     is => 'rw',
@@ -44,6 +40,10 @@ has metadata => (
     clearer => 1,
 );
 
+has work_dir => (
+    is => 'lazy',
+);
+
 no Moo;
 
 sub version {
@@ -60,7 +60,7 @@ sub _build_dir {
     my $self = shift;
 
     my $gitdir = find_dir('.git')
-        or $self->c->error(sprintf("Current directory is not in git(%s)", Cwd::getcwd()));
+        or errorf("Current directory is not in git(%s)", Cwd::getcwd());
     $gitdir = File::Spec->rel2abs($gitdir);
     my $base_dir = dirname($gitdir);
 
@@ -81,7 +81,7 @@ sub config {
     if (-f $toml_path) {
         my ($conf, $err) = from_toml(slurp_utf8($toml_path));
         if ($err) {
-            $self->c->error("TOML error in $toml_path: $err");
+            errorf("TOML error in %s: %s\n", $toml_path, $err);
         }
         $conf;
     } else {
@@ -93,14 +93,13 @@ sub homepage { shift->config->{homepage} }
 
 sub _build_dist_name {
     my $self = shift;
-    my $c = $self->c;
 
     my $dist_name;
     if (my $conf = $self->config) {
         $dist_name = $conf->{name};
     }
     unless (defined $dist_name) {
-        $c->infof("There is no minil.toml. Detecting project name from directory name.\n");
+        infof("There is no minil.toml. Detecting project name from directory name.\n");
         $dist_name = do {
             local $_ = basename($self->dir);
             $_ =~ s!\Ap5-!!;
@@ -110,7 +109,7 @@ sub _build_dist_name {
     if ($dist_name eq '.') { Carp::confess("Heh? " . $self->dir); }
 
     unless ($dist_name) {
-        $c->errorf("Cannot detect distribution name from minil.toml or directory name(cwd: %s, dir:%s)\n", Cwd::getcwd(), $self->dir);
+        errorf("Cannot detect distribution name from minil.toml or directory name(cwd: %s, dir:%s)\n", Cwd::getcwd(), $self->dir);
     }
 
     return $dist_name;
@@ -118,21 +117,19 @@ sub _build_dist_name {
 
 sub _build_main_module_path {
     my $self = shift;
-    my $c = $self->c;
 
     my $dist_name = $self->dist_name;
     my $source_path = $self->_detect_source_path($dist_name);
     unless (defined($source_path) && -e $source_path) {
-        $c->error(sprintf("%s not found.\n", $source_path || "main module($dist_name)"));
+        errorf("%s not found.\n", $source_path || "main module($dist_name)");
     }
 
-    $c->infof("Retrieving meta data from %s.\n", $source_path);
+    infof("Retrieving meta data from %s.\n", $source_path);
     return $source_path;
 }
 
 sub _build_metadata {
     my $self = shift;
-    my $c = $self->c;
 
     my $config = +{%{$self->config}};
     if (my $license = delete $config->{license}) {
@@ -144,9 +141,9 @@ sub _build_metadata {
         source => $self->main_module_path,
         %$config,
     );
-    $c->infof("Name: %s\n", $metadata->name);
-    $c->infof("Abstract: %s\n", $metadata->abstract);
-    $c->infof("Version: %s\n", $metadata->version);
+    infof("Name: %s\n", $metadata->name);
+    infof("Abstract: %s\n", $metadata->abstract);
+    infof("Version: %s\n", $metadata->version);
 
     return $metadata;
 }
@@ -281,7 +278,7 @@ sub regenerate_readme_md {
 
     my $fname = File::Spec->catfile($self->dir, 'README.md');
     open my $fh, '>', $fname
-        or $self->errorf("%s: %s\n", $fname, $!);
+        or errorf("%s: %s\n", $fname, $!);
     print $fh $parser->as_markdown;
     close $fh or die "$!\n";
 }
@@ -293,22 +290,20 @@ sub verify_prereqs {
         my $cpanfile = $self->load_cpanfile();
         my @err = CPAN::Meta::Check::verify_dependencies($cpanfile->prereqs, $phases, $type);
         for (@err) {
-            if (/Module '([^']+)' is not installed/ && $self->c->auto_install) {
+            if (/Module '([^']+)' is not installed/ && $Minilla::AUTO_INSTALL) {
                 my $module = $1;
-                $self->c->print("Installing $module\n");
-                $self->c->cmd('cpanm', $module)
+                infof("Installing $module\n");
+                cmd('cpanm', $module)
             } else {
-                $self->c->print("Warning: $_\n", ERROR);
+                warnf("Warning: $_\n");
             }
         }
     }
 }
 
-sub work_dir {
+sub _build_work_dir {
     my $self = shift;
-
-    my $work_dir = Minilla::WorkDir->new(
-        c        => $self->c,
+    Minilla::WorkDir->new(
         project  => $self,
     );
 }

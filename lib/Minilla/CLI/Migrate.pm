@@ -8,8 +8,7 @@ use Minilla::Migrate;
 
 sub run {
     my ($self, @args) = @_;
-
-    Minilla::Migrate->new(c => $self)->run;
+    Minilla::Migrate->new()->run;
 }
 
 1;

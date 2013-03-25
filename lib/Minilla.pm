@@ -4,6 +4,12 @@ use warnings;
 use 5.008005;
 use version; our $VERSION = version->declare("v0.0.48");
 
+our $DEBUG;
+our $AUTO_INSTALL;
+
+sub debug { $DEBUG }
+sub auto_install { $AUTO_INSTALL }
+
 1;
 __END__
 
