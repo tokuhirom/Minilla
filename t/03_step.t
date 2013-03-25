@@ -11,7 +11,7 @@ my $bin = File::Spec->rel2abs('script/minil');
 
 rmtree('Acme-Foo');
 
-is(minil('new', 'Acme::Foo'), 0);
+is(minil('new', '--username=anonymous', '--email=foo@example.com','Acme::Foo'), 0);
 ok(-f 'Acme-Foo/Build.PL');
 ok(-f 'Acme-Foo/.travis.yml');
 ok(-f 'Acme-Foo/t/00_compile.t');

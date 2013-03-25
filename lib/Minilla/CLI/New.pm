@@ -16,8 +16,8 @@ sub run {
     my $profile = 'Default';
     $self->parse_options(
         \@args,
-        username => \$username,
-        email    => \$email,
+        'username=s' => \$username,
+        'email=s'    => \$email,
         'p|profile=s' => \$profile,
     );
     my $module = shift @args or errorf("Missing module name\n");
