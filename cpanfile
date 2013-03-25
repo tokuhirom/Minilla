@@ -7,6 +7,9 @@ requires 'Archive::Tar';
 # Module for compatibility
 requires 'MRO::Compat' if $] < 5.009_005;
 
+# The TOML parser
+requires 'TOML' => 0.91;
+
 # CPAN related
 requires 'App::cpanminus', '1.6003';
 requires 'Module::CPANfile', '0.9020';
@@ -29,6 +32,7 @@ requires 'Data::Section::Simple';
 recommends 'Perl::Version';
 recommends 'Pod::Escapes';
 recommends 'CPAN::Uploader';
+# TODO: remove this dependency after cpanm release. look #12
 recommends 'CPAN::Meta::Check';
 
 # Module required for license otherwise Perl_5 license.
@@ -41,8 +45,6 @@ recommends 'Pod::Wordlist::hanekomu';
 recommends 'Test::MinimumVersion' => '0.101080';
 recommends 'Test::CPAN::Meta';
 recommends 'Pod::Wordlist::hanekomu';
-
-requires 'TOML' => 0.91;
 
 on 'configure' => sub {
     requires 'Module::Build::Tiny';
