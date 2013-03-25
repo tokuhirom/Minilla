@@ -33,10 +33,12 @@ sub run {
         RegenerateMeta
         DistTest
         MakeDist
+
+        UploadToCPAN
+
         RewriteChanges
         Commit
         Tag
-        UploadToCPAN
     );
     my @klasses;
     # Load all step classes.
