@@ -1,19 +1,18 @@
 use strict;
 use warnings;
 use utf8;
+use lib 'lib';
 use Test::More;
-use Test::Requires qw(Test::AllModules);
-use Test::AllModules;
+use File::Find;
+ 
+find {
+    wanted => sub {
+        return unless /\.pm$/;
+        my $class = substr $_, length($File::Find::topdir) + 1;        $class =~ s/\.pm$//;
+        $class =~ s!/!::!g;
+        use_ok $class;
+    },
+    no_chdir => 1,
+}, 'lib';
 
-BEGIN {
-    all_ok(
-        search_path => 'Minilla',
-        check       => sub {
-            my $class = shift;
-            my $ret = eval "use $class;1;";
-            diag $@ if $@;
-            $ret;
-        },
-    );
-}
-
+done_testing;
