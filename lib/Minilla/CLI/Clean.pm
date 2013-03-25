@@ -3,7 +3,7 @@ use strict;
 use warnings;
 use utf8;
 use ExtUtils::MakeMaker qw(prompt);
-use Path::Tiny;
+use File::Path qw(rmtree);
 
 use Minilla::Project;
 
@@ -21,7 +21,7 @@ sub run {
     );
     print("Would remove $_\n") for (@targets);
     if (prompt('Remove it?', 'y') =~ /y/i) {
-        path($_)->remove_tree({unsafe => 1}) for @targets;
+        rmtree($_) for @targets;
     }
 }
 
