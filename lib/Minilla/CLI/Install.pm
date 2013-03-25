@@ -24,7 +24,7 @@ sub run {
     }
     my $tar = $work_dir->dist();
 
-    cmd('cpanm', ($self->verbose ? '--verbose' : ()), $tar);
+    cmd('cpanm', $tar);
     path($tar)->remove unless Minilla->debug;
 }
 
