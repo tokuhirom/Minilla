@@ -10,26 +10,28 @@ sub run {
 
     my $curver = $project->metadata->version;
 
-    # perl-revision command is included in Perl::Version.
-    if ($ENV{V} || exists_tagged_version($curver)) {
-        my @opts;
-        if ($ENV{V}) {
-            push @opts, '-set', $ENV{V};
-        } else {
-            push @opts, '-bump';
-        }
-        if ($opts->{dry_run}) {
-            push @opts, '-dryrun';
-        }
-        unless ($opts->{dry_run}) {
-            $c->cmd('perl-reversion', @opts);
+    # Note: perl-revision command is included in Perl::Version.
+    if (exists_tagged_version($curver)) {
+        my $default_newver = do {
+            my $version = Perl::Version->new( $curver );
+            $version->inc_version;
+            $version;
+        };
+        if (my $ver = prompt("Next Release?", $default_newver)) {
+            my @opts;
+            push @opts, '-set', $ver;
+            if ($opts->{dry_run}) {
+                push @opts, '-dryrun';
+            }
+            unless ($opts->{dry_run}) {
+                $c->cmd('perl-reversion', @opts);
 
-            # clear old version information
-            $project->clear_metadata();
-
-            my $newver = $project->metadata->version;
-            if (exists_tagged_version($newver)) {
-                $c->error("Sorry, version '$newver' is already tagged.  Stopping.\n");
+                # clear old version information
+                $project->clear_metadata();
+                my $newver = $project->metadata->version;
+                if (exists_tagged_version($newver)) {
+                    $c->error("Sorry, version '$newver' is already tagged.  Stopping.\n");
+                }
             }
         }
     } else {
