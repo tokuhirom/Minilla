@@ -49,7 +49,7 @@ B<THIS IS A DEVELOPMENT RELEASE. API MAY CHANGE WITHOUT NOTICE>.
 
 Minilla uses B<Convention over Configuration>.
 
-But, you can write configurations to I<minil.toml> file by L<TOML|https://github.com/mojombo/toml>.
+But, you can write configurations to I<minil.toml> file by L<TOML|https://github.com/mojombo/toml>. Minilla reads the I<minil.toml> file in the top of project directory.
 
 =over 4
 
@@ -70,10 +70,8 @@ Minilla sets bugtracker as github issues by default. But if you want to use RT, 
 =item Why don't you provide plugin support?
 
 If you want to pluggable thing, it's already exist dzil :P
-
-=item How can I specify custom homepage in META?
-
-You can set 'homepage' key in your minil.toml file.
+And if you like a behavior like Minilla, you can use L<Dist::Milla>, is the sister project of Minilla.
+L<Dist::Milla>'s behavior is mostly like Minilla.
 
 =item Should I add (META.json|Build.PL) to repository?
 
