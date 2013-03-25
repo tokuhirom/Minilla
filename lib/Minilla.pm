@@ -91,7 +91,7 @@ Of course, you can install Minilla from C<< cpanm git://github.com/tokuhirom/Min
 
 Minilla built on only few small libraries. You can install Minilla without big libraries.
 
-=head2 And, what is minilla?
+=head2 And, what is Minilla?
 
     Minilla is a Kaiju (Japanese giant monster) from the Godzilla series of films and is the first of several young Godzillas.
     http://en.wikipedia.org/wiki/Minilla

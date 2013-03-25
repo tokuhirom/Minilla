@@ -2,16 +2,16 @@
 
 Minilla::Tutorial - Tutorial document for Minilla
 
-=head1 The minilla workflow
+=head1 The Minilla workflow
 
 =head2 Installing
 
     % cpanm Minilla
 
-You can install Minilla from CPAN
+You can install L<Minilla> from CPAN
 (I don't released yet@20130325)
 
-Unlike L<dzil>, you don't need to any setup. Minilla aggregates user name and e-mail address from
+Unlike L<dzil>, you don't need to any setup. L<Minilla> aggregates user name and e-mail address from
 your C<~/.gitconfig> (You already set, isn't it?)
 
 =head2 Making new distribution
@@ -21,7 +21,7 @@ your C<~/.gitconfig> (You already set, isn't it?)
 
 At this point, you will have a really simple Dist-Name directory that contains your module file with as minimum boilerplate as possible.
 
-minil done C<git init> and C<git add .>. You need to commit it ASAP.
+L<minil> done C<git init> and C<git add .>. You need to commit it ASAP.
 
     % git commit -m 'initial import'
 
@@ -43,11 +43,11 @@ Now, make sure you have Changes file ready and have a new entry under C<{{$NEXT}
     % minil test
     % minil release
 
-And your first release is done. The release is tagged on git and all the changes atomatically made are committed to git as well.
+And your first release is done. The release is tagged on git and all the changes automatically made are committed to git as well.
 
 Wait for PAUSE processing it and your module showing up on MetaCPAN in a few minutes. Congratulations!
 
-=head2 Making a maintainance release
+=head2 Making a maintenance release
 
 You have new features, bugs, pull requests and get ready to make a next version of your module. Great, making a new release is equally easy.
 
@@ -62,7 +62,7 @@ Now, make a release!
 
 The release command will automatically bump the version for you - if you have 0.10, the next version will be 0.11 by default, but you will be prompted to confirm that version in case you need a major bump.
 
-This will update C<Changes>, C<META.json> and bump C<$VERSION> in your mailn module. These changes made by Milla will be automatically committed, tagged and pushed to the remote.
+This will update C<Changes>, C<META.json> and bump C<$VERSION> in your main module. These changes made by Milla will be automatically committed, tagged and pushed to the remote.
 
 =head1 MIGRATING
 
