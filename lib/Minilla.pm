@@ -21,15 +21,15 @@ Minilla - CPAN module authoring tool
 
 =head1 SYNOPSIS
 
-    minil new     - Create new dist
+    minil new     - Create a new dist
     minil test    - Run test cases
-    minil dist    - Make tar ball
-    minil install - Install dist to your system
-    minil release - Release dist to CPAN
+    minil dist    - Make your dist tarball
+    minil install - Install your dist
+    minil release - Release your dist to CPAN
 
 =head1 DESCRIPTION
 
-Minilla is CPAN module authoring tool. Minilla provides L<minil> command for authorizing.
+Minilla is a CPAN module authoring tool. Minilla provides L<minil> command for authorizing a CPAN distribution.
 
     (M::I - inc) + shipit + (dzil - plugins)
 
@@ -43,7 +43,7 @@ As stated above, Minilla is opinionated. Minilla has a bold assumption and conve
 
 =over 4
 
-=item Your module written in Pure Perl are located to I<lib/>.
+=item Your module written in Pure Perl are located in I<lib/>.
 
 =item Your executable file is in I<script/> directory, if any
 
@@ -59,7 +59,7 @@ As stated above, Minilla is opinionated. Minilla has a bold assumption and conve
 
     # First time only
     % cpanm Minilla
-    # Minilla has few deps. It's very fast.
+    # Minilla has only a few deps. It should be very quick
 
     # Make a new distribution
     % minil new Dist-Name
@@ -87,9 +87,9 @@ You can install the library by C<< cpanm git://... >>.
 
 Of course, you can install Minilla from C<< cpanm git://github.com/tokuhirom/Minilla.git >>.
 
-=head2 Minilla built on small libraries.
+=head2 Minilla is built on small libraries.
 
-Minilla built on only few small libraries. You can install Minilla without big libraries.
+Minilla is built on only few small libraries. You can install Minilla without a huge list of dependencies to heavy modules.
 
 =head2 And, what is Minilla?
 
@@ -100,13 +100,13 @@ Minilla built on only few small libraries. You can install Minilla without big l
 
 Minilla uses B<Convention over Configuration>.
 
-But, you can write configurations to I<minil.toml> file by L<TOML|https://github.com/mojombo/toml>. Minilla reads the I<minil.toml> file in the top of project directory.
+But, you can write configurations to I<minil.toml> file in L<TOML|https://github.com/mojombo/toml> format. Minilla reads the I<minil.toml> file in the root directory of your project.
 
 =over 4
 
 =item name
 
-You can write 'name' instead of detecting project name from directory name.
+You can write 'name' instead of automatically detecting project name out of the directory name.
 
 =item no_github_issues
 
@@ -121,14 +121,14 @@ Minilla sets bugtracker as github issues by default. But if you want to use RT, 
 =item Why don't you provide plugin support?
 
 If you want to pluggable thing, it's already exist dzil :P
-And if you like a behavior like Minilla, you can use L<Dist::Milla>, is the sister project of Minilla.
+And if you like a behavior like Minilla, you can use L<Dist::Milla>, the sister project of Minilla.
 L<Dist::Milla>'s behavior is mostly like Minilla.
 
 =item Why minil only supports git?
 
 I think git is a best VC for CPAN modules, for now.
 
-If you want to use another version control system, you can use L<Dist::Milla>.
+If you want to use another version control system, you can probably use L<Dist::Milla>.
 
 =item And why...
 
@@ -136,7 +136,7 @@ Yes. You can use L<Dist::Milla>.
 
 =item Should I add (META.json|Build.PL) to repository?
 
-Yes. You need to add it for git installable repo.
+Yes. You need to add it to make your git repo installable via cpanm.
 
 =item How do I manage ppport.h?
 
@@ -149,7 +149,7 @@ Your executables must be in F<script/>. It's L<Module::Build::Tiny>'s rule.
 =item How to switch from Module::Install/Module::Build/Dist::Zilla?
 
 You can use experimental `minil migrate` subcommand.
-Please look L<Minilla::CLI::Migrate>.
+See L<Minilla::CLI::Migrate> for more details.
 
 =back
 
