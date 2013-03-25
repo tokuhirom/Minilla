@@ -9,6 +9,7 @@ use File::Spec::Functions qw(catdir catfile);
 use Path::Tiny;
 use DirHandle;
 use File::pushd;
+use CPAN::Meta;
 
 use Minilla::Logger;
 use Minilla::Metadata;
