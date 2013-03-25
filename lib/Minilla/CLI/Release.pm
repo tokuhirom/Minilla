@@ -11,9 +11,6 @@ use Minilla::WorkDir;
 sub run {
     my ($self, @args) = @_;
 
-    require_optional('CPAN/Uploader.pm',
-        'Release engineering');
-
     my $opts = {
         test => 1,
         trial => 0,
@@ -30,7 +27,6 @@ sub run {
         c => $self,
     );
 
-    # CheckOrigin
     my @steps = qw(
         CheckUntrackedFiles
         BumpVersion
@@ -42,14 +38,20 @@ sub run {
         Tag
         UploadToCPAN
     );
+    my @klasses;
+    # Load all step classes.
     for (@steps) {
         my $klass = "Minilla::Release::$_";
         if (eval "require ${klass}; 1") {
-            my $meth = "${klass}::run";
-            $klass->run($self, $opts, $project);
+            push @klasses, $klass;
+            $klass->init() if $klass->can('init');
         } else {
             $self->error("Error while loading $_: $@");
         }
+    }
+    # And run all steps.
+    for my $klass (@klasses) {
+        $klass->run($self, $opts, $project);
     }
 }
 

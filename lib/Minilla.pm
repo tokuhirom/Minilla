@@ -2,7 +2,7 @@ package Minilla;
 use strict;
 use warnings;
 use 5.008005;
-use version; our $VERSION = version->declare("v0.0.44");
+use version; our $VERSION = version->declare("v0.0.45");
 
 1;
 __END__

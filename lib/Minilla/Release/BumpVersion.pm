@@ -3,7 +3,13 @@ use strict;
 use warnings;
 use utf8;
 use ExtUtils::MakeMaker qw(prompt);
-use Minilla::Util qw(find_file);
+use Minilla::Util qw(find_file require_optional);
+
+sub init {
+    require_optional(
+        'Perl/Version.pm', 'Release engineering'
+    );
+}
 
 sub run {
     my ($self, $c, $opts, $project) = @_;
@@ -14,7 +20,12 @@ sub run {
     if (exists_tagged_version($curver)) {
         my $default_newver = do {
             my $version = Perl::Version->new( $curver );
-            $version->inc_version;
+            if ($version->is_alpha) {
+                $version->inc_alpha;
+            } else {
+                my $pos = $version->components-1;
+                $version->increment($pos);
+            }
             $version;
         };
         if (my $ver = prompt("Next Release?", $default_newver)) {
