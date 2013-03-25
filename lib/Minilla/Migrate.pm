@@ -42,6 +42,9 @@ sub _build_use_mb_tiny {
             no_chdir => 1,
         }, '.'
     );
+    if ($xs_found) {
+        infof("Found a xs files. Switching to Module::Build.\n");
+    }
     $xs_found;
 }
 
