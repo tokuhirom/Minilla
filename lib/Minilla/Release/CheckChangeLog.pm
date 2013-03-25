@@ -36,6 +36,7 @@ sub after_release {
     $content =~ s!{{\$NEXT}}!
         "{{\$NEXT}}\n\n" . $project->version . " " . Minilla::WorkDir->instance->changes_time->strftime('%Y-%m-%dT%H:%M:%SZ') . "\n"
     !e;
+    path('Changes')->spew_raw($content);
 }
 
 1;
