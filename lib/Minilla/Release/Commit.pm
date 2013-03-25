@@ -29,11 +29,20 @@ sub _push_to_origin {
     my ($self) = @_;
 
     # git v1.7.10 is required?
-    my $branch = `git symbolic-ref --short HEAD`
+    my $branch = _get_branch()
         or return;
     $branch =~ s/\n//g;
     infof("Pushing to origin\n");
     cmd('git', 'push', 'origin', $branch);
+}
+
+sub _get_branch {
+    open my $fh, '<', '.git/HEAD';
+    chomp( my $head = do { local $/; <$fh> });
+    close $fh;
+
+    my ($branch) = $head =~ m!ref: refs/heads/(\S+)!;
+    return $branch;
 }
 
 1;
