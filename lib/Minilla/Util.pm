@@ -8,7 +8,12 @@ use Minilla::Logger ();
 
 use parent qw(Exporter);
 
-our @EXPORT_OK = qw(find_dir find_file slurp_utf8 randstr slurp spew edit_file require_optional cmd);
+our @EXPORT_OK = qw(
+    find_dir find_file
+    randstr
+    slurp slurp_utf8 slurp_raw
+    spew spew_raw
+    edit_file require_optional cmd);
 
 sub randstr {
     my $len = shift;
@@ -29,9 +34,21 @@ sub slurp_utf8 {
     do { local $/; <$fh> }
 }
 
+sub slurp_raw {
+    my $fname = shift;
+    open my $fh, '<:raw', $fname;
+    do { local $/; <$fh> }
+}
+
 sub spew {
     my $fname = shift;
     open my $fh, '>', $fname;
+    print {$fh} $_[0];
+}
+
+sub spew_raw {
+    my $fname = shift;
+    open my $fh, '>:raw', $fname;
     print {$fh} $_[0];
 }
 

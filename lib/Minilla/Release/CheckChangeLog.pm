@@ -28,16 +28,5 @@ sub run {
     }
 }
 
-sub after_release {
-    my ($self, $project, $opts) = @_;
-    return if $opts->{dry_run};
-
-    my $content = path('Changes')->slurp_raw();
-    $content =~ s!{{\$NEXT}}!
-        "{{\$NEXT}}\n" . $project->version . " " . $project->work_dir->changes_time->strftime('%Y-%m-%dT%H:%M:%SZ') . "\n"
-    !e;
-    path('Changes')->spew_raw($content);
-}
-
 1;
 

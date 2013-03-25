@@ -33,6 +33,7 @@ sub run {
         RegenerateMeta
         DistTest
         MakeDist
+        RewriteChanges
         Commit
         Tag
         UploadToCPAN
@@ -51,13 +52,6 @@ sub run {
     # And run all steps.
     for my $klass (@klasses) {
         $klass->run($project, $opts);
-    }
-    # And call 'after release' hook.
-    infof("Calling 'after_release' hooks\n");
-    for my $klass (@klasses) {
-        if ($klass->can('after_release')) {
-            $klass->after_release($project, $opts);
-        }
     }
 }
 
