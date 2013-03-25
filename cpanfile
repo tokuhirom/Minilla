@@ -1,4 +1,4 @@
-requires 'perl'   => '5.0120005';
+requires 'perl'   => '5.0080005';
 requires 'parent' => '0';
 requires 'Archive::Tar';
 requires 'App::cpanminus', '1.6003';
