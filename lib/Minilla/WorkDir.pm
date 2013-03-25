@@ -126,7 +126,7 @@ sub _rewrite_changes {
     my $self = shift;
 
     my $orig = path('Changes')->slurp_raw();
-    $orig =~ s!{{\$NEXT}}!
+    $orig =~ s!\{\{\$NEXT\}\}!
         $self->project->version . ' ' . $self->changes_time->strftime('%Y-%m-%dT%H:%M:%SZ')
     !e;
     path('Changes')->spew_raw($orig);
