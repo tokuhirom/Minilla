@@ -1,0 +1,76 @@
+=head1 NAME
+
+Minilla::Tutorial - Tutorial document for Minilla
+
+=head1 The minilla workflow
+
+=head2 Installing
+
+    % cpanm Minilla
+
+You can install Minilla from CPAN
+(I don't released yet@20130325)
+
+Unlike L<dzil>, you don't need to any setup. Minilla aggregates user name and e-mail address from
+your C<~/.gitconfig> (You already set, isn't it?)
+
+=head2 Making new distribution
+
+    % minil new Dist-Name
+    % cd Dist-Name/
+
+At this point, you will have a really simple Dist-Name directory that contains your module file with as minimum boilerplate as possible.
+
+minil done C<git init> and C<git add .>. You need to commit it ASAP.
+
+    % git commit -m 'initial import'
+
+Now start writing your code, edit the docs, tests and manage CPAN dependencies with L<cpanfile>.
+
+    % $EDITOR lib/Dist/Name.pm t/dist-name.t cpanfile
+
+You can test your code with a simple C<prove -l t>.
+
+=head2 Making the first release
+
+When you get confident and it's about time to ship to CPAN, use the test and release command. Before doing so, make sure your git directory is not dirty i.e. all changes are committed.
+
+    % git commit -a -m "Done initial version"
+
+Now, make sure you have Changes file ready and have a new entry under C<{{$NEXT}}>, which will be expanded to the next version of your module.
+
+    % $EDITOR Changes
+    % minil test
+    % minil release
+
+And your first release is done. The release is tagged on git and all the changes atomatically made are committed to git as well.
+
+Wait for PAUSE processing it and your module showing up on MetaCPAN in a few minutes. Congratulations!
+
+=head2 Making a maintainance release
+
+You have new features, bugs, pull requests and get ready to make a next version of your module. Great, making a new release is equally easy.
+
+First, make sure all your code has been committed to git and there's no dirty files in the working directory.
+
+Then make sure to edit Changes file and contain entries for the next release under C<{{$NEXT}}>. You don't need to commit the change to the I<Changes> file, yet.
+
+Now, make a release!
+
+    % minil test
+    % minil release
+
+The release command will automatically bump the version for you - if you have 0.10, the next version will be 0.11 by default, but you will be prompted to confirm that version in case you need a major bump.
+
+This will update C<Changes>, C<META.json> and bump C<$VERSION> in your mailn module. These changes made by Milla will be automatically committed, tagged and pushed to the remote.
+
+=head1 MIGRATING
+
+This section describes how to migrate your current authoring process to Milla.
+
+=head2 Migrate by C<minil migrate>
+
+You just type C<minil migrate>.
+
+It can migrate your distribution automatically. If you can't do it, please report to me.
+

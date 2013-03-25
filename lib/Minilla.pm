@@ -29,7 +29,7 @@ Minilla - CPAN module authoring tool
 
 =head1 DESCRIPTION
 
-Minilla is CPAN module authoring tool.
+Minilla is CPAN module authoring tool. Minilla provides L<minil> command for authorizing.
 
     (M::I - inc) + shipit + (dzil - plugins)
 
@@ -39,13 +39,62 @@ B<THIS IS A DEVELOPMENT RELEASE. API MAY CHANGE WITHOUT NOTICE>.
 
 =head1 CONVENTION
 
+As stated above, Minilla is opinionated. Minilla has a bold assumption and convention like the followings, which are almost compatible to the sister project L<Dist::Milla>.
+
 =over 4
 
-=item VC is Git
+=item Your module written in Pure Perl are located to I<lib/>.
 
-=item Use cpanfile for dependency management.
+=item Your executable file is in I<script/> directory, if any
+
+=item Your module is maintained with B<Git> and C<git ls-files> matches with what you will release
+
+=item Your module has a static list of prerequisites that can be described in L<cpanfile>
+
+=item Your module has a Changes file
 
 =back
+
+=head1 GETTING STARTED
+
+    # First time only
+    % cpanm Minilla
+    # Minilla has few deps. It's very fast.
+
+    # Make a new distribution
+    % minil new Dist-Name
+    % cd Dist-Name/
+
+    # Git commit
+    % git commit -m "initial commit"
+
+    # Hack your code!
+    % $EDITOR lib/Dist/Name.pm t/dist-name.t cpanfile
+
+    # Done? Test and release it!
+    % minil release
+
+It's that easy.
+
+You already have distributions with L<Module::Install>, L<Module::Build>, L<Dist::Zilla> or L<ShipIt>? Migrating is also trivial. See "MIGRATING" in L<Minilla::Tutorial> for more details.
+
+=head1 WHY MINILLA?
+
+=head2 Repository managed by Minilla is git install ready.
+
+The repository created and managed by Minilla is git install ready.
+You can install the library by C<< cpanm git://... >>.
+
+Of course, you can install Minilla from C<< cpanm git://github.com/tokuhirom/Minilla.git >>.
+
+=head2 Minilla built on small libraries.
+
+Minilla built on only few small libraries. You can install Minilla without big libraries.
+
+=head2 And, what is minilla?
+
+    Minilla is a Kaiju (Japanese giant monster) from the Godzilla series of films and is the first of several young Godzillas.
+    http://en.wikipedia.org/wiki/Minilla
 
 =head1 CONFIGURATION
 
