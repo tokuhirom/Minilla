@@ -97,7 +97,7 @@ sub require_optional {
 sub cmd {
     Minilla::Logger::infof("%s\n", "@_");
     system(@_) == 0
-        or Minilla::Loggererrorf("Giving up.\n");
+        or Minilla::Logger::errorf("Giving up.\n");
 }
 
 1;
