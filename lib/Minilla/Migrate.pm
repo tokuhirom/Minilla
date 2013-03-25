@@ -226,7 +226,6 @@ sub remove_unused_files {
 sub migrate_gitignore {
     my ($self) = @_;
 
-    warn "GINORE";
     my @lines;
 
     my $gitignore = (
