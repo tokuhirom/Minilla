@@ -5,21 +5,34 @@ use utf8;
 use File::Spec::Functions qw(catfile);
 use File::Path qw(mkpath);
 use File::Basename qw(dirname);
-use Data::Section::Simple qw(get_data_section);
+use Data::Section::Simple;
+use Time::Piece;
+
 use Minilla::Util qw(spew);
+
+BEGIN { eval "use MRO::Compat;1" or die $@ if $] < 5.009_005 }
 
 use Moo;
 
-has [qw(c dist author path module version email)] => (
+has [qw(c dist author path module version email suffix)] => (
     is       => 'ro',
     required => 1,
 );
 
 no Moo;
 
+sub date {
+    gmtime->strftime('%Y-%m-%dT%H:%M:%SZ');
+}
+
+sub end { '__END__' }
+
+sub module_pm_src { '' }
+
 sub render {
     my ($self, $tmplname, $dst) = @_;
-    my $path = catfile($dst || $tmplname);
+    my $path = $dst || $tmplname;
+
     $self->c->infof("Writing %s\n", $path);
     mkpath(dirname($path));
 
@@ -31,6 +44,14 @@ sub render {
         return;
     }
     $self->c->error("Cannot find template for $tmplname\n");
+}
+
+sub write_file {
+    my ($self, $path, $content) = @_;
+
+    $self->c->infof("Writing %s\n", $path);
+    mkpath(dirname($path));
+    spew($path, $content);
 }
 
 
@@ -46,4 +67,62 @@ use_ok $_ for qw(
 );
 
 done_testing;
+
+@@ Module.pm
+package <% $module %>;
+use strict;
+use warnings;
+use 5.008005;
+our $VERSION = "<% $version %>";
+
+<% $module_pm_src %>
+
+1;
+<% $end %>
+
+=head1 NAME
+
+<% $module %> - It's new $module
+
+=head1 SYNOPSIS
+
+    use <% $module %>;
+
+=head1 DESCRIPTION
+
+<% $module %> is ...
+
+=head1 LICENSE
+
+Copyright (C) <% $author %>
+
+This library is free software; you can redistribute it and/or modify
+it under the same terms as Perl itself.
+
+=head1 AUTHOR
+
+<% $author %> E<lt><% $email %>E<gt>
+
+@@ .travis.yml
+language: perl
+perl:
+  - 5.16
+  - 5.14
+
+@@ Changes
+Revision history for Perl extension <% $dist %>
+
+<% $version %> <% $date %>
+
+    - original version
+
+@@ .gitignore
+/.build/
+/_build/
+/carton.lock
+/.carton/
+/local/
+/nytprof.out
+/nytprof/
+/Build
 

@@ -7,7 +7,6 @@ use parent qw(Minilla::Profile::Base);
 use File::Spec::Functions qw(catfile);
 use File::Path qw(mkpath);
 use File::Basename qw(dirname);
-use Time::Piece;
 use CPAN::Meta;
 use Data::Section::Simple qw(get_data_section);
 use File::pushd;
@@ -15,16 +14,6 @@ use File::pushd;
 use Minilla::Project;
 use Minilla::License::Perl_5;
 use Minilla::Util qw(spew);
-
-BEGIN { eval "use MRO::Compat;1" or die $@ if $] < 5.009_005 }
-
-sub date {
-    gmtime->strftime('%Y-%m-%dT%H:%M:%SZ');
-}
-
-sub end {
-    '__END__'
-}
 
 sub generate {
     my $self = shift;
@@ -45,14 +34,6 @@ sub generate {
     $self->render('Build.PL');
 }
 
-sub write_file {
-    my ($self, $path, $content) = @_;
-
-    $self->c->infof("Writing %s\n", $path);
-    mkpath(dirname($path));
-    spew($path, $content);
-}
-
 sub render_build_mb_pl {
     my ($self, $args) = @_;
 
@@ -65,7 +46,7 @@ sub render_build_mb_pl {
 __DATA__
 
 @@ Build.PL
-use 5.008001;
+use 5.008005;
 use Module::Build::Tiny;
 Build_PL();
 
@@ -82,59 +63,4 @@ on configure => sub {
 
 on 'develop' => sub {
 };
-
-@@ .gitignore
-/.build/
-/_build/
-/carton.lock
-/.carton/
-/local/
-/nytprof.out
-/nytprof/
-
-@@ Changes
-Revision history for Perl extension <% $dist %>
-
-<% $version %> <% $date %>
-
-    - original version
-
-@@ .travis.yml
-language: perl
-perl:
-  - 5.16
-  - 5.14
-
-@@ Module.pm
-package <% $module %>;
-use strict;
-use warnings;
-use 5.008005;
-our $VERSION = "<% $version %>";
-
-1;
-<% $end %>
-
-=head1 NAME
-
-<% $module %> - It's new $module
-
-=head1 SYNOPSIS
-
-    use <% $module %>;
-
-=head1 DESCRIPTION
-
-<% $module %> is ...
-
-=head1 LICENSE
-
-Copyright (C) <% $author %>
-
-This library is free software; you can redistribute it and/or modify
-it under the same terms as Perl itself.
-
-=head1 AUTHOR
-
-<% $author %> E<lt><% $email %>E<gt>
 

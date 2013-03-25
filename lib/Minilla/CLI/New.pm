@@ -52,6 +52,7 @@ sub run {
         dist    => $dist,
         path    => $path,
         author  => $username,
+        suffix  => $suffix,
         module  => $module,
         version => $version,
         email   => $email,
