@@ -18,7 +18,7 @@ sub run {
         return;
     }
 
-    until (path('Changes')->slurp =~ /^$version/m) {
+    until (path('Changes')->slurp =~ /^\{\{\$NEXT\}\}\n+[ \t]*\S/m) {
         $c->infof("No mention of version '$version' in changelog file 'Changes'\n");
         if (prompt("Edit file?", 'y') =~ /y/i) {
             edit_file('Changes');
@@ -26,6 +26,16 @@ sub run {
             $c->error("Giving up!");
         }
     }
+}
+
+sub after_release {
+    my ($self, $c, $opts, $project) = @_;
+    return if $opts->{dry_run};
+
+    my $content = path('Changes')->slurp_raw();
+    $content =~ s!{{\$NEXT}}!
+        "{{\$NEXT}}\n\n" . $project->version . " " . Minilla::WorkDir->instance->changes_time->strftime('%Y-%m-%dT%H:%M:%SZ') . "\n"
+    !e;
 }
 
 1;

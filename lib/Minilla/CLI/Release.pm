@@ -53,6 +53,12 @@ sub run {
     for my $klass (@klasses) {
         $klass->run($self, $opts, $project);
     }
+    # And call 'after release' hook.
+    for my $klass (@klasses) {
+        if ($klass->can('after_release')) {
+            $klass->after_release($self, $opts, $project);
+        }
+    }
 }
 
 1;

@@ -112,7 +112,7 @@ perl:
 @@ Changes
 Revision history for Perl extension <% $dist %>
 
-<% $version %> <% $date %>
+{{$NEXT}}
 
     - original version
 

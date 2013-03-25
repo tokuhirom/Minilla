@@ -7,6 +7,7 @@ use Archive::Tar;
 use File::pushd;
 use Data::Dumper; # serializer
 use File::Spec::Functions qw(splitdir);
+use Time::Piece qw(gmtime);
 use File::Basename qw(dirname);
 
 use Minilla::Util qw(randstr);
@@ -37,7 +38,13 @@ has [qw(prereq_specs)] => (
     is => 'lazy',
 );
 
+has changes_time => (
+    is => 'lazy',
+);
+
 no Moo;
+
+sub _build_changes_time { scalar(gmtime()) }
 
 {
     our $INSTANCE;
@@ -128,7 +135,19 @@ sub build {
         path('MANIFEST')->spew(join("\n", @files));
     }
 
+    $self->_rewrite_changes();
+
     Minilla::ReleaseTest->write_release_tests($self->project, $self->dir);
+}
+
+sub _rewrite_changes {
+    my $self = shift;
+
+    my $orig = path('Changes')->slurp_raw();
+    $orig =~ s!{{\$NEXT}}!
+        $self->project->version . ' ' . $self->changes_time->strftime('%Y-%m-%dT%H:%M:%SZ')
+    !e;
+    path('Changes')->spew_raw($orig);
 }
 
 sub dist_test {
