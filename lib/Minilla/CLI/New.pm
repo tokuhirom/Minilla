@@ -3,9 +3,7 @@ use strict;
 use warnings;
 use utf8;
 use File::pushd;
-
-use Minilla::Skeleton;
-
+use File::Path qw(mkpath);
 
 sub run {
     my ($self, @args) = @_;
@@ -13,11 +11,12 @@ sub run {
     my $username;
     my $email;
     my $mb = 0;
+    my $profile = 'Default';
     $self->parse_options(
         \@args,
         username => \$username,
         email    => \$email,
-        mb       => \$mb, # use MB
+        'p|profile=s' => \$profile,
     );
     my $module = shift @args or $self->error("Missing module name\n");
     $username ||= `git config user.name`;
@@ -47,7 +46,9 @@ sub run {
 
     my $author = $username;
 
-    my $skelton = Minilla::Skeleton->new(
+    my $profile_klass = "Minilla::Profile::${profile}";
+    eval "require $profile_klass; 1;" or die $@;
+    my $skelton = $profile_klass->new(
         dist    => $dist,
         path    => $path,
         author  => $username,
@@ -57,12 +58,13 @@ sub run {
         mb      => $mb,
         c       => $self,
     );
-    $skelton->generate();
-
-    $self->infof("Initializing git $module\n");
     {
-        # init git repo
+        mkpath($dist);
         my $guard = pushd($dist);
+        $skelton->generate();
+
+        # init git repo
+        $self->infof("Initializing git $module\n");
         $self->cmd('git', 'init');
 
         # generate project after initialize git repo
@@ -101,12 +103,5 @@ This module creates module skeleton to current directory.
 =head1 OPTIONS
 
 =over 4
-
-=item C<--mb>
-
-Generate skeleton using L<Module::Build>
-(Default Build.PL uses L<Module::Build::Tiny>)
-
-It's useful for XS modules.
 
 =back

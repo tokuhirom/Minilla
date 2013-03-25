@@ -16,6 +16,7 @@ rcopy('t/migrate/dzil/' => $tmp);
 my $dst = File::Spec->catdir($tmp, 'Acme-Dzil');
 chdir $dst;
 system('git init');
+system('git add .');
 Minilla::CLI->new()->run('migrate');
 
 {

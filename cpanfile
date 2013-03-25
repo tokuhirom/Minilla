@@ -11,6 +11,7 @@ requires 'Module::Metadata';
 requires 'File::Copy::Recursive';
 requires 'Pod::Markdown';
 requires 'File::Find::Rule'; # File::File is good enough?
+requires 'MRO::Compat' if $] < 5.009_005;
 
 # Modules required by minil new/minil dist/minil release are optional.
 # It's good for contributors

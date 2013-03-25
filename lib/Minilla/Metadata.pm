@@ -5,6 +5,7 @@ use utf8;
 use Minilla::Util qw(slurp require_optional);
 use Carp;
 use Module::Metadata;
+use Minilla::License::Perl_5;
 
 use Moo;
 

@@ -14,6 +14,7 @@ rmtree('Acme-Foo');
 is(minil('new', 'Acme::Foo'), 0);
 ok(-f 'Acme-Foo/Build.PL');
 ok(-f 'Acme-Foo/.travis.yml');
+ok(-f 'Acme-Foo/t/00_compile.t');
 {
     local $ENV{PERL_MM_USE_DEFAULT} = 1;
     local $ENV{PERL_MINILLA_SKIP_CHECK_CHANGE_LOG} = 1;
