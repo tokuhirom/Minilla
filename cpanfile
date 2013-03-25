@@ -7,7 +7,7 @@ requires 'File::pushd';
 requires 'Path::Tiny';
 requires 'Moo' => 1.001000;
 requires 'Data::Section::Simple';
-requires 'Module::Metadata';
+requires 'Module::Metadata' => '1.0.11';
 requires 'File::Copy::Recursive';
 requires 'Pod::Markdown';
 requires 'File::Find::Rule'; # File::File is good enough?
