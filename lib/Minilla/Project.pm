@@ -89,8 +89,6 @@ sub config {
     }
 }
 
-sub homepage { shift->config->{homepage} }
-
 sub _build_dist_name {
     my $self = shift;
 
@@ -245,7 +243,7 @@ sub cpan_meta {
                     url => $git_url,
                     web => $http_url,
                 };
-                $dat->{resources}->{homepage} = $self->homepage || $http_url;
+                $dat->{resources}->{homepage} = $self->config->{homepage} || $http_url;
             } else {
                 # normal repository
                 $dat->{resources}->{repository} = +{
