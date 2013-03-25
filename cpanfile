@@ -17,7 +17,6 @@ requires 'Pod::Markdown';
 requires 'File::pushd';
 requires 'Path::Tiny';
 requires 'File::Copy::Recursive';
-requires 'File::Find::Rule'; # File::File is good enough?
 
 # OOPS
 requires 'Moo' => 1.001000;

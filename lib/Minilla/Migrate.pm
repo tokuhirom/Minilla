@@ -6,7 +6,7 @@ use utf8;
 use File::pushd;
 use CPAN::Meta;
 use Path::Tiny;
-use File::Find::Rule;
+use File::Find ();
 use TOML qw(to_toml);
 
 use Minilla::Gitignore;
@@ -32,7 +32,16 @@ sub _build_project {
 
 sub _build_use_mb_tiny {
     my $self = shift;
-    (0+(File::Find::Rule->file()->name(qr/\.(c|xs)$/)->in('.')) == 0);
+    my $xs_found = 0;
+    File::Find::find(
+        {
+            wanted => sub {
+                $xs_found++ if /\.(xs|c)$/
+            },
+            no_chdir => 1,
+        }, '.'
+    );
+    $xs_found;
 }
 
 sub run {
