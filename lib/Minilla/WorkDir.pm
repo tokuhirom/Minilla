@@ -10,7 +10,8 @@ use File::Spec::Functions qw(splitdir);
 use Time::Piece qw(gmtime);
 use File::Basename qw(dirname);
 
-use Minilla::Util qw(randstr);
+use Minilla::Logger;
+use Minilla::Util qw(randstr cmd);
 use Minilla::FileGatherer;
 use Minilla::ReleaseTest;
 
@@ -23,11 +24,6 @@ has project => (
 
 has dir => (
     is => 'lazy',
-);
-
-has c => (
-    is       => 'ro',
-    required => 1,
 );
 
 has files => (
@@ -46,23 +42,9 @@ no Moo;
 
 sub _build_changes_time { scalar(gmtime()) }
 
-{
-    our $INSTANCE;
-    sub instance {
-        my ($class, $c) = @_;
-        my $project = Minilla::Project->new(
-            c => $c,
-        );
-        $INSTANCE ||= Minilla::WorkDir->new(
-            project => $project,
-            c => $c,
-        );
-    }
-}
-
 sub DEMOLISH {
     my $self = shift;
-    unless ($self->c->debug) {
+    unless ($Minilla::DEBUG) {
         path(path($self->dir)->dirname)->remove_tree({safe => 0});
     }
 }
@@ -97,13 +79,13 @@ sub as_string {
 sub BUILD {
     my ($self) = @_;
 
-    $self->c->infof("Creating working directory: %s\n", $self->dir);
+    infof("Creating working directory: %s\n", $self->dir);
 
     # copying
     path($self->dir)->mkpath;
     for my $src (@{$self->files}) {
         next if -d $src;
-        $self->c->infof("Copying %s\n", $src);
+        debugf("Copying %s\n", $src);
         my $dst = path($self->dir, path($src)->relative($self->project->dir));
         path($dst->dirname)->mkpath;
         path($src)->copy($dst);
@@ -130,7 +112,7 @@ sub build {
 
     my @files = @{$self->files};
 
-    $self->c->infof("Writing MANIFEST file\n");
+    infof("Writing MANIFEST file\n");
     {
         path('MANIFEST')->spew(join("\n", @files));
     }
@@ -160,7 +142,7 @@ sub dist_test {
 
     {
         my $guard = pushd($self->dir);
-        $self->c->cmd('prove', '-r', '-l', 't', (-d 'xt' ? 'xt' : ()));
+        cmd('prove', '-r', '-l', 't', (-d 'xt' ? 'xt' : ()));
     }
 }
 
@@ -168,8 +150,6 @@ sub dist {
     my ($self) = @_;
 
     $self->{tarball} ||= do {
-        my $c = $self->c;
-
         $self->build();
 
         my $guard = pushd($self->dir);
@@ -182,7 +162,7 @@ sub dist {
             $tar->add_data(path($self->project->dist_name . '-' . $self->project->version, $_), path($_)->slurp);
         }
         $tar->write(path($tarball), COMPRESS_GZIP);
-        $self->c->infof("Wrote %s\n", $tarball);
+        infof("Wrote %s\n", $tarball);
 
         path($tarball)->absolute;
     };

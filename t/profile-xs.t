@@ -14,7 +14,7 @@ my $bin = File::Spec->rel2abs('script/minil');
 
 rmtree('Acme-Foo');
 
-is(minil('new', '-p', 'XS', 'Acme::Foo'), 0);
+is(minil('new', '--username=anonymous', '--email=foo@example.com',  '-p', 'XS', 'Acme::Foo'), 0);
 ok(-f 'Acme-Foo/Build.PL');
 ok(-f 'Acme-Foo/lib/Acme/Foo.pm');
 like(slurp('Acme-Foo/lib/Acme/Foo.pm'), qr{XSLoader});

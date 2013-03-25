@@ -3,7 +3,9 @@ use strict;
 use warnings;
 use utf8;
 use Path::Tiny;
+
 use Minilla::WorkDir;
+use Minilla::Util qw(cmd);
 
 sub run {
     my ($self, @args) = @_;
@@ -14,9 +16,7 @@ sub run {
         'test!' => \$test,
     );
 
-    my $project = Minilla::Project->new(
-        c => $self,
-    );
+    my $project = Minilla::Project->new();
     my $work_dir = $project->work_dir();
     if ($test) {
         local $ENV{RELEASE_TESTING} = 1;
@@ -24,8 +24,8 @@ sub run {
     }
     my $tar = $work_dir->dist();
 
-    $self->cmd('cpanm', ($self->verbose ? '--verbose' : ()), $tar);
-    path($tar)->remove unless $self->debug;
+    cmd('cpanm', ($self->verbose ? '--verbose' : ()), $tar);
+    path($tar)->remove unless Minilla->debug;
 }
 
 1;

@@ -8,6 +8,7 @@ use Path::Tiny;
 use File::Spec::Functions qw(catfile);
 use File::Path qw(mkpath);
 
+use Minilla::Logger;
 use Minilla::Util qw(spew);
 
 sub write_release_tests {
@@ -22,7 +23,7 @@ sub write_release_tests {
         xt/pod.t
         xt/spelling.t
     )) {
-        printf("Writing release tests: %s\n", $file);
+        infof("Writing release tests: %s\n", $file);
         my $content = get_data_section($file);
         $content =~s!<<DIST>>!$name!g;
         spew(catfile($dir, $file), $content);

@@ -6,35 +6,35 @@ use Path::Tiny;
 use ExtUtils::MakeMaker qw(prompt);
 
 use Minilla::Util qw(edit_file);
+use Minilla::Logger;
 
 sub run {
-    my ($self, $c, $opts, $project) = @_;
+    my ($self, $project, $opts) = @_;
 
     my $version = $project->version;
-       $version =~ s/^v//;
 
     if ($ENV{PERL_MINILLA_SKIP_CHECK_CHANGE_LOG}) {
-        $c->infof("Okay, you are debugging now.\n");
+        infof("Okay, you are debugging now.\n");
         return;
     }
 
     until (path('Changes')->slurp =~ /^\{\{\$NEXT\}\}\n+[ \t]+\S/m) {
-        $c->infof("No mention of version '$version' in changelog file 'Changes'\n");
+        infof("No mention of version '%s' in changelog file 'Changes'\n", $version);
         if (prompt("Edit file?", 'y') =~ /y/i) {
             edit_file('Changes');
         } else {
-            $c->error("Giving up!");
+            errorf("Giving up!\n");
         }
     }
 }
 
 sub after_release {
-    my ($self, $c, $opts, $project) = @_;
+    my ($self, $project, $opts) = @_;
     return if $opts->{dry_run};
 
     my $content = path('Changes')->slurp_raw();
     $content =~ s!{{\$NEXT}}!
-        "{{\$NEXT}}\n\n" . $project->version . " " . Minilla::WorkDir->instance->changes_time->strftime('%Y-%m-%dT%H:%M:%SZ') . "\n"
+        "{{\$NEXT}}\n" . $project->version . " " . $project->work_dir->changes_time->strftime('%Y-%m-%dT%H:%M:%SZ') . "\n"
     !e;
     path('Changes')->spew_raw($content);
 }

@@ -14,9 +14,7 @@ sub run {
         'test!' => \$test,
     );
 
-    my $project = Minilla::Project->new(
-        c => $self
-    );
+    my $project = Minilla::Project->new();
     my $work_dir = $project->work_dir;
     if ($test) {
         local $ENV{RELEASE_TESTING} = 1;

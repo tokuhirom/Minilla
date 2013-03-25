@@ -9,12 +9,13 @@ use Data::Section::Simple;
 use Time::Piece;
 
 use Minilla::Util qw(spew);
+use Minilla::Logger;
 
 BEGIN { eval "use MRO::Compat;1" or die $@ if $] < 5.009_005 }
 
 use Moo;
 
-has [qw(c dist author path module version email suffix)] => (
+has [qw(dist author path module version email suffix)] => (
     is       => 'ro',
     required => 1,
 );
@@ -33,7 +34,7 @@ sub render {
     my ($self, $tmplname, $dst) = @_;
     my $path = $dst || $tmplname;
 
-    $self->c->infof("Writing %s\n", $path);
+    infof("Writing %s\n", $path);
     mkpath(dirname($path));
 
     for my $pkg (@{mro::get_linear_isa(ref $self || $self)}) {
@@ -43,13 +44,13 @@ sub render {
         spew($path, $content);
         return;
     }
-    $self->c->error("Cannot find template for $tmplname\n");
+    errorf("Cannot find template for %s\n", $tmplname);
 }
 
 sub write_file {
     my ($self, $path, $content) = @_;
 
-    $self->c->infof("Writing %s\n", $path);
+    infof("Writing %s\n", $path);
     mkpath(dirname($path));
     spew($path, $content);
 }

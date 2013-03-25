@@ -4,10 +4,11 @@ use warnings;
 use utf8;
 use autodie;
 use File::Basename ();
+use Minilla::Logger ();
 
 use parent qw(Exporter);
 
-our @EXPORT_OK = qw(find_dir find_file slurp_utf8 randstr slurp spew edit_file require_optional);
+our @EXPORT_OK = qw(find_dir find_file slurp_utf8 randstr slurp spew edit_file require_optional cmd);
 
 sub randstr {
     my $len = shift;
@@ -91,6 +92,12 @@ sub require_optional {
             die $@;
         }
     }
+}
+
+sub cmd {
+    Minilla::Logger::infof("%s\n", "@_");
+    system(@_) == 0
+        or Minilla::Loggererrorf("Giving up.\n");
 }
 
 1;

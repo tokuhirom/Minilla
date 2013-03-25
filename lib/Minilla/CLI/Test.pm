@@ -30,10 +30,7 @@ sub run {
     $ENV{AUTHOR_TESTING}    =1 if $author    == 0;
     $ENV{AUTOMATED_TESTING} =1 if $automated == 0;
 
-    my $project = Minilla::Project->new(
-        c => $self,
-    );
-
+    my $project = Minilla::Project->new();
     $project->verify_prereqs( [qw(develop test runtime)], $_ ) for qw(requires recommends);
 
     my $work_dir = $project->work_dir;

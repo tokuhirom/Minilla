@@ -7,6 +7,7 @@ use ExtUtils::MakeMaker qw(prompt);
 
 use Minilla::Util qw(edit_file require_optional);
 use Minilla::WorkDir;
+use Minilla::Logger;
 
 sub run {
     my ($self, @args) = @_;
@@ -23,9 +24,7 @@ sub run {
         'dry-run!' => \$opts->{dry_run},
     );
 
-    my $project = Minilla::Project->new(
-        c => $self,
-    );
+    my $project = Minilla::Project->new();
 
     my @steps = qw(
         CheckUntrackedFiles
@@ -46,18 +45,18 @@ sub run {
             push @klasses, $klass;
             $klass->init() if $klass->can('init');
         } else {
-            $self->error("Error while loading $_: $@");
+            errorf("Error while loading %s: %s\n", $_, $@);
         }
     }
     # And run all steps.
     for my $klass (@klasses) {
-        $klass->run($self, $opts, $project);
+        $klass->run($project, $opts);
     }
     # And call 'after release' hook.
-    $self->infof("Calling 'after_release' hooks\n");
+    infof("Calling 'after_release' hooks\n");
     for my $klass (@klasses) {
         if ($klass->can('after_release')) {
-            $klass->after_release($self, $opts, $project);
+            $klass->after_release($project, $opts);
         }
     }
 }
