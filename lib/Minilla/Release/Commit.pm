@@ -9,6 +9,9 @@ use Minilla::Logger;
 sub run {
     my ($self, $project, $opts) = @_;
 
+    my @modified_files = split /\0/, `git ls-files --deleted --modified -z`;
+    return if @modified_files == 0;
+
     $project->clear_metadata();
     my $ver = $project->metadata->version;
 
