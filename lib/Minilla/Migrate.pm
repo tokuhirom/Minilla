@@ -9,6 +9,7 @@ use Path::Tiny;
 use File::Find::Rule;
 use TOML qw(to_toml);
 
+use Minilla::Gitignore;
 use Minilla::Util qw(slurp spew require_optional);
 
 use Moo;
@@ -225,30 +226,30 @@ sub remove_unused_files {
 sub migrate_gitignore {
     my ($self) = @_;
 
+    warn "GINORE";
     my @lines;
-    
-    if (-f '.gitignore') {
-        @lines = path('.gitignore')->lines({chomp => 1});
-    }
 
-    # remove META.json from ignored file list
-        @lines = grep !/^META\.json$/, @lines;
+    my $gitignore = (
+        -f '.gitignore'
+        ? Minilla::Gitignore->load('.gitignore')
+        : Minilla::Gitignore->new()
+    );
+    $gitignore->remove('META.json');
+    $gitignore->remove('/META.json');
 
-    my $tarpattern = sprintf('/%s-*', $self->project->dist_name);
     # Add some lines
+    $gitignore->add(sprintf('/%s-*', $self->project->dist_name));
     for my $fname (qw(
         /.build
         /_build_params
         /Build
         !Build/
         !META.json
-    ), $tarpattern) {
-        unless (grep /\A\Q$fname\E\z/, @lines) {
-            push @lines, $fname;
-        }
+    )) {
+        $gitignore->add($fname);
     }
 
-    path('.gitignore')->spew(join('', map { "$_\n" } @lines));
+    $gitignore->save('.gitignore');
 
     $self->git_add(qw(.gitignore));
 }
