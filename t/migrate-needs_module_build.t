@@ -11,7 +11,7 @@ subtest 'pp project' => sub {
     my $tmp = tempdir(CLEAN => 1);
     my $guard = pushd($tmp);
     my $migrate = Minilla::Migrate->new();
-    ok(!$migrate->use_mb_tiny);
+    ok(not $migrate->needs_module_build);
 };
 
 subtest 'xs project' => sub {
@@ -24,7 +24,7 @@ subtest 'xs project' => sub {
     close $fh;
 
     my $migrate = Minilla::Migrate->new();
-    ok($migrate->use_mb_tiny);
+    ok($migrate->needs_module_build);
 };
 
 done_testing;

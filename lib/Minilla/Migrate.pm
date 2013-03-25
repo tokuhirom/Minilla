@@ -16,7 +16,7 @@ use Minilla::Profile::Default;
 
 use Moo;
 
-has use_mb_tiny => (
+has needs_module_build => (
     is => 'lazy',
 );
 
@@ -31,7 +31,7 @@ sub _build_project {
     Minilla::Project->new();
 }
 
-sub _build_use_mb_tiny {
+sub _build_needs_module_build {
     my $self = shift;
     my $xs_found = 0;
     File::Find::find(
@@ -45,7 +45,7 @@ sub _build_use_mb_tiny {
     if ($xs_found) {
         infof("Found a xs files. Switching to Module::Build.\n");
     }
-    $xs_found;
+    return $xs_found;
 }
 
 sub run {
@@ -164,16 +164,16 @@ sub migrate_cpanfile {
     my $meta = CPAN::Meta->load_file($metafile);
     my $prereqs = $meta->effective_prereqs->as_string_hash;
 
-    if ($self->use_mb_tiny) {
-        infof("Using Module::Build::Tiny\n");
-        delete $prereqs->{configure}->{requires}->{'Module::Build'};
-        delete $prereqs->{configure}->{requires}->{'ExtUtils::MakeMaker'};
-        $prereqs->{configure}->{requires}->{'Module::Build::Tiny'} = 0;
-    } else {
+    if ($self->needs_module_build) {
         infof("Using Module::Build (Because this distribution uses xs)\n");
         delete $prereqs->{configure}->{requires}->{'ExtUtils::MakeMaker'};
         $prereqs->{configure}->{requires}->{'Module::Build'}    = 0.40;
         $prereqs->{configure}->{requires}->{'Module::CPANfile'} = 0;
+    } else {
+        infof("Using Module::Build::Tiny\n");
+        delete $prereqs->{configure}->{requires}->{'Module::Build'};
+        delete $prereqs->{configure}->{requires}->{'ExtUtils::MakeMaker'};
+        $prereqs->{configure}->{requires}->{'Module::Build::Tiny'} = 0;
     }
 
     my $cpanfile = Module::CPANfile->from_prereqs($prereqs);
@@ -185,9 +185,7 @@ sub migrate_cpanfile {
 sub generate_build_pl {
     my ($self) = @_;
 
-    if ($self->use_mb_tiny) {
-        path('Build.PL')->spew("use 5.008001;\nuse Module::Build::Tiny;\nBuild_PL();\n");
-    } else {
+    if ($self->needs_module_build) {
         my $dist = path($self->project->dir)->basename;
            $dist =~ s/^p5-//;
         (my $module = $dist) =~ s!-!::!g;
@@ -198,6 +196,8 @@ sub generate_build_pl {
                 module => $module,
             }
         );
+    } else {
+        path('Build.PL')->spew("use 5.008001;\nuse Module::Build::Tiny;\nBuild_PL();\n");
     }
 
     $self->git_add(qw(Build.PL));
