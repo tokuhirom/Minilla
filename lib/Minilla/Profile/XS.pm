@@ -33,6 +33,9 @@ sub generate {
     $self->render('.travis.yml');
 
     $self->render('.gitignore');
+    my $gi = Minilla::Gitignore->load('.gitignore');
+    $gi->add(catfile('lib', dirname($self->path), $self->suffix . '.c'));
+
     $self->write_file('LICENSE', Minilla::License::Perl_5->new(
         holder => sprintf('%s <%s>', $self->author, $self->email)
     )->fulltext);
