@@ -71,6 +71,12 @@ sub run {
         $self->dist_ini2minil_toml();
     }
 
+    # Some users put a link for main module.
+    # But it's duplicated to README.md created by Minilla.
+    if (-l 'README.pod') {
+        $self->git_rm('README.pod');
+    }
+
     $self->remove_unused_files();
     $self->migrate_gitignore();
     $self->project->regenerate_meta_json();
