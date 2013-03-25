@@ -12,7 +12,6 @@ sub run {
     my ($self, $project, $opts) = @_;
 
     my $version = $project->version;
-       $version =~ s/^v//;
 
     if ($ENV{PERL_MINILLA_SKIP_CHECK_CHANGE_LOG}) {
         infof("Okay, you are debugging now.\n");
@@ -35,7 +34,7 @@ sub after_release {
 
     my $content = path('Changes')->slurp_raw();
     $content =~ s!{{\$NEXT}}!
-        "{{\$NEXT}}\n\n" . $project->version . " " . $project->work_dir->changes_time->strftime('%Y-%m-%dT%H:%M:%SZ') . "\n"
+        "{{\$NEXT}}\n" . $project->version . " " . $project->work_dir->changes_time->strftime('%Y-%m-%dT%H:%M:%SZ') . "\n"
     !e;
     path('Changes')->spew_raw($content);
 }
