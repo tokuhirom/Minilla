@@ -35,15 +35,17 @@ Minilla is CPAN module authoring tool.
 
 B<THIS IS A DEVELOPMENT RELEASE. API MAY CHANGE WITHOUT NOTICE>.
 
-=head1 FEATURES
+=head1 MOTIVATION
+
+=head1 CONVENTION
 
 =over 4
 
+=item VC is Git
+
+=item Use cpanfile for dependency management.
+
 =back
-
-=head1 TODO
-
-    # TODO: --trial
 
 =head1 CONFIGURATION
 
@@ -73,6 +75,16 @@ If you want to pluggable thing, it's already exist dzil :P
 And if you like a behavior like Minilla, you can use L<Dist::Milla>, is the sister project of Minilla.
 L<Dist::Milla>'s behavior is mostly like Minilla.
 
+=item Why minil only supports git?
+
+I think git is a best VC for CPAN modules, for now.
+
+If you want to use another version control system, you can use L<Dist::Milla>.
+
+=item And why...
+
+Yes. You can use L<Dist::Milla>.
+
 =item Should I add (META.json|Build.PL) to repository?
 
 Yes. You need to add it for git installable repo.
@@ -85,22 +97,18 @@ Is there a reason to remove ppport.h from repo?
 
 Your executables must be in F<script/>. It's L<Module::Build::Tiny>'s rule.
 
-=item Why minil only supports git?
+=item How to switch from Module::Install/Module::Build/Dist::Zilla?
 
-I think git is a best VC for CPAN modules, for now.
-
-If you want to use another version control system, you can use L<Moth>.
-
-=item HOW TO SWITCH FROM M::I/M::B?
-
-You can use experimental `minil migrate` command.
+You can use experimental `minil migrate` subcommand.
 Please look L<Minilla::CLI::Migrate>.
 
 =back
 
-=head1 AUTHOR
+=head1 AUTHORS
 
 Tokuhiro Matsuno E<lt> tokuhirom @ gmail.com E<gt>
+
+Tatsuhiko Miyagawa
 
 =head1 SEE ALSO
 

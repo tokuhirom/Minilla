@@ -34,14 +34,6 @@ sub generate {
     $self->render('Build.PL');
 }
 
-sub render_build_mb_pl {
-    my ($self, $args) = @_;
-
-    my $content = get_data_section('Build-MB.PL');
-    $content =~ s!<%\s*([a-z_]+)\s*%>!$args->{$1}!ge;
-    return $content;
-}
-
 1;
 __DATA__
 

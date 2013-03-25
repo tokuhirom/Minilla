@@ -12,6 +12,7 @@ use TOML qw(to_toml);
 use Minilla::Gitignore;
 use Minilla::Util qw(slurp spew require_optional cmd);
 use Minilla::Logger;
+use Minilla::Profile::Default;
 
 use Moo;
 
@@ -187,10 +188,13 @@ sub generate_build_pl {
         my $dist = path($self->project->dir)->basename;
            $dist =~ s/^p5-//;
         (my $module = $dist) =~ s!-!::!g;
-        path('Build.PL')->spew(Minilla::Skeleton->render_build_mb_pl({
-            dist   => $dist,
-            module => $module,
-        }));
+        require Minilla::Profile::XS;
+        Minilla::Profile::XS->render(
+            'Build.PL', 'Build.PL', {
+                dist   => $dist,
+                module => $module,
+            }
+        );
     }
 
     $self->git_add(qw(Build.PL));

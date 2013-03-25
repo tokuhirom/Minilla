@@ -31,7 +31,7 @@ sub end { '__END__' }
 sub module_pm_src { '' }
 
 sub render {
-    my ($self, $tmplname, $dst) = @_;
+    my ($self, $tmplname, $dst, $params) = @_;
     my $path = $dst || $tmplname;
 
     infof("Writing %s\n", $path);
@@ -40,7 +40,13 @@ sub render {
     for my $pkg (@{mro::get_linear_isa(ref $self || $self)}) {
         my $content = Data::Section::Simple->new($pkg)->get_data_section($tmplname);
         next unless defined $content;
-        $content =~ s!<%\s*\$([a-z_]+)\s*%>!$self->$1!ge;
+        $content =~ s!<%\s*\$([a-z_]+)\s*%>!
+            if (ref $self) {
+                $self->$1()
+            } else {
+                $params->{$1}
+            }
+        !ge;
         spew($path, $content);
         return;
     }
