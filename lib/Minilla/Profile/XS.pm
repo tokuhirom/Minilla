@@ -29,6 +29,7 @@ sub generate {
 
     $self->render('Changes');
     $self->render('t/00_compile.t');
+    $self->render('t/01_simple.t');
     $self->render('.travis.yml');
 
     $self->render('.gitignore');
@@ -98,6 +99,16 @@ on configure => sub {
 
 on 'develop' => sub {
 };
+
+@@ t/01_simple.t
+use strict;
+use Test::More;
+
+use <% $module %>;
+
+is(<% $module %>::hello(), 'Hello, world!');
+
+done_testing;
 
 @@ Module.xs
 #ifdef __cplusplus
