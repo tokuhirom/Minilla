@@ -1,17 +1,29 @@
 requires 'perl'   => '5.0100000';
+
+# Core module at recent Perl5.
 requires 'parent' => '0';
 requires 'Archive::Tar';
+
+# Module for compatibility
+requires 'MRO::Compat' if $] < 5.009_005;
+
+# CPAN related
 requires 'App::cpanminus', '1.6003';
 requires 'Module::CPANfile', '0.9020';
+requires 'Module::Metadata' => '1.0.11';
+requires 'Pod::Markdown';
+
+# File operation
 requires 'File::pushd';
 requires 'Path::Tiny';
-requires 'Moo' => 1.001000;
-requires 'Data::Section::Simple';
-requires 'Module::Metadata' => '1.0.11';
 requires 'File::Copy::Recursive';
-requires 'Pod::Markdown';
 requires 'File::Find::Rule'; # File::File is good enough?
-requires 'MRO::Compat' if $] < 5.009_005;
+
+# OOPS
+requires 'Moo' => 1.001000;
+
+# Utilities
+requires 'Data::Section::Simple';
 
 # Modules required by minil new/minil dist/minil release are optional.
 # It's good for contributors
@@ -45,5 +57,4 @@ on 'test' => sub {
 
 on 'develop' => sub {
     # Dependencies for developers
-    # recommends 'Test::Kwalitee';
 };
