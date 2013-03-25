@@ -85,7 +85,7 @@ sub BUILD {
     path($self->dir)->mkpath;
     for my $src (@{$self->files}) {
         next if -d $src;
-        infof("Copying %s\n", $src);
+        debugf("Copying %s\n", $src);
         my $dst = path($self->dir, path($src)->relative($self->project->dir));
         path($dst->dirname)->mkpath;
         path($src)->copy($dst);

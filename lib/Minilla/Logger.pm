@@ -9,13 +9,14 @@ require Win32::Console::ANSI if $^O eq 'MSWin32';
 
 use Minilla::Errors;
 
-our @EXPORT = qw(infof warnf errorf);
+our @EXPORT = qw(debugf infof warnf errorf);
 
 our $COLOR;
 
-use constant { DEBUG => 0, INFO => 1, WARN => 2, ERROR => 3 };
+use constant { DEBUG => 1, INFO => 2, WARN => 3, ERROR => 4 };
 
 our $Colors = {
+    DEBUG,   => 'green',
     WARN,    => 'yellow',
     INFO,    => 'cyan',
     ERROR,   => 'red',
@@ -29,6 +30,7 @@ sub _printf {
 
 sub _print {
     my($msg, $type) = @_;
+    return if $type == DEBUG && !Minilla->debug;
     $msg = colored $msg, $Colors->{$type} if defined $type && $COLOR;
     my $fh = $type && $type >= WARN ? *STDERR : *STDOUT;
     print {$fh} $msg;
@@ -40,6 +42,10 @@ sub infof {
 
 sub warnf {
     _printf(@_, WARN);
+}
+
+sub debugf {
+    _printf(@_, DEBUG);
 }
 
 sub errorf {
