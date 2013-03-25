@@ -24,6 +24,20 @@ __THIS IS A DEVELOPMENT RELEASE. API MAY CHANGE WITHOUT NOTICE__.
 
     # TODO: --trial
 
+# CONFIGURATION
+
+Minilla uses __Convention over Configuration__.
+
+But, you can write configurations to _minil.toml_ file by [TOML](https://github.com/mojombo/toml).
+
+- name
+
+    You can write 'name' instead of detecting project name from directory name.
+
+- no\_github\_issues
+
+    Minilla sets bugtracker as github issues by default. But if you want to use RT, you can set this variable.
+
 # FAQ
 
 - Why don't you provide plugin support?
@@ -59,7 +73,7 @@ __THIS IS A DEVELOPMENT RELEASE. API MAY CHANGE WITHOUT NOTICE__.
 
 # AUTHOR
 
-Tokuhiro Matsuno <tokuhirom AAJKLFJEF@ gmail.com>
+Tokuhiro Matsuno < tokuhirom @ gmail.com >
 
 # SEE ALSO
 
