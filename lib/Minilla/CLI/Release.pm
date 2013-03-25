@@ -29,7 +29,7 @@ sub run {
     my @steps = qw(
         CheckUntrackedFiles
         BumpVersion
-        CheckChangeLog
+        CheckChanges
         RegenerateMeta
         DistTest
         MakeDist

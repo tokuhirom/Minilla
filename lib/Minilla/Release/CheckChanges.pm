@@ -1,4 +1,4 @@
-package Minilla::Release::CheckChangeLog;
+package Minilla::Release::CheckChanges;
 use strict;
 use warnings;
 use utf8;
