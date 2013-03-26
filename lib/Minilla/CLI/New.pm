@@ -20,9 +20,13 @@ sub run {
         'email=s'    => \$email,
         'p|profile=s' => \$profile,
     );
+
     my $module = shift @args or errorf("Missing module name\n");
+       $module =~ s!-!::!g;
+
     $username ||= `git config user.name`;
     $username =~ s/\n$//;
+
     $email ||= `git config user.email`;
     $email =~ s/\n$//;
 
