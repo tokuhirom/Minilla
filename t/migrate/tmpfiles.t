@@ -34,6 +34,7 @@ subtest 'Removing committed README' => sub {
 
     git_init();
     git_add();
+    git_commit('-m', 'initial import');
 
     Minilla::Migrate->new->run();
 
@@ -62,6 +63,7 @@ subtest 'Removing ignored README' => sub {
 
     git_init();
     git_add();
+    git_commit('-m', 'initial import');
 
     Minilla::Migrate->new->run();
 
