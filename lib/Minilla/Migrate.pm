@@ -76,6 +76,9 @@ sub run {
     if (-l 'README.pod') {
         $self->git_rm('README.pod');
     }
+    if (-f 'META.yml') {
+        unlink 'META.yml';
+    }
 
     $self->remove_unused_files();
     $self->migrate_gitignore();
