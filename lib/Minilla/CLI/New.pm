@@ -5,7 +5,7 @@ use utf8;
 use File::pushd;
 use File::Path qw(mkpath);
 
-use Minilla::Util qw(cmd);
+use Minilla::Util qw(cmd parse_options);
 use Minilla::Logger;
 
 sub run {
@@ -14,7 +14,7 @@ sub run {
     my $username;
     my $email;
     my $profile = 'Default';
-    $self->parse_options(
+    parse_options(
         \@args,
         'username=s' => \$username,
         'email=s'    => \$email,

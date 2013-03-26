@@ -8,12 +8,13 @@ use File::Copy::Recursive qw(rcopy);
 
 use Minilla::Project;
 use Minilla::Logger;
+use Minilla::Util qw(parse_options);
 
 sub run {
     my ($self, @args) = @_;
 
     my $test = 1;
-    $self->parse_options(
+    parse_options(
         \@args,
         'test!' => \$test,
     );

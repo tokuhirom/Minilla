@@ -5,7 +5,7 @@ use utf8;
 use Path::Tiny;
 use ExtUtils::MakeMaker qw(prompt);
 
-use Minilla::Util qw(edit_file require_optional);
+use Minilla::Util qw(edit_file require_optional parse_options);
 use Minilla::WorkDir;
 use Minilla::Logger;
 
@@ -17,7 +17,7 @@ sub run {
         trial => 0,
         dry_run => 0,
     };
-    $self->parse_options(
+    parse_options(
         \@args,
         'test!' => \$opts->{test},
         'trial!' => \$opts->{trial},

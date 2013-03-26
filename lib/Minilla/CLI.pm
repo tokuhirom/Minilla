@@ -42,12 +42,12 @@ sub run {
     push @commands, @ARGV;
  
     my $cmd = shift @commands || 'help';
+    my $klass = sprintf("Minilla::CLI::%s", ucfirst($cmd));
  
     ## no critic
-    if (eval sprintf("require Minilla::CLI::%s; 1;", ucfirst($cmd))) {
+    if (eval sprintf("require %s; 1;", $klass)) {
         try {
-            my $call = sprintf("Minilla::CLI::%s::run", ucfirst($cmd));
-            $self->$call(@commands);
+            $klass->run(@commands);
         } catch {
             /Minilla::Error::CommandExit/ and return;
             errorf("%s\n", $_);
@@ -60,11 +60,6 @@ sub run {
         }
         exit 2;
     }
-}
-
-sub parse_options {
-    my ( $self, $args, @spec ) = @_;
-    Getopt::Long::GetOptionsFromArray( $args, @spec );
 }
 
 1;

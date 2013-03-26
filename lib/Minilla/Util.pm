@@ -13,7 +13,8 @@ our @EXPORT_OK = qw(
     randstr
     slurp slurp_utf8 slurp_raw
     spew spew_raw
-    edit_file require_optional cmd);
+    edit_file require_optional cmd
+    parse_options);
 
 sub randstr {
     my $len = shift;
@@ -116,6 +117,12 @@ sub cmd {
     system(@_) == 0
         or Minilla::Logger::errorf("Giving up.\n");
 }
+
+sub parse_options {
+    my ( $args, @spec ) = @_;
+    Getopt::Long::GetOptionsFromArray( $args, @spec );
+}
+
 
 1;
 

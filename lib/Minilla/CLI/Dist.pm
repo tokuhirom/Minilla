@@ -2,14 +2,16 @@ package Minilla::CLI::Dist;
 use strict;
 use warnings;
 use utf8;
-use Minilla::Project;
 use Path::Tiny;
+
+use Minilla::Project;
+use Minilla::Util qw(parse_options);
 
 sub run {
     my ($self, @args) = @_;
 
     my $test = 1;
-    $self->parse_options(
+    parse_options(
         \@args,
         'test!' => \$test,
     );

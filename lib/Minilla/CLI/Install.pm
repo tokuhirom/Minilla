@@ -5,13 +5,13 @@ use utf8;
 use Path::Tiny;
 
 use Minilla::WorkDir;
-use Minilla::Util qw(cmd);
+use Minilla::Util qw(cmd parse_options);
 
 sub run {
     my ($self, @args) = @_;
 
     my $test = 1;
-    $self->parse_options(
+    parse_options(
         \@args,
         'test!' => \$test,
     );

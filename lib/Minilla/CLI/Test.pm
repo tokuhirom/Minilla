@@ -6,6 +6,7 @@ use File::pushd;
 
 use Minilla::WorkDir;
 use Minilla::Project;
+use Minilla::Util qw(parse_options);
 
 sub run {
     my ($self, @args) = @_;
@@ -14,7 +15,7 @@ sub run {
     my $author    = 1;
     my $automated = 0;
     my $all       = 0;
-    $self->parse_options(
+    parse_options(
         \@args,
         'release!'   => \$release,
         'author!'    => \$author,

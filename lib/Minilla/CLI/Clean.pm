@@ -6,6 +6,7 @@ use ExtUtils::MakeMaker qw(prompt);
 use File::Path qw(rmtree);
 
 use Minilla::Project;
+use Minilla::Util qw(parse_options);
 
 sub run {
     my $self = shift;
