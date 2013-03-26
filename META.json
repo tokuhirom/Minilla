@@ -4,7 +4,7 @@
       "Tokuhiro Matsuno < tokuhirom @ gmail.com >"
    ],
    "dynamic_config" : 0,
-   "generated_by" : "Minilla/v0.0.48, CPAN::Meta::Converter version 2.120921",
+   "generated_by" : "Minilla/v0.0.49, CPAN::Meta::Converter version 2.120921",
    "license" : [
       "perl_5"
    ],
@@ -37,21 +37,19 @@
             "Archive::Tar" : "0",
             "Data::Section::Simple" : "0",
             "File::Copy::Recursive" : "0",
-            "File::Find::Rule" : "0",
             "File::pushd" : "0",
             "Module::CPANfile" : "0.9020",
-            "Module::Metadata" : "0",
+            "Module::Metadata" : "v1.0.11",
             "Moo" : "1.001",
             "Path::Tiny" : "0",
             "Pod::Markdown" : "0",
             "TOML" : "0.91",
             "parent" : "0",
-            "perl" : "5.0100000"
+            "perl" : "5.008005"
          }
       },
       "test" : {
          "requires" : {
-            "Test::AllModules" : "0",
             "Test::More" : "0.98",
             "Test::Requires" : "0"
          }
