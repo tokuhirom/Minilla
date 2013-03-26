@@ -12,6 +12,7 @@ use File::pushd;
 use CPAN::Meta;
 use Module::CPANfile;
 
+use Minilla;
 use Minilla::Logger;
 use Minilla::Metadata;
 use Minilla::Util qw(slurp_utf8 find_dir cmd);
@@ -213,6 +214,9 @@ sub cpan_meta {
         generated_by   => "Minilla/$Minilla::VERSION",
         release_status => $release_status || 'stable',
     };
+    unless ($dat->{abstract}) {
+        errorf("Cannot retrieve 'abstract' from %s\n", $self->dir);
+    }
 
     # fill 'provides' section
     if ($release_status ne 'unstable') {
