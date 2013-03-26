@@ -11,7 +11,7 @@ use Time::Piece qw(gmtime);
 use File::Basename qw(dirname);
 
 use Minilla::Logger;
-use Minilla::Util qw(randstr cmd);
+use Minilla::Util qw(randstr cmd slurp);
 use Minilla::FileGatherer;
 use Minilla::ReleaseTest;
 
@@ -120,6 +120,11 @@ sub build {
     $self->_rewrite_changes();
 
     Minilla::ReleaseTest->write_release_tests($self->project, $self->dir);
+
+    if (slurp('Build.PL') =~ /use\s+Module::Build;/) {
+        cmd($^X, 'Build.PL');
+        cmd($^X, 'Build', 'build');
+    }
 }
 
 sub _rewrite_changes {
@@ -142,8 +147,12 @@ sub dist_test {
 
     {
         my $guard = pushd($self->dir);
-        my @dirs = grep { -d $_ } qw(t xt);
-        cmd('prove', '-r', '-l', @dirs);
+        if (slurp('Build.PL') =~ /use\s+Module::Build;/) {
+            cmd($^X, 'Build', 'test');
+        } else {
+            my @dirs = grep { -d $_ } qw(t xt);
+            cmd('prove', '-r', '-l', @dirs);
+        }
     }
 }
 
