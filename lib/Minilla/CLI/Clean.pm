@@ -19,6 +19,7 @@ sub run {
         'MYMETA.json',
         'MYMETA.yml',
         '_build_params',
+        '_build',       # M::B
     );
     print("Would remove $_\n") for (@targets);
     if (prompt('Remove it?', 'y') =~ /y/i) {
