@@ -1,4 +1,4 @@
-requires 'perl'   => '5.010000';
+requires 'perl'   => '5.008005';
 
 # Core module at recent Perl5.
 requires 'parent' => '0';
