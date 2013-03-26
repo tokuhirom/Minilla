@@ -23,12 +23,10 @@ ok(-f 'Acme-Foo/t/00_compile.t');
 
 {
     my $guard = pushd('Acme-Foo');
-    is( system( $^X, 'Build.PL' ), 0 );
-    is( system( $^X, 'Build', 'build' ), 0 );
-    is( system( $^X, 'Build', 'test' ),  0 );
+    is(minil('test'), 0);
 }
 
-# rmtree('Acme-Foo');
+rmtree('Acme-Foo');
 
 done_testing;
 
