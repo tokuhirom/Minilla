@@ -79,12 +79,23 @@ sub run {
     if (-f 'META.yml') {
         unlink 'META.yml';
     }
+    $self->rm_f('README');
 
     $self->remove_unused_files();
     $self->migrate_gitignore();
     $self->project->regenerate_meta_json();
     $self->project->regenerate_readme_md();
     $self->git_add(qw(META.json README.md));
+}
+
+sub rm_f {
+    my ($self, $file) = @_;
+    if (grep { $_ eq $file } split /\0/, `git ls-files -z`) {
+        # committed file
+        $self->git_rm($file);
+    } else {
+        unlink $file;
+    }
 }
 
 sub dist_ini2minil_toml {
