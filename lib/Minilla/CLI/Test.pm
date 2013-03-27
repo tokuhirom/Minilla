@@ -35,7 +35,7 @@ sub run {
     $project->verify_prereqs( [qw(develop test runtime)], $_ ) for qw(requires recommends);
 
     my $work_dir = $project->work_dir;
-    $work_dir->dist_test();
+    $work_dir->dist_test(@args);
 }
 
 1;

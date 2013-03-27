@@ -138,7 +138,7 @@ sub _rewrite_changes {
 }
 
 sub dist_test {
-    my $self = shift;
+    my ($self, @targets) = @_;
 
     $self->build();
 
@@ -150,8 +150,10 @@ sub dist_test {
         if (slurp('Build.PL') =~ /use\s+Module::Build;/) {
             cmd($^X, 'Build', 'test');
         } else {
-            my @dirs = grep { -d $_ } qw(t xt);
-            cmd('prove', '-r', '-l', @dirs);
+            unless (@targets) {
+                @targets = grep { -d $_ } qw(t xt);
+            }
+            cmd('prove', '-r', '-l', @targets);
         }
     }
 }
