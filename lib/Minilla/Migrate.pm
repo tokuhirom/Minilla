@@ -156,7 +156,7 @@ sub generate_license {
     my ($self) = @_;
 
     unless (-f 'LICENSE') {
-        path('LICENSE')->spew($self->project->metadata->license->fulltext());
+        spew_raw('LICENSE', $self->project->metadata->license->fulltext());
         git_add(qw(LICENSE));
     }
 }
