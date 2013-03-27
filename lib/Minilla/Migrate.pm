@@ -11,7 +11,7 @@ use TOML qw(to_toml);
 use Config;
 
 use Minilla::Gitignore;
-use Minilla::Util qw(slurp spew require_optional cmd slurp_utf8 spew_utf8);
+use Minilla::Util qw(slurp spew require_optional cmd slurp_utf8 spew_utf8 slurp_raw spew_raw);
 use Minilla::Logger;
 use Minilla::Profile::Default;
 use Minilla::Git;
@@ -99,9 +99,11 @@ sub migrate_changes {
     
     return unless -f 'Changes';
 
-    my $content = slurp_utf8('Changes');
+    # Q. Why :raw?
+    # A. It's for windows. See dzil.
+    my $content = slurp_raw('Changes');
     $content =~ s!^(Revision history for Perl extension \S+\n\n)!$1\{\{\$NEXT\}\}\n\n!;
-    spew_utf8('Changes', $content);
+    spew_raw('Changes', $content);
 }
 
 sub rm {

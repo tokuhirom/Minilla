@@ -15,7 +15,7 @@ use Module::CPANfile;
 use Minilla;
 use Minilla::Logger;
 use Minilla::Metadata;
-use Minilla::Util qw(slurp_utf8 find_dir cmd);
+use Minilla::Util qw(slurp_utf8 find_dir cmd spew_raw);
 
 use Moo;
 
@@ -279,10 +279,7 @@ sub regenerate_readme_md {
     $parser->parse_from_file($self->main_module_path);
 
     my $fname = File::Spec->catfile($self->dir, 'README.md');
-    open my $fh, '>', $fname
-        or errorf("%s: %s\n", $fname, $!);
-    print $fh $parser->as_markdown;
-    close $fh or die "$!\n";
+    spew_raw($fname, $parser->as_markdown);
 }
 
 sub verify_prereqs {
