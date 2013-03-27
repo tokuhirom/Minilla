@@ -73,18 +73,6 @@ sub run {
         $self->dist_ini2minil_toml();
     }
 
-    # Some users put a link for main module.
-    # But it's duplicated to README.md created by Minilla.
-    if (-l 'README.pod') {
-        git_rm('--quiet', 'README.pod');
-    }
-    if (-f 'META.yml') {
-        unlink 'META.yml';
-    }
-    $self->rm('README');
-    $self->rm('MYMETA.json');
-    $self->rm('MYMETA.yml');
-
     $self->remove_unused_files();
     $self->migrate_gitignore();
     $self->project->regenerate_meta_json();
@@ -108,12 +96,6 @@ sub migrate_changes {
 
 sub rm {
     my ($self, $file) = @_;
-    if (grep { $_ eq $file } git_ls_files()) {
-        # committed file
-        git_rm('--quiet', $file);
-    } else {
-        unlink $file;
-    }
 }
 
 sub dist_ini2minil_toml {
@@ -234,6 +216,9 @@ sub generate_build_pl {
 sub remove_unused_files {
     my $self = shift;
 
+    # Some users put a README.pod symlink for main module.
+    # But it's duplicated to README.md created by Minilla.
+
     # remove some unusable files
     for my $file (qw(
         Makefile.PL
@@ -244,18 +229,21 @@ sub remove_unused_files {
         xt/99_pod.t
         xt/01_podspell.t    xt/03_pod.t              xt/05_cpan_meta.t
         xt/04_minimum_version.t  xt/06_meta_author.t
-    )) {
-        if (-f $file) {
-            cmd("git rm $file");
-        }
-    }
-
-    for my $file (qw(
         MANIFEST.SKIP.bak
         MANIFEST.bak
+        README.pod
+        META.yml
+        README
+        MYMETA.json
+        MYMETA.yml
     )) {
-        if (-f $file) {
-            path($file)->remove;
+        if (-e $file) {
+            if (grep { $_ eq $file } git_ls_files()) {
+                # committed file
+                git_rm('--quiet', $file);
+            } else {
+                unlink $file;
+            }
         }
     }
 }
