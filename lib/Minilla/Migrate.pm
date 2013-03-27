@@ -75,7 +75,7 @@ sub run {
     # Some users put a link for main module.
     # But it's duplicated to README.md created by Minilla.
     if (-l 'README.pod') {
-        git_rm('README.pod');
+        git_rm('--quiet', 'README.pod');
     }
     if (-f 'META.yml') {
         unlink 'META.yml';
@@ -93,7 +93,7 @@ sub rm {
     my ($self, $file) = @_;
     if (grep { $_ eq $file } git_ls_files()) {
         # committed file
-        git_rm($file);
+        git_rm('--quiet', $file);
     } else {
         unlink $file;
     }
@@ -130,7 +130,7 @@ sub dist_ini2minil_toml {
         spew( 'minil.toml' => $toml );
         git_add('minil.toml');
     }
-    git_rm('dist.ini');
+    git_rm('--quiet', 'dist.ini');
 
     $self->project->clear_metadata();
 }

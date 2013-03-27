@@ -6,6 +6,9 @@ package Minilla::Profile::Tempfiles;
 use parent qw(Minilla::Profile::Default);
 
 use Test::More;
+
+plan skip_all => "No git configuration" unless `git config user.email` =~ /\@/;
+
 use File::Temp qw(tempdir);
 use File::pushd;
 use Data::Section::Simple qw(get_data_section);
