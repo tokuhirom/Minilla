@@ -8,6 +8,7 @@ use File::Temp qw(tempdir);
 use File::Copy::Recursive qw(rcopy);
 use Minilla::Util qw(slurp);
 use Module::CPANfile;
+use Minilla::Git;
 
 @INC = map { File::Spec->rel2abs($_) } @INC;
 
@@ -15,8 +16,10 @@ my $tmp = tempdir(CLEANUP => 0);
 rcopy('t/migrate/dzil/' => $tmp);
 my $dst = File::Spec->catdir($tmp, 'Acme-Dzil');
 chdir $dst;
-system('git init');
-system('git add .');
+git_init();
+git_add('.');
+git_commit('-m', 'initial import');
+
 Minilla::CLI->new()->run('migrate');
 
 {
