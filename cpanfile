@@ -12,7 +12,7 @@ requires 'TOML' => 0.91;
 
 # CPAN related
 requires 'App::cpanminus', '1.6003';
-requires 'Module::CPANfile', '0.9020';
+requires 'Module::CPANfile', '0.9025';
 requires 'Module::Metadata' => '1.0.11';
 requires 'Pod::Markdown';
 
