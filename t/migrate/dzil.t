@@ -3,6 +3,9 @@ use warnings;
 use utf8;
 use Test::More;
 use Test::Requires qw(Dist::Zilla);
+
+plan skip_all => "No git configuration" unless `git config user.email` =~ /\@/;
+
 use Minilla::CLI;
 use File::Temp qw(tempdir);
 use File::Copy::Recursive qw(rcopy);
