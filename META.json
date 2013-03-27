@@ -38,7 +38,7 @@
             "Data::Section::Simple" : "0",
             "File::Copy::Recursive" : "0",
             "File::pushd" : "0",
-            "Module::CPANfile" : "0.9020",
+            "Module::CPANfile" : "0.9025",
             "Module::Metadata" : "v1.0.11",
             "Moo" : "1.001",
             "Path::Tiny" : "0",
