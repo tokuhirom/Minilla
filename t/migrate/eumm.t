@@ -39,6 +39,7 @@ subtest 'Removing committed README' => sub {
     $profile->generate();
     $profile->render('minil.toml');
     $profile->render('Makefile.PL');
+    $profile->render('MANIFEST');
     unlink 'Build.PL';
     unlink 'META.json';
     unlink 'cpanfile';
@@ -58,6 +59,12 @@ __DATA__
 
 @@ minil.toml
 name = "Acme-Foo"
+
+@@ MANIFEST
+Makefile.PL
+minil.toml
+lib/Acme/Foo.pm
+cpanfile
 
 @@ Makefile.PL
 require 5.008001;
