@@ -3,6 +3,7 @@ requires 'perl'   => '5.008005';
 # Core module at recent Perl5.
 requires 'parent' => '0';
 requires 'Archive::Tar';
+requires 'Time::Piece' => 1.16; # older Time::Piece was broken
 
 # Module for compatibility
 requires 'MRO::Compat' if $] < 5.009_005;
