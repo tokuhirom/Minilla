@@ -55,7 +55,7 @@ sub spew_raw {
 
 sub spew_utf8 {
     my $fname = shift;
-    open my $fh, '>:utf8', $fname;
+    open my $fh, '>:encoding(UTF8)', $fname;
     print {$fh} $_[0];
 }
 

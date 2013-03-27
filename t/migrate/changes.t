@@ -46,7 +46,7 @@ subtest 'Removing committed README' => sub {
 
     Minilla::Migrate->new->run();
 
-    like(slurp('Changes'), qr!\Q{{\$NEXT}}!);
+    like(slurp('Changes'), qr!\{\{\$NEXT\}\}!);
 };
 
 done_testing;
