@@ -65,7 +65,9 @@ sub _build_prereq_specs {
 sub _build_files {
     my $self = shift;
 
-    my @files = Minilla::FileGatherer->gather_files(
+    my @files = Minilla::FileGatherer->new(
+        exclude_match => $self->project->config->{'FileGatherer'}->{exclude_match},
+    )->gather_files(
         $self->project->dir
     );
     \@files;

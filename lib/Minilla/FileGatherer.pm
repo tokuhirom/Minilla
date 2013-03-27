@@ -3,12 +3,29 @@ use strict;
 use warnings;
 use utf8;
 use File::pushd;
-use Path::Tiny;
+use File::Spec;
+
+use Minilla::Git;
+
+use Moo;
+
+has exclude_match => (
+    is => 'ro',
+    default => sub { +[ ] },
+);
+
+no Moo;
 
 sub gather_files {
     my ($self, $root) = @_;
     my $guard = pushd($root);
-    my @files = grep { not -l $_ } map { path($_)->relative($root) } split /\0/, `git ls-files -z`;
+    my @files = grep { not -l $_ } map { File::Spec->abs2rel($_, $root) } git_ls_files();
+    if ($self->exclude_match) {
+        for my $pattern (@{$self->exclude_match || []}) {
+            @files = grep { $_ !~ $pattern } @files;
+        }
+    }
+    return @files;
 }
 
 1;
