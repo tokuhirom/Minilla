@@ -8,6 +8,7 @@ use CPAN::Meta;
 use Path::Tiny;
 use File::Find ();
 use TOML qw(to_toml);
+use Config;
 
 use Minilla::Gitignore;
 use Minilla::Util qw(slurp spew require_optional cmd slurp_utf8 spew_utf8);
@@ -172,7 +173,7 @@ sub migrate_cpanfile {
         }
     } elsif (-f 'Makefile.PL') {
         cmd($^X, 'Makefile.PL');
-        cmd('make metafile');
+        cmd($Config{make}, 'metafile');
         $metafile = 'MYMETA.json';
     } elsif (-f 'dist.ini') {
         my %orig = map { $_ => 1 } glob('*/META.yml');
