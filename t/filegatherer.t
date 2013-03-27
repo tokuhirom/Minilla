@@ -9,6 +9,8 @@ use Minilla::Util qw(spew);
 use Minilla::FileGatherer;
 use Minilla::Git;
 
+can_ok('Minilla::FileGatherer', 'new');
+
 my $guard = pushd(tempdir());
 
 mkdir 'local';
