@@ -13,6 +13,7 @@ use Minilla::Gitignore;
 use Minilla::Util qw(slurp spew require_optional cmd);
 use Minilla::Logger;
 use Minilla::Profile::Default;
+use Minilla::Git;
 
 use Moo;
 
@@ -74,17 +75,28 @@ sub run {
     # Some users put a link for main module.
     # But it's duplicated to README.md created by Minilla.
     if (-l 'README.pod') {
-        $self->git_rm('README.pod');
+        git_rm('README.pod');
     }
     if (-f 'META.yml') {
         unlink 'META.yml';
     }
+    $self->rm('README');
 
     $self->remove_unused_files();
     $self->migrate_gitignore();
     $self->project->regenerate_meta_json();
     $self->project->regenerate_readme_md();
-    $self->git_add(qw(META.json README.md));
+    git_add(qw(META.json README.md));
+}
+
+sub rm {
+    my ($self, $file) = @_;
+    if (grep { $_ eq $file } git_ls_files()) {
+        # committed file
+        git_rm($file);
+    } else {
+        unlink $file;
+    }
 }
 
 sub dist_ini2minil_toml {
@@ -116,9 +128,9 @@ sub dist_ini2minil_toml {
     if (%$dst) {
         my $toml = to_toml($dst);
         spew( 'minil.toml' => $toml );
-        $self->git_add('minil.toml');
+        git_add('minil.toml');
     }
-    $self->git_rm('dist.ini');
+    git_rm('dist.ini');
 
     $self->project->clear_metadata();
 }
@@ -128,18 +140,8 @@ sub generate_license {
 
     unless (-f 'LICENSE') {
         path('LICENSE')->spew($self->project->metadata->license->fulltext());
-        $self->git_add(qw(LICENSE));
+        git_add(qw(LICENSE));
     }
-}
-
-sub git_rm {
-    my ($self, @files) = @_;
-    cmd(qw(git rm -f), @files);
-}
-
-sub git_add {
-    my ($self, @files) = @_;
-    cmd(qw(git add), @files);
 }
 
 sub migrate_cpanfile {
@@ -188,7 +190,7 @@ sub migrate_cpanfile {
     my $cpanfile = Module::CPANfile->from_prereqs($prereqs);
     spew('cpanfile', $cpanfile->to_string);
 
-    $self->git_add('cpanfile');
+    git_add('cpanfile');
 }
 
 sub generate_build_pl {
@@ -209,7 +211,7 @@ sub generate_build_pl {
         path('Build.PL')->spew("use 5.008001;\nuse Module::Build::Tiny;\nBuild_PL();\n");
     }
 
-    $self->git_add(qw(Build.PL));
+    git_add(qw(Build.PL));
 }
 
 sub remove_unused_files {
@@ -268,7 +270,7 @@ sub migrate_gitignore {
 
     $gitignore->save('.gitignore');
 
-    $self->git_add(qw(.gitignore));
+    git_add(qw(.gitignore));
 }
 
 
