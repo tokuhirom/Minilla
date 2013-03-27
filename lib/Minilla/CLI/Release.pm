@@ -28,6 +28,7 @@ sub run {
 
     my @steps = qw(
         CheckUntrackedFiles
+        CheckOrigin
         BumpVersion
         CheckChanges
         RegenerateMeta
