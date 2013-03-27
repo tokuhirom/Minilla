@@ -8,7 +8,7 @@ use File::Basename qw(dirname);
 use Data::Section::Simple;
 use Time::Piece;
 
-use Minilla::Util qw(spew);
+use Minilla::Util qw(spew_raw);
 use Minilla::Logger;
 
 BEGIN { eval "use MRO::Compat;1" or die $@ if $] < 5.009_005 }
@@ -47,7 +47,7 @@ sub render {
                 $params->{$1}
             }
         !ge;
-        spew($path, $content);
+        spew_raw($path, $content);
         return;
     }
     errorf("Cannot find template for %s\n", $tmplname);
@@ -58,7 +58,7 @@ sub write_file {
 
     infof("Writing %s\n", $path);
     mkpath(dirname($path));
-    spew($path, $content);
+    spew_raw($path, $content);
 }
 
 
