@@ -12,7 +12,7 @@ our @EXPORT_OK = qw(
     find_dir find_file
     randstr
     slurp slurp_utf8 slurp_raw
-    spew spew_raw
+    spew  spew_utf8  spew_raw
     edit_file require_optional cmd
     parse_options);
 
@@ -50,6 +50,12 @@ sub spew {
 sub spew_raw {
     my $fname = shift;
     open my $fh, '>:raw', $fname;
+    print {$fh} $_[0];
+}
+
+sub spew_utf8 {
+    my $fname = shift;
+    open my $fh, '>:utf8', $fname;
     print {$fh} $_[0];
 }
 

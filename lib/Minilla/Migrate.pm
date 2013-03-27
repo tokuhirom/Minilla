@@ -10,7 +10,7 @@ use File::Find ();
 use TOML qw(to_toml);
 
 use Minilla::Gitignore;
-use Minilla::Util qw(slurp spew require_optional cmd);
+use Minilla::Util qw(slurp spew require_optional cmd slurp_utf8 spew_utf8);
 use Minilla::Logger;
 use Minilla::Profile::Default;
 use Minilla::Git;
@@ -81,12 +81,26 @@ sub run {
         unlink 'META.yml';
     }
     $self->rm('README');
+    $self->rm('MYMETA.json');
+    $self->rm('MYMETA.yml');
 
     $self->remove_unused_files();
     $self->migrate_gitignore();
     $self->project->regenerate_meta_json();
     $self->project->regenerate_readme_md();
     git_add(qw(META.json README.md));
+
+    $self->migrate_changes();
+}
+
+sub migrate_changes {
+    my $self = shift;
+    
+    return unless -f 'Changes';
+
+    my $content = slurp_utf8('Changes');
+    $content =~ s!^(Revision history for Perl extension \S+\n\n)!$1\{\{\$NEXT\}\}\n\n!;
+    spew_utf8('Changes', $content);
 }
 
 sub rm {
