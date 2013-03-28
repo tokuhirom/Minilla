@@ -16,6 +16,11 @@ Minilla::Profile::ModuleBuild->new(
     version => '0.01',
 )->generate();
 
+spew('MANIFEST', <<'...');
+Build.PL
+lib/Acme/Foo.pm
+...
+
 cmd($^X, 'Build.PL');
 
 like(slurp('MYMETA.json'), qr(Module::CPANfile), 'Module::CPANfile is required');
