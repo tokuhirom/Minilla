@@ -34,15 +34,12 @@ sub run {
 
     my $guard = pushd($self->project->dir);
 
-    # Generate cpanfile from Build.PL
+    # Generate cpanfile from Build.PL/Makefile.PL
     unless (-f 'cpanfile') {
         $self->migrate_cpanfile();
     }
 
     $self->generate_license();
-    unless (-f 'Build.PL') {
-        $self->generate_build_pl();
-    }
 
     # TODO move top level *.pm to lib/?
 
@@ -161,24 +158,13 @@ sub migrate_cpanfile {
 
     infof("Using Module::Build (Because this distribution uses xs)\n");
     delete $prereqs->{configure}->{requires}->{'ExtUtils::MakeMaker'};
-    $prereqs->{configure}->{requires}->{'Module::Build'}    = 0.40;
-    $prereqs->{configure}->{requires}->{'Module::CPANfile'} = '0.9008'; # merge_meta
+    delete $prereqs->{configure}->{requires}->{'Module::Build'};
+    delete $prereqs->{configure}->{requires}->{'Module::Build::Tiny'};
 
     my $cpanfile = Module::CPANfile->from_prereqs($prereqs);
     spew('cpanfile', $cpanfile->to_string);
 
     git_add('cpanfile');
-}
-
-sub generate_build_pl {
-    my ($self) = @_;
-
-    require Minilla::Profile::ModuleBuild;
-    Minilla::Profile::ModuleBuild->new_from_project(
-        $self->project
-    )->render('Build.PL');
-
-    git_add(qw(Build.PL));
 }
 
 sub remove_unused_files {
