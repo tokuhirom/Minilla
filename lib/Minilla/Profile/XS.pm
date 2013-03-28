@@ -39,7 +39,7 @@ sub generate {
     $self->render('.gitignore');
     my $gi = Minilla::Gitignore->load('.gitignore');
     $gi->add(catfile('lib', dirname($self->path), $self->suffix . '.c'));
-    $gi->add("!$ppport");
+    $gi->add("!$ppport"); # Import ppport.h!
     $gi->save('.gitignore');
 
     $self->write_file('LICENSE', Minilla::License::Perl_5->new(
