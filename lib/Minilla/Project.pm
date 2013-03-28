@@ -226,10 +226,14 @@ sub cpan_meta {
 
     # fill 'provides' section
     if ($release_status ne 'unstable') {
-        $dat->{provides} = Module::Metadata->provides(
+        my $provides = Module::Metadata->provides(
             dir     => File::Spec->catdir($self->dir, 'lib'),
             version => 2
         );
+        unless (%$provides) {
+            errorf("%s does not provides any package. Abort.\n", $self->dir);
+        }
+        $dat->{provides} = $provides;
     }
 
     # fill repository information
