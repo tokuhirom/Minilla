@@ -10,6 +10,7 @@ use Data::Section::Simple qw(get_data_section);
 
 use Minilla::Gitignore;
 use Minilla::Util qw(require_optional);
+use Minilla::Logger;
 
 sub module_pm_src {
     join("\n",
