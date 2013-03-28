@@ -15,12 +15,64 @@ BEGIN { eval "use MRO::Compat;1" or die $@ if $] < 5.009_005 }
 
 use Moo;
 
-has [qw(dist author path module version email suffix)] => (
+has [qw(dist path module)] => (
     is       => 'ro',
     required => 1,
 );
 
+has [qw(author version)] => (
+    is       => 'ro',
+    required => 1,
+);
+
+has suffix => (
+    is => 'lazy',
+    required => 1,
+);
+
+has email => (
+    is => 'lazy',
+    required => 1,
+);
+
 no Moo;
+
+sub _build_email {
+    my $self = shift;
+
+    my $email ||= `git config user.email`;
+    $email =~ s/\n$//;
+
+    unless ($email) {
+        errorf("You need to set user.email in git config.\nRun: git config user.email 'name\@example.com'\n");
+    }
+
+    $email;
+}
+
+sub _build_suffix {
+    my $self = shift;
+    my $suffix = $self->path;
+    $suffix =~ s!^.+/!!;
+    $suffix =~ s!\.pm!!;
+    $suffix;
+}
+
+sub new_from_project {
+    my ($class, $project) = @_;
+    # handles => [qw(name perl_version author license)],
+
+    my $path = $project->main_module_path;
+    $path =~ s!^lib/!!;
+    my $self = $class->new(
+        dist    => $project->dist_name,
+        author  => $project->author,
+        version => $project->version,
+        path    => $path,
+        module  => $project->name,
+    );
+    return $self;
+}
 
 sub date {
     gmtime->strftime('%Y-%m-%dT%H:%M:%SZ');

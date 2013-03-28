@@ -85,13 +85,19 @@ sub run {
 sub migrate_changes {
     my $self = shift;
     
-    return unless -f 'Changes';
-
-    # Q. Why :raw?
-    # A. It's for windows. See dzil.
-    my $content = slurp_raw('Changes');
-    $content =~ s!^(Revision history for Perl extension \S+\n\n)!$1\{\{\$NEXT\}\}\n\n!;
-    spew_raw('Changes', $content);
+    if (-f 'Changes') {
+        # Q. Why :raw?
+        # A. It's for windows. See dzil.
+        my $content = slurp_raw('Changes');
+        $content =~ s!^(Revision history for Perl extension \S+\n\n)!$1\{\{\$NEXT\}\}\n\n!;
+        spew_raw('Changes', $content);
+    } else {
+        # Q. Why :raw?
+        # A. It's for windows. See dzil.
+        Minilla::Profile::Default->new_from_project(
+            $self->project
+        )->render('Changes');
+    }
 }
 
 sub rm {
