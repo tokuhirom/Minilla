@@ -7,6 +7,7 @@ use Archive::Tar;
 use File::pushd;
 use Data::Dumper; # serializer
 use File::Spec::Functions qw(splitdir);
+use File::Spec;
 use Time::Piece qw(gmtime);
 use File::Basename qw(dirname);
 
@@ -175,10 +176,10 @@ sub dist {
         for (@{$self->files}, qw(Build.PL LICENSE META.json META.yml MANIFEST)) {
             $tar->add_data(path($self->project->dist_name . '-' . $self->project->version, $_), path($_)->slurp);
         }
-        $tar->write(path($tarball), COMPRESS_GZIP);
+        $tar->write($tarball, COMPRESS_GZIP);
         infof("Wrote %s\n", $tarball);
 
-        path($tarball)->absolute;
+        File::Spec->rel2abs($tarball);
     };
 }
 
