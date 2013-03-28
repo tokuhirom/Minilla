@@ -44,10 +44,6 @@ sub run {
         $self->generate_build_pl();
     }
 
-    # M::B::Tiny protocol
-    if (-d 'bin' && !-e 'script') {
-        cmd('git mv bin script');
-    }
     # TODO move top level *.pm to lib/?
 
     if (-f 'dist.ini') {
