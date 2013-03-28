@@ -2,7 +2,7 @@ requires 'perl'   => '5.008005';
 
 # Core module at recent Perl5.
 requires 'parent' => '0';
-requires 'Archive::Tar';
+requires 'Archive::Tar', '1.60';
 requires 'Time::Piece' => 1.16; # older Time::Piece was broken
 
 # Module for compatibility
