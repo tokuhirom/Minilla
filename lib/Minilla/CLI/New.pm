@@ -74,8 +74,7 @@ sub run {
 
         # generate project after initialize git repo
         my $project = Minilla::Project->new();
-        $project->regenerate_meta_json();
-        $project->regenerate_readme_md();
+        $project->regenerate_files();
 
         # and git add all things
         cmd('git', 'add', '.');

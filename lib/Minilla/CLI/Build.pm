@@ -20,12 +20,7 @@ sub run {
     );
 
     my $project = Minilla::Project->new();
-
-    # update META.json
-    $project->regenerate_meta_json();
-
-    # generate README.md
-    $project->regenerate_readme_md();
+    $project->regenerate_files();
 
     # generate project directory
     my $work_dir = $project->work_dir;

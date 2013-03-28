@@ -13,7 +13,7 @@ use Minilla::Git;
 use Minilla::Profile::XS;
 use Minilla::Project;
 
-my $guard = pushd(tempdir());
+my $guard = pushd(tempdir(CLEANUP => 0));
 
 Minilla::Profile::XS->new(
     dist => 'Acme-Foo',
@@ -22,8 +22,11 @@ Minilla::Profile::XS->new(
 )->generate();
 write_minil_toml('Acme::Foo');
 git_init_add_commit();
+Minilla::Project->new()->regenerate_files();
+git_init_add_commit();
 
 ok(-f 'Build.PL');
+cmp_ok((-s 'Build.PL'), '>', 0);
 ok(-f 'lib/Acme/Foo.pm');
 like(slurp('lib/Acme/Foo.pm'), qr{XSLoader});
 ok(-f '.travis.yml');
@@ -35,6 +38,7 @@ ok(0+(grep /ppport\.h/, git_ls_files()));
 {
     my $project = Minilla::Project->new();
     my $work_dir = $project->work_dir;
+    $work_dir->build;
     $work_dir->dist_test();
 }
 

@@ -16,6 +16,7 @@ use Minilla;
 use Minilla::Logger;
 use Minilla::Metadata;
 use Minilla::WorkDir;
+use Minilla::ModuleMaker::ModuleBuild;
 use Minilla::Util qw(slurp_utf8 find_dir cmd spew_raw);
 
 use Moo;
@@ -25,6 +26,11 @@ has dir => (
     builder => 1,
     trigger => 1,
     required => 1,
+);
+
+has module_maker => (
+    is => 'ro',
+    default => sub { Minilla::ModuleMaker::ModuleBuild->new() },
 );
 
 has dist_name => (
@@ -205,6 +211,9 @@ sub cpan_meta {
     $release_status ||= 'stable';
 
     my $cpanfile = $self->load_cpanfile;
+    my $merged_prereqs = $cpanfile->prereqs->with_merged_prereqs(
+        CPAN::Meta::Prereqs->new($self->module_maker->prereqs)
+    )->as_string_hash;
 
     my $dat = {
         "meta-spec" => {
@@ -217,7 +226,7 @@ sub cpan_meta {
         dynamic_config => 0,
         version        => $self->version,
         name           => $self->dist_name,
-        prereqs        => $cpanfile->prereq_specs,
+        prereqs        => $merged_prereqs,
         generated_by   => "Minilla/$Minilla::VERSION",
         release_status => $release_status || 'stable',
     };
@@ -270,6 +279,14 @@ sub cpan_meta {
 
     my $meta = CPAN::Meta->new($dat);
     return $meta;
+}
+
+sub regenerate_files {
+    my $self = shift;
+
+    $self->regenerate_meta_json();
+    $self->regenerate_readme_md();
+    $self->module_maker->generate($self);
 }
 
 sub regenerate_meta_json {

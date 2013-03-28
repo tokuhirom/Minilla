@@ -52,11 +52,10 @@ sub run {
 
     $self->remove_unused_files();
     $self->migrate_gitignore();
-    $self->project->regenerate_meta_json();
-    $self->project->regenerate_readme_md();
-    git_add(qw(META.json README.md));
-
+    $self->project->regenerate_files();
     $self->migrate_changes();
+
+    git_add('.');
 }
 
 sub migrate_changes {
