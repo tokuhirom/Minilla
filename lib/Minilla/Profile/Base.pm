@@ -60,7 +60,6 @@ sub _build_suffix {
 
 sub new_from_project {
     my ($class, $project) = @_;
-    # handles => [qw(name perl_version author license)],
 
     my $path = $project->main_module_path;
     $path =~ s!^lib/!!;
@@ -83,7 +82,7 @@ sub end { '__END__' }
 sub module_pm_src { '' }
 
 sub render {
-    my ($self, $tmplname, $dst, $params) = @_;
+    my ($self, $tmplname, $dst) = @_;
     my $path = $dst || $tmplname;
 
     infof("Writing %s\n", $path);
@@ -93,11 +92,7 @@ sub render {
         my $content = Data::Section::Simple->new($pkg)->get_data_section($tmplname);
         next unless defined $content;
         $content =~ s!<%\s*\$([a-z_]+)\s*%>!
-            if (ref $self) {
-                $self->$1()
-            } else {
-                $params->{$1}
-            }
+            $self->$1()
         !ge;
         spew_raw($path, $content);
         return;

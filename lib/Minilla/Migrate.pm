@@ -205,15 +205,15 @@ sub generate_build_pl {
         my $dist = path($self->project->dir)->basename;
            $dist =~ s/^p5-//;
         (my $module = $dist) =~ s!-!::!g;
-        require Minilla::Profile::XS;
-        Minilla::Profile::XS->render(
-            'Build.PL', 'Build.PL', {
-                dist   => $dist,
-                module => $module,
-            }
-        );
+        require Minilla::Profile::ModuleBuild;
+        Minilla::Profile::ModuleBuild->new_from_project(
+            $self->project
+        )->render('Build.PL');
     } else {
-        path('Build.PL')->spew("use 5.008001;\nuse Module::Build::Tiny;\nBuild_PL();\n");
+        require Minilla::Profile::Default;
+        Minilla::Profile::Default->new_from_project(
+            $self->project
+        )->render('Build.PL');
     }
 
     git_add(qw(Build.PL));
