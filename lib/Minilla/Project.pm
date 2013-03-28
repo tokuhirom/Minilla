@@ -227,7 +227,7 @@ sub cpan_meta {
     # fill 'provides' section
     if ($release_status ne 'unstable') {
         $dat->{provides} = Module::Metadata->provides(
-            dir     => File::Spec->catdir($self, 'lib'),
+            dir     => File::Spec->catdir($self->dir, 'lib'),
             version => 2
         );
     }
