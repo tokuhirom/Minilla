@@ -16,6 +16,10 @@ our @EXPORT_OK = qw(
     edit_file require_optional cmd
     parse_options);
 
+our %EXPORT_TAGS = (
+    all => \@EXPORT_OK
+);
+
 sub randstr {
     my $len = shift;
     my @chars = ("a".."z","A".."Z",0..9);

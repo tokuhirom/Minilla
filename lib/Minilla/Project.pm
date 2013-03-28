@@ -174,7 +174,13 @@ sub _case_insensitive_match {
 sub _detect_source_path {
     my ($self, $dir) = @_;
 
-    for my $path ("App-$dir", $dir) {
+    # like cpan-outdated => lib/App/cpanminus.pm
+    my $pat2 = "App-" . do {
+        local $_ = $dir;
+        s!-!!;
+        $_;
+    };
+    for my $path ("App-$dir", $pat2, $dir) {
         $path =~ s!::!/!g;
         $path =~ s!-!/!g;
         $path = "lib/${path}.pm";
@@ -220,10 +226,14 @@ sub cpan_meta {
 
     # fill 'provides' section
     if ($release_status ne 'unstable') {
-        $dat->{provides} = Module::Metadata->provides(
-            dir     => File::Spec->catdir($self, 'lib'),
+        my $provides = Module::Metadata->provides(
+            dir     => File::Spec->catdir($self->dir, 'lib'),
             version => 2
         );
+        unless (%$provides) {
+            errorf("%s does not provides any package. Abort.\n", $self->dir);
+        }
+        $dat->{provides} = $provides;
     }
 
     # fill repository information

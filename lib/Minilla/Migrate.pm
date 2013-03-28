@@ -89,7 +89,9 @@ sub migrate_changes {
         # Q. Why :raw?
         # A. It's for windows. See dzil.
         my $content = slurp_raw('Changes');
-        $content =~ s!^(Revision history for Perl extension \S+\n\n)!$1\{\{\$NEXT\}\}\n\n!;
+        unless ($content =~ qr!\{\{\$NEXT\}\}!) {
+            $content =~ s!^(Revision history for Perl extension \S+\n\n)!$1\{\{\$NEXT\}\}\n\n!;
+        }
         spew_raw('Changes', $content);
     } else {
         # Q. Why :raw?
