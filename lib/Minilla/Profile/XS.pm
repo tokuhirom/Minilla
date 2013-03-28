@@ -8,7 +8,6 @@ use File::Spec::Functions qw(catfile);
 use File::Basename qw(dirname);
 use Data::Section::Simple qw(get_data_section);
 
-use Minilla::Logger;
 use Minilla::Gitignore;
 use Minilla::Util qw(require_optional);
 
