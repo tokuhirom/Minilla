@@ -174,7 +174,13 @@ sub _case_insensitive_match {
 sub _detect_source_path {
     my ($self, $dir) = @_;
 
-    for my $path ("App-$dir", $dir) {
+    # like cpan-outdated => lib/App/cpanminus.pm
+    my $pat2 = "App-" . do {
+        local $_ = $dir;
+        s!-!!;
+        $_;
+    };
+    for my $path ("App-$dir", $pat2, $dir) {
         $path =~ s!::!/!g;
         $path =~ s!-!/!g;
         $path = "lib/${path}.pm";
