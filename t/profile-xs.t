@@ -3,6 +3,7 @@ use warnings;
 use utf8;
 use Test::More;
 use Test::Requires 'Devel::PPPort';
+use t::Util;
 
 use File::Spec;
 use File::Path;
@@ -20,7 +21,7 @@ Minilla::Profile::XS->new(
     path => 'Acme/Foo.pm',
 )->generate();
 write_minil_toml('Acme::Foo');
-git_init_add_commit;
+git_init_add_commit();
 
 ok(-f 'Build.PL');
 ok(-f 'lib/Acme/Foo.pm');
