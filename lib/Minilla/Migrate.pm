@@ -13,8 +13,8 @@ use Config;
 use Minilla::Gitignore;
 use Minilla::Util qw(slurp spew require_optional cmd slurp_utf8 spew_utf8 slurp_raw spew_raw);
 use Minilla::Logger;
-use Minilla::Profile::Default;
 use Minilla::Git;
+use Minilla::Project;
 
 use Moo;
 
@@ -104,6 +104,7 @@ sub migrate_changes {
     } else {
         # Q. Why :raw?
         # A. It's for windows. See dzil.
+        require Minilla::Profile::Default;
         Minilla::Profile::Default->new_from_project(
             $self->project
         )->render('Changes');
