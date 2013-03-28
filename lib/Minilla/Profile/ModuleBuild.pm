@@ -80,12 +80,12 @@ for my $metafile (grep -e, qw(MYMETA.yml MYMETA.json)) {
 
 @@ cpanfile
 on test => sub {
-    requires 'Test::More' => 0.98;
+    requires 'Test::More', 0.98;
 };
 
 on configure => sub {
-    requires 'Module::Build' => 0.40;
-    requires 'Module::CPANfile' => 0.9008; # merge_meta
+    requires 'Module::Build', 0.40;
+    requires 'Module::CPANfile', 0.9008; # merge_meta
 };
 
 on 'develop' => sub {
