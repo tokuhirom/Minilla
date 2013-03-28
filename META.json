@@ -44,6 +44,7 @@
             "Path::Tiny" : "0",
             "Pod::Markdown" : "0",
             "TOML" : "0.91",
+            "Time::Piece" : "1.16",
             "parent" : "0",
             "perl" : "5.008005"
          }
