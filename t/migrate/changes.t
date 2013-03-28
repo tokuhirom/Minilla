@@ -24,7 +24,7 @@ use Minilla::Util qw(spew cmd slurp);
 use Minilla::Migrate;
 use Minilla::Git;
 
-subtest 'Removing committed README' => sub {
+subtest 'Insert {{$NEXT}}' => sub {
     my $guard = pushd(tempdir());
 
     my $profile = Minilla::Profile::Changes->new(
@@ -47,6 +47,35 @@ subtest 'Removing committed README' => sub {
     Minilla::Migrate->new->run();
 
     like(slurp('Changes'), qr!\{\{\$NEXT\}\}!);
+};
+
+subtest 'Do not {{$NEXT}} twice' => sub {
+    my $guard = pushd(tempdir());
+
+    my $profile = Minilla::Profile::Changes->new(
+        author => 'foo',
+        dist => 'Acme-Foo',
+        path => 'Acme/Foo.pm',
+        suffix => 'Foo',
+        module => 'Acme::Foo',
+        version => '0.01',
+        email => 'foo@example.com',
+    );
+    $profile->generate();
+    $profile->render('minil.toml');
+    $profile->render('Changes');
+
+    git_init();
+    git_add();
+    git_commit('-m', 'initial import');
+
+    Minilla::Migrate->new->run();
+    Minilla::Migrate->new->run();
+
+    my $content = slurp('Changes');
+    my $n;
+    $content =~ s!\{\{\$NEXT\}\}!$n++!ge;
+    is($n, 1);
 };
 
 done_testing;
