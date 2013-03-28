@@ -5,6 +5,7 @@ use Test::More;
 use t::Util;
 
 use Minilla::Profile::ModuleBuild;
+use Minilla::Project;
 
 my $guard = pushd(tempdir());
 
@@ -20,11 +21,15 @@ spew('MANIFEST', <<'...');
 Build.PL
 lib/Acme/Foo.pm
 ...
+write_minil_toml('Acme::Foo');
+git_init_add_commit();
+Minilla::Project->new()->regenerate_files();
+git_init_add_commit();
 
 cmd($^X, 'Build.PL');
 
-like(slurp('MYMETA.json'), qr(Module::CPANfile), 'Module::CPANfile is required');
-like(slurp('MYMETA.yml'), qr(Module::CPANfile), 'Module::CPANfile is required');
+like(slurp('MYMETA.json'), qr(CPAN::Meta), 'CPAN::Meta is required');
+like(slurp('MYMETA.yml'), qr(CPAN::Meta), 'CPAN::Meta is required');
 
 done_testing;
 

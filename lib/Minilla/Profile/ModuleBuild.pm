@@ -37,46 +37,6 @@ sub generate {
 __DATA__
 
 @@ Build.PL
-use strict;
-use Module::Build;
-use Module::CPANfile;
-use File::Basename;
-use File::Spec;
-use CPAN::Meta;
-
-use 5.008005;
-
-my $builder = Module::Build->new(
-    license              => 'perl',
-    dynamic_config       => 0,
-
-    requires             => {
-        perl => '5.008005',
-    },
-    configure_requires => {
-        'Module::Build' => 0.40,
-        'Module::CPANfile' => 0.9008, # merge_meta
-    },
-
-    no_index    => { 'directory' => [ 'inc' ] },
-    name        => '<% $dist %>',
-    module_name => '<% $module %>',
-
-    script_files => [glob('script/*')],
-
-    test_files           => ((-d '.git' || $ENV{RELEASE_TESTING}) && -d 'xt') ? 't/ xt/' : 't/',
-    recursive_test_files => 1,
-
-    create_readme  => 0,
-    create_license => 0,
-);
-$builder->create_build_script();
-
-my $cpanfile = Module::CPANfile->load();
-for my $metafile (grep -e, qw(MYMETA.yml MYMETA.json)) {
-    print "Merging cpanfile prereqs to $metafile\n";
-    $cpanfile->merge_meta($metafile)
-}
 
 @@ cpanfile
 on test => sub {
@@ -84,8 +44,6 @@ on test => sub {
 };
 
 on configure => sub {
-    requires 'Module::Build', 0.40;
-    requires 'Module::CPANfile', 0.9008; # merge_meta
 };
 
 on 'develop' => sub {
