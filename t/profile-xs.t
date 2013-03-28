@@ -11,34 +11,32 @@ use File::pushd;
 use Minilla::Util qw(slurp);
 use Minilla::Git;
 use Minilla::Profile::XS;
+use Minilla::Project;
 
-my $lib = File::Spec->rel2abs('lib');
-my $bin = File::Spec->rel2abs('script/minil');
-
-rmtree('Acme-Foo');
+my $guard = pushd(tempdir());
 
 Minilla::Profile::XS->new(
     dist => 'Acme-Foo',
     module => 'Acme::Foo',
     path => 'Acme/Foo.pm',
 )->generate();
+write_minil_toml('Acme::Foo');
 git_init_add_commit;
 
-ok(-f 'Acme-Foo/Build.PL');
-ok(-f 'Acme-Foo/lib/Acme/Foo.pm');
-like(slurp('Acme-Foo/lib/Acme/Foo.pm'), qr{XSLoader});
-ok(-f 'Acme-Foo/.travis.yml');
-ok(-f 'Acme-Foo/t/00_compile.t');
+ok(-f 'Build.PL');
+ok(-f 'lib/Acme/Foo.pm');
+like(slurp('lib/Acme/Foo.pm'), qr{XSLoader});
+ok(-f '.travis.yml');
+ok(-f 't/00_compile.t');
+note(join(" ", git_ls_files()));
+note slurp('.gitignore');
+ok(0+(grep /ppport\.h/, git_ls_files()));
 
 {
-    my $guard = pushd('Acme-Foo');
-    is(minil('test'), 0);
+    my $project = Minilla::Project->new();
+    my $work_dir = $project->work_dir;
+    $work_dir->dist_test();
 }
-
-rmtree('Acme-Foo');
 
 done_testing;
 
-sub minil {
-    system($^X, "-I$lib", $bin, @_);
-}

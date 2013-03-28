@@ -15,6 +15,7 @@ use Module::CPANfile;
 use Minilla;
 use Minilla::Logger;
 use Minilla::Metadata;
+use Minilla::WorkDir;
 use Minilla::Util qw(slurp_utf8 find_dir cmd spew_raw);
 
 use Moo;

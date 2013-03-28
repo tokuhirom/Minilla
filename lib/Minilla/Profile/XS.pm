@@ -28,9 +28,8 @@ sub generate {
     $self->render('Module.xs', catfile('lib', dirname($self->path), $self->suffix . '.xs'));
 
     my $ppport = catfile(dirname(catfile('lib', $self->path)), 'ppport.h');
-    # infof("Writing ppport.h: %s\n", $ppport);
-    Devel::PPPort::WriteFile();
-    # Devel::PPPort::WriteFile($ppport);
+    infof("Writing ppport.h: %s\n", $ppport);
+    Devel::PPPort::WriteFile($ppport);
 
     $self->render('Changes');
     $self->render('t/00_compile.t');
@@ -40,6 +39,8 @@ sub generate {
     $self->render('.gitignore');
     my $gi = Minilla::Gitignore->load('.gitignore');
     $gi->add(catfile('lib', dirname($self->path), $self->suffix . '.c'));
+    $gi->add("!$ppport");
+    $gi->save('.gitignore');
 
     $self->write_file('LICENSE', Minilla::License::Perl_5->new(
         holder => sprintf('%s <%s>', $self->author, $self->email)
