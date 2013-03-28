@@ -18,10 +18,6 @@ use Minilla::Project;
 
 use Moo;
 
-has needs_module_build => (
-    is => 'lazy',
-);
-
 has project => (
     is => 'lazy',
 );
@@ -31,29 +27,6 @@ no Moo;
 sub _build_project {
     my $self = shift;
     Minilla::Project->new();
-}
-
-sub _build_needs_module_build {
-    my $self = shift;
-
-    # If author using Module::Build, use Module::Build after migration
-    if (-f 'Build.PL' && slurp_raw('Build.PL') =~ /Module::Build;/) {
-        return 1;
-    }
-
-    my $xs_found = 0;
-    File::Find::find(
-        {
-            wanted => sub {
-                $xs_found++ if /\.(xs|c)$/
-            },
-            no_chdir => 1,
-        }, '.'
-    );
-    if ($xs_found) {
-        infof("Found a xs files. Switching to Module::Build.\n");
-    }
-    return $xs_found;
 }
 
 sub run {
@@ -191,17 +164,10 @@ sub migrate_cpanfile {
     my $meta = CPAN::Meta->load_file($metafile);
     my $prereqs = $meta->effective_prereqs->as_string_hash;
 
-    if ($self->needs_module_build) {
-        infof("Using Module::Build (Because this distribution uses xs)\n");
-        delete $prereqs->{configure}->{requires}->{'ExtUtils::MakeMaker'};
-        $prereqs->{configure}->{requires}->{'Module::Build'}    = 0.40;
-        $prereqs->{configure}->{requires}->{'Module::CPANfile'} = 0;
-    } else {
-        infof("Using Module::Build::Tiny\n");
-        delete $prereqs->{configure}->{requires}->{'Module::Build'};
-        delete $prereqs->{configure}->{requires}->{'ExtUtils::MakeMaker'};
-        $prereqs->{configure}->{requires}->{'Module::Build::Tiny'} = 0;
-    }
+    infof("Using Module::Build (Because this distribution uses xs)\n");
+    delete $prereqs->{configure}->{requires}->{'ExtUtils::MakeMaker'};
+    $prereqs->{configure}->{requires}->{'Module::Build'}    = 0.40;
+    $prereqs->{configure}->{requires}->{'Module::CPANfile'} = '0.9008'; # merge_meta
 
     my $cpanfile = Module::CPANfile->from_prereqs($prereqs);
     spew('cpanfile', $cpanfile->to_string);
@@ -212,20 +178,10 @@ sub migrate_cpanfile {
 sub generate_build_pl {
     my ($self) = @_;
 
-    if ($self->needs_module_build) {
-        my $dist = path($self->project->dir)->basename;
-           $dist =~ s/^p5-//;
-        (my $module = $dist) =~ s!-!::!g;
-        require Minilla::Profile::ModuleBuild;
-        Minilla::Profile::ModuleBuild->new_from_project(
-            $self->project
-        )->render('Build.PL');
-    } else {
-        require Minilla::Profile::Default;
-        Minilla::Profile::Default->new_from_project(
-            $self->project
-        )->render('Build.PL');
-    }
+    require Minilla::Profile::ModuleBuild;
+    Minilla::Profile::ModuleBuild->new_from_project(
+        $self->project
+    )->render('Build.PL');
 
     git_add(qw(Build.PL));
 }
