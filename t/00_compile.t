@@ -2,7 +2,8 @@ use strict;
 use Test::More;
 
 use_ok $_ for qw(
-    Minilla
+    Acme::Foo
 );
 
 done_testing;
+

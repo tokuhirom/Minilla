@@ -16,12 +16,12 @@ my $builder = Module::Build->new(
     },
     configure_requires => {
         'Module::Build' => 0.40,
-        'Module::CPANfile' => 0,
+        'Module::CPANfile' => 0.9008, # merge_meta
     },
 
     no_index    => { 'directory' => [ 'inc' ] },
-    name        => 'Minilla',
-    module_name => 'Minilla',
+    name        => 'Acme-Foo',
+    module_name => 'Acme::Foo',
 
     script_files => [glob('script/*')],
 

@@ -8,6 +8,7 @@ use File::Spec::Functions qw(catfile);
 use File::Basename qw(dirname);
 use Data::Section::Simple qw(get_data_section);
 
+use Minilla::Logger;
 use Minilla::Gitignore;
 use Minilla::Util qw(require_optional);
 
@@ -26,7 +27,10 @@ sub generate {
     $self->render('Module.pm', catfile('lib', $self->path));
     $self->render('Module.xs', catfile('lib', dirname($self->path), $self->suffix . '.xs'));
 
-    Devel::PPPort::WriteFile(catfile(dirname(catfile('lib', $self->path)), 'ppport.h'));
+    my $ppport = catfile(dirname(catfile('lib', $self->path)), 'ppport.h');
+    # infof("Writing ppport.h: %s\n", $ppport);
+    Devel::PPPort::WriteFile();
+    # Devel::PPPort::WriteFile($ppport);
 
     $self->render('Changes');
     $self->render('t/00_compile.t');

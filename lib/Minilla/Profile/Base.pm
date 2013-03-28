@@ -20,9 +20,10 @@ has [qw(dist path module)] => (
     required => 1,
 );
 
-has [qw(author version)] => (
+has version => (
     is       => 'ro',
     required => 1,
+    default  => sub { '0.01' },
 );
 
 has suffix => (
@@ -30,12 +31,25 @@ has suffix => (
     required => 1,
 );
 
-has email => (
+has [qw(author email)] => (
     is => 'lazy',
     required => 1,
 );
 
 no Moo;
+
+sub _build_author {
+    my $self = shift;
+
+    my $name ||= `git config user.name`;
+    $name =~ s/\n$//;
+
+    unless ($name) {
+        errorf("You need to set user.name in git config.\nRun: git config user.name 'Your name'\n");
+    }
+
+    $name;
+}
 
 sub _build_email {
     my $self = shift;
