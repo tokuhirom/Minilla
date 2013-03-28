@@ -35,6 +35,12 @@ sub _build_project {
 
 sub _build_needs_module_build {
     my $self = shift;
+
+    # If author using Module::Build, use Module::Build after migration
+    if (-f 'Build.PL' && slurp_raw('Build.PL') =~ /Module::Build;/) {
+        return 1;
+    }
+
     my $xs_found = 0;
     File::Find::find(
         {
@@ -61,7 +67,9 @@ sub run {
     }
 
     $self->generate_license();
-    $self->generate_build_pl();
+    unless (-f 'Build.PL') {
+        $self->generate_build_pl();
+    }
 
     # M::B::Tiny protocol
     if (-d 'bin' && !-e 'script') {
