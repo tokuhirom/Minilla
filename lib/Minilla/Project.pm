@@ -16,6 +16,7 @@ use Minilla;
 use Minilla::Logger;
 use Minilla::Metadata;
 use Minilla::WorkDir;
+use Minilla::ReleaseTest;
 use Minilla::ModuleMaker::ModuleBuild;
 use Minilla::Util qw(slurp_utf8 find_dir cmd spew_raw);
 
@@ -213,7 +214,11 @@ sub cpan_meta {
     my $cpanfile = $self->load_cpanfile;
     my $merged_prereqs = $cpanfile->prereqs->with_merged_prereqs(
         CPAN::Meta::Prereqs->new($self->module_maker->prereqs)
-    )->as_string_hash;
+    );
+    $merged_prereqs = $merged_prereqs->with_merged_prereqs(
+        CPAN::Meta::Prereqs->new(Minilla::ReleaseTest->prereqs)
+    );
+    $merged_prereqs = $merged_prereqs->as_string_hash;
 
     my $dat = {
         "meta-spec" => {
