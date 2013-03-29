@@ -30,6 +30,20 @@ sub write_release_tests {
     }
 }
 
+sub prereqs {
+    +{
+        develop => {
+            requires => {
+                'Test::MinimumVersion' => 0.101080,
+                'Test::CPAN::Meta' => 0,
+                'Test::Pod' => 1.41,
+                'Test::Spelling' => 0,
+                'Pod::Wordlist::hanekomu' => 0,
+            },
+        },
+    };
+}
+
 1;
 __DATA__
 
