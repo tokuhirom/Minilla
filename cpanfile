@@ -47,10 +47,6 @@ recommends 'Test::MinimumVersion' => '0.101080';
 recommends 'Test::CPAN::Meta';
 recommends 'Pod::Wordlist::hanekomu';
 
-on 'configure' => sub {
-    requires 'Module::Build::Tiny';
-};
-
 on 'test' => sub {
     requires 'Test::More' => '0.98';
     requires 'Test::Requires' => 0;
