@@ -26,7 +26,7 @@ requires 'File::Copy::Recursive';
 requires 'Moo' => 1.001000;
 
 # Utilities
-requires 'Data::Section::Simple';
+requires 'Data::Section::Simple' => 0.04;
 
 # Modules required by minil new/minil dist/minil release are optional.
 # It's good for contributors
