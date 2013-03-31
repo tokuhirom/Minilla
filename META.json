@@ -17,7 +17,16 @@
       "configure" : {
          "requires" : {
             "CPAN::Meta" : "0",
-            "Module::Build" : "0.4"
+            "Module::Build" : "0.38"
+         }
+      },
+      "develop" : {
+         "requires" : {
+            "Pod::Wordlist::hanekomu" : "0",
+            "Test::CPAN::Meta" : "0",
+            "Test::MinimumVersion" : "0.10108",
+            "Test::Pod" : "1.41",
+            "Test::Spelling" : "0"
          }
       },
       "runtime" : {
@@ -36,7 +45,7 @@
          "requires" : {
             "App::cpanminus" : "1.6003",
             "Archive::Tar" : "1.60",
-            "Data::Section::Simple" : "0",
+            "Data::Section::Simple" : "0.04",
             "File::Copy::Recursive" : "0",
             "File::pushd" : "0",
             "Module::CPANfile" : "0.9025",
@@ -69,5 +78,14 @@
          "web" : "https://github.com/tokuhirom/Minilla"
       }
    },
-   "version" : "v0.0.49"
+   "version" : "v0.0.49",
+   "x_contributors" : [
+      "mattn <mattn.jp@gmail.com>",
+      "Daisuke Murase <typester@cpan.org>",
+      "kazhiramatsu <kazhiramatsu.github@gmail.com>",
+      "xaicron <xaicron@gmail.com>",
+      "Tatsuhiko Miyagawa <miyagawa@bulknews.net>",
+      "tokuhirom <tokuhirom@gmail.co>",
+      "tokuhirom <tokuhirom@gmail.com>"
+   ]
 }
