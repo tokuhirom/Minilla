@@ -16,7 +16,8 @@
    "prereqs" : {
       "configure" : {
          "requires" : {
-            "Module::Build::Tiny" : "0"
+            "CPAN::Meta" : "0",
+            "Module::Build" : "0.4"
          }
       },
       "runtime" : {
@@ -34,7 +35,7 @@
          },
          "requires" : {
             "App::cpanminus" : "1.6003",
-            "Archive::Tar" : "0",
+            "Archive::Tar" : "1.60",
             "Data::Section::Simple" : "0",
             "File::Copy::Recursive" : "0",
             "File::pushd" : "0",

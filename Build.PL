@@ -1,41 +1,45 @@
 use strict;
 use Module::Build;
-use Module::CPANfile;
 use File::Basename;
 use File::Spec;
 use CPAN::Meta;
+use CPAN::Meta::Prereqs;
 
-use 5.008005;
+use 5.008;
 
 my $builder = Module::Build->new(
     license              => 'perl',
     dynamic_config       => 0,
 
-    requires             => {
-        perl => '5.008005',
-    },
     configure_requires => {
         'Module::Build' => 0.40,
-        'Module::CPANfile' => 0,
     },
 
     no_index    => { 'directory' => [ 'inc' ] },
     name        => 'Minilla',
     module_name => 'Minilla',
 
-    script_files => [glob('script/*')],
+    script_files => [glob('script/*'), glob('bin/*')],
 
     test_files           => ((-d '.git' || $ENV{RELEASE_TESTING}) && -d 'xt') ? 't/ xt/' : 't/',
     recursive_test_files => 1,
-
-    create_readme  => 0,
-    create_license => 0,
 );
 $builder->create_build_script();
 
-my $cpanfile = Module::CPANfile->load();
-for my $metafile (grep -e, qw(MYMETA.yml MYMETA.json)) {
-    print "Merging cpanfile prereqs to $metafile\n";
-    $cpanfile->merge_meta($metafile)
-}
-
+my $mbmeta = CPAN::Meta->load_file('MYMETA.json');
+my $meta = CPAN::Meta->load_file('META.json');
+my $prereqs_hash = CPAN::Meta::Prereqs->new(
+    $meta->prereqs
+)->with_merged_prereqs(
+    CPAN::Meta::Prereqs->new($mbmeta->prereqs)
+)->as_string_hash;
+my $mymeta = CPAN::Meta->new(
+    {
+        %{$meta->as_struct},
+        prereqs => $prereqs_hash
+    }
+);
+print "Merging cpanfile prereqs to MYMETA.yml\n";
+$mymeta->save('MYMETA.yml', { version => 1.4 });
+print "Merging cpanfile prereqs to MYMETA.json\n";
+$mymeta->save('MYMETA.json', { version => 2 });

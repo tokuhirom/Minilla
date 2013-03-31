@@ -24,7 +24,7 @@ sub prereqs {
     return +{
         configure => {
             requires => {
-                'Module::Build'    => 0.40,
+                'Module::Build'    => 0.38,
                 'CPAN::Meta'       => 0,
             }
         }
@@ -54,7 +54,7 @@ my $builder = Module::Build->new(
     dynamic_config       => 0,
 
     configure_requires => {
-        'Module::Build' => 0.40,
+        'Module::Build' => 0.38,
     },
 
     no_index    => { 'directory' => [ 'inc' ] },

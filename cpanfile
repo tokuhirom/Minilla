@@ -26,7 +26,7 @@ requires 'File::Copy::Recursive';
 requires 'Moo' => 1.001000;
 
 # Utilities
-requires 'Data::Section::Simple';
+requires 'Data::Section::Simple' => 0.04;
 
 # Modules required by minil new/minil dist/minil release are optional.
 # It's good for contributors
@@ -46,10 +46,6 @@ recommends 'Pod::Wordlist::hanekomu';
 recommends 'Test::MinimumVersion' => '0.101080';
 recommends 'Test::CPAN::Meta';
 recommends 'Pod::Wordlist::hanekomu';
-
-on 'configure' => sub {
-    requires 'Module::Build::Tiny';
-};
 
 on 'test' => sub {
     requires 'Test::More' => '0.98';

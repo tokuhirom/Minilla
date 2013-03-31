@@ -28,15 +28,11 @@ sub generate {
         holder => sprintf('%s <%s>', $self->author, $self->email)
     )->fulltext);
 
-    # Generate Build.PL and META.json for installable git repo.
     $self->render('cpanfile');
-    $self->render('Build.PL');
 }
 
 1;
 __DATA__
-
-@@ Build.PL
 
 @@ cpanfile
 on test => sub {
