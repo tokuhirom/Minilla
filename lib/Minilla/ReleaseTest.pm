@@ -16,6 +16,14 @@ sub write_release_tests {
 
     mkpath(catfile($dir, 'xt'));
 
+    my $stopwords = do {
+        my @stopwords;
+        for (@{$project->contributors || +[]}) {
+            s!<.*!!; # trim e-mail address
+            push @stopwords, split(/\s+/, $_);
+        }
+        join(' ', @stopwords);
+    };
     my $name = $project->dist_name;
     for my $file (qw(
         xt/minimum_version.t
@@ -26,6 +34,7 @@ sub write_release_tests {
         infof("Writing release tests: %s\n", $file);
         my $content = get_data_section($file);
         $content =~s!<<DIST>>!$name!g;
+        $content =~s!<<STOPWORDS>>!$stopwords!g;
         spew(catfile($dir, $file), $content);
     }
 }
@@ -80,6 +89,7 @@ plan skip_all => "no ENV[HOME]" unless $ENV{HOME};
 plan skip_all => "no ~/.aspell.en.pws" unless -e File::Spec->catfile($ENV{HOME}, '.aspell.en.pws');
 
 add_stopwords('<<DIST>>');
+add_stopwords(qw(<<STOPWORDS>>));
 
 $ENV{LANG} = 'C';
 my $has_aspell;
