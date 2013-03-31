@@ -156,7 +156,7 @@ sub _rewrite_pod {
                 . $2
                 . "=head1 CONTRIBUTORS\n\n=over 4\n\n"
                 . join( '', map { "=item $_\n\n" } map { pod_escape($_) } @{ $self->project->contributors } )
-                . "=back\n"
+                . "=back\n\n"
                 . $3 )
         !ixmse;
         spew_raw($self->project->main_module_path => $orig);
