@@ -12,7 +12,7 @@ use Time::Piece qw(gmtime);
 use File::Basename qw(dirname);
 
 use Minilla::Logger;
-use Minilla::Util qw(randstr cmd slurp);
+use Minilla::Util qw(randstr cmd slurp slurp_raw spew_raw pod_escape);
 use Minilla::FileGatherer;
 use Minilla::ReleaseTest;
 
@@ -121,6 +121,7 @@ sub build {
     }
 
     $self->_rewrite_changes();
+    $self->_rewrite_pod();
 
     Minilla::ReleaseTest->write_release_tests($self->project, $self->dir);
 
@@ -138,6 +139,27 @@ sub _rewrite_changes {
         $self->project->version . ' ' . $self->changes_time->strftime('%Y-%m-%dT%H:%M:%SZ')
     !e;
     path('Changes')->spew_raw($orig);
+}
+
+sub _rewrite_pod {
+    my $self = shift;
+
+    my $orig =slurp_raw($self->project->main_module_path);
+    if (@{$self->project->contributors}) {
+        $orig =~ s!
+            (^=head \d \s+ (?:authors?)\b \s*)
+            (.*?)
+            (^=head \d \s+ | \z)
+        !
+            (       $1
+                . $2
+                . "=head1 CONTRIBUTORS\n\n=over 4\n\n"
+                . join( '', map { "=item $_\n\n" } map { pod_escape($_) } @{ $self->project->contributors } )
+                . "=back\n"
+                . $3 )
+        !ixmse;
+        spew_raw($self->project->main_module_path => $orig);
+    }
 }
 
 sub dist_test {

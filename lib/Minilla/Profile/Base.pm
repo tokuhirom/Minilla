@@ -78,7 +78,7 @@ sub new_from_project {
     $path =~ s!^lib/!!;
     my $self = $class->new(
         dist    => $project->dist_name,
-        author  => $project->author,
+        author  => $project->authors ? $project->authors->[0] : 'Unknown Author',
         version => $project->version,
         path    => $path,
         module  => $project->name,
