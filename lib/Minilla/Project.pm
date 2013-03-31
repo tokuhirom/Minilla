@@ -246,6 +246,9 @@ sub cpan_meta {
     } else {
         errorf("Cannot determine 'author' from %s\n", $self->dir);
     }
+    if ($self->contributors && @{$self->contributors} > 0) {
+        $dat->{x_contributors} = $self->contributors;
+    }
 
     # fill 'provides' section
     if ($release_status ne 'unstable') {

@@ -4,6 +4,8 @@ use utf8;
 use Test::More;
 use t::Util;
 
+use CPAN::Meta;
+
 use Minilla::Profile::Default;
 use Minilla::Project;
 use Minilla::Git;
@@ -43,8 +45,15 @@ subtest 'develop deps' => sub {
     git_commit('--allow-empty', '-m', 'bar');
     git_commit('--allow-empty', '-m', 'bar2');
 
+    my $project = Minilla::Project->new();
     is_deeply(
-        Minilla::Project->new()->contributors,
+        $project->contributors,
+        ['Foo <foo@example.com>',
+        'Bar <bar@example.com>'],
+    );
+    $project->regenerate_files();
+    is_deeply(
+        CPAN::Meta->load_file('META.json')->{x_contributors},
         ['Foo <foo@example.com>',
         'Bar <bar@example.com>'],
     );
