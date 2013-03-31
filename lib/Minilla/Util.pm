@@ -14,6 +14,7 @@ our @EXPORT_OK = qw(
     slurp slurp_utf8 slurp_raw
     spew  spew_utf8  spew_raw
     edit_file require_optional cmd
+    pod_escape
     parse_options);
 
 our %EXPORT_TAGS = (
@@ -133,6 +134,12 @@ sub parse_options {
     Getopt::Long::GetOptionsFromArray( $args, @spec );
 }
 
+sub pod_escape {
+    local $_ = shift;
+    my %POD_ESCAPE = ( '<' => 'E<lt>', '>' => 'E<gt>' );
+    s!([<>])!$POD_ESCAPE{$1}!ge;
+    $_;
+}
 
 1;
 
