@@ -12,7 +12,7 @@ subtest 'develop deps' => sub {
     my $guard = pushd(tempdir());
 
     my $profile = Minilla::Profile::Default->new(
-        author => 'tokuhirom',
+        author => 'Tokuhiro Matsuno',
         dist => 'Acme-Foo',
         path => 'Acme/Foo.pm',
         suffix => 'Foo',
@@ -25,13 +25,19 @@ subtest 'develop deps' => sub {
 
     git_init();
     git_add('.');
-    git_config(qw(user.name tokuhirom));
+    git_config(qw(user.name), 'Tokuhiro Matsuno');
     git_config(qw(user.email tokuhirom@example.com));
     git_commit('-m', 'initial import');
+
+    # other name, but same address
+    git_config(qw(user.name tokuhirom));
+    git_config(qw(user.email tokuhirom@example.com));
+    git_commit('--allow-empty', '-m', 'foo');
 
     git_config(qw(user.name Foo));
     git_config(qw(user.email foo@example.com));
     git_commit('--allow-empty', '-m', 'foo');
+
     git_config(qw(user.name Bar));
     git_config(qw(user.email bar@example.com));
     git_commit('--allow-empty', '-m', 'bar');

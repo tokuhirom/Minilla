@@ -344,12 +344,20 @@ sub verify_prereqs {
 sub _build_contributors {
     my $self = shift;
 
+    my $normalize = sub {
+        local $_ = shift;
+        if (/<([^>]+)>/) {
+            $1;
+        } else {
+            $2;
+        }
+    };
     my @lines = do {
         my %uniq;
         reverse grep { !$uniq{$_}++ } split /\n/, `git log --format="%aN <%aE>"`
     };
-    my %is_author = map { $_ => 1 } @{$self->authors};
-    @lines = grep { !$is_author{$_} } @lines;
+    my %is_author = map { $normalize->($_) => 1 } @{$self->authors};
+    @lines = grep { !$is_author{$normalize->($_)} } @lines;
     @lines = grep { $_ ne 'Your Name <you@example.com>' } @lines;
     \@lines;
 }
