@@ -5,7 +5,7 @@ use utf8;
 
 use parent qw(Exporter);
 
-our @EXPORT = qw(git_ls_files git_init git_add git_rm git_commit);
+our @EXPORT = qw(git_ls_files git_init git_add git_rm git_commit git_config);
 
 use Minilla::Util qw(cmd);
 
@@ -15,6 +15,10 @@ sub git_init {
 
 sub git_add {
     cmd('git', 'add', @_ ? @_ : '.');
+}
+
+sub git_config {
+    cmd('git', 'config', @_ ? @_ : '.');
 }
 
 sub git_rm {

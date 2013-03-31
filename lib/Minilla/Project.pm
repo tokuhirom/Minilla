@@ -49,6 +49,10 @@ has metadata => (
     clearer => 1,
 );
 
+has contributors => (
+    is => 'lazy',
+);
+
 has work_dir => (
     is => 'lazy',
 );
@@ -331,6 +335,19 @@ sub verify_prereqs {
             }
         }
     }
+}
+
+sub _build_contributors {
+    my $self = shift;
+
+    my @lines = do {
+        my %uniq;
+        reverse grep { !$uniq{$_}++ } split /\n/, `git log --format="%aN <%aE>"`
+    };
+    my $author = $self->author;
+    @lines = grep { $_ ne $author } @lines;
+    @lines = grep { $_ ne 'Your Name <you@example.com>' } @lines;
+    \@lines;
 }
 
 sub _build_work_dir {
