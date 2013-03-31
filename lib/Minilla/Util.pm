@@ -2,7 +2,7 @@ package Minilla::Util;
 use strict;
 use warnings;
 use utf8;
-use autodie;
+use Carp ();
 use File::Basename ();
 use Minilla::Logger ();
 
@@ -30,37 +30,43 @@ sub randstr {
 
 sub slurp {
     my $fname = shift;
-    open my $fh, '<', $fname;
+    open my $fh, '<', $fname
+        or Carp::croak("Can't open '$fname' for reading: '$!'");
     do { local $/; <$fh> }
 }
 
 sub slurp_utf8 {
     my $fname = shift;
-    open my $fh, '<:encoding(UTF-8)', $fname;
+    open my $fh, '<:encoding(UTF-8)', $fname
+        or Carp::croak("Can't open '$fname' for reading: '$!'");
     do { local $/; <$fh> }
 }
 
 sub slurp_raw {
     my $fname = shift;
-    open my $fh, '<:raw', $fname;
+    open my $fh, '<:raw', $fname
+        or Carp::croak("Can't open '$fname' for reading: '$!'");
     do { local $/; <$fh> }
 }
 
 sub spew {
     my $fname = shift;
-    open my $fh, '>', $fname;
+    open my $fh, '>', $fname
+        or Carp::croak("Can't open '$fname' for writing: '$!'");
     print {$fh} $_[0];
 }
 
 sub spew_raw {
     my $fname = shift;
-    open my $fh, '>:raw', $fname;
+    open my $fh, '>:raw', $fname
+        or Carp::croak("Can't open '$fname' for writing: '$!'");
     print {$fh} $_[0];
 }
 
 sub spew_utf8 {
     my $fname = shift;
-    open my $fh, '>:encoding(UTF8)', $fname;
+    open my $fh, '>:encoding(UTF8)', $fname
+        or Carp::croak("Can't open '$fname' for writing: '$!'");
     print {$fh} $_[0];
 }
 
