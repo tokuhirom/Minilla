@@ -357,7 +357,7 @@ sub _build_contributors {
     };
     my @lines = do {
         my %uniq;
-        reverse grep { !$uniq{$_}++ } split /\n/, `git log --format="%aN <%aE>"`
+        reverse grep { !$uniq{$normalize->($_)}++ } split /\n/, `git log --format="%aN <%aE>"`
     };
     my %is_author = map { $normalize->($_) => 1 } @{$self->authors};
     @lines = grep { !$is_author{$normalize->($_)} } @lines;
