@@ -9,6 +9,8 @@ use Minilla::Profile::Default;
 use Minilla::Project;
 use Minilla::Git;
 
+plan skip_all => 'Pod rewriting is temporary disabled.';
+
 subtest 'rewrite pod' => sub {
     my $guard = pushd(tempdir());
 
