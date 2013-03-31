@@ -120,6 +120,7 @@ sub build {
         path('MANIFEST')->spew(join("\n", @files));
     }
 
+    $self->project->regenerate_files();
     $self->_rewrite_changes();
     $self->_rewrite_pod();
 

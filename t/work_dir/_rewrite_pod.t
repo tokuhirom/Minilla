@@ -28,7 +28,9 @@ subtest 'rewrite pod' => sub {
     git_add('.');
     git_config(qw(user.name tokuhirom));
     git_config(qw(user.email tokuhirom@example.com));
+    Minilla::Project->new()->regenerate_files();
     git_commit('-m', 'initial import');
+    ok -f 'Build.PL';
 
     git_config(qw(user.name Foo));
     git_config(qw(user.email foo@example.com));
@@ -40,6 +42,7 @@ subtest 'rewrite pod' => sub {
 
     my $work_dir = Minilla::Project->new()->work_dir();
     $work_dir->build;
+    ok -f catfile($work_dir->dir, 'Build.PL');
     my $pod = slurp(catfile($work_dir->dir, $work_dir->project->main_module_path));
     # note $pod;
     ok $pod =~ /=head1 CONTRIBUTORS/;
