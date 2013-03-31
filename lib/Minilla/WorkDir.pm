@@ -145,22 +145,23 @@ sub _rewrite_changes {
 sub _rewrite_pod {
     my $self = shift;
 
-    my $orig =slurp_raw($self->project->main_module_path);
-    if (@{$self->project->contributors}) {
-        $orig =~ s!
-            (^=head \d \s+ (?:authors?)\b \s*)
-            (.*?)
-            (^=head \d \s+ | \z)
-        !
-            (       $1
-                . $2
-                . "=head1 CONTRIBUTORS\n\n=over 4\n\n"
-                . join( '', map { "=item $_\n\n" } map { pod_escape($_) } @{ $self->project->contributors } )
-                . "=back\n\n"
-                . $3 )
-        !ixmse;
-        spew_raw($self->project->main_module_path => $orig);
-    }
+    # Disabled this feature.
+#   my $orig =slurp_raw($self->project->main_module_path);
+#   if (@{$self->project->contributors}) {
+#       $orig =~ s!
+#           (^=head \d \s+ (?:authors?)\b \s*)
+#           (.*?)
+#           (^=head \d \s+ | \z)
+#       !
+#           (       $1
+#               . $2
+#               . "=head1 CONTRIBUTORS\n\n=over 4\n\n"
+#               . join( '', map { "=item $_\n\n" } map { pod_escape($_) } @{ $self->project->contributors } )
+#               . "=back\n\n"
+#               . $3 )
+#       !ixmse;
+#       spew_raw($self->project->main_module_path => $orig);
+#   }
 }
 
 sub dist_test {
