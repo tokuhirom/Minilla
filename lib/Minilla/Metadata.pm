@@ -10,7 +10,7 @@ use Pod::Escapes;
 
 use Moo;
 
-has [qw(abstract perl_version author license)] => (
+has [qw(abstract perl_version authors license)] => (
     is => 'lazy',
 );
 
@@ -87,7 +87,7 @@ sub _build_perl_version {
     }
 }
 
-sub _build_author {
+sub _build_authors {
     my ($self) = @_;
 
     my $content = slurp($self->source);
@@ -112,10 +112,16 @@ sub _build_author {
             };
         }gex;
 
-        return $author;
+        my @authors;
+        for (split /\n/, $author) {
+            chomp;
+            next unless /\S/;
+            push @authors, $_;
+        }
+        return \@authors;
     } else {
         warn "Cannot determine author info from @{[ $_[0]->source ]}\n";
-        return;
+        return undef;
     }
 }
 
@@ -177,12 +183,12 @@ sub _build_license {
     my $pm_text = slurp($self->source);
     if ($self->_license_name) {
         _guess_license_class_by_name($self->_license_name)->new({
-            holder => $self->author,
+            holder => $self->authors->[0],
         });
     } elsif (_is_perl5_license($pm_text)) {
         require Minilla::License::Perl_5;
         return Minilla::License::Perl_5->new({
-            holder => $self->author,
+            holder => $self->authors->[0],
         });
     } else {
         if (eval "require Software::LicenseUtils; 1") {
@@ -191,20 +197,20 @@ sub _build_license {
                 my $klass = $guesses[0];
                 eval "require $klass; 1" or die $@; ## no critic.
                 $klass->new({
-                    holder => $self->author,
+                    holder => $self->authors->[0],
                 });
             } else {
                 warn "Cannot determine license info from @{[ $_[0]->source ]}\n";
                 require Minilla::License::Unknown;
                 return Minilla::License::Unknown->new({
-                    holder => $self->author || 'unknown',
+                    holder => $self->authors->[0] || 'unknown',
                 });
             }
         } else {
             warn "Software::License is needed when you want to use non Perl_5 license.\n";
             require Minilla::License::Unknown;
             return Minilla::License::Unknown->new({
-                holder => $self->author || 'unknown',
+                holder => $self->authors->[0] || 'unknown',
             });
         }
     }

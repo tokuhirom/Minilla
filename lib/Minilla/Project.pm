@@ -45,7 +45,7 @@ has main_module_path => (
 has metadata => (
     is => 'lazy',
     required => 1,
-    handles => [qw(name perl_version author license)],
+    handles => [qw(name perl_version authors license)],
     clearer => 1,
 );
 
@@ -231,7 +231,6 @@ sub cpan_meta {
         },
         license        => $self->license->meta2_name,
         abstract       => $self->abstract,
-        author         => [ $self->author ],
         dynamic_config => 0,
         version        => $self->version,
         name           => $self->dist_name,
@@ -241,6 +240,11 @@ sub cpan_meta {
     };
     unless ($dat->{abstract}) {
         errorf("Cannot retrieve 'abstract' from %s\n", $self->dir);
+    }
+    if ($self->authors) {
+        $dat->{author} = $self->authors;
+    } else {
+        errorf("Cannot determine 'author' from %s\n", $self->dir);
     }
 
     # fill 'provides' section
@@ -344,8 +348,8 @@ sub _build_contributors {
         my %uniq;
         reverse grep { !$uniq{$_}++ } split /\n/, `git log --format="%aN <%aE>"`
     };
-    my $author = $self->author;
-    @lines = grep { $_ ne $author } @lines;
+    my %is_author = map { $_ => 1 } @{$self->authors};
+    @lines = grep { !$is_author{$_} } @lines;
     @lines = grep { $_ ne 'Your Name <you@example.com>' } @lines;
     \@lines;
 }
