@@ -29,6 +29,7 @@ sub run {
     local $Minilla::Logger::COLOR = -t STDOUT ? 1 : 0;
     local @ARGV = @args;
     my @commands;
+    my $version;
     my $p = Getopt::Long::Parser->new(
         config => [ "no_ignore_case", "pass_through" ],
     );
@@ -37,7 +38,13 @@ sub run {
         "color!"         => \$Minilla::Logger::COLOR,
         "debug!"         => \$Minilla::DEBUG,
         "auto-install!"  => \$Minilla::AUTO_INSTALL,
+        'version!'       => \$version,
     );
+
+    if ($version) {
+        print "Minilla: $Minilla::VERSION\n";
+        exit 0;
+    }
  
     push @commands, @ARGV;
  
