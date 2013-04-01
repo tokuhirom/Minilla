@@ -31,6 +31,10 @@ has files => (
     is => 'lazy',
 );
 
+has manifest_files => (
+    is => 'lazy',
+);
+
 has [qw(prereq_specs)] => (
     is => 'lazy',
 );
@@ -74,6 +78,11 @@ sub _build_files {
     \@files;
 }
 
+sub _build_manifest_files {
+    my $self = shift;
+    [@{$self->files}, qw(Build.PL LICENSE META.json META.yml MANIFEST)];
+}
+
 sub as_string {
     my $self = shift;
     $self->dir;
@@ -113,11 +122,9 @@ sub build {
         });
     }
 
-    my @files = @{$self->files};
-
-    infof("Writing MANIFEST file\n");
     {
-        path('MANIFEST')->spew(join("\n", @files));
+        infof("Writing MANIFEST file\n");
+        path('MANIFEST')->spew(join("\n", @{$self->manifest_files}));
     }
 
     $self->project->regenerate_files();
@@ -197,7 +204,7 @@ sub dist {
         my $tarball = sprintf('%s-%s.tar.gz', $self->project->dist_name, $self->project->version);
 
         my $tar = Archive::Tar->new;
-        for (@{$self->files}, qw(Build.PL LICENSE META.json META.yml MANIFEST)) {
+        for (@{$self->manifest_files}) {
             $tar->add_data(path($self->project->dist_name . '-' . $self->project->version, $_), path($_)->slurp);
         }
         $tar->write($tarball, COMPRESS_GZIP);
