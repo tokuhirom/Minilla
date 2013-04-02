@@ -26,6 +26,7 @@ subtest 'develop deps' => sub {
         email => 'foo@example.com',
     );
     $profile->generate();
+    spew('cpanfile', 'requires "Moose";');
     write_minil_toml('Acme-Foo');
 
     git_init_add_commit();
@@ -33,6 +34,14 @@ subtest 'develop deps' => sub {
     Minilla::Project->new()->regenerate_files;
 
     like(slurp('META.json'), qr!Test::Pod!, 'Modules required by release testing is noteded in META.json');
+    my $meta = CPAN::Meta->load_file('META.json');
+    is_deeply(
+        $meta->{prereqs}->{runtime}->{requires},
+        {
+            'perl'  => '5.008005',
+            'Moose' => '0'
+        }
+    );
 };
 
 done_testing;
