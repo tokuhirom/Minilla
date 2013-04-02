@@ -222,15 +222,17 @@ sub cpan_meta {
     $merged_prereqs = $merged_prereqs->with_merged_prereqs(
         CPAN::Meta::Prereqs->new(Minilla::ReleaseTest->prereqs)
     );
-    $merged_prereqs = $merged_prereqs->with_merged_prereqs(
-        CPAN::Meta::Prereqs->new(+{
-            runtime => {
-                requires => {
-                    perl => $self->metadata->perl_version,
+    if ($self->metadata->perl_version) {
+        $merged_prereqs = $merged_prereqs->with_merged_prereqs(
+            CPAN::Meta::Prereqs->new(+{
+                runtime => {
+                    requires => {
+                        perl => $self->metadata->perl_version,
+                    }
                 }
-            }
-        })
-    );
+            })
+        );
+    }
     $merged_prereqs = $merged_prereqs->as_string_hash;
 
     my $dat = {
