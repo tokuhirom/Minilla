@@ -1,7 +1,7 @@
 _minil() {
     local -a cmds
     if (( CURRENT == 2 )); then
-        # \ls lib/Minilla/CLI/*|perl -i -pe 's!.*/!!;s!\.pm!!;tr/A-Z/a-z/'
+        # \ls lib/Minilla/CLI/*|perl -pe 's!.*/!!;s!\.pm!!;tr/A-Z/a-z/'
         compadd build clean dist help install migrate new release test
     fi
 
