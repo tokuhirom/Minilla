@@ -133,10 +133,8 @@ sub build {
 
     Minilla::ReleaseTest->write_release_tests($self->project, $self->dir);
 
-    if (slurp('Build.PL') =~ /use\s+Module::Build;/) {
-        cmd($^X, 'Build.PL');
-        cmd($^X, 'Build', 'build');
-    }
+    cmd($^X, 'Build.PL');
+    cmd($^X, 'Build', 'build');
 }
 
 sub _rewrite_changes {
@@ -181,14 +179,7 @@ sub dist_test {
 
     {
         my $guard = pushd($self->dir);
-        if (slurp('Build.PL') =~ /use\s+Module::Build;/) {
-            cmd($^X, 'Build', 'test');
-        } else {
-            unless (@targets) {
-                @targets = grep { -d $_ } qw(t xt);
-            }
-            cmd('prove', '-r', '-l', @targets);
-        }
+        cmd($^X, 'Build', 'test');
     }
 }
 
