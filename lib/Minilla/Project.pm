@@ -376,7 +376,7 @@ sub _build_contributors {
         if (/<([^>]+)>/) {
             $1;
         } else {
-            $2;
+            $_;
         }
     };
     my @lines = do {
