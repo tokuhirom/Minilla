@@ -57,6 +57,17 @@ has work_dir => (
     is => 'lazy',
 );
 
+has no_index => (
+    is => 'ro',
+    default => sub {
+        {
+            directory => [qw(
+                t xt inc share eg examples
+            ) ]
+        }
+    },
+);
+
 no Moo;
 
 sub version {
@@ -68,6 +79,7 @@ sub abstract {
     my $self = shift;
     $self->config->{abstract} || $self->metadata->abstract;
 }
+
 
 sub _build_dir {
     my $self = shift;
@@ -248,6 +260,7 @@ sub cpan_meta {
         prereqs        => $merged_prereqs,
         generated_by   => "Minilla/$Minilla::VERSION",
         release_status => $release_status || 'stable',
+        no_index       => $self->no_index,
     };
     unless ($dat->{abstract}) {
         errorf("Cannot retrieve 'abstract' from %s\n", $self->dir);
