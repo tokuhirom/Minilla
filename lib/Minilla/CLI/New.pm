@@ -92,7 +92,7 @@ Minilla::CLI::New - Generate new module skeleton
 
 =head1 SYNOPSIS
 
-    # Create new app using Module::Build::Tiny(default)
+    # Create new app using Module::Build(default)
     % minil new MyApp
 
     # Create new app using XS

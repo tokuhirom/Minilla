@@ -31,17 +31,17 @@ This subcommand migrate existed distribution repository to minil ready repositor
 This module runs script like following shell script.
 
     # Generate META.json from Module::Build or EU::MM
+    perl Build.PL
 
     # Create cpanfile from META.json
-
-    # Switch to M::B::Tiny for git instllable repo.
-    echo 'use Module::Build::Tiny; Build_PL()' > Build.PL
+    mymeta-cpanfile > cpanfile
 
     # MANIFEST, MANIFEST.SKIP is no longer needed.
     git rm MANIFEST MANIFEST.SKIP
 
     # generate META.json
-    minil meta
+    minil build
+    git add -f META.json
 
     # remove META.json from ignored file list
     perl -i -pe 's!^META.json\n$!!' .gitignore
@@ -52,7 +52,4 @@ This module runs script like following shell script.
 
     # add things
     git add .
-
-    # And commit to repo!
-    git commit -m 'minil!'
 
