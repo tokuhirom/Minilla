@@ -24,8 +24,9 @@ sub prereqs {
     return +{
         configure => {
             requires => {
-                'Module::Build'    => 0.38,
-                'CPAN::Meta'       => 0,
+                'Module::Build'       => 0.38,
+                'CPAN::Meta'          => 0,
+                'CPAN::Meta::Prereqs' => 0,
             }
         }
     }
