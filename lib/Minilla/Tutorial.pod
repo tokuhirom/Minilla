@@ -16,6 +16,8 @@ your C<~/.gitconfig> (You already set, isn't it?)
 
 =head2 Making new distribution
 
+Now it's time to make a new distribution.
+
     % minil new Dist-Name
     % cd Dist-Name/
 
@@ -29,13 +31,19 @@ Now start writing your code, edit the docs, tests and manage CPAN dependencies w
 
     % $EDITOR lib/Dist/Name.pm t/dist-name.t cpanfile
 
-You can test your code with a simple C<prove -l t>.
-
 =head2 Making the first release
 
 When you get confident and it's about time to ship to CPAN, use the test and release command. Before doing so, make sure your git directory is not dirty i.e. all changes are committed.
 
     % git commit -a -m "Done initial version"
+
+Minilla assumes you have a git remote setup so that you can push all your changes to. I recommend you to use either hub gem or L<App::ph> to create a new github repository.
+
+    # Use hub rubygem
+    > hub create
+    
+    # Use App::ph
+    > ph import
 
 Now, make sure you have Changes file ready and have a new entry under C<{{$NEXT}}>, which will be expanded to the next version of your module.
 
@@ -44,6 +52,10 @@ Now, make sure you have Changes file ready and have a new entry under C<{{$NEXT}
     % minil release
 
 And your first release is done. The release is tagged on git and all the changes automatically made are committed to git as well.
+
+If this is your first conversion to Minilla and want to make sure you're not going to mess CPAN with a bad archive when something goes wrong, you can run the releas command with FAKE_RELEASE environment variable. This will run all the other release process, except the UploadToCPAN step.
+
+    > FAKE_RELEASE=1 minil release
 
 Wait for PAUSE processing it and your module showing up on MetaCPAN in a few minutes. Congratulations!
 
@@ -62,15 +74,121 @@ Now, make a release!
 
 The release command will automatically bump the version for you - if you have 0.10, the next version will be 0.11 by default, but you will be prompted to confirm that version in case you need a major bump.
 
-This will update C<Changes>, C<META.json> and bump C<$VERSION> in your main module. These changes made by Milla will be automatically committed, tagged and pushed to the remote.
+This will update C<Changes>, C<META.json> and bump C<$VERSION> in your main module. These changes made by Minilla will be automatically committed, tagged and pushed to the remote.
 
 =head1 MIGRATING
 
-This section describes how to migrate your current authoring process to Milla.
+This section describes how to migrate your current authoring process to Minilla.
 
 =head2 Migrate by C<minil migrate>
 
 You just type C<minil migrate>.
 
-It can migrate your distribution automatically. If you can't do it, please report to me.
+It can migrate your distribution automatically. If you can't do it, please report to L<Github issues|https://github.com/tokuhirom/Minilla/issues>.
 
+=head2 Manually migrating from other build tools
+
+=head3 Module Dependencies to cpanfile
+
+First, move the prereq declaration from Makefile.PL or Build.PL to cpanfile.
+
+The easiest way to convert existing dependencies to cpanfile is to use the command line tool mymeta-cpanfile, which is installed with L<Module::CPANfile>. Run the configuration with Makefile.PL for the one last time, then run the mymeta-cpanfile command:
+
+    > perl Makefile.PL
+    > mymeta-cpanfile --no-configure
+    requires 'DBI', '1.000';
+    
+    on test => sub {
+        requires 'Test::More', '0.86';
+    }
+        
+    ...
+
+You can redirect the output to cpanfile if you like. It is important to pass --no-configure option here, since otherwise modules like ExtUtils::MakeMaker will be included. It is not required with Minilla setup, since Minilla knows which configuration tool (installer) to use and include them in META files upon the releases. You can leave that out from the cpanfile.
+
+If you decide to manually construct new cpanfile, the format is mostly compatible to Module::Install's requirement DSL.
+
+    # Makefile.PL
+    test_requires 'Test::More', 0.90;
+    requires 'Plack', '1.000';
+
+becomes:
+    # cpanfile
+    test_requires 'Test::More', 0.90;
+    requires 'Plack', '1.000';
+
+which is exactly the same. If you use L<Module::Build> or L<ExtUtils::MakeMaker>, that will be more manual process, but basically the same thing. See L<cpanfile> for the available syntax.
+
+=head3 Remove boilerplate
+
+Next, remove unnecessary boilerplate files.
+
+    > git rm {Makefile,Build}.PL MANIFEST MANIFEST.SKIP README .shipit
+
+=head3 Edit configurations
+
+Edit .gitignore and add the following lines:
+
+    /Dist-Name-*
+    /.build
+    !META.json
+
+You're almost done, and your directory will look like:
+
+    cpanfile
+    lib/Dist/Name.pm
+    t/...
+
+C<git add> the newly created files and commit it.
+
+=head3 Make a new build
+
+Now you're ready to make the first build.
+
+    > minil build
+
+and if it was successful, you get a build in a directory called Dist-Name-v0.1.0 under your current directory. They can be later removed with C<minil clean> command.
+
+Also, new C<Build.PL>, C<META.json> and C<README.md> are added in your
+working directory for git-friendliness. C<git add> them and commit it.
+
+   > git add Build.PL META.json README.md && git commit -m "git stuff"
+    
+Now you're ready to roll a new release with Minilla. Before doing so,
+convert your C<Changes> file format a little bit, and make sure you
+have a following header in the top:
+
+  {{$NEXT}}
+
+    - Change log entry for the next version
+
+The C<{{$NEXT}}> is a template variable that gets replaced with the
+version and date string, when you make a next release. This is almost
+the I<only> change you're required to make in your code base.
+ 
+Now, run the release command:
+  
+    > minil release
+
+to make a new release, in the same way described above for a new Minilla
+setup. You can set C<FAKE_RELEASE> environment variable if this is
+your first conversion and want to double check what happens, before
+uploading to CPAN.
+
+When this is not your first release, the version number gets
+automatically bumped by Minilla, but you will be prompted if that is
+exactly the version you want, and if you want a major version up, you
+can specify to do so.
+
+=head1 AUTHOR
+
+Tokuhiro Matsuno
+
+Tatsuhiko Miyagawa
+(Most of documents are taken from L<Dist::Milla::Tutorial>!)
+
+=head1 SEE ALSO
+
+L<Minilla>, L<Dist::Milla::Tutorial>
+    
+=cut
