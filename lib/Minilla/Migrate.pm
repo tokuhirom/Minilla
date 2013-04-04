@@ -190,7 +190,8 @@ sub remove_unused_files {
         README
         MYMETA.json
         MYMETA.yml
-    )) {
+        inc/Module/Install.pm
+    ), glob('inc/Module/Install/*.pm')) {
         if (-e $file) {
             if (grep { $_ eq $file } git_ls_files()) {
                 # committed file
