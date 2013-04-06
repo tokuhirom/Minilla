@@ -147,6 +147,8 @@ our $VERSION = "<% $version %>";
 1;
 <% $end %>
 
+=encoding utf-8
+
 =head1 NAME
 
 <% $module %> - It's new $module
