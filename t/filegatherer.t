@@ -2,6 +2,7 @@ use strict;
 use warnings;
 use utf8;
 use Test::More;
+use t::Util;
 use File::Temp qw(tempdir);
 use File::pushd;
 

@@ -8,6 +8,7 @@ use File::pushd;
 use File::Temp qw(tempdir);
 use Test::More;
 use File::Path;
+use File::Which qw(which);
 
 use Minilla;
 use Minilla::Git;
@@ -15,6 +16,7 @@ use Minilla::Util qw/:all/;
 
 $Minilla::DEBUG=1 if $ENV{MINILLA_DEBUG};
 
+plan skip_all => "No git command" unless which('git');
 plan skip_all => "No git configuration" unless `git config user.email` =~ /\@/;
 
 our @EXPORT = (

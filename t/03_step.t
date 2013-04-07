@@ -3,6 +3,7 @@ use warnings;
 use utf8;
 use Test::More;
 use Test::Requires 'Perl::Version';
+use t::Util;
 use File::Spec;
 use File::Path;
 use File::pushd;

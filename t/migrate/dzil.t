@@ -2,6 +2,7 @@ use strict;
 use warnings;
 use utf8;
 use Test::More;
+use t::Util;
 use Test::Requires qw(Dist::Zilla);
 
 plan skip_all => "No git configuration" unless `git config user.email` =~ /\@/;

@@ -2,10 +2,7 @@ use strict;
 use warnings;
 use utf8;
 use Test::More;
-
-use strict;
-use warnings;
-use utf8;
+use t::Util;
 
 package Minilla::Profile::Changes;
 use parent qw(Minilla::Profile::Default);
