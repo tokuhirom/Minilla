@@ -2,6 +2,15 @@ Revision history for Perl extension Minilla
 
 {{$NEXT}}
 
+v0.0.51 2013-04-07T04:09:37Z
+
+    - Remove M::I related files while migration.
+      (tokuhirom)
+    - Added '=encoding utf-8' in skelton
+      (tokuhirom)
+    - Do not run test cases without git command.
+      (tokuhirom)
+
 v0.0.50 2013-04-04T06:03:31Z
 
     - first release on CPAN!
