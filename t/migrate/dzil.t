@@ -4,7 +4,9 @@ use utf8;
 use Test::More;
 use t::Util;
 use Test::Requires qw(Dist::Zilla);
+use File::Which;
 
+plan skip_all => "No dzil command" unless which 'dzil';
 plan skip_all => "No git configuration" unless `git config user.email` =~ /\@/;
 
 use Minilla::CLI;
