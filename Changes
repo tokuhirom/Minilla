@@ -2,6 +2,11 @@ Revision history for Perl extension Minilla
 
 {{$NEXT}}
 
+v0.0.52 2013-04-08T03:11:44Z
+
+    - Tiny tweaks for CPAN testers.
+      (tokuhirom)
+
 v0.0.51 2013-04-07T04:09:37Z
 
     - Remove M::I related files while migration.
