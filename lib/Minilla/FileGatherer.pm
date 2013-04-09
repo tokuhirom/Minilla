@@ -19,13 +19,21 @@ no Moo;
 sub gather_files {
     my ($self, $root) = @_;
     my $guard = pushd($root);
-    my @files = grep { not -l $_ } map { File::Spec->abs2rel($_, $root) } git_ls_files();
+    my @files = grep { _topdir($_) ne 'extlib' }
+                grep { not -l $_ }
+                map { File::Spec->abs2rel($_, $root) }
+                git_ls_files();
     if ($self->exclude_match) {
         for my $pattern (@{$self->exclude_match || []}) {
             @files = grep { _normalize($_) !~ $pattern } @files;
         }
     }
     return @files;
+}
+
+sub _topdir {
+    my ($path) = @_;
+    [File::Spec->splitdir($path)]->[0] || '';
 }
 
 # for Windows

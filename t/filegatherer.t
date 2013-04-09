@@ -15,7 +15,9 @@ can_ok('Minilla::FileGatherer', 'new');
 my $guard = pushd(tempdir());
 
 mkdir 'local';
+mkpath 'extlib/lib';
 spew('local/foo', '...');
+spew('extlib/lib/Foo.pm', '...');
 spew('README', 'rrr');
 spew('META.json', 'mmm');
 
