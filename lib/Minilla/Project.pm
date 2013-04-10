@@ -62,7 +62,7 @@ has no_index => (
     default => sub {
         {
             directory => [qw(
-                t xt inc share eg examples
+                t xt inc share eg examples author
             ) ]
         }
     },
