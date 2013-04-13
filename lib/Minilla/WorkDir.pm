@@ -98,6 +98,11 @@ sub BUILD {
     for my $src (@{$self->files}) {
         next if -d $src;
         debugf("Copying %s\n", $src);
+
+        if (not -e $src) {
+            warnf("Trying to copy non-existing file '$src', ignored\n");
+            next;
+        }
         my $dst = path($self->dir, path($src)->relative($self->project->dir));
         path($dst->dirname)->mkpath;
         path($src)->copy($dst);
