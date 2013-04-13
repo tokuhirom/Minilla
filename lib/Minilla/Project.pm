@@ -229,7 +229,7 @@ sub cpan_meta {
 
     my $cpanfile = $self->load_cpanfile;
     my $merged_prereqs = $cpanfile->prereqs->with_merged_prereqs(
-        CPAN::Meta::Prereqs->new($self->module_maker->prereqs)
+        CPAN::Meta::Prereqs->new($self->module_maker->prereqs($self))
     );
     $merged_prereqs = $merged_prereqs->with_merged_prereqs(
         CPAN::Meta::Prereqs->new(Minilla::ReleaseTest->prereqs)
@@ -394,6 +394,11 @@ sub _build_work_dir {
     Minilla::WorkDir->new(
         project  => $self,
     );
+}
+
+sub requires_external_bin {
+    my $self = shift;
+    return $self->config->{requires_external_bin};
 }
 
 1;

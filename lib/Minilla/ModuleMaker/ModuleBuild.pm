@@ -12,21 +12,46 @@ use Minilla::Util qw(spew_raw);
 
 sub generate {
     my ($self, $project) = @_;
+    Carp::croak('Usage: $module_maker->generate($project)') unless defined $project;
+
+    my %stash = (
+        dist_name => scalar($project->dist_name),
+        name      => scalar($project->name),
+        prepare   => '',
+    );
+
+    if ($project->requires_external_bin && @{$project->requires_external_bin}) {
+        $stash{prepare} = join(
+            "\n",
+            q{use Devel::CheckBin;},
+            map { qq{check_bin("$_");} } @{$project->requires_external_bin}
+        );
+    }
 
     my $content = get_data_section('Build.PL');
     $content =~ s!<%\s*\$([a-z_]+)\s*%>!
-        $project->$1()
+        $stash{$1}
     !ge;
     spew_raw('Build.PL', $content);
 }
 
 sub prereqs {
+    my ($self, $project) = @_;
+    Carp::croak('Usage: $module_maker->prereqs($project)') unless defined $project;
+
+    my %configure_requires = (
+        'Module::Build'       => 0.38,
+        'CPAN::Meta'          => 0,
+        'CPAN::Meta::Prereqs' => 0,
+    );
+    if ($project->requires_external_bin && @{$project->requires_external_bin}) {
+        $configure_requires{'Devel::CheckBin'} = 0;
+    }
+
     return +{
         configure => {
             requires => {
-                'Module::Build'       => 0.38,
-                'CPAN::Meta'          => 0,
-                'CPAN::Meta::Prereqs' => 0,
+                %configure_requires,
             }
         }
     }
@@ -49,6 +74,8 @@ use CPAN::Meta::Prereqs;
 # =========================================================================
 
 use 5.008;
+
+<% $prepare %>
 
 my $builder = Module::Build->new(
     license              => 'perl',

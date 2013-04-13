@@ -13,6 +13,7 @@ use File::Which qw(which);
 use Minilla;
 use Minilla::Git;
 use Minilla::Util qw/:all/;
+use TOML;
 
 $Minilla::DEBUG=1 if $ENV{MINILLA_DEBUG};
 
@@ -33,8 +34,12 @@ sub git_init_add_commit() {
 }
 
 sub write_minil_toml {
-    my $name = shift;
-    spew('minil.toml', qq{name = "$name"\n});
+    if (@_==1 && !ref $_[0]) {
+        my $name = shift;
+        spew('minil.toml', qq{name = "$name"\n});
+    } else {
+        spew('minil.toml', to_toml(@_));
+    }
 }
 
 1;
