@@ -186,12 +186,22 @@ Revision history for Perl extension <% $dist %>
     - original version
 
 @@ .gitignore
-/.build/
-/_build/
-/carton.lock
-/.carton/
-/local/
-/nytprof.out
-/nytprof/
-/Build
+.build/
+_build/
+Build
+blib
+
+carton.lock
+.carton/
+local/
+
+nytprof.out
+nytprof/
+
+*.bak
+*.old
+*~
+*.swp
+*.o
+*.obj
 
