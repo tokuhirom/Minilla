@@ -11,7 +11,11 @@ use TOML qw(to_toml);
 use Config;
 
 use Minilla::Gitignore;
-use Minilla::Util qw(slurp spew require_optional cmd slurp_utf8 spew_utf8 slurp_raw spew_raw);
+use Minilla::Util qw(
+    slurp spew require_optional
+    cmd cmd_perl slurp_utf8 spew_utf8
+    slurp_raw spew_raw
+);
 use Minilla::Logger;
 use Minilla::Git;
 use Minilla::Project;
@@ -57,7 +61,7 @@ sub run {
 
 sub migrate_changes {
     my $self = shift;
-    
+
     if (-f 'Changes') {
         # Q. Why :raw?
         # A. It's for windows. See dzil.
@@ -134,16 +138,17 @@ sub migrate_cpanfile {
             infof("M::B::Tiny was detected. I hope META.json is already exists here\n");
             $metafile = 'META.json';
         } else {
-            cmd($^X, 'Build.PL');
+            cmd_perl('Build.PL');
             $metafile = 'MYMETA.json';
         }
     } elsif (-f 'Makefile.PL') {
-        cmd($^X, 'Makefile.PL');
+        # ExtUtils::MakeMaker or Module::Install's
+        cmd_perl('Makefile.PL');
         cmd($Config{make}, 'metafile');
         $metafile = 'MYMETA.json';
     } elsif (-f 'dist.ini') {
         my %orig = map { $_ => 1 } glob('*/META.yml');
-        cmd('dzil build');
+        cmd_perl('-S', 'dzil', 'build');
         ($metafile) = grep { !$orig{$_} } glob('*/META.yml');
     } else {
         errorf("There is no Build.PL/Makefile.PL/dist.ini: %s\n", Cwd::getcwd());
