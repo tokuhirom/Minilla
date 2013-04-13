@@ -174,6 +174,7 @@ sub _rewrite_pod {
 #   }
 }
 
+# Return non-zero if fail
 sub dist_test {
     my ($self, @targets) = @_;
 
@@ -184,7 +185,9 @@ sub dist_test {
 
     {
         my $guard = pushd($self->dir);
-        cmd($^X, 'Build', 'test');
+        my @cmd = ($^X, 'Build', 'test');
+        Minilla::Logger::infof("%s\n", "@cmd");
+        return system(@_);
     }
 }
 
