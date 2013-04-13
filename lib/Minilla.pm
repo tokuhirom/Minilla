@@ -112,6 +112,13 @@ You can write 'name' instead of automatically detecting project name out of the 
 
 Minilla sets bugtracker as github issues by default. But if you want to use RT, you can set this variable.
 
+=item requires_external_bin
+
+    requires_external_bin=['tar']
+
+The C<requires_external_bin> command takes the name of a system command
+or program. Build fail if the command does not exist.
+
 =back
 
 =head1 FAQ
