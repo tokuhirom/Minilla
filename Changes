@@ -2,6 +2,9 @@ Revision history for Perl extension Minilla
 
 {{$NEXT}}
 
+    - Enable xt/spelling.t by ~/minil.spell, instead of ~/.aspell.en.pws
+      (gfx)
+
 v0.0.53 2013-04-09T05:57:07Z
 
     - Exclude extlib/ directory from tar ball.

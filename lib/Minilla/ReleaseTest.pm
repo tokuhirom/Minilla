@@ -86,7 +86,8 @@ eval q{ use Pod::Wordlist::hanekomu };
 plan skip_all => "Pod::Wordlist::hanekomu is not installed." if $@;
 
 plan skip_all => "no ENV[HOME]" unless $ENV{HOME};
-plan skip_all => "no ~/.aspell.en.pws" unless -e File::Spec->catfile($ENV{HOME}, '.aspell.en.pws');
+my $spelltest_switchfile = ".minil.spell";
+plan skip_all => "no ~/$spelltest_switchfile" unless -e File::Spec->catfile($ENV{HOME}, $spelltest_switchfile);
 
 add_stopwords('<<DIST>>');
 add_stopwords(qw(<<STOPWORDS>>));
