@@ -14,9 +14,9 @@ sub generate {
     my ($self, $project) = @_;
 
     my $content = get_data_section('Build.PL');
-    $content =~ s!<%\s*\$([a-z_]+)\s*%>!
+    $content =~ s{<% \s* \$([a-z_]+) \s* %>}{
         $project->$1()
-    !ge;
+    }xmsge;
     spew_raw('Build.PL', $content);
 }
 
@@ -47,20 +47,13 @@ use strict;
 use warnings;
 use utf8;
 
-use Module::Build;
+use <% $build_class %>;
 use File::Basename;
 use File::Spec;
 use CPAN::Meta;
 use CPAN::Meta::Prereqs;
 
-my $builder_class = 'Module::Build';
-if (-f 'inc/MyBuilder.pm'
-    && eval { require inc::MyBuilder }
-    && inc::MyBuilder->can('new') ) {
-    $builder_class = 'inc::MyBuilder';
-}
-
-my $builder = $builder_class->new(
+my $builder = <% $build_class %>->new(
     license              => 'perl',
     dynamic_config       => 0,
 

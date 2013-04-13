@@ -9,20 +9,13 @@ use strict;
 use warnings;
 use utf8;
 
-use Module::Build;
+use builder::MyBuilder;
 use File::Basename;
 use File::Spec;
 use CPAN::Meta;
 use CPAN::Meta::Prereqs;
 
-my $builder_class = 'Module::Build';
-if (-f 'inc/MyBuilder.pm'
-    && eval { require inc::MyBuilder }
-    && inc::MyBuilder->can('new') ) {
-    $builder_class = 'inc::MyBuilder';
-}
-
-my $builder = $builder_class->new(
+my $builder = builder::MyBuilder->new(
     license              => 'perl',
     dynamic_config       => 0,
 

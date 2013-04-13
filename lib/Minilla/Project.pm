@@ -38,6 +38,10 @@ has dist_name => (
     is => 'lazy',
 );
 
+has build_class => (
+    is => 'lazy',
+);
+
 has main_module_path => (
     is => 'lazy',
 );
@@ -122,7 +126,7 @@ sub _build_dist_name {
         $dist_name = $conf->{name};
     }
     unless (defined $dist_name) {
-        infof("There is no minil.toml. Detecting project name from directory name.\n");
+        infof("Detecting project name from directory name.\n");
         $dist_name = do {
             local $_ = basename($self->dir);
             $_ =~ s!\Ap5-!!;
@@ -136,6 +140,17 @@ sub _build_dist_name {
     }
 
     return $dist_name;
+}
+
+sub _build_build_class {
+    my $self = shift;
+
+    my $build_class;
+    if (my $conf = $self->config) {
+        $build_class = $conf->{build}{build_class};
+    }
+
+    return $build_class || 'Module::Build';
 }
 
 sub _build_main_module_path {
