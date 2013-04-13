@@ -137,9 +137,10 @@ done_testing;
 
 @@ Module.pm
 package <% $module %>;
+use 5.008005;
 use strict;
 use warnings;
-use 5.008005;
+
 our $VERSION = "<% $version %>";
 
 <% $module_pm_src %>
@@ -163,7 +164,7 @@ our $VERSION = "<% $version %>";
 
 =head1 LICENSE
 
-Copyright (C) <% $author %>
+Copyright (C) <% $author %>.
 
 This library is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself.
@@ -175,8 +176,9 @@ it under the same terms as Perl itself.
 @@ .travis.yml
 language: perl
 perl:
-  - 5.16
+  - 5.12
   - 5.14
+  - 5.16
 
 @@ Changes
 Revision history for Perl extension <% $dist %>
@@ -186,10 +188,10 @@ Revision history for Perl extension <% $dist %>
     - original version
 
 @@ .gitignore
-.build/
-_build/
-Build
-blib
+/.build/
+/_build/
+/Build
+/blib
 
 carton.lock
 .carton/
@@ -197,6 +199,8 @@ local/
 
 nytprof.out
 nytprof/
+
+cover_db/
 
 *.bak
 *.old
