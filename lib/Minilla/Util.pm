@@ -13,7 +13,8 @@ our @EXPORT_OK = qw(
     randstr
     slurp slurp_utf8 slurp_raw
     spew  spew_utf8  spew_raw
-    edit_file require_optional cmd
+    edit_file require_optional
+    cmd cmd_perl
     pod_escape
     parse_options);
 
@@ -129,8 +130,19 @@ sub require_optional {
     }
 }
 
+sub cmd_perl {
+    my(@args) = @_;
+
+    require Config;
+
+    my %core_inc = map { $_ => 1 } @Config::Config{qw(privlibexp archlibexp)};
+    my @non_core_inc = grep { not $core_inc{$_} } @INC;
+
+    cmd($^X, (map { "-I$_" } @non_core_inc), @args);
+}
+
 sub cmd {
-    Minilla::Logger::infof("%s\n", "@_");
+    Minilla::Logger::infof("\$ %s\n", "@_");
     system(@_) == 0
         or Minilla::Logger::errorf("Giving up.\n");
 }
