@@ -12,7 +12,7 @@ use Time::Piece qw(gmtime);
 use File::Basename qw(dirname);
 
 use Minilla::Logger;
-use Minilla::Util qw(randstr cmd slurp slurp_raw spew_raw pod_escape);
+use Minilla::Util qw(randstr cmd cmd_perl slurp slurp_raw spew_raw pod_escape);
 use Minilla::FileGatherer;
 use Minilla::ReleaseTest;
 
@@ -138,8 +138,8 @@ sub build {
 
     Minilla::ReleaseTest->write_release_tests($self->project, $self->dir);
 
-    cmd($^X, 'Build.PL');
-    cmd($^X, 'Build', 'build');
+    cmd_perl('Build.PL');
+    cmd_perl('Build', 'build');
 }
 
 sub _rewrite_changes {
@@ -183,12 +183,11 @@ sub dist_test {
     $self->project->verify_prereqs([qw(runtime)], $_) for qw(requires recommends);
     $self->project->verify_prereqs([qw(test)], $_) for qw(requires recommends);
 
-    {
+    eval {
         my $guard = pushd($self->dir);
-        my @cmd = ($^X, 'Build', 'test');
-        Minilla::Logger::infof("%s\n", "@cmd");
-        return system(@_);
-    }
+        cmd_perl('Build', 'test');
+    };
+    return $@ ? 1 : 0;
 }
 
 sub dist {

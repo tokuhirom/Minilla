@@ -4,6 +4,7 @@ use warnings;
 use utf8;
 use Carp ();
 use File::Basename ();
+use File::SPec ();
 use Minilla::Logger ();
 
 use parent qw(Exporter);
@@ -135,10 +136,14 @@ sub cmd_perl {
 
     require Config;
 
-    my %core_inc = map { $_ => 1 } @Config::Config{qw(privlibexp archlibexp)};
-    my @non_core_inc = grep { not $core_inc{$_} } @INC;
+    my %std_inc = map { $_ => 1 } @Config::Config{qw(
+        sitelibexp sitearchexp
+        privlibexp archlibexp
+    )};
+    my @non_std_inc = map { File::Spec->rel2abs($_) }
+                      grep { not $std_inc{$_} } @INC;
 
-    cmd($^X, (map { "-I$_" } @non_core_inc), @args);
+    cmd($^X, (map { "-I$_" } @non_std_inc), @args);
 }
 
 sub cmd {
