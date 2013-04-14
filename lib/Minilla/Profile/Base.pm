@@ -209,3 +209,6 @@ cover_db/
 *.o
 *.obj
 
+MYMETA.*
+
+<% $dist %>-*
