@@ -125,7 +125,7 @@ sub generate_license {
 
     unless (-f 'LICENSE') {
         spew_raw('LICENSE', $self->project->metadata->license->fulltext());
-        git_add(qw(LICENSE));
+        git_add(qw(-f LICENSE));
     }
 }
 
@@ -220,6 +220,7 @@ sub migrate_gitignore {
     );
     $gitignore->remove('META.json');
     $gitignore->remove('/META.json');
+    $gitignore->remove('LICENSE');
 
     # Add some lines
     $gitignore->add(sprintf('/%s-*', $self->project->dist_name));
