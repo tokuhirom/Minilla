@@ -4,7 +4,7 @@ use warnings;
 use utf8;
 use Carp ();
 use File::Basename ();
-use File::SPec ();
+use File::Spec ();
 use Minilla::Logger ();
 
 use parent qw(Exporter);
