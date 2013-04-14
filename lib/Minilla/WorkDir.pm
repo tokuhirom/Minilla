@@ -187,7 +187,7 @@ sub dist_test {
         my $guard = pushd($self->dir);
         my @cmd = ($^X, 'Build', 'test');
         Minilla::Logger::infof("%s\n", "@cmd");
-        return system(@_);
+        return system(@cmd);
     }
 }
 
