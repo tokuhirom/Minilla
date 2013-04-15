@@ -49,10 +49,14 @@ subtest 'rewrite pod' => sub {
 
     is_deeply(
         [sort $tar->list_files],
-        [sort map { "Acme-Foo-0.01/$_" } grep /\S/, split /\n/, $tar->get_content('Acme-Foo-0.01/MANIFEST')],
+        [do {my %h;
+            sort
+            grep {!$h{$_}++}
+            map  { "Acme-Foo-0.01/$_" }
+            grep /\S/, split /\n/, $tar->get_content('Acme-Foo-0.01/MANIFEST')
+        }],
         "Valid MANIFEST file was generated.",
     );
 };
 
 done_testing;
-
