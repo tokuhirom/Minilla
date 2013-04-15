@@ -4,6 +4,7 @@ use warnings;
 use utf8;
 use File::pushd;
 use File::Spec;
+use File::Basename;
 
 use Minilla::Git;
 
@@ -12,6 +13,11 @@ use Moo;
 has exclude_match => (
     is => 'ro',
     default => sub { +[ ] },
+);
+
+has include_dotfiles => (
+    is => 'ro',
+    default => sub { undef },
 );
 
 no Moo;
@@ -28,6 +34,11 @@ sub gather_files {
             @files = grep { _normalize($_) !~ $pattern } @files;
         }
     }
+
+    unless ($self->include_dotfiles) {
+        @files = grep { basename($_) !~ qr/^\./ } @files;
+    }
+
     return @files;
 }
 
