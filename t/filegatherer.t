@@ -18,6 +18,7 @@ mkdir 'local';
 mkpath 'extlib/lib';
 spew('local/foo', '...');
 spew('extlib/lib/Foo.pm', '...');
+spew('.gitignore', '...');
 spew('README', 'rrr');
 spew('META.json', 'mmm');
 
@@ -30,6 +31,15 @@ my @files = Minilla::FileGatherer->new(
 )->gather_files('.');
 
 is(join(',', sort @files), 'META.json,README');
+
+subtest include_dotfiles => sub {
+    my @files = Minilla::FileGatherer->new(
+        exclude_match => ['^local/'],
+        include_dotfiles => 1,
+    )->gather_files('.');
+
+    is(join(',', sort @files), '.gitignore,META.json,README');
+};
 
 done_testing;
 
