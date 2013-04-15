@@ -80,7 +80,10 @@ sub _build_files {
 
 sub _build_manifest_files {
     my $self = shift;
-    [@{$self->files}, qw(Build.PL LICENSE META.json META.yml MANIFEST)];
+    [do {
+        my %h;
+        grep {!$h{$_}++} @{$self->files}, qw(Build.PL LICENSE META.json META.yml MANIFEST);
+    }];
 }
 
 sub as_string {
