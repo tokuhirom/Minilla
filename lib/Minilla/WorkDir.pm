@@ -70,8 +70,10 @@ sub _build_prereq_specs {
 sub _build_files {
     my $self = shift;
 
+    my $conf = $self->project->config->{'FileGatherer'};
     my @files = Minilla::FileGatherer->new(
-        exclude_match => $self->project->config->{'FileGatherer'}->{exclude_match},
+        exclude_match => $conf->{exclude_match},
+        exists $conf->{include_dotfiles} ? (include_dotfiles => $conf->{include_dotfiles}) : (),
     )->gather_files(
         $self->project->dir
     );
