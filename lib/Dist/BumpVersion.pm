@@ -64,6 +64,7 @@ sub set_version {
     for my $file (@{$self->{files}}) {
         $file->set_version($version);
     }
+    return 1;
 }
 
 sub find_files {

@@ -9,34 +9,54 @@ use File::Temp qw(tempdir);
 use Module::Metadata;
 
 my $tmpdir = tempdir(CLEANUP => 1);
-my $tmpfile = "$tmpdir/Foo.pm";
-open my $fh, '>', $tmpfile or die $!;
-print {$fh} q{
+
+subtest 'normal' => sub {
+    my $tmpfile = "$tmpdir/Foo.pm";
+    open my $fh, '>', $tmpfile or die $!;
+    print {$fh} q{
 package Foo;
 our $VERSION="v0.0.1";
 1;
 };
-close $fh;
+    close $fh;
+    test($tmpfile);
+};
 
+subtest 'gah' => sub {
+    my $tmpfile = "$tmpdir/Bar.pm";
+    open my $fh, '>', $tmpfile or die $!;
+    print {$fh} q{
+package Foo;
+use version; our $VERSION = version->declare("v0.0.1");
+1;
+};
+    close $fh;
+    test($tmpfile);
+};
 
-# check
-{
-    my $meta = Module::Metadata->new_from_file($tmpfile);
-    is($meta->version('Foo'), 'v0.0.1');
-}
-
-# bump
-{
-    my $bump = Dist::BumpVersion::Perl->load($tmpfile);
-    ok($bump);
-    $bump->set_version('v0.0.2');
-}
-
-# test.
-{
-    my $meta = Module::Metadata->new_from_file($tmpfile);
-    is($meta->version('Foo'), 'v0.0.2');
-}
 
 done_testing;
 
+sub test {
+    my $tmpfile = shift;
+
+    # check
+    {
+        my $meta = Module::Metadata->new_from_file($tmpfile);
+        is($meta->version('Foo'), 'v0.0.1');
+    }
+
+    # bump
+    {
+        my $bump = Dist::BumpVersion::Perl->load($tmpfile);
+        ok($bump);
+        is($bump->find_version, 'v0.0.1');
+        $bump->set_version('v0.0.2');
+    }
+
+    # test.
+    {
+        my $meta = Module::Metadata->new_from_file($tmpfile);
+        is($meta->version('Foo'), 'v0.0.2');
+    }
+}

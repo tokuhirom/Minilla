@@ -50,6 +50,12 @@ sub set_version {
     close $fh;
 }
 
+sub find_version {
+    my $self = shift;
+    my ($version) = keys %{$self->versions};
+    return $version;
+}
+
 sub versions {
     my $self = shift;
     $self->{versions} ||= $self->_find_version_for_doc();
@@ -106,7 +112,8 @@ sub _find_version_for_doc {
 sub version_re_perl {
     my $ver_re = shift;
 
-    return qr{ ^ ( .*?  [\$\*] (?: \w+ (?: :: | ' ) )* VERSION \s* = [^v0-9]* ) 
+    return qr{ ^ ( .*?  [\$\*] (?: \w+ (?: :: | ' ) )* VERSION \s* =
+                    \D*? ) 
                  $ver_re 
                  ( .* ) $ }x;
 }
