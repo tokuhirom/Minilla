@@ -15,7 +15,7 @@ use File::Spec;
 use CPAN::Meta;
 use CPAN::Meta::Prereqs;
 
-my $builder = Module::Build->new(
+my %args = (
     license              => 'perl',
     dynamic_config       => 0,
 
@@ -32,6 +32,11 @@ my $builder = Module::Build->new(
     test_files           => ((-d '.git' || $ENV{RELEASE_TESTING}) && -d 'xt') ? 't/ xt/' : 't/',
     recursive_test_files => 1,
 );
+if (-d 'share') {
+    $args{share_dir} = 'share';
+}
+
+my $builder = Module::Build->new(%args);
 $builder->create_build_script();
 
 my $mbmeta = CPAN::Meta->load_file('MYMETA.json');

@@ -1,0 +1,34 @@
+#!/usr/bin/env perl
+use strict;
+use warnings;
+use Pod::Usage;
+use Getopt::Long;
+use Dist::BumpVersion;
+
+my $show;
+my $p = Getopt::Long::Parser->new(
+    config => [qw(posix_default no_ignorecase auto_help)],
+);
+$p->getoptions(
+    'show' => \$show,
+);
+my $target = shift or pod2usage;
+
+my $bump = Dist::BumpVersion->new($target);
+if ($show) {
+    my $version = $bump->find_version
+        or die $bump->errstr;
+    print "Current version is: $version\n";
+    exit 0;
+} else {
+    my $version = $bump->bump_version
+        or die $bump->errstr;
+    print "Bumped to $version\n";
+}
+
+__END__
+
+=head1 SYNOPSIS
+
+    % dist-bumpversion --show .
+
