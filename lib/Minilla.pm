@@ -108,6 +108,10 @@ But, you can write configurations to I<minil.toml> file in L<TOML|https://github
 
 You can write 'name' instead of automatically detecting project name out of the directory name.
 
+=item readme_from
+
+You can specify the file to generate the README.md. This is a main module path by default.
+
 =item no_github_issues
 
 Minilla sets bugtracker as github issues by default. But if you want to use RT, you can set this variable.

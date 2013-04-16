@@ -336,6 +336,11 @@ sub cpan_meta {
     return $meta;
 }
 
+sub readme_from {
+    my $self = shift;
+    $self->config->{readme_from} || $self->main_module_path;
+}
+
 sub regenerate_files {
     my $self = shift;
 
@@ -359,7 +364,7 @@ sub regenerate_readme_md {
     require Pod::Markdown;
 
     my $parser = Pod::Markdown->new;
-    $parser->parse_from_file($self->main_module_path);
+    $parser->parse_from_file($self->readme_from);
 
     my $fname = File::Spec->catfile($self->dir, 'README.md');
     spew_raw($fname, $parser->as_markdown);
