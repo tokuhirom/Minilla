@@ -38,7 +38,7 @@
             "Test::CPAN::Meta" : "0",
             "Test::MinimumVersion" : "0.10108",
             "Test::Pod" : "1.41",
-            "Test::Spellunker" : "0"
+            "Test::Spellunker" : "v0.0.3"
          }
       },
       "runtime" : {
@@ -51,7 +51,7 @@
             "Test::CPAN::Meta" : "0",
             "Test::MinimumVersion" : "0.101080",
             "Test::Pod" : "0",
-            "Test::Spelling" : "0",
+            "Test::Spellunker" : "0",
             "Version::Next" : "0"
          },
          "requires" : {
