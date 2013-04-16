@@ -2,7 +2,6 @@ package Dist::BumpVersion::Perl;
 use strict;
 use warnings;
 use utf8;
-use Perl::Version;
 
 sub load {
     my ($class, $name) = @_;
@@ -35,12 +34,15 @@ sub set_version {
 
     my $versions = $self->versions;
     my @lines = @{$self->{lines}};
+    my $dirty;
     for my $edits ( values %$versions ) {
         for my $edit (@$edits) {
             $lines[ $edit->{line} ] =
               $edit->{pre} . $new_version . $edit->{post} . "\n";
+            $dirty++;
         }
     }
+    return unless $dirty;
 
     open my $fh, '>:raw', $self->{name}
         or die "Cannot open '$self->{name}' for writing: $!";
@@ -74,8 +76,8 @@ sub _find_version_for_doc {
             for my $trans (@$state) {
                 if ( my @match = $line =~ $trans->{re} ) {
                     if ( $trans->{mark} ) {
-                        my $ver = Perl::Version->new( $2 . $3 . $4 );
-                        push @{ $ver_found->{ $ver->normal } },
+                        my $ver = $2 . $3 . $4;
+                        push @{ $ver_found->{ $ver } },
                           {
                             file => $name,
                             info => $self,
@@ -104,7 +106,7 @@ sub _find_version_for_doc {
 sub version_re_perl {
     my $ver_re = shift;
 
-    return qr{ ^ ( .*?  [\$\*] (?: \w+ (?: :: | ' ) )* VERSION \s* = \D* ) 
+    return qr{ ^ ( .*?  [\$\*] (?: \w+ (?: :: | ' ) )* VERSION \s* = [^v0-9]* ) 
                  $ver_re 
                  ( .* ) $ }x;
 }
@@ -117,7 +119,10 @@ sub version_re_pod {
 
 # State machine for Perl source
 sub scanner{
-    my $ver_re = Perl::Version::REGEX;
+    # Perl::Version::REGEX
+    my $ver_re = qr/ ( (?i: Revision: \s+ ) | v | )
+                     ( \d+ (?: [.] \d+)* )
+                     ( (?: _ \d+ )? ) /x;
 
     {
         init => [

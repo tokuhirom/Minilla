@@ -30,7 +30,7 @@ requires 'Data::Section::Simple' => 0.04;
 
 # Modules required by minil new/minil dist/minil release are optional.
 # It's good for contributors
-recommends 'Perl::Version';
+recommends 'Version::Next';
 recommends 'Pod::Escapes';
 recommends 'CPAN::Uploader';
 # TODO: remove this dependency after cpanm release. look #12

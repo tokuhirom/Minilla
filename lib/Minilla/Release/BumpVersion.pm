@@ -7,6 +7,7 @@ use ExtUtils::MakeMaker qw(prompt);
 use Minilla::Util qw(find_file require_optional cmd);
 use Minilla::Logger;
 use Dist::BumpVersion;
+use Version::Next;
 
 sub init {
     require_optional(
@@ -25,7 +26,7 @@ sub run {
         }
         unless ($opts->{dry_run}) {
             my $bump = Dist::BumpVersion->new($project->dir);
-            $bump->bump_version()
+            $bump->set_version($ver)
                 or die $bump->errstr;
 
             # clear old version information
@@ -46,14 +47,7 @@ sub default_new_version {
     if (not exists_tagged_version($curver)) {
         $curver;
     } else {
-        my $version = Perl::Version->new( $curver );
-        if ($version->is_alpha) {
-            $version->inc_alpha;
-        } else {
-            my $pos = $version->components-1;
-            $version->increment($pos);
-        }
-        $version;
+        return Version::Next::next_version($curver);
     }
 }
 

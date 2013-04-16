@@ -2,7 +2,7 @@ use strict;
 use warnings;
 use utf8;
 use Test::More;
-use Test::Requires 'Perl::Version';
+use Test::Requires 'Version::Next';
 use t::Util;
 use File::Spec;
 use File::Path;
