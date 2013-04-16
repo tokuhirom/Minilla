@@ -41,7 +41,7 @@ sub bump_version {
     my ($self, $project, $version) = @_;
 
     for my $file ($project->perl_files) {
-        my $bump = Module::BumpVersion::Perl->load($file);
+        my $bump = Module::BumpVersion->load($file);
         $bump->set_version($version);
     }
 }
