@@ -54,7 +54,9 @@ sub default_new_version {
     if (not exists_tagged_version($curver)) {
         $curver;
     } else {
-        return Version::Next::next_version($curver);
+        # $project->metadata->version returns version.pm object.
+        # But stringify was needed by Version::Next.
+        return Version::Next::next_version("$curver");
     }
 }
 
