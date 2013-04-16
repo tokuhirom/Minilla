@@ -1,4 +1,4 @@
-package Dist::BumpVersion::Perl;
+package Module::BumpVersion;
 use strict;
 use warnings;
 use utf8;
@@ -170,4 +170,6 @@ sub scanner{
     };
 }
 
+
 1;
+

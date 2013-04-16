@@ -21,13 +21,10 @@ use Moo;
 has project => (
     is => 'ro',
     required => 1,
+    handles => [qw(files)],
 );
 
 has dir => (
-    is => 'lazy',
-);
-
-has files => (
     is => 'lazy',
 );
 
@@ -65,19 +62,6 @@ sub _build_prereq_specs {
 
     my $cpanfile = Module::CPANfile->load(path($self->project->dir, 'cpanfile'));
     return $cpanfile->prereq_specs;
-}
-
-sub _build_files {
-    my $self = shift;
-
-    my $conf = $self->project->config->{'FileGatherer'};
-    my @files = Minilla::FileGatherer->new(
-        exclude_match => $conf->{exclude_match},
-        exists $conf->{include_dotfiles} ? (include_dotfiles => $conf->{include_dotfiles}) : (),
-    )->gather_files(
-        $self->project->dir
-    );
-    \@files;
 }
 
 sub _build_manifest_files {

@@ -3,7 +3,7 @@ use strict;
 use warnings;
 use Pod::Usage;
 use Getopt::Long;
-use Dist::BumpVersion;
+use Module::BumpVersion;
 
 my $show;
 my $p = Getopt::Long::Parser->new(
@@ -14,7 +14,7 @@ $p->getoptions(
 );
 my $target = shift or pod2usage;
 
-my $bump = Dist::BumpVersion->new($target);
+my $bump = Module::BumpVersion->load($target);
 if ($show) {
     my $version = $bump->find_version
         or die $bump->errstr;

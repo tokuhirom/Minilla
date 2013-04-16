@@ -6,12 +6,12 @@ use ExtUtils::MakeMaker qw(prompt);
 
 use Minilla::Util qw(find_file require_optional cmd);
 use Minilla::Logger;
-use Dist::BumpVersion;
+use Module::BumpVersion;
 use Version::Next;
 
 sub init {
     require_optional(
-        'Dist/BumpVersion.pm', 'Release engineering'
+        'Module/BumpVersion.pm', 'Release engineering'
     );
 }
 
@@ -25,9 +25,7 @@ sub run {
             push @opts, '-dryrun';
         }
         unless ($opts->{dry_run}) {
-            my $bump = Dist::BumpVersion->new($project->dir);
-            $bump->set_version($ver)
-                or die $bump->errstr;
+            $self->bump_version($project, $ver);
 
             # clear old version information
             $project->clear_metadata();
@@ -36,6 +34,15 @@ sub run {
                 errorf("Sorry, version '%s' is already tagged.  Stopping.\n", $newver);
             }
         }
+    }
+}
+
+sub bump_version {
+    my ($self, $project, $version) = @_;
+
+    for my $file ($project->perl_files) {
+        my $bump = Module::BumpVersion::Perl->load($file);
+        $bump->set_version($version);
     }
 }
 

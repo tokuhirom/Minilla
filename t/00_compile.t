@@ -3,8 +3,7 @@ use Test::More;
 
 use_ok $_ for qw(
     Minilla
-    Dist::BumpVersion
-    Dist::BumpVersion::Perl
+    Module::BumpVersion
 );
 
 done_testing;

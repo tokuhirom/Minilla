@@ -18,7 +18,7 @@ use Minilla::Metadata;
 use Minilla::WorkDir;
 use Minilla::ReleaseTest;
 use Minilla::ModuleMaker::ModuleBuild;
-use Minilla::Util qw(slurp_utf8 find_dir cmd spew_raw);
+use Minilla::Util qw(slurp_utf8 find_dir cmd spew_raw slurp_raw);
 
 use Moo;
 
@@ -58,6 +58,10 @@ has contributors => (
 );
 
 has work_dir => (
+    is => 'lazy',
+);
+
+has files => (
     is => 'lazy',
 );
 
@@ -414,6 +418,26 @@ sub _build_work_dir {
     Minilla::WorkDir->new(
         project  => $self,
     );
+}
+
+sub _build_files {
+    my $self = shift;
+    my $conf = $self->config->{'FileGatherer'};
+    my @files = Minilla::FileGatherer->new(
+        exclude_match => $conf->{exclude_match},
+        exists $conf->{include_dotfiles} ? (include_dotfiles => $conf->{include_dotfiles}) : (),
+    )->gather_files(
+        $self->dir
+    );
+    \@files;
+}
+
+sub perl_files {
+    my $self = shift;
+    my @files = @{$self->files};
+    grep {
+        $_ =~ /\.(?:pm|pl|t)$/i || slurp_raw($_) =~ m{ ^ \#\! .* perl }ix
+    } @files;
 }
 
 1;

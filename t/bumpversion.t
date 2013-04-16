@@ -4,7 +4,7 @@ use utf8;
 use Test::More;
 use t::Util;
 
-use Dist::BumpVersion::Perl;
+use Module::BumpVersion;
 use File::Temp qw(tempdir);
 use Module::Metadata;
 
@@ -48,7 +48,7 @@ sub test {
 
     # bump
     {
-        my $bump = Dist::BumpVersion::Perl->load($tmpfile);
+        my $bump = Module::BumpVersion->load($tmpfile);
         ok($bump);
         is($bump->find_version, 'v0.0.1');
         $bump->set_version('v0.0.2');
