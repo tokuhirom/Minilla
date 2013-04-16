@@ -36,7 +36,17 @@ if (-d 'share') {
     $args{share_dir} = 'share';
 }
 
-my $builder = Module::Build->new(%args);
+my $builder = Module::Build->subclass(
+    class => 'MyBuilder',
+    code => q{
+        sub ACTION_distmeta {
+            die "Do not run distmeta. Install Minilla and `minil install` instead.\n";
+        }
+        sub ACTION_installdeps {
+            die "Do not run installdeps. Run `cpanm --installdeps .` instead.\n";
+        }
+    }
+)->new(%args);
 $builder->create_build_script();
 
 my $mbmeta = CPAN::Meta->load_file('MYMETA.json');
