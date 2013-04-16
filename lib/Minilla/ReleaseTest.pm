@@ -46,7 +46,7 @@ sub prereqs {
                 'Test::MinimumVersion' => 0.101080,
                 'Test::CPAN::Meta' => 0,
                 'Test::Pod' => 1.41,
-                'Test::Spelling' => 0,
+                'Test::Spellunker' => 'v0.0.3',
                 'Pod::Wordlist::hanekomu' => 0,
             },
         },
@@ -80,25 +80,14 @@ all_pod_files_ok();
 use strict;
 use Test::More;
 use File::Spec;
-eval q{ use Test::Spelling };
-plan skip_all => "Test::Spelling is not installed." if $@;
-eval q{ use Pod::Wordlist::hanekomu };
-plan skip_all => "Pod::Wordlist::hanekomu is not installed." if $@;
+eval q{ use Test::Spellunker };
+plan skip_all => "Test::Spellunker is not installed." if $@;
 
 plan skip_all => "no ENV[HOME]" unless $ENV{HOME};
-my $spelltest_switchfile = ".minil.spell";
+my $spelltest_switchfile = ".spellunker.en";
 plan skip_all => "no ~/$spelltest_switchfile" unless -e File::Spec->catfile($ENV{HOME}, $spelltest_switchfile);
 
 add_stopwords('<<DIST>>');
 add_stopwords(qw(<<STOPWORDS>>));
 
-$ENV{LANG} = 'C';
-my $has_aspell;
-foreach my $path (split(/:/, $ENV{PATH})) {
-    -x "$path/aspell" and $has_aspell++, last;
-}
-plan skip_all => "no aspell" unless $has_aspell;
-plan skip_all => "no english dict for aspell" unless `aspell dump dicts` =~ /en/;
-
-set_spell_cmd('aspell list -l en');
 all_pod_files_spelling_ok('lib');
