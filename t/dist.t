@@ -14,7 +14,7 @@ my $minil = File::Spec->rel2abs('script/minil');
 
 my @dists = @ARGV;
 if (! @dists) {
-    @dists = glob('test-dist/*');
+    @dists = glob('author/test-dist/*');
 }
 
 foreach my $dist (@dists) {
