@@ -4,6 +4,7 @@ use warnings;
 use Pod::Usage;
 use Getopt::Long;
 use Module::BumpVersion;
+use Version::Next;
 
 my $show;
 my $p = Getopt::Long::Parser->new(
@@ -15,20 +16,22 @@ $p->getoptions(
 my $target = shift or pod2usage;
 
 my $bump = Module::BumpVersion->load($target);
+my $version = $bump->find_version
+    or die $bump->errstr;
+print "Current version is: $version\n";
 if ($show) {
-    my $version = $bump->find_version
-        or die $bump->errstr;
-    print "Current version is: $version\n";
     exit 0;
-} else {
-    my $version = $bump->bump_version
-        or die $bump->errstr;
-    print "Bumped to $version\n";
+}
+
+{
+    my $next = Version::Next::next_version($version);
+    $bump->set_version($next);
+    print "Bumped to $next\n";
 }
 
 __END__
 
 =head1 SYNOPSIS
 
-    % dist-bumpversion --show .
+    % dist-bumpversion --show /path/to/Library.pm
 
