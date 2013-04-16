@@ -6,17 +6,17 @@ use ExtUtils::MakeMaker qw(prompt);
 
 use Minilla::Util qw(find_file require_optional cmd);
 use Minilla::Logger;
+use Dist::BumpVersion;
 
 sub init {
     require_optional(
-        'Perl/Version.pm', 'Release engineering'
+        'Dist/BumpVersion.pm', 'Release engineering'
     );
 }
 
 sub run {
     my ($self, $project, $opts) = @_;
 
-    # Note: perl-revision command is included in Perl::Version.
     if (my $ver = prompt("Next Release?", $self->default_new_version($project))) {
         my @opts;
         push @opts, '-set', $ver;
@@ -24,7 +24,9 @@ sub run {
             push @opts, '-dryrun';
         }
         unless ($opts->{dry_run}) {
-            cmd('perl-reversion', @opts);
+            my $bump = Dist::BumpVersion->new($project->dir);
+            $bump->bump_version()
+                or die $bump->errstr;
 
             # clear old version information
             $project->clear_metadata();

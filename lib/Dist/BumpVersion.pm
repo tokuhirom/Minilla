@@ -2,7 +2,7 @@ package Dist::BumpVersion;
 use strict;
 use warnings;
 use utf8;
-use Perl::Version;
+use Version::Next ();
 use Getopt::Long;
 use Pod::Usage;
 use File::Spec;
@@ -21,16 +21,9 @@ sub bump_version {
     my ($self) = @_;
     my $dir = $self->{dir};
 
-    my $new_ver = $self->find_version()
+    my $version = $self->find_version()
         or return;
-    $new_ver = Perl::Version->new($new_ver);
-    if ( $new_ver->is_alpha ) {
-        $new_ver->inc_alpha;
-    }
-    else {
-        my $pos = $new_ver->components - 1;
-        $new_ver->increment($pos);
-    }
+    my $new_ver = Version::Next::next_version($version);
     $self->set_version($new_ver);
     return $new_ver;
 }
