@@ -7,11 +7,13 @@ use ExtUtils::MakeMaker qw(prompt);
 use Minilla::Util qw(find_file require_optional cmd);
 use Minilla::Logger;
 use Module::BumpVersion;
-use Version::Next;
 
 sub init {
     require_optional(
         'Module/BumpVersion.pm', 'Release engineering'
+    );
+    require_optional(
+        'Version/Next.pm', 'Release engineering'
     );
 }
 
