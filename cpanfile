@@ -41,11 +41,9 @@ recommends 'Software::License';
 
 # release testing
 recommends 'Test::Pod';
-recommends 'Test::Spellunker';
-recommends 'Pod::Wordlist::hanekomu';
+recommends 'Test::Spellunker', 'v0.0.8';
 recommends 'Test::MinimumVersion' => '0.101080';
 recommends 'Test::CPAN::Meta';
-recommends 'Pod::Wordlist::hanekomu';
 
 on 'test' => sub {
     requires 'Test::More' => '0.98';

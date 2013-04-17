@@ -1,7 +1,7 @@
 {
    "abstract" : "CPAN module authoring tool",
    "author" : [
-      "Tokuhiro Matsuno < tokuhirom @ gmail.com >"
+      "Tokuhiro Matsuno < tokuhirom@gmail.com >"
    ],
    "dynamic_config" : 0,
    "generated_by" : "Minilla/v0.0.53, CPAN::Meta::Converter version 2.130880",
@@ -46,12 +46,11 @@
             "CPAN::Meta::Check" : "0",
             "CPAN::Uploader" : "0",
             "Pod::Escapes" : "0",
-            "Pod::Wordlist::hanekomu" : "0",
             "Software::License" : "0",
             "Test::CPAN::Meta" : "0",
             "Test::MinimumVersion" : "0.101080",
             "Test::Pod" : "0",
-            "Test::Spellunker" : "0",
+            "Test::Spellunker" : "v0.0.8",
             "Version::Next" : "0"
          },
          "requires" : {

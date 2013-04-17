@@ -126,7 +126,7 @@ But, you can write configurations to _minil.toml_ file in [TOML](https://github.
 
 # AUTHORS
 
-Tokuhiro Matsuno < tokuhirom @ gmail.com >
+Tokuhiro Matsuno < tokuhirom@gmail.com >
 
 Tatsuhiko Miyagawa
 

@@ -47,7 +47,6 @@ sub prereqs {
                 'Test::CPAN::Meta' => 0,
                 'Test::Pod' => 1.41,
                 'Test::Spellunker' => 'v0.0.3',
-                'Pod::Wordlist::hanekomu' => 0,
             },
         },
     };
