@@ -57,6 +57,7 @@ subtest 'rewrite pod' => sub {
         }],
         "Valid MANIFEST file was generated.",
     );
+    like($tar->get_content('Acme-Foo-0.01/MANIFEST'), qr{^Build.PL$}sm, 'Contains Build.PL in MANIFEST');
 };
 
 done_testing;
