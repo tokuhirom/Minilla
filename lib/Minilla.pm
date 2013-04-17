@@ -13,6 +13,8 @@ sub auto_install { $AUTO_INSTALL }
 1;
 __END__
 
+=for stopwords MINILLA
+
 =encoding utf8
 
 =head1 NAME
@@ -159,7 +161,7 @@ See L<Minilla::CLI::Migrate> for more details.
 
 =head1 AUTHORS
 
-Tokuhiro Matsuno E<lt> tokuhirom @ gmail.com E<gt>
+Tokuhiro Matsuno E<lt> tokuhirom@gmail.com E<gt>
 
 Tatsuhiko Miyagawa
 

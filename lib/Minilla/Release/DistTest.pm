@@ -8,7 +8,10 @@ sub run {
 
     local $ENV{RELEASE_TESTING} = 1;
     my $work_dir = $project->work_dir();
-    $work_dir->dist_test;
+    if ($work_dir->dist_test) {
+        # Failed.
+        exit 1;
+    }
 }
 
 1;
