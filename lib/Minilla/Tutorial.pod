@@ -1,3 +1,5 @@
+=for stopwords gitignore cpanfile mymeta PL UploadToCPAN MetaCPAN
+
 =head1 NAME
 
 Minilla::Tutorial - Tutorial document for Minilla
@@ -113,6 +115,7 @@ If you decide to manually construct new cpanfile, the format is mostly compatibl
     requires 'Plack', '1.000';
 
 becomes:
+
     # cpanfile
     test_requires 'Test::More', 0.90;
     requires 'Plack', '1.000';
@@ -147,7 +150,7 @@ Now you're ready to make the first build.
 
     > minil build
 
-and if it was successful, you get a build in a directory called Dist-Name-v0.1.0 under your current directory. They can be later removed with C<minil clean> command.
+and if it was successful, you get a build in a directory called C<Dist-Name-v0.1.0> under your current directory. They can be later removed with C<minil clean> command.
 
 Also, new C<Build.PL>, C<META.json> and C<README.md> are added in your
 working directory for git-friendliness. C<git add> them and commit it.
