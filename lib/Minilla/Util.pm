@@ -123,7 +123,7 @@ sub require_optional {
                 $_;
             };
             Carp::croak( "$feature requires $library, but it is not available."
-                  . " Please install $library using your prefer CPAN client" );
+                  . " Please install $library using your preferred CPAN client" );
         }
         else {
             die $@;
