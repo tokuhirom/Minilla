@@ -154,7 +154,7 @@ Your executables must be in F<script/>. It's L<Module::Build::Tiny>'s rule.
 
 =item How to switch from Module::Install/Module::Build/Dist::Zilla?
 
-You can use experimental `minil migrate` subcommand.
+You can use experimental `minil migrate` sub-command.
 See L<Minilla::CLI::Migrate> for more details.
 
 =back

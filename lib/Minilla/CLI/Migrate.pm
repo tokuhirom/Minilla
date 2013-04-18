@@ -24,7 +24,7 @@ Minilla::CLI::Migrate - Migrate existed distribution repo
 
 =head1 DESCRIPTION
 
-This subcommand migrate existed distribution repository to minil ready repository.
+This sub-command migrate existed distribution repository to minil ready repository.
 
 =head1 HOW IT WORKS
 

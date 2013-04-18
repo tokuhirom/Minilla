@@ -59,5 +59,5 @@ Minilla::CLI::Test - Run test cases
 
 =head1 DESCRIPTION
 
-This subcommand run test cases.
+This sub-command run test cases.
 

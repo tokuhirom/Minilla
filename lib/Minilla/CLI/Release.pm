@@ -75,5 +75,5 @@ Minilla::CLI::Release - Release the module to CPAN!
 
 =head1 DESCRIPTION
 
-This subcommand release the module to CPAN.
+This sub-command release the module to CPAN.
 

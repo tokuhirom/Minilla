@@ -22,6 +22,6 @@ Minilla::CLI::Help - Help me!
     # show help for minil itself
     minil help
 
-    # show help page for `install` subcommand
+    # show help page for `install` sub-command
     minil help install
 

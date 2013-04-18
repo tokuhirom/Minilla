@@ -40,5 +40,5 @@ Minilla::CLI::Dist - Make tar ball distribution
 
 =head1 DESCRIPTION
 
-This subcommand makes distribution tar ball.
+This sub-command makes distribution tar ball.
 

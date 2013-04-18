@@ -43,5 +43,5 @@ Minilla::CLI::Install - Install the dist to system
 
 =head1 DESCRIPTION
 
-This subcommand install the dist for your system.
+This sub-command install the dist for your system.
 
