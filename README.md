@@ -121,7 +121,7 @@ But, you can write configurations to _minil.toml_ file in [TOML](https://github.
 
 - How to switch from Module::Install/Module::Build/Dist::Zilla?
 
-    You can use experimental \`minil migrate\` subcommand.
+    You can use experimental \`minil migrate\` sub-command.
     See [Minilla::CLI::Migrate](http://search.cpan.org/perldoc?Minilla::CLI::Migrate) for more details.
 
 # AUTHORS
