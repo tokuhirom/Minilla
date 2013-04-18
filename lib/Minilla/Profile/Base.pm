@@ -173,6 +173,8 @@ it under the same terms as Perl itself.
 
 <% $author %> E<lt><% $email %>E<gt>
 
+=cut
+
 @@ .travis.yml
 language: perl
 perl:
