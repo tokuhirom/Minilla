@@ -91,7 +91,7 @@ But, you can write configurations to _minil.toml_ file in [TOML](https://github.
 
 # FAQ
 
-- Why don't you provide plugin support?
+- Why don't you provide plug-in support?
 
     If you want to pluggable thing, it's already exist dzil :P
     And if you like a behavior like Minilla, you can use [Dist::Milla](http://search.cpan.org/perldoc?Dist::Milla), the sister project of Minilla.

@@ -50,7 +50,7 @@
             "Test::CPAN::Meta" : "0",
             "Test::MinimumVersion" : "0.101080",
             "Test::Pod" : "0",
-            "Test::Spellunker" : "v0.0.8",
+            "Test::Spellunker" : "v0.0.12",
             "Version::Next" : "0"
          },
          "requires" : {

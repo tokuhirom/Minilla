@@ -124,7 +124,7 @@ Minilla sets bugtracker as github issues by default. But if you want to use RT, 
 
 =over 4
 
-=item Why don't you provide plugin support?
+=item Why don't you provide plug-in support?
 
 If you want to pluggable thing, it's already exist dzil :P
 And if you like a behavior like Minilla, you can use L<Dist::Milla>, the sister project of Minilla.
