@@ -1,3 +1,33 @@
+#compdef minil
+# ------------------------------------------------------------------------------
+# Description
+# -----------
+#
+#  Completion script for minil (https://github.com/tokuhirom/Minilla).
+#
+# ------------------------------------------------------------------------------
+# Authors
+# -------
+#
+#  * tokuhirom (https://github.com/tokuhirom)
+#  * syohex    (https://github.com/syohex)
+#  * xaicron   (https://github.com/xaicron)
+#
+# ------------------------------------------------------------------------------
+# Instllation
+# ------------
+#
+#  Copy this file to your $fpath directory.
+#  For example, if you fpath is ~/.zsh/fpath:
+#
+#    $ cp this-file ~/.zsh/fpath/_minil
+#
+#  You may have to force rebuild zcompdump:
+#
+#    $ rm -f ~/.zcompdump; compinit
+#
+# -------------------------------------------------------------------------------
+
 _minil() {
   typeset -A opt_args
   local context state line
@@ -57,13 +87,3 @@ _minil() {
     fi
   fi
 }
-
-compdef _minil minil
-
-# Local Variables:
-# mode: Shell-Script
-# sh-indentation: 2
-# indent-tabs-mode: nil
-# sh-basic-offset: 2
-# End:
-# vim: ft=zsh sw=2 ts=2 et
