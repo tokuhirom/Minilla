@@ -47,6 +47,8 @@ subtest 'Removing committed README' => sub {
 
     Minilla::Migrate->new->run();
 
+    like(slurp('.gitignore'), qr{!LICENSE});
+
     ok -f 'META.json';
 };
 

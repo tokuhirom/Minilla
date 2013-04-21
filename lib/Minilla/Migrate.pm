@@ -230,6 +230,7 @@ sub migrate_gitignore {
         /Build
         !Build/
         !META.json
+        !LICENSE
     )) {
         $gitignore->add($fname);
     }
