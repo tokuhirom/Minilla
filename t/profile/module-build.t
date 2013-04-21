@@ -31,5 +31,7 @@ cmd($^X, 'Build.PL');
 like(slurp('MYMETA.json'), qr(CPAN::Meta), 'CPAN::Meta is required');
 like(slurp('MYMETA.yml'), qr(CPAN::Meta), 'CPAN::Meta is required');
 
+like(slurp('.gitignore'), qr{!LICENSE});
+
 done_testing;
 

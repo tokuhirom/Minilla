@@ -195,9 +195,9 @@ Revision history for Perl extension <% $dist %>
 /Build
 /blib
 
-carton.lock
-.carton/
-local/
+/carton.lock
+/.carton/
+/local/
 
 nytprof.out
 nytprof/
@@ -211,6 +211,8 @@ cover_db/
 *.o
 *.obj
 
+!LICENSE
+
 MYMETA.*
 
-<% $dist %>-*
+/<% $dist %>-*
