@@ -46,7 +46,7 @@ sub prereqs {
                 'Test::MinimumVersion' => 0.101080,
                 'Test::CPAN::Meta' => 0,
                 'Test::Pod' => 1.41,
-                'Test::Spellunker' => 'v0.0.12',
+                'Test::Spellunker' => 'v0.0.15',
             },
         },
     };
@@ -79,7 +79,7 @@ all_pod_files_ok();
 use strict;
 use Test::More;
 use File::Spec;
-eval q{ use Test::Spellunker };
+eval q{ use Test::Spellunker v0.0.15 };
 plan skip_all => "Test::Spellunker is not installed." if $@;
 
 plan skip_all => "no ENV[HOME]" unless $ENV{HOME};

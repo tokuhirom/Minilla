@@ -34,11 +34,10 @@
       },
       "develop" : {
          "requires" : {
-            "Pod::Wordlist::hanekomu" : "0",
             "Test::CPAN::Meta" : "0",
             "Test::MinimumVersion" : "0.10108",
             "Test::Pod" : "1.41",
-            "Test::Spellunker" : "v0.0.3"
+            "Test::Spellunker" : "v0.0.15"
          }
       },
       "runtime" : {
@@ -50,7 +49,7 @@
             "Test::CPAN::Meta" : "0",
             "Test::MinimumVersion" : "0.101080",
             "Test::Pod" : "0",
-            "Test::Spellunker" : "v0.0.12",
+            "Test::Spellunker" : "v0.0.15",
             "Version::Next" : "0"
          },
          "requires" : {
@@ -107,6 +106,7 @@
       "Fuji, Goro <g.psy.va@gmail.com>",
       "Syohei YOSHIDA <syohex@gmail.com>",
       "Masayuki Matsuki <y.songmu@gmail.com>",
+      "Daisuke Maki <lestrrat+github@gmail.com>",
       "xaicron <xaicron@gmail.com>",
       "tokuhirom <tokuhirom@gmail.com>"
    ]
