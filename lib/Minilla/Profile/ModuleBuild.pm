@@ -35,8 +35,6 @@ sub generate {
 __DATA__
 
 @@ cpanfile
-#!perl
-
 on 'configure' => sub {
 };
 
