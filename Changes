@@ -2,7 +2,29 @@ Revision history for Perl extension Minilla
 
 {{$NEXT}}
 
-    - Enable xt/spelling.t by ~/minil.spell, instead of ~/.aspell.en.pws
+v0.0.54 2013-04-22T23:27:19Z
+
+    [INCOMPATIBLE CHANGES]
+    - Enable xt/spelling.t by ~/spellunker.en, instead of ~/.aspell.en.pws
+
+    [FEATURE ENHANCEMENTS]
+    - Better zsh completion
+      (Syohei YOSHIDA, Yuji Shimada)
+    - Better spelling checking with Spellunker.
+      (tokuhirom)
+    - Better version number incrementation with Version::Next
+      (tokuhirom)
+    - Disabled ACTION_distmeta and ACTION_installdeps in Build.PL
+      (tokuhirom)
+    - Added new configuration parameter: readme_from
+      (tokuhirom)
+    - Support 'share/' directiory(Distribution share directiory only)
+      (tokuhirom)
+    - Remove dupilicate entry in manifest file
+      (Masayuki Matsuki)
+    - force add LICENSE in migration
+      (xaicron)
+    - add MYMETA.* and <% $dist %>-* to default .gitignore
       (gfx)
 
 v0.0.53 2013-04-09T05:57:07Z

@@ -43,6 +43,8 @@ sub bump_version {
     my ($self, $project, $version) = @_;
 
     for my $file ($project->perl_files) {
+        next if $file =~ /\.t$/;
+
         my $bump = Module::BumpVersion->load($file);
         $bump->set_version($version);
     }
