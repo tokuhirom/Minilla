@@ -10,6 +10,8 @@ use File::Spec::Functions qw(splitdir);
 use File::Spec;
 use Time::Piece qw(gmtime);
 use File::Basename qw(dirname);
+use File::Path qw(mkpath);
+use File::Copy qw(copy);
 
 use Minilla::Logger;
 use Minilla::Util qw(randstr cmd cmd_perl slurp slurp_raw spew_raw pod_escape);
@@ -83,7 +85,7 @@ sub BUILD {
     infof("Creating working directory: %s\n", $self->dir);
 
     # copying
-    path($self->dir)->mkpath;
+    mkpath($self->dir);
     for my $src (@{$self->files}) {
         next if -d $src;
         debugf("Copying %s\n", $src);
@@ -93,8 +95,9 @@ sub BUILD {
             next;
         }
         my $dst = path($self->dir, path($src)->relative($self->project->dir));
-        path($dst->dirname)->mkpath;
-        path($src)->copy($dst);
+        mkpath($dst->dirname);
+        copy($src => $dst) or die "Copying failed: $src $dst, $!\n";
+        chmod((stat($src))[2], $dst) or die "Cannot change mode: $dst, $!\n";
     }
 }
 

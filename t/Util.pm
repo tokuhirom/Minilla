@@ -9,6 +9,7 @@ use File::Temp qw(tempdir);
 use Test::More;
 use File::Path;
 use File::Which qw(which);
+use File::Spec::Functions qw(catfile);
 
 use Minilla;
 use Minilla::Git;
@@ -23,6 +24,7 @@ our @EXPORT = (
     qw(git_init_add_commit write_minil_toml),
     qw(tempdir pushd),
     @Minilla::Git::EXPORT, @Minilla::Util::EXPORT_OK, qw(spew),
+    qw(catfile),
     qw(mkpath),
 );
 
