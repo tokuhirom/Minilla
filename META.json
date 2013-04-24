@@ -42,7 +42,6 @@
       },
       "runtime" : {
          "recommends" : {
-            "CPAN::Meta::Check" : "0",
             "CPAN::Uploader" : "0",
             "Pod::Escapes" : "0",
             "Software::License" : "0",
@@ -98,7 +97,7 @@
          "web" : "https://github.com/tokuhirom/Minilla"
       }
    },
-   "version" : "v0.0.55",
+   "version" : "v0.0.56",
    "x_contributors" : [
       "mattn <mattn.jp@gmail.com>",
       "Daisuke Murase <typester@cpan.org>",
@@ -111,6 +110,6 @@
       "Masayuki Matsuki <y.songmu@gmail.com>",
       "Daisuke Maki <lestrrat+github@gmail.com>",
       "xaicron <xaicron@gmail.com>",
-      "tokuhirÃ¥m <tokuhirom@gmail.com>"
+      "tokuhirom <tokuhirom@gmail.com>"
    ]
 }

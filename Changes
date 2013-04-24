@@ -2,6 +2,15 @@ Revision history for Perl extension Minilla
 
 {{$NEXT}}
 
+v0.0.56 2013-04-24T05:23:14Z
+
+    - Use cpanm instead of CPAN::Meta::Check. Closed #12
+      (Suggested by miyagawa++)
+    - Fixed Double-encoded author name in META.json Closed #44
+      https://github.com/tokuhirom/Minilla/issues/44
+      (Reported by ilmali++)
+
+
 v0.0.55 2013-04-24T03:09:28Z
 
     - Save mode when copying files to working directory.
