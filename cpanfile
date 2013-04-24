@@ -34,8 +34,6 @@ requires 'Data::Section::Simple' => 0.04;
 recommends 'Version::Next';
 recommends 'Pod::Escapes';
 recommends 'CPAN::Uploader';
-# TODO: remove this dependency after cpanm release. look #12
-recommends 'CPAN::Meta::Check';
 
 # Core deps
 requires 'Try::Tiny';

@@ -377,18 +377,8 @@ sub regenerate_readme_md {
 sub verify_prereqs {
     my ($self, $phases, $type) = @_;
 
-    if (eval q{require CPAN::Meta::Check; 1;}) { ## no critic
-        my $cpanfile = $self->load_cpanfile();
-        my @err = CPAN::Meta::Check::verify_dependencies($cpanfile->prereqs, $phases, $type);
-        for (@err) {
-            if (/Module '([^']+)' is not installed/ && $Minilla::AUTO_INSTALL) {
-                my $module = $1;
-                infof("Installing $module\n");
-                cmd('cpanm', $module)
-            } else {
-                warnf("Warning: $_\n");
-            }
-        }
+    if ($Minilla::AUTO_INSTALL) {
+        system('cpanm', '--quiet', '--installdeps', '--with-develop', '.');
     }
 }
 
