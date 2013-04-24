@@ -2,7 +2,7 @@ package Minilla::Metadata;
 use strict;
 use warnings;
 use utf8;
-use Minilla::Util qw(slurp require_optional);
+use Minilla::Util qw(slurp slurp_utf8 require_optional);
 use Carp;
 use Module::Metadata;
 use Minilla::License::Perl_5;
@@ -90,7 +90,7 @@ sub _build_perl_version {
 sub _build_authors {
     my ($self) = @_;
 
-    my $content = slurp($self->source);
+    my $content = slurp_utf8($self->source);
     if ($content =~ m/
         =head \d \s+ (?:authors?)\b \s*
         ([^\n]*)
