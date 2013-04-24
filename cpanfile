@@ -44,7 +44,7 @@ recommends 'Software::License';
 
 # release testing
 recommends 'Test::Pod';
-recommends 'Test::Spellunker', 'v0.0.15';
+recommends 'Test::Spellunker', 'v0.2.2';
 recommends 'Test::MinimumVersion' => '0.101080';
 recommends 'Test::CPAN::Meta';
 
