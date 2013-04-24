@@ -2,6 +2,11 @@ Revision history for Perl extension Minilla
 
 {{$NEXT}}
 
+v0.0.55 2013-04-24T03:09:28Z
+
+    - Save mode when copying files to working directory.
+      (tokuhirom)
+
 v0.0.54 2013-04-22T23:27:19Z
 
     [INCOMPATIBLE CHANGES]

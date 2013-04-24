@@ -2,7 +2,7 @@ package Acme::FooXS;
 use strict;
 use warnings;
 use 5.008005;
-our $VERSION = "v0.0.54";
+our $VERSION = "v0.0.55";
 
 use XSLoader;
 XSLoader::load(__PACKAGE__, $VERSION);
