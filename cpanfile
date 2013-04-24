@@ -4,6 +4,7 @@ requires 'perl'   => '5.008005';
 requires 'parent' => '0';
 requires 'Archive::Tar', '1.60';
 requires 'Time::Piece' => 1.16; # older Time::Piece was broken
+requires 'version';
 
 # Module for compatibility
 requires 'MRO::Compat' if $] < 5.009_005;
@@ -35,6 +36,10 @@ recommends 'Pod::Escapes';
 recommends 'CPAN::Uploader';
 # TODO: remove this dependency after cpanm release. look #12
 recommends 'CPAN::Meta::Check';
+
+# Core deps
+requires 'Try::Tiny';
+requires 'Getopt::Long';
 
 # Module required for license otherwise Perl_5 license.
 recommends 'Software::License';
