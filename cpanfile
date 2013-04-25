@@ -13,7 +13,7 @@ requires 'MRO::Compat' if $] < 5.009_005;
 requires 'TOML' => 0.92;
 
 # CPAN related
-requires 'App::cpanminus', '1.6003';
+requires 'App::cpanminus', '1.6902';
 requires 'Module::CPANfile', '0.9025';
 requires 'Module::Metadata' => '1.0.11';
 requires 'Pod::Markdown';
