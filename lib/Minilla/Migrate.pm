@@ -7,7 +7,7 @@ use File::pushd;
 use CPAN::Meta;
 use Path::Tiny;
 use File::Find ();
-use TOML qw(to_toml);
+use TOML 0.92 qw(to_toml);
 use Config;
 
 use Minilla::Gitignore;

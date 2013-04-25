@@ -10,7 +10,7 @@ requires 'version';
 requires 'MRO::Compat' if $] < 5.009_005;
 
 # The TOML parser
-requires 'TOML' => 0.91;
+requires 'TOML' => 0.92;
 
 # CPAN related
 requires 'App::cpanminus', '1.6003';

@@ -3,7 +3,7 @@ use strict;
 use warnings;
 use utf8;
 
-use TOML qw(from_toml);
+use TOML 0.92 qw(from_toml);
 use File::Basename qw(basename dirname);
 use File::Spec::Functions qw(catdir catfile);
 use Path::Tiny;

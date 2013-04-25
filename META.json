@@ -48,7 +48,7 @@
             "Test::CPAN::Meta" : "0",
             "Test::MinimumVersion" : "0.101080",
             "Test::Pod" : "0",
-            "Test::Spellunker" : "v0.0.15",
+            "Test::Spellunker" : "v0.2.2",
             "Version::Next" : "0"
          },
          "requires" : {
@@ -63,7 +63,7 @@
             "Moo" : "1.001",
             "Path::Tiny" : "0",
             "Pod::Markdown" : "0",
-            "TOML" : "0.91",
+            "TOML" : "0.92",
             "Time::Piece" : "1.16",
             "Try::Tiny" : "0",
             "parent" : "0",
