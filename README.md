@@ -89,6 +89,14 @@ But, you can write configurations to _minil.toml_ file in [TOML](https://github.
 
     Minilla sets bugtracker as github issues by default. But if you want to use RT, you can set this variable.
 
+- abstract\_from
+
+    Grab abstract information from the file contains pod.
+
+- authors\_from
+
+    Grab authors information from the file contains pod.
+
 # FAQ
 
 - Why don't you provide plug-in support?

@@ -2,6 +2,10 @@ Revision history for Perl extension Minilla
 
 {{$NEXT}}
 
+v0.1.0 2013-04-27T14:51:23Z
+
+    - Added authors_from, abstract_from
+
 v0.0.56 2013-04-24T05:23:14Z
 
     - Use cpanm instead of CPAN::Meta::Check. Closed #12
