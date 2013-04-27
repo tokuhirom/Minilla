@@ -118,6 +118,14 @@ You can specify the file to generate the README.md. This is a main module path b
 
 Minilla sets bugtracker as github issues by default. But if you want to use RT, you can set this variable.
 
+=item abstract_from
+
+Grab abstract information from the file contains pod.
+
+=item authors_from
+
+Grab authors information from the file contains pod.
+
 =back
 
 =head1 FAQ

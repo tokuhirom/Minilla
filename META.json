@@ -37,7 +37,7 @@
             "Test::CPAN::Meta" : "0",
             "Test::MinimumVersion" : "0.10108",
             "Test::Pod" : "1.41",
-            "Test::Spellunker" : "v0.0.16"
+            "Test::Spellunker" : "v0.2.2"
          }
       },
       "runtime" : {
@@ -52,8 +52,9 @@
             "Version::Next" : "0"
          },
          "requires" : {
-            "App::cpanminus" : "1.6003",
+            "App::cpanminus" : "1.6902",
             "Archive::Tar" : "1.60",
+            "CPAN::Meta" : "0",
             "Data::Section::Simple" : "0.04",
             "File::Copy::Recursive" : "0",
             "File::pushd" : "0",
@@ -63,12 +64,17 @@
             "Moo" : "1.001",
             "Path::Tiny" : "0",
             "Pod::Markdown" : "0",
+            "Pod::Simple" : "0",
             "TOML" : "0.92",
+            "Term::ANSIColor" : "0",
             "Time::Piece" : "1.16",
             "Try::Tiny" : "0",
             "parent" : "0",
             "perl" : "5.008005",
             "version" : "0"
+         },
+         "suggests" : {
+            "Devel::PPPort" : "0"
          }
       },
       "test" : {
@@ -76,6 +82,7 @@
             "Devel::CheckLib" : "0"
          },
          "requires" : {
+            "File::Temp" : "0",
             "File::Which" : "0",
             "Test::More" : "0.98",
             "Test::Requires" : "0"

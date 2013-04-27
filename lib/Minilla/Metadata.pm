@@ -7,6 +7,7 @@ use Carp;
 use Module::Metadata;
 use Minilla::License::Perl_5;
 use Pod::Escapes;
+use Minilla::Metadata::PodParser;
 
 use Moo;
 
@@ -54,6 +55,11 @@ sub _build_abstract {
         if (slurp($self->source) =~ /^\s*#+\s*ABSTRACT:\s*(.+)$/m) {
             return $1;
         }
+    }
+    {
+        my $parser = Minilla::Metadata::PodParser->new();
+        $parser->parse_file($self->source);
+        return $parser->abstract if $parser->abstract;
     }
     return;
 }

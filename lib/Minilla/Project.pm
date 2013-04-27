@@ -49,7 +49,7 @@ has main_module_path => (
 has metadata => (
     is => 'lazy',
     required => 1,
-    handles => [qw(name perl_version authors license)],
+    handles => [qw(name perl_version license)],
     clearer => 1,
 );
 
@@ -83,11 +83,27 @@ sub version {
     $self->config->{version} || $self->metadata->version;
 }
 
+sub authors {
+    my $self = shift;
+    if (my $authors_from = $self->config->{authors_from}) {
+        my $meta = Minilla::Metadata->new(
+            source => $authors_from
+        );
+        return $meta->authors;
+    }
+    $self->config->{authors} || $self->metadata->authors;
+} 
+
 sub abstract {
     my $self = shift;
+    if (my $abstract_from = $self->config->{abstract_from}) {
+        my $meta = Minilla::Metadata->new(
+            source => $abstract_from
+        );
+        return $meta->abstract;
+    }
     $self->config->{abstract} || $self->metadata->abstract;
-}
-
+} 
 
 sub _build_dir {
     my $self = shift;

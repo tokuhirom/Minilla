@@ -10,6 +10,7 @@ use Test::More;
 use File::Path;
 use File::Which qw(which);
 use File::Spec::Functions qw(catfile);
+use TOML 0.92 qw(to_toml);
 
 use Minilla;
 use Minilla::Git;
@@ -35,8 +36,13 @@ sub git_init_add_commit() {
 }
 
 sub write_minil_toml {
-    my $name = shift;
-    spew('minil.toml', qq{name = "$name"\n});
+    if ( @_ == 1 && !ref $_[0] ) {
+        my $name = shift;
+        spew( 'minil.toml', qq{name = "$name"\n} );
+    }
+    else {
+        spew( 'minil.toml', to_toml(@_) );
+    }
 }
 
 1;

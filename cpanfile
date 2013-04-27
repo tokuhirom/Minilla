@@ -5,18 +5,21 @@ requires 'parent' => '0';
 requires 'Archive::Tar', '1.60';
 requires 'Time::Piece' => 1.16; # older Time::Piece was broken
 requires 'version';
+requires 'CPAN::Meta';
+suggests 'Devel::PPPort'; # XS
 
 # Module for compatibility
 requires 'MRO::Compat' if $] < 5.009_005;
 
 # The TOML parser
-requires 'TOML' => 0.92;
+requires 'TOML', 0.92;
 
 # CPAN related
 requires 'App::cpanminus', '1.6902';
 requires 'Module::CPANfile', '0.9025';
 requires 'Module::Metadata' => '1.0.11';
 requires 'Pod::Markdown';
+requires 'Pod::Simple';
 
 # File operation
 requires 'File::pushd';
@@ -28,6 +31,7 @@ requires 'Moo' => 1.001000;
 
 # Utilities
 requires 'Data::Section::Simple' => 0.04;
+requires 'Term::ANSIColor';
 
 # Modules required by minil new/minil dist/minil release are optional.
 # It's good for contributors
@@ -52,8 +56,13 @@ on 'test' => sub {
     requires 'Test::More' => '0.98';
     requires 'Test::Requires' => 0;
     requires 'File::Which';
+    requires 'File::Temp';
     recommends 'Devel::CheckLib';
     suggests 'Dist::Zilla';
+};
+
+on 'configure' => sub {
+    requires 'Module::Build';
 };
 
 on 'develop' => sub {
