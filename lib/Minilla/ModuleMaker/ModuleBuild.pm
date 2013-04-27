@@ -61,7 +61,6 @@ my %args = (
         'Module::Build' => 0.38,
     },
 
-    no_index    => { 'directory' => [ 'inc' ] },
     name        => '<% $dist_name %>',
     module_name => '<% $name %>',
 
