@@ -42,6 +42,13 @@ subtest 'develop deps' => sub {
             'Moose' => '0'
         }
     );
+
+    is_deeply(
+        $meta->no_index,
+        {
+            directory => [qw/t xt inc share eg examples author/],
+        },
+    );
 };
 
 done_testing;

@@ -68,11 +68,14 @@ has files => (
 has no_index => (
     is => 'ro',
     default => sub {
-        {
-            directory => [qw(
-                t xt inc share eg examples author
-            ) ]
-        }
+        my $self = shift;
+        exists $self->config->{no_index} ?
+            $self->config->{no_index} :
+            {
+                directory => [qw(
+                    t xt inc share eg examples author
+                ) ]
+            };
     },
 );
 
