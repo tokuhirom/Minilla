@@ -69,8 +69,8 @@ has no_index => (
     is => 'ro',
     default => sub {
         my $self = shift;
-        exists $self->config->{MetaNoIndex} ?
-            $self->config->{MetaNoIndex} :
+        exists $self->config->{no_index} ?
+            $self->config->{no_index} :
             {
                 directory => [qw(
                     t xt inc share eg examples author

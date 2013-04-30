@@ -11,7 +11,7 @@ my $guard = pushd(tempdir());
 
 spew('minil.toml', <<'...');
 name = "foo-bar"
-[MetaNoIndex]
+[no_index]
 directory = ["samplesample"]
 ...
 

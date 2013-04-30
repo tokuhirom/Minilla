@@ -126,6 +126,12 @@ Grab abstract information from the file contains pod.
 
 Grab authors information from the file contains pod.
 
+=item no_index
+
+Minilla sets META.json's no_index as C<< directory => ['t', 'xt', 'inc', 'share', 'eg', 'examples', 'author'] >>
+by default. But if you want to change them, you can set this section variable. If this section is set,
+specified variables are only used, in fact default settings are not merged.
+
 =back
 
 =head1 FAQ
