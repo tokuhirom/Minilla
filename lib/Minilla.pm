@@ -112,21 +112,32 @@ You can write 'name' instead of automatically detecting project name out of the 
 
 =item readme_from
 
+    readme_from="lib/My/Foo.pod"
+
 You can specify the file to generate the README.md. This is a main module path by default.
 
-=item no_github_issues
-
-Minilla sets bugtracker as github issues by default. But if you want to use RT, you can set this variable.
-
 =item abstract_from
+
+    abstract_from="lib/My/Foo.pod"
 
 Grab abstract information from the file contains pod.
 
 =item authors_from
 
+    authors_from="lib/My/Foo.pod"
+
 Grab authors information from the file contains pod.
 
+=item no_github_issues
+
+    no_github_issues=true
+
+Minilla sets bugtracker as github issues by default. But if you want to use RT, you can set this variable.
+
 =item no_index
+
+    [no_index]
+    directory=['t', 'xt', 'tools']
 
 Minilla sets META.json's no_index as C<< directory => ['t', 'xt', 'inc', 'share', 'eg', 'examples', 'author'] >>
 by default. But if you want to change them, you can set this section variable. If this section is set,
