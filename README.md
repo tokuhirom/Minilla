@@ -83,21 +83,32 @@ But, you can write configurations to _minil.toml_ file in [TOML](https://github.
 
 - readme\_from
 
+        readme_from="lib/My/Foo.pod"
+
     You can specify the file to generate the README.md. This is a main module path by default.
 
-- no\_github\_issues
-
-    Minilla sets bugtracker as github issues by default. But if you want to use RT, you can set this variable.
-
 - abstract\_from
+
+        abstract_from="lib/My/Foo.pod"
 
     Grab abstract information from the file contains pod.
 
 - authors\_from
 
+        authors_from="lib/My/Foo.pod"
+
     Grab authors information from the file contains pod.
 
+- no\_github\_issues
+
+        no_github_issues=true
+
+    Minilla sets bugtracker as github issues by default. But if you want to use RT, you can set this variable.
+
 - no\_index
+
+        [no_index]
+        directory=['t', 'xt', 'tools']
 
     Minilla sets META.json's no\_index as `directory => ['t', 'xt', 'inc', 'share', 'eg', 'examples', 'author']`
     by default. But if you want to change them, you can set this section variable. If this section is set,

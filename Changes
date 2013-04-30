@@ -2,6 +2,11 @@ Revision history for Perl extension Minilla
 
 {{$NEXT}}
 
+v0.2.0 2013-04-30T02:21:41Z
+
+    - add [no_index] feature for minil.toml
+      (Masayuki Matsuki)
+
 v0.1.0 2013-04-27T14:51:23Z
 
     - Added authors_from, abstract_from
