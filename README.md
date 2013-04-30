@@ -97,6 +97,12 @@ But, you can write configurations to _minil.toml_ file in [TOML](https://github.
 
     Grab authors information from the file contains pod.
 
+- no\_index
+
+    Minilla sets META.json's no\_index as `directory => ['t', 'xt', 'inc', 'share', 'eg', 'examples', 'author']`
+    by default. But if you want to change them, you can set this section variable. If this section is set,
+    specified variables are only used, in fact default settings are not merged.
+
 # FAQ
 
 - Why don't you provide plug-in support?
