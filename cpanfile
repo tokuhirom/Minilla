@@ -6,6 +6,7 @@ requires 'Archive::Tar', '1.60';
 requires 'Time::Piece' => 1.16; # older Time::Piece was broken
 requires 'version';
 requires 'CPAN::Meta';
+requires 'ExtUtils::Manifest', 1.54; # make maniskip a public routine, and allow an argument to override $mfile
 suggests 'Devel::PPPort'; # XS
 
 # Module for compatibility

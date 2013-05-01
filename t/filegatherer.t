@@ -12,34 +12,55 @@ use Minilla::Git;
 
 can_ok('Minilla::FileGatherer', 'new');
 
-my $guard = pushd(tempdir());
+subtest 'FileGatherer' => sub {
+    my $guard = init();
 
-mkdir 'local';
-mkpath 'extlib/lib';
-spew('local/foo', '...');
-spew('extlib/lib/Foo.pm', '...');
-spew('.gitignore', '...');
-spew('README', 'rrr');
-spew('META.json', 'mmm');
+    subtest 'normal' => sub {
+        my @files = Minilla::FileGatherer->new(
+            exclude_match => ['^local/'],
+        )->gather_files('.');
 
-git_init();
-git_add('.');
-git_commit('-m', 'foo');
+        is(join(',', sort @files), 'META.json,README,foo');
+    };
 
-my @files = Minilla::FileGatherer->new(
-    exclude_match => ['^local/'],
-)->gather_files('.');
+    subtest include_dotfiles => sub {
+        my @files = Minilla::FileGatherer->new(
+            exclude_match => ['^local/'],
+            include_dotfiles => 1,
+        )->gather_files('.');
 
-is(join(',', sort @files), 'META.json,README');
+        is(join(',', sort @files), '.gitignore,META.json,README,foo');
+    };
 
-subtest include_dotfiles => sub {
-    my @files = Minilla::FileGatherer->new(
-        exclude_match => ['^local/'],
-        include_dotfiles => 1,
-    )->gather_files('.');
+    subtest 'MANIFEST.SKIP' => sub {
+        spew('MANIFEST.SKIP', q{^foo$});
+        git_init_add_commit();
 
-    is(join(',', sort @files), '.gitignore,META.json,README');
+        my @files = Minilla::FileGatherer->new(
+            exclude_match => ['^local/'],
+        )->gather_files('.');
+
+        is(join(',', sort @files), 'MANIFEST.SKIP,META.json,README');
+    };
 };
 
 done_testing;
 
+sub init {
+    my $guard = pushd(tempdir());
+
+    mkdir 'local';
+    mkpath 'extlib/lib';
+    spew('local/foo', '...');
+    spew('extlib/lib/Foo.pm', '...');
+    spew('.gitignore', '...');
+    spew('README', 'rrr');
+    spew('META.json', 'mmm');
+    spew('foo', 'mmm');
+
+    git_init();
+    git_add('.');
+    git_commit('-m', 'foo');
+
+    $guard;
+}
