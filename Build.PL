@@ -23,7 +23,6 @@ my %args = (
         'Module::Build' => 0.38,
     },
 
-    no_index    => { 'directory' => [ 'inc' ] },
     name        => 'Minilla',
     module_name => 'Minilla',
 
