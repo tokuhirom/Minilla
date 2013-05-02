@@ -31,7 +31,7 @@ sub run {
         CheckOrigin
         BumpVersion
         CheckChanges
-        RegenerateMeta
+        RegenerateFiles
         DistTest
         MakeDist
 

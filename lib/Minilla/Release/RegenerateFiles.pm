@@ -1,4 +1,4 @@
-package Minilla::Release::RegenerateMeta;
+package Minilla::Release::RegenerateFiles;
 use strict;
 use warnings;
 use utf8;
@@ -7,7 +7,7 @@ use Minilla::Project;
 sub run {
     my ($self, $project, $opts) = @_;
 
-    $project->regenerate_meta_json();
+    $project->regenerate_files();
 }
 
 1;
