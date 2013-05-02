@@ -112,7 +112,7 @@ sub _build_dir {
     my $self = shift;
 
     my $gitdir = find_dir('.git')
-        or errorf("Current directory is not in git(%s)", Cwd::getcwd());
+        or errorf("Current directory is not in git(%s)\n", Cwd::getcwd());
     $gitdir = File::Spec->rel2abs($gitdir);
     my $base_dir = dirname($gitdir);
 
