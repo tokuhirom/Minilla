@@ -38,6 +38,7 @@ sub git_init_add_commit() {
 sub write_minil_toml {
     if ( @_ == 1 && !ref $_[0] ) {
         my $name = shift;
+        $name =~ s/::/-/g;
         spew( 'minil.toml', qq{name = "$name"\n} );
     }
     else {
