@@ -2,6 +2,11 @@ Revision history for Perl extension Minilla
 
 {{$NEXT}}
 
+v0.3.0 2013-05-02T00:42:00Z
+
+    - Support MANIFEST.SKIP
+      (Suggested by Tatsuhiko Miyagawa)
+
 v0.2.0 2013-04-30T02:21:41Z
 
     - add [no_index] feature for minil.toml
