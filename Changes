@@ -2,6 +2,13 @@ Revision history for Perl extension Minilla
 
 {{$NEXT}}
 
+v0.3.1 2013-05-02T07:38:53Z
+
+    - Regenerate Build.PL/README.md before release, automatically
+      (tokuhirom)
+    - Deny Foo::Bar style name in minil.toml.
+      (tokuhirom)
+
 v0.3.0 2013-05-02T00:42:00Z
 
     - Support MANIFEST.SKIP
