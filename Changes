@@ -2,6 +2,13 @@ Revision history for Perl extension Minilla
 
 {{$NEXT}}
 
+v0.3.2 2013-05-03T01:09:37Z
+
+    - Do not run test case when cpanm command is not available
+      (tokuhirom)
+    - Add newline same as other error messages
+      (Syohei YOSHIDA)
+
 v0.3.1 2013-05-02T07:38:53Z
 
     - Regenerate Build.PL/README.md before release, automatically
