@@ -143,6 +143,13 @@ Minilla sets META.json's no_index as C<< directory => ['t', 'xt', 'inc', 'share'
 by default. But if you want to change them, you can set this section variable. If this section is set,
 specified variables are only used, in fact default settings are not merged.
 
+=item script_files
+
+    script_files = ['bin/foo', "glob('script/*')"]
+
+Minilla sets install script files as C<< ["glob('script/*')", "glob('bin/*')"] >> by default.
+C<< glob(...) >> is special keyword, It will replace to bareword.
+
 =back
 
 =head1 FAQ

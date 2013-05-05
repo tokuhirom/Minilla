@@ -64,7 +64,7 @@ my %args = (
     name        => '<% $dist_name %>',
     module_name => '<% $name %>',
 
-    script_files => [glob('script/*'), glob('bin/*')],
+    script_files => [<% $script_files %>],
 
     test_files           => ((-d '.git' || $ENV{RELEASE_TESTING}) && -d 'xt') ? 't/ xt/' : 't/',
     recursive_test_files => 1,
