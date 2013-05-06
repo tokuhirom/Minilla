@@ -158,6 +158,13 @@ specified variables are only used, in fact default settings are not merged.
 
 Minilla sets install script files as C<< ['script/*', 'bin/*'] >> by default.
 
+=item build.build_class
+
+Specify a custom Module::Build subclass.
+
+    [build]
+    build_class = builder::MyBuilder
+
 =back
 
 =head1 FAQ
