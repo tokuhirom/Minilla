@@ -85,8 +85,8 @@ has script_files => (
         my $self = shift;
         my $script_files = exists $self->config->{script_files} ?
             $self->config->{script_files} :
-            ["glob('script/*')", "glob('bin/*')"];
-        join ', ', map { /^glob\(.+\)$/ ? $_ : qq{'$_'} } @$script_files;
+            ['script/*', 'bin/*'];
+        join ', ', map { "glob('$_')" } @$script_files;
     },
 );
 

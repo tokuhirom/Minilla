@@ -11,7 +11,7 @@ my $guard = pushd(tempdir());
 
 spew('minil.toml', <<'...');
 name = "foo-bar"
-script_files = ["bin/foo", "glob('script/*')"]
+script_files = ['bin/foo', 'script/*']
 ...
 
 mkpath('lib/App');
@@ -23,6 +23,6 @@ package App::foobar;
 git_init_add_commit();
 my $project = Minilla::Project->new();
 
-is $project->script_files, "'bin/foo', glob('script/*')";
+is $project->script_files, "glob('bin/foo'), glob('script/*')";
 
 done_testing;

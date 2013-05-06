@@ -116,10 +116,9 @@ But, you can write configurations to _minil.toml_ file in [TOML](https://github.
 
 - script\_files
 
-        script_files = ['bin/foo', "glob('script/*')"]
+        script_files = ['bin/foo', 'script/*']
 
-    Minilla sets install script files as `["glob('script/*')", "glob('bin/*')"]` by default.
-    `glob(...)` is special keyword, It will replace to bareword.
+    Minilla sets install script files as `['script/*', 'bin/*']` by default.
 
 # FAQ
 

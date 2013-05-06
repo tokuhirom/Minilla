@@ -145,10 +145,9 @@ specified variables are only used, in fact default settings are not merged.
 
 =item script_files
 
-    script_files = ['bin/foo', "glob('script/*')"]
+    script_files = ['bin/foo', 'script/*']
 
-Minilla sets install script files as C<< ["glob('script/*')", "glob('bin/*')"] >> by default.
-C<< glob(...) >> is special keyword, It will replace to bareword.
+Minilla sets install script files as C<< ['script/*', 'bin/*'] >> by default.
 
 =back
 
