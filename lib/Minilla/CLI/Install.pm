@@ -18,13 +18,18 @@ sub run {
 
     my $project = Minilla::Project->new();
     my $work_dir = $project->work_dir();
+
     if ($test) {
         local $ENV{RELEASE_TESTING} = 1;
         $work_dir->dist_test();
     }
     my $tar = $work_dir->dist();
 
-    cmd('cpanm', $tar);
+    cmd(
+        'cpanm',
+        ($test ? () : ('--notest')),
+        $tar
+    );
     path($tar)->remove unless Minilla->debug;
 }
 
