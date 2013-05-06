@@ -23,8 +23,9 @@ my %args = (
         'Module::Build' => 0.38,
     },
 
-    name        => 'Minilla',
-    module_name => 'Minilla',
+    name            => 'Minilla',
+    module_name     => 'Minilla',
+    allow_pure_perl => 0,
 
     script_files => [glob('script/*'), glob('bin/*')],
 
