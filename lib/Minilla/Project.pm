@@ -81,6 +81,11 @@ has no_index => (
 
 no Moo;
 
+sub allow_pure_perl {
+    my $self = shift;
+    $self->config->{allow_pure_perl} ? 1 : 0;
+}
+
 sub version {
     my $self = shift;
     $self->config->{version} || $self->metadata->version;

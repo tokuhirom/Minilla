@@ -61,8 +61,9 @@ my %args = (
         'Module::Build' => 0.38,
     },
 
-    name        => '<% $dist_name %>',
-    module_name => '<% $name %>',
+    name            => '<% $dist_name %>',
+    module_name     => '<% $name %>',
+    allow_pure_perl => <% $allow_pure_perl %>,
 
     script_files => [glob('script/*'), glob('bin/*')],
 
