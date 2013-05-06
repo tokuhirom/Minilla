@@ -128,6 +128,15 @@ Grab abstract information from the file contains pod.
 
 Grab authors information from the file contains pod.
 
+=item allow_pure_perl
+
+    allow_pure_perl=1
+
+A bool indicating the module is still functional without its xs parts.  When an XS module is build
+with C<--pureperl_only>, it will otherwise fail.
+
+It affects to L<Module::Build> 0.4005+ only.
+
 =item no_github_issues
 
     no_github_issues=true
@@ -142,6 +151,12 @@ Minilla sets bugtracker as github issues by default. But if you want to use RT, 
 Minilla sets META.json's no_index as C<< directory => ['t', 'xt', 'inc', 'share', 'eg', 'examples', 'author'] >>
 by default. But if you want to change them, you can set this section variable. If this section is set,
 specified variables are only used, in fact default settings are not merged.
+
+=item script_files
+
+    script_files = ['bin/foo', 'script/*']
+
+Minilla sets install script files as C<< ['script/*', 'bin/*'] >> by default.
 
 =back
 

@@ -79,7 +79,23 @@ has no_index => (
     },
 );
 
+has script_files => (
+    is => 'ro',
+    default => sub {
+        my $self = shift;
+        my $script_files = exists $self->config->{script_files} ?
+            $self->config->{script_files} :
+            ['script/*', 'bin/*'];
+        join ', ', map { "glob('$_')" } @$script_files;
+    },
+);
+
 no Moo;
+
+sub allow_pure_perl {
+    my $self = shift;
+    $self->config->{allow_pure_perl} ? 1 : 0;
+}
 
 sub version {
     my $self = shift;
