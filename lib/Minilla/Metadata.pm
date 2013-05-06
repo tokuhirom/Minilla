@@ -7,7 +7,6 @@ use Carp;
 use Module::Metadata;
 use Minilla::License::Perl_5;
 use Pod::Escapes;
-use Minilla::Metadata::PodParser;
 
 use Moo;
 
@@ -50,16 +49,19 @@ sub _build_abstract {
         my $abstract = bless( { DISTNAME => $self->name }, 'ExtUtils::MM_Unix' )->parse_abstract($self->source);
         return $abstract if $abstract;
     }
+    # Parsing pod with Module::Metadata
+    {
+        my $name = $self->metadata->pod('NAME');
+        $name =~ s/^\s+//gxsm;
+        $name =~ s/\s+$//gxsm;
+        my ($pkg, $abstract) = split /\s+-\s+/, $name, 2;
+        return $abstract if $abstract;
+    }
     # find dzil style '# ABSTRACT: '
     {
         if (slurp($self->source) =~ /^\s*#+\s*ABSTRACT:\s*(.+)$/m) {
             return $1;
         }
-    }
-    {
-        my $parser = Minilla::Metadata::PodParser->new();
-        $parser->parse_file($self->source);
-        return $parser->abstract if $parser->abstract;
     }
     return;
 }
