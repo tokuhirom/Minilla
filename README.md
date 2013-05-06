@@ -114,6 +114,12 @@ But, you can write configurations to _minil.toml_ file in [TOML](https://github.
     by default. But if you want to change them, you can set this section variable. If this section is set,
     specified variables are only used, in fact default settings are not merged.
 
+- script\_files
+
+        script_files = ['bin/foo', 'script/*']
+
+    Minilla sets install script files as `['script/*', 'bin/*']` by default.
+
 # FAQ
 
 - Why don't you provide plug-in support?
