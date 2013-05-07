@@ -38,6 +38,11 @@ has [qw(prereq_specs)] => (
     is => 'lazy',
 );
 
+has 'cleanup' => (
+    is => 'ro',
+    default => sub { $Minilla::DEBUG ? 0 : 1 },
+);
+
 has changes_time => (
     is => 'lazy',
 );
@@ -48,8 +53,9 @@ sub _build_changes_time { scalar(gmtime()) }
 
 sub DEMOLISH {
     my $self = shift;
-    unless ($Minilla::DEBUG) {
-        path(path($self->dir)->dirname)->remove_tree({safe => 0});
+    if ($self->cleanup) {
+        infof("Removing %s\n", $self->dir);
+        File::Path::rmtree($self->dir)
     }
 }
 

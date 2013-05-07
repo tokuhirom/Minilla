@@ -12,7 +12,7 @@ use Minilla::Logger;
 use Minilla::Util qw(parse_options);
 
 sub run {
-    my ($self, @args) = @_;
+    my ($class, @args) = @_;
 
     my $test = 1;
     parse_options(
@@ -26,9 +26,10 @@ sub run {
     my $dst = File::Spec->rel2abs(sprintf("%s-%s", $project->dist_name, $project->version));
 
     # generate project directory
+    infof("Create %s\n", $dst);
     rmtree($dst);
     mkpath($dst);
-    my $work_dir = Minilla::WorkDir->new(project => $project, dir => $dst);
+    my $work_dir = Minilla::WorkDir->new(project => $project, dir => $dst, cleanup => 0);
     $work_dir->build();
 }
 

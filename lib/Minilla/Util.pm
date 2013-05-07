@@ -6,6 +6,7 @@ use Carp ();
 use File::Basename ();
 use File::Spec ();
 use Minilla::Logger ();
+use Getopt::Long ();
 
 use parent qw(Exporter);
 
