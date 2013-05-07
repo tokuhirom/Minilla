@@ -6,7 +6,6 @@ use utf8;
 use TOML 0.92 qw(from_toml);
 use File::Basename qw(basename dirname);
 use File::Spec::Functions qw(catdir catfile);
-use Path::Tiny;
 use DirHandle;
 use File::pushd;
 use CPAN::Meta;
@@ -145,7 +144,7 @@ sub _trigger_dir {
 sub config {
     my $self = shift;
 
-    my $toml_path = path($self->dir, 'minil.toml');
+    my $toml_path = File::Spec->catfile($self->dir, 'minil.toml');
     if (-f $toml_path) {
         my ($conf, $err) = from_toml(slurp_utf8($toml_path));
         if ($err) {

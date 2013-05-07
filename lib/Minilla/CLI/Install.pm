@@ -2,7 +2,6 @@ package Minilla::CLI::Install;
 use strict;
 use warnings;
 use utf8;
-use Path::Tiny;
 
 use Minilla::WorkDir;
 use Minilla::Util qw(cmd parse_options);
@@ -30,7 +29,7 @@ sub run {
         ($test ? () : ('--notest')),
         $tar
     );
-    path($tar)->remove unless Minilla->debug;
+    unlink($tar) unless Minilla->debug;
 }
 
 1;

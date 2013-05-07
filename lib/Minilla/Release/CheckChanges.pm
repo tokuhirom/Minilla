@@ -2,10 +2,9 @@ package Minilla::Release::CheckChanges;
 use strict;
 use warnings;
 use utf8;
-use Path::Tiny;
 use ExtUtils::MakeMaker qw(prompt);
 
-use Minilla::Util qw(edit_file);
+use Minilla::Util qw(edit_file slurp);
 use Minilla::Logger;
 
 sub run {
@@ -18,7 +17,7 @@ sub run {
         return;
     }
 
-    until (path('Changes')->slurp =~ /^\{\{\$NEXT\}\}\n+[ \t]+\S/m) {
+    until (slurp('Changes') =~ /^\{\{\$NEXT\}\}\n+[ \t]+\S/m) {
         infof("No mention of version '%s' in changelog file 'Changes'\n", $version);
         if (prompt("Edit file?", 'y') =~ /y/i) {
             edit_file('Changes');

@@ -23,7 +23,6 @@ requires 'Pod::Markdown';
 
 # File operation
 requires 'File::pushd';
-requires 'Path::Tiny';
 requires 'File::Copy::Recursive';
 
 # OOPS

@@ -5,7 +5,6 @@ use utf8;
 
 use File::pushd;
 use CPAN::Meta;
-use Path::Tiny;
 use File::Find ();
 use TOML 0.92 qw(to_toml);
 use Config;

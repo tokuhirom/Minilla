@@ -4,7 +4,6 @@ use warnings;
 use utf8;
 use Data::Section::Simple qw(get_data_section);
 use File::pushd;
-use Path::Tiny;
 use File::Spec::Functions qw(catfile);
 use File::Path qw(mkpath);
 

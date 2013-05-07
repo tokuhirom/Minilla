@@ -2,7 +2,6 @@ package Minilla::CLI::Release;
 use strict;
 use warnings;
 use utf8;
-use Path::Tiny;
 use ExtUtils::MakeMaker qw(prompt);
 
 use Minilla::Util qw(edit_file require_optional parse_options);

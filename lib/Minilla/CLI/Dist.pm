@@ -2,7 +2,10 @@ package Minilla::CLI::Dist;
 use strict;
 use warnings;
 use utf8;
-use Path::Tiny;
+
+use File::Spec::Functions qw(catfile);
+use File::Basename qw(basename);
+use File::Copy qw(copy);
 
 use Minilla::Project;
 use Minilla::Util qw(parse_options);
@@ -23,8 +26,8 @@ sub run {
         $work_dir->dist_test();
     }
     my $tar = $work_dir->dist();
-    my $dst = path($project->dir, path($tar)->basename);
-    path($tar)->copy($dst);
+    my $dst = catfile($project->dir, basename($tar));
+    copy($tar, $dst);
 }
 
 1;

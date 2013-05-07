@@ -2,7 +2,6 @@ package Minilla::WorkDir;
 use strict;
 use warnings;
 use utf8;
-use Path::Tiny;
 use Archive::Tar;
 use File::pushd;
 use Data::Dumper; # serializer
@@ -14,7 +13,7 @@ use File::Path qw(mkpath);
 use File::Copy qw(copy);
 
 use Minilla::Logger;
-use Minilla::Util qw(randstr cmd cmd_perl slurp slurp_raw spew_raw pod_escape);
+use Minilla::Util qw(randstr cmd cmd_perl slurp slurp_raw spew spew_raw pod_escape);
 use Minilla::FileGatherer;
 use Minilla::ReleaseTest;
 
@@ -62,13 +61,13 @@ sub DEMOLISH {
 sub _build_dir {
     my $self = shift;
     my $dirname = $^O eq 'MSWin32' ? '_build' : '.build';
-    path($self->project->dir, $dirname, randstr(8));
+    File::Spec->catfile($self->project->dir, $dirname, randstr(8));
 }
 
 sub _build_prereq_specs {
     my $self = shift;
 
-    my $cpanfile = Module::CPANfile->load(path($self->project->dir, 'cpanfile'));
+    my $cpanfile = Module::CPANfile->load(File::Spec->catfile($self->project->dir, 'cpanfile'));
     return $cpanfile->prereq_specs;
 }
 
@@ -100,8 +99,8 @@ sub BUILD {
             warnf("Trying to copy non-existing file '$src', ignored\n");
             next;
         }
-        my $dst = path($self->dir, path($src)->relative($self->project->dir));
-        mkpath($dst->dirname);
+        my $dst = File::Spec->catfile($self->dir, File::Spec->abs2rel($src, $self->project->dir));
+        mkpath(dirname($dst));
         infof("cp %s %s\n", $src, $dst);
         copy($src => $dst) or die "Copying failed: $src $dst, $!\n";
         chmod((stat($src))[2], $dst) or die "Cannot change mode: $dst, $!\n";
@@ -130,7 +129,7 @@ sub build {
 
     {
         infof("Writing MANIFEST file\n");
-        path('MANIFEST')->spew(join("\n", @{$self->manifest_files}));
+        spew('MANIFEST', join("\n", @{$self->manifest_files}));
     }
 
     $self->project->regenerate_files();
@@ -147,11 +146,11 @@ sub build {
 sub _rewrite_changes {
     my $self = shift;
 
-    my $orig = path('Changes')->slurp_raw();
+    my $orig = slurp_raw('Changes');
     $orig =~ s!\{\{\$NEXT\}\}!
         $self->project->version . ' ' . $self->changes_time->strftime('%Y-%m-%dT%H:%M:%SZ')
     !e;
-    path('Changes')->spew_raw($orig);
+    spew_raw('Changes', $orig);
 }
 
 sub _rewrite_pod {
@@ -205,7 +204,7 @@ sub dist {
 
         my $tar = Archive::Tar->new;
         for (@{$self->manifest_files}) {
-            $tar->add_data(path($self->project->dist_name . '-' . $self->project->version, $_), path($_)->slurp);
+            $tar->add_data(File::Spec->catfile($self->project->dist_name . '-' . $self->project->version, $_), slurp($_));
         }
         $tar->write($tarball, COMPRESS_GZIP);
         infof("Wrote %s\n", $tarball);

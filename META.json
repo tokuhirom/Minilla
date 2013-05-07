@@ -63,7 +63,6 @@
             "Module::CPANfile" : "0.9025",
             "Module::Metadata" : "1.000012",
             "Moo" : "1.001",
-            "Path::Tiny" : "0",
             "Pod::Markdown" : "0",
             "TOML" : "0.92",
             "Term::ANSIColor" : "0",
