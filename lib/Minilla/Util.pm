@@ -7,6 +7,7 @@ use File::Basename ();
 use File::Spec ();
 use Minilla::Logger ();
 use Getopt::Long ();
+use Cwd();
 
 use parent qw(Exporter);
 
@@ -141,14 +142,14 @@ sub cmd_perl {
         sitelibexp sitearchexp
         privlibexp archlibexp
     )};
-    my @non_std_inc = map { File::Spec->rel2abs($_) }
+    my @non_std_inc = map { $_ eq '.' ? $_ : File::Spec->rel2abs($_) }
                       grep { not $std_inc{$_} } @INC;
 
     cmd($^X, (map { "-I$_" } @non_std_inc), @args);
 }
 
 sub cmd {
-    Minilla::Logger::infof("\$ %s\n", "@_");
+    Minilla::Logger::infof("[%s] \$ %s\n", File::Basename::basename(Cwd::getcwd()), "@_");
     system(@_) == 0
         or Minilla::Logger::errorf("Giving up.\n");
 }
