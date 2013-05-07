@@ -6,7 +6,7 @@ perl:
   - 5.16
   - 5.14
 before_install:
-  cpanm Devel::Cover::Report::Coveralls
+  cpanm -v Devel::Cover::Report::Coveralls
 script:
   perl Build.PL && ./Build build && cover -test
 after_success:
