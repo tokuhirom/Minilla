@@ -27,6 +27,9 @@ has project => (
 
 has dir => (
     is => 'lazy',
+    isa => sub {
+        Carp::confess("'dir' must not be undef") unless defined $_[0];
+    },
 );
 
 has manifest_files => (
