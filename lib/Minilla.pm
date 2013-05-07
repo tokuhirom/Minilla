@@ -132,7 +132,7 @@ Grab authors information from the file contains pod.
 
     allow_pure_perl=1
 
-A bool indicating the module is still functional without its xs parts.  When an XS module is build
+A bool indicating the module is still functional without its XS parts.  When an XS module is build
 with C<--pureperl_only>, it will otherwise fail.
 
 It affects to L<Module::Build> 0.4005+ only.

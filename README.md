@@ -103,7 +103,7 @@ But, you can write configurations to _minil.toml_ file in [TOML](https://github.
 
         allow_pure_perl=1
 
-    A bool indicating the module is still functional without its xs parts.  When an XS module is build
+    A bool indicating the module is still functional without its XS parts.  When an XS module is build
     with `--pureperl_only`, it will otherwise fail.
 
     It affects to [Module::Build](http://search.cpan.org/perldoc?Module::Build) 0.4005+ only.
@@ -128,6 +128,13 @@ But, you can write configurations to _minil.toml_ file in [TOML](https://github.
         script_files = ['bin/foo', 'script/*']
 
     Minilla sets install script files as `['script/*', 'bin/*']` by default.
+
+- build.build\_class
+
+    Specify a custom Module::Build subclass.
+
+        [build]
+        build_class = builder::MyBuilder
 
 # FAQ
 
