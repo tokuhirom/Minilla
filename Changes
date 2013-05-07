@@ -2,6 +2,17 @@ Revision history for Perl extension Minilla
 
 {{$NEXT}}
 
+v0.4.0 2013-05-07T05:09:19Z
+
+    - documented build.build_class
+      (Fuji, Goro)
+    - Use `cpanm --notest` when using `minil --no-test install`
+      (reported by xaicron++)
+    - Support script_files in minil.toml
+      (xaicron)
+    - Added allow_pure_perl option.
+      (tokuhirom)
+
 v0.3.2 2013-05-03T01:09:37Z
 
     - Do not run test case when cpanm command is not available
