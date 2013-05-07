@@ -2,6 +2,16 @@ Revision history for Perl extension Minilla
 
 {{$NEXT}}
 
+v0.4.1 2013-05-07T09:06:46Z
+
+    - Module::Build keeps -Ixxx arguments in running `./Build`.
+      Do not make rel2abs '.'. In executing `perl Build.PL`
+      (tokuhirom)
+    - Cleanup code around `minil build`. Clean and saner code.
+      Older implementation creates work dir in '.build/XXXXX/' and copy it.
+      New implementation creates work dir in 'Module-Name-X.XX/' directly.
+      (tokuhirom)
+
 v0.4.0 2013-05-07T05:09:19Z
 
     - documented build.build_class
