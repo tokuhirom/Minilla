@@ -178,8 +178,8 @@ C<exclude_match> option. Files matching the patterns are not gathered.
     [FileGatherer]
     include_dotfiles=false
 
-By default, files will not be included in dist if they begin with a dot. This option
-doesn't care directory, but only files currently.
+By default, files will not be included in dist if they begin with a dot. This goes
+both for files and for directories.
 
 In almost all cases, the default value (false) is correct.
 

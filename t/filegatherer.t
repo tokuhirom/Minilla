@@ -29,7 +29,7 @@ subtest 'FileGatherer' => sub {
             include_dotfiles => 1,
         )->gather_files('.');
 
-        is(join(',', sort @files), '.gitignore,META.json,README,foo');
+        is(join(',', sort @files), '.dot/dot,.gitignore,META.json,README,foo,xtra/.dot,xtra/.dotdir/dot');
     };
 
     subtest 'MANIFEST.SKIP' => sub {
@@ -50,6 +50,8 @@ sub init {
     my $guard = pushd(tempdir());
 
     mkdir 'local';
+    mkdir '.dot';
+    mkpath 'xtra/.dotdir';
     mkpath 'extlib/lib';
     spew('local/foo', '...');
     spew('extlib/lib/Foo.pm', '...');
@@ -57,6 +59,9 @@ sub init {
     spew('README', 'rrr');
     spew('META.json', 'mmm');
     spew('foo', 'mmm');
+    spew('.dot/dot', 'dot');
+    spew('xtra/.dot', 'dot');
+    spew('xtra/.dotdir/dot', '...');
 
     git_init();
     git_add('.');
