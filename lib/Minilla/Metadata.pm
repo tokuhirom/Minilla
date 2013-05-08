@@ -51,11 +51,13 @@ sub _build_abstract {
     }
     # Parsing pod with Module::Metadata
     {
-        my $name = $self->name || $self->metadata->pod('NAME');
-        $name =~ s/^\s+//gxsm;
-        $name =~ s/\s+$//gxsm;
-        my ($pkg, $abstract) = split /\s+-\s+/, $name, 2;
-        return $abstract if $abstract;
+        my $name = $self->metadata->pod('NAME');
+        if (defined $name) {
+            $name =~ s/^\s+//gxsm;
+            $name =~ s/\s+$//gxsm;
+            my ($pkg, $abstract) = split /\s+-\s+/, $name, 2;
+            return $abstract if $abstract;
+        }
     }
     # find dzil style '# ABSTRACT: '
     {
