@@ -165,6 +165,24 @@ Specify a custom Module::Build subclass.
     [build]
     build_class = builder::MyBuilder
 
+=item FileGatherer.exclude_match
+
+    [FileGatherer]
+    exclude_match=['^author_tools/.*']
+
+Nothing by default. To exclude certain files from being gathered into dist, use the
+C<exclude_match> option. Files matching the patterns are not gathered.
+
+=item FileGatherer.include_dotfiles
+
+    [FileGatherer]
+    include_dotfiles=false
+
+By default, files will not be included in dist if they begin with a dot. This option
+doesn't care directory, but only files currently.
+
+In almost all cases, the default value (false) is correct.
+
 =back
 
 =head1 FAQ
