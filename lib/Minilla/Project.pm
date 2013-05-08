@@ -321,7 +321,7 @@ sub cpan_meta {
         no_index       => $self->no_index,
     };
     unless ($dat->{abstract}) {
-        errorf("Cannot retrieve 'abstract' from %s\n", $self->dir);
+        errorf("Cannot retrieve 'abstract' from %s. You need to write POD in your main module.\n", $self->dir);
     }
     if ($self->authors) {
         $dat->{author} = $self->authors;

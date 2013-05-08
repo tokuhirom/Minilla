@@ -10,10 +10,12 @@ package Minilla::Error::CommandExit;
 use overload '""' => 'message', fallback => 1;
 
 sub throw {
-    my $class = shift;
-    my $self = bless { message => Carp::longmess($class) }, $class;
+    my ($class, $body) = @_;
+    my $self = bless { body => $body, message => Carp::longmess($class) }, $class;
     die $self;
 }
+
+sub body { shift->{body} }
 
 sub message {
     my($self) = @_;

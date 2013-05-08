@@ -51,7 +51,9 @@ sub debugf {
 sub errorf {
     my(@msg) = @_;
     _printf(@msg, ERROR);
-    Minilla::Error::CommandExit->throw;
+
+    my $fmt = shift @msg;
+    Minilla::Error::CommandExit->throw(sprintf($fmt, @msg));
 }
 
 1;
