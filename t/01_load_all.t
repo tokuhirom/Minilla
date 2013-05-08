@@ -1,7 +1,6 @@
 use strict;
 use warnings;
 use utf8;
-use lib 'lib';
 use Test::More;
 use File::Find;
  
