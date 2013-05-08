@@ -4,7 +4,6 @@ use warnings;
 use utf8;
 use File::pushd;
 use File::Spec;
-use File::Basename;
 use ExtUtils::Manifest 1.54 qw(maniskip);
 
 use Minilla::Git;
@@ -41,7 +40,9 @@ sub gather_files {
         @files = grep { !$skip->($_) } @files;
     }
     unless ($self->include_dotfiles) {
-        @files = grep { basename($_) !~ qr/^\./ } @files;
+        @files = grep {
+            !(grep { $_ =~ qr/^\./ } split m!/!, _normalize($_))
+        } @files;
     }
 
     return @files;
