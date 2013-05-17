@@ -2,6 +2,18 @@ Revision history for Perl extension Minilla
 
 {{$NEXT}}
 
+v0.4.3 2013-05-17T07:06:16Z
+
+    - Depended on Getopt::Long 2.36 for GetOptionsFromArray
+      (tokuhirom)
+    - Fixed "Use of uninitialized value $name in substitution (s///) at lib/Minilla/Metadata.pm line 55." error.
+      (lestrrat++)
+    - Ignore directories start with a dot if include_dotfiles is false
+      For compatible with Dist::Milla.
+      (songmu++)
+    - docs for FileGatherer
+      (songmu++)
+
 v0.4.2 2013-05-07T10:41:39Z
 
     - Removed dependency on Path::Tiny

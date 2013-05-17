@@ -136,6 +136,24 @@ But, you can write configurations to _minil.toml_ file in [TOML](https://github.
         [build]
         build_class = builder::MyBuilder
 
+- FileGatherer.exclude\_match
+
+        [FileGatherer]
+        exclude_match=['^author_tools/.*']
+
+    Nothing by default. To exclude certain files from being gathered into dist, use the
+    `exclude_match` option. Files matching the patterns are not gathered.
+
+- FileGatherer.include\_dotfiles
+
+        [FileGatherer]
+        include_dotfiles=false
+
+    By default, files will not be included in dist if they begin with a dot. This goes
+    both for files and for directories.
+
+    In almost all cases, the default value (false) is correct.
+
 # FAQ
 
 - Why don't you provide plug-in support?
