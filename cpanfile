@@ -40,7 +40,7 @@ recommends 'CPAN::Uploader';
 
 # Core deps
 requires 'Try::Tiny';
-requires 'Getopt::Long';
+requires 'Getopt::Long', 2.36;
 
 # Module required for license otherwise Perl_5 license.
 recommends 'Software::License';
