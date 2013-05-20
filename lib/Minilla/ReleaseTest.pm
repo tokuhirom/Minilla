@@ -45,7 +45,7 @@ sub prereqs {
                 'Test::MinimumVersion' => 0.101080,
                 'Test::CPAN::Meta' => 0,
                 'Test::Pod' => 1.41,
-                'Test::Spellunker' => 'v0.2.2',
+                'Test::Spellunker' => 'v0.2.7',
             },
         },
     };
