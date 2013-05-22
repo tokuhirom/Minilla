@@ -5,7 +5,7 @@ use utf8;
 
 use parent qw(Exporter);
 
-our @EXPORT = qw(git_ls_files git_init git_add git_rm git_commit git_config);
+our @EXPORT = qw(git_ls_files git_init git_add git_rm git_commit git_config git_remote);
 
 use Minilla::Util qw(cmd);
 
@@ -27,6 +27,10 @@ sub git_rm {
 
 sub git_commit {
     cmd('git', 'commit', @_);
+}
+
+sub git_remote {
+    cmd('git', 'remote', @_);
 }
 
 sub git_ls_files {

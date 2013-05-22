@@ -7,6 +7,7 @@ use ExtUtils::MakeMaker qw(prompt);
 use Minilla::Util qw(edit_file require_optional parse_options);
 use Minilla::WorkDir;
 use Minilla::Logger;
+use Minilla::Project;
 
 sub run {
     my ($self, @args) = @_;

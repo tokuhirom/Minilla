@@ -368,9 +368,11 @@ sub cpan_meta {
                 $dat->{resources}->{homepage} = $self->config->{homepage} || $http_url;
             } else {
                 # normal repository
-                $dat->{resources}->{repository} = +{
-                    url => $git_url,
-                };
+                if ($git_url !~ m{^file://}) {
+                    $dat->{resources}->{repository} = +{
+                        url => $git_url,
+                    };
+                }
             }
         }
     }
