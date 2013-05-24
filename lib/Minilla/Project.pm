@@ -110,7 +110,7 @@ sub authors {
         return $meta->authors;
     }
     $self->config->{authors} || $self->metadata->authors;
-} 
+}
 
 sub abstract {
     my $self = shift;
@@ -121,7 +121,7 @@ sub abstract {
         return $meta->abstract;
     }
     $self->config->{abstract} || $self->metadata->abstract;
-} 
+}
 
 sub _build_dir {
     my $self = shift;
@@ -172,6 +172,7 @@ sub _build_dist_name {
         infof("Detecting project name from directory name.\n");
         $dist_name = do {
             local $_ = basename($self->dir);
+            $_ =~ s!--!-!g;
             $_ =~ s!\Ap5-!!;
             $_;
         };
