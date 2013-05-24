@@ -407,6 +407,7 @@ sub regenerate_readme_md {
     my $self = shift;
 
     require Pod::Markdown;
+    Pod::Markdown->VERSION('1.322');
 
     my $parser = Pod::Markdown->new;
     $parser->parse_from_file($self->readme_from);

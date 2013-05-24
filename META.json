@@ -37,7 +37,7 @@
             "Test::CPAN::Meta" : "0",
             "Test::MinimumVersion" : "0.10108",
             "Test::Pod" : "1.41",
-            "Test::Spellunker" : "v0.2.2"
+            "Test::Spellunker" : "v0.2.7"
          }
       },
       "runtime" : {
@@ -63,7 +63,7 @@
             "Module::CPANfile" : "0.9025",
             "Module::Metadata" : "1.000012",
             "Moo" : "1.001",
-            "Pod::Markdown" : "0",
+            "Pod::Markdown" : "1.322",
             "TOML" : "0.92",
             "Term::ANSIColor" : "0",
             "Time::Piece" : "1.16",
