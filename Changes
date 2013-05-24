@@ -2,6 +2,13 @@ Revision history for Perl extension Minilla
 
 {{$NEXT}}
 
+v0.4.4 2013-05-24T04:38:41Z
+
+    - Depended on latest Pod::Readme
+      (reported by mlawren++)
+    - Force name delimiter to be single hyphen.
+      (moznion++)
+
 v0.4.3 2013-05-17T07:06:16Z
 
     - Depended on Getopt::Long 2.36 for GetOptionsFromArray

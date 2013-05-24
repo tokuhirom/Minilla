@@ -103,7 +103,7 @@
          "web" : "https://github.com/tokuhirom/Minilla"
       }
    },
-   "version" : "v0.4.3",
+   "version" : "v0.4.4",
    "x_contributors" : [
       "mattn <mattn.jp@gmail.com>",
       "Daisuke Murase <typester@cpan.org>",
@@ -115,6 +115,7 @@
       "Fuji, Goro <g.psy.va@gmail.com>",
       "Masayuki Matsuki <y.songmu@gmail.com>",
       "Daisuke Maki <lestrrat+github@gmail.com>",
+      "moznion <moznion@gmail.com>",
       "tokuhirom <tokuhirom@gmail.com>"
    ]
 }

@@ -2,7 +2,7 @@ package Minilla;
 use strict;
 use warnings;
 use 5.008005;
-use version; our $VERSION = version->declare("v0.4.3");
+use version; our $VERSION = version->declare("v0.4.4");
 
 our $DEBUG;
 our $AUTO_INSTALL;
