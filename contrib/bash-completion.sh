@@ -30,15 +30,15 @@
 
 _minil()
 {
-  local subcommands cur prev
-  _get_comp_words_by_ref cur prev
+  local subcommands cur
+  _get_comp_words_by_ref cur
   subcommands="new build test clean dist install release migrate help"
 
-  case "${prev}" in
+  case "${COMP_WORDS[1]}" in
     new)
       subcommands=''
       if [[ "${cur}" == -* ]] ; then
-        subcommands='--profile --username --help'
+        subcommands='--profile --username --email --help'
       fi
       ;;
     build)
@@ -84,9 +84,6 @@ _minil()
       fi
       ;;
     help)
-      return 0
-      ;;
-    -*)
       return 0
       ;;
   esac
