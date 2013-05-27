@@ -58,6 +58,8 @@ _minil() {
       case "$words[1]" in
         new)
           opts=(
+            '(--username)--username[Specifies Username]:username:'
+            '(--email)--email[Specifies Email Address]:email:'
             '(-p|--profile)'{-p,--profile}'[Minilla profile]: :(XS)'
           )
           ;;
