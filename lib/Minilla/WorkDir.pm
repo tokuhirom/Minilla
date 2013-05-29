@@ -207,7 +207,7 @@ sub dist {
 
         my $tar = Archive::Tar->new;
         for (@{$self->manifest_files}) {
-            $tar->add_data(File::Spec->catfile($self->project->dist_name . '-' . $self->project->version, $_), slurp($_));
+            $tar->add_data(File::Spec->catfile($self->project->dist_name . '-' . $self->project->version, $_), scalar slurp($_));
         }
         $tar->write($tarball, COMPRESS_GZIP);
         infof("Wrote %s\n", $tarball);
