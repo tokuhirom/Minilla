@@ -2,6 +2,13 @@ Revision history for Perl extension Minilla
 
 {{$NEXT}}
 
+v0.4.5 2013-05-29T20:14:47Z
+
+    - fixed a bug that empty file couldn't be included to dist archive.
+      (ryochin)
+    - Fixed testing failure
+      (tokuhirom)
+
 v0.4.4 2013-05-24T04:38:41Z
 
     - Depended on latest Pod::Readme
