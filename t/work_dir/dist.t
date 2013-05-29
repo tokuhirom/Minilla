@@ -25,6 +25,7 @@ subtest 'rewrite pod' => sub {
     );
     $profile->generate();
     write_minil_toml('Acme-Foo');
+    spew 'empty.txt', '';
 
     git_init();
     git_add('.');
@@ -58,6 +59,9 @@ subtest 'rewrite pod' => sub {
         "Valid MANIFEST file was generated.",
     );
     like($tar->get_content('Acme-Foo-0.01/MANIFEST'), qr{^Build.PL$}sm, 'Contains Build.PL in MANIFEST');
+
+    like($tar->get_content('Acme-Foo-0.01/MANIFEST'), qr{^empty.txt$}sm, 'Contains empty.txt in MANIFEST');
+    ok($tar->contains_file('Acme-Foo-0.01/empty.txt'), 'Contains empty.txt in archive');
 };
 
 done_testing;
