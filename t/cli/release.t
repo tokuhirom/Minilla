@@ -2,6 +2,7 @@ use strict;
 use warnings;
 use utf8;
 use Test::More;
+use Test::Requires 'Version::Next';
 use t::Util;
 use Minilla::Profile::ModuleBuild;
 use Minilla::CLI::Release;
