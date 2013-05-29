@@ -36,21 +36,21 @@ sub slurp {
     my $fname = shift;
     open my $fh, '<', $fname
         or Carp::croak("Can't open '$fname' for reading: '$!'");
-    do { local $/; <$fh> }
+    scalar do { local $/; <$fh> }
 }
 
 sub slurp_utf8 {
     my $fname = shift;
     open my $fh, '<:encoding(UTF-8)', $fname
         or Carp::croak("Can't open '$fname' for reading: '$!'");
-    do { local $/; <$fh> }
+    scalar do { local $/; <$fh> }
 }
 
 sub slurp_raw {
     my $fname = shift;
     open my $fh, '<:raw', $fname
         or Carp::croak("Can't open '$fname' for reading: '$!'");
-    do { local $/; <$fh> }
+    scalar do { local $/; <$fh> }
 }
 
 sub spew {
