@@ -187,6 +187,7 @@ sub remove_unused_files {
         xt/99_pod.t
         xt/01_podspell.t    xt/03_pod.t              xt/05_cpan_meta.t
         xt/04_minimum_version.t  xt/06_meta_author.t
+        xt/podspell.t
         MANIFEST.SKIP.bak
         MANIFEST.bak
         README.pod
