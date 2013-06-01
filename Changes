@@ -2,6 +2,10 @@ Revision history for Perl extension Minilla
 
 {{$NEXT}}
 
+v0.4.6 2013-06-01T05:35:12Z
+
+    - Remove xt/spelling.t while migrating
+
 v0.4.5 2013-05-29T20:14:47Z
 
     - fixed a bug that empty file couldn't be included to dist archive.
