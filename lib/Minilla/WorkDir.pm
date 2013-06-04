@@ -139,7 +139,9 @@ sub build {
     $self->_rewrite_changes();
     $self->_rewrite_pod();
 
-    Minilla::ReleaseTest->write_release_tests($self->project, $self->dir);
+    unless ($ENV{MINILLA_DISABLE_WRITE_RELEASE_TEST}) { # DO NOT USE THIS ENVIRONMENT VARIABLE.
+        Minilla::ReleaseTest->write_release_tests($self->project, $self->dir);
+    }
 
     cmd_perl('Build.PL');
     cmd_perl('Build', 'build');
