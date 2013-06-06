@@ -4,7 +4,7 @@
       "Tokuhiro Matsuno < tokuhirom@gmail.com >"
    ],
    "dynamic_config" : 0,
-   "generated_by" : "Minilla/v0.4.7, CPAN::Meta::Converter version 2.130880",
+   "generated_by" : "Minilla/v0.4.6, CPAN::Meta::Converter version 2.130880",
    "license" : [
       "perl_5"
    ],
@@ -94,16 +94,16 @@
    "release_status" : "unstable",
    "resources" : {
       "bugtracker" : {
-         "web" : "https://github.com/GeJ/Minilla/issues"
+         "web" : "https://github.com/tokuhirom/Minilla/issues"
       },
-      "homepage" : "https://github.com/GeJ/Minilla",
+      "homepage" : "https://github.com/tokuhirom/Minilla",
       "repository" : {
          "type" : "git",
-         "url" : "git://github.com/GeJ/Minilla.git",
-         "web" : "https://github.com/GeJ/Minilla"
+         "url" : "git://github.com/tokuhirom/Minilla.git",
+         "web" : "https://github.com/tokuhirom/Minilla"
       }
    },
-   "version" : "v0.4.8",
+   "version" : "v0.4.7",
    "x_contributors" : [
       "mattn <mattn.jp@gmail.com>",
       "Daisuke Murase <typester@cpan.org>",
