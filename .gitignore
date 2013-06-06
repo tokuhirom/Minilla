@@ -35,3 +35,4 @@ Minilla-*.tar.gz
 Minilla-*
 /.build
 /Minilla-*
+minil.toml

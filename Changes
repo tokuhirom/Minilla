@@ -2,6 +2,10 @@ Revision history for Perl extension Minilla
 
 {{$NEXT}}
 
+v0.4.8 2013-06-06T00:21:14Z
+    - Add request/pause_config configuration directive to allow an
+    upload to an other platform than the regular PAUSE.
+
 v0.4.7 2013-06-04T21:44:45Z
 
     - Set PERL_CPANM_HOME for cpanm-reporter in test case.
