@@ -183,6 +183,23 @@ both for files and for directories.
 
 In almost all cases, the default value (false) is correct.
 
+=item release.pause_config
+
+    [release]
+    pause_config="/path/to/some/.pause"
+
+By setting this value to another PAUSE configuration file (see 
+L<cpan_upload/CONFIGURATION> for the details), it is possible to use another
+PAUSE server (or anything good enough to mimick its upload process) for the
+release step.
+
+To do so, simply add a C<upload_uri> entry in your file to the alternate PAUSE
+server, i.e :
+
+    upload_uri http://127.0.0.1:5000/pause/authenquery
+
+Note that this feature is not officially documented in L<CPAN::Uploader>.
+
 =back
 
 =head1 FAQ

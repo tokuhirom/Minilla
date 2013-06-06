@@ -154,6 +154,23 @@ But, you can write configurations to _minil.toml_ file in [TOML](https://github.
 
     In almost all cases, the default value (false) is correct.
 
+- release.pause\_config
+
+        [release]
+        pause_config="/path/to/some/.pause"
+
+    By setting this value to another PAUSE configuration file (see 
+    ["CONFIGURATION" in cpan\_upload](http://search.cpan.org/perldoc?cpan\_upload#CONFIGURATION) for the details), it is possible to use another
+    PAUSE server (or anything good enough to mimick its upload process) for the
+    release step.
+
+    To do so, simply add a `upload_uri` entry in your file to the alternate PAUSE
+    server, i.e :
+
+        upload_uri http://127.0.0.1:5000/pause/authenquery
+
+    Note that this feature is not officially documented in [CPAN::Uploader](http://search.cpan.org/perldoc?CPAN::Uploader).
+
 # FAQ
 
 - Why don't you provide plug-in support?
