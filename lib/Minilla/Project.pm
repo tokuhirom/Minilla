@@ -93,7 +93,6 @@ no Moo;
 
 sub allow_pureperl {
     my $self = shift;
-    use Data::Dumper; warn Dumper($self->config->{allow_pureperl});
     $self->config->{allow_pureperl} ? 1 : 0;
 }
 
