@@ -103,7 +103,7 @@
          "web" : "https://github.com/tokuhirom/Minilla"
       }
    },
-   "version" : "v0.4.8",
+   "version" : "v0.4.9",
    "x_contributors" : [
       "mattn <mattn.jp@gmail.com>",
       "Daisuke Murase <typester@cpan.org>",
