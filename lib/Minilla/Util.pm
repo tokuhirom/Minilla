@@ -53,7 +53,7 @@ sub slurp_raw {
     scalar do { local $/; <$fh> }
 }
 
-sub spew {
+sub spew($$) {
     my $fname = shift;
     open my $fh, '>', $fname
         or Carp::croak("Can't open '$fname' for writing: '$!'");

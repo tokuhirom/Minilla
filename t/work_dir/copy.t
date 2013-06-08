@@ -11,7 +11,7 @@ use Minilla::Profile::Default;
 use Minilla::Project;
 use Minilla::Git;
 
-subtest 'rewrite pod' => sub {
+subtest 'copy' => sub {
     my $guard = pushd(tempdir());
 
     my $profile = Minilla::Profile::Default->new(
@@ -25,7 +25,7 @@ subtest 'rewrite pod' => sub {
     );
     $profile->generate();
     mkdir 'bin';
-    spew('bin/foo');
+    spew('bin/foo', '');
     chmod 0777, 'bin/foo';
     write_minil_toml('Acme-Foo');
 

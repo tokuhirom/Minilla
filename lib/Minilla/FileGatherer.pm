@@ -44,6 +44,13 @@ sub gather_files {
             !(grep { $_ =~ qr/^\./ } split m!/!, _normalize($_))
         } @files;
     }
+    if ($^O eq 'MSWin32') {
+        @files = map {
+            my $x = $_;
+            $x =~ s!\\!/!g;
+            $x;
+        } @files;
+    }
 
     return @files;
 }

@@ -11,7 +11,7 @@ use Minilla::Profile::Default;
 use Minilla::Project;
 use Minilla::Git;
 
-subtest 'rewrite pod' => sub {
+subtest 'dist' => sub {
     my $guard = pushd(tempdir());
 
     my $profile = Minilla::Profile::Default->new(
@@ -53,7 +53,11 @@ subtest 'rewrite pod' => sub {
         [do {my %h;
             sort
             grep {!$h{$_}++}
-            map  { "Acme-Foo-0.01/$_" }
+            map  {
+                my $x = "$_";
+                $x =~ s!\\!/!g;
+                "Acme-Foo-0.01/$x"
+            }
             grep /\S/, split /\n/, $tar->get_content('Acme-Foo-0.01/MANIFEST')
         }],
         "Valid MANIFEST file was generated.",
