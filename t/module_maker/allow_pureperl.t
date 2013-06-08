@@ -8,10 +8,10 @@ use Minilla::Profile::ModuleBuild;
 use Minilla::Project;
 
 test(1, sub {
-    like(slurp('Build.PL'), qr{allow_pure_perl\s+=>\s+1});
+    like(slurp('Build.PL'), qr{allow_pureperl\s+=>\s+1});
 });
 test(0, sub {
-    like(slurp('Build.PL'), qr{allow_pure_perl\s+=>\s+0});
+    like(slurp('Build.PL'), qr{allow_pureperl\s+=>\s+0});
 });
 
 done_testing;
@@ -36,7 +36,7 @@ sub test {
 ...
     write_minil_toml({
         name => 'Acme-Foo',
-        allow_pure_perl => $allow,
+        allow_pureperl => $allow,
     });
     git_init_add_commit();
     Minilla::Project->new()->regenerate_files();

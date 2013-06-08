@@ -63,7 +63,7 @@ my %args = (
 
     name            => '<% $dist_name %>',
     module_name     => '<% $name %>',
-    allow_pure_perl => <% $allow_pure_perl %>,
+    allow_pureperl => <% $allow_pureperl %>,
 
     script_files => [<% $script_files %>],
 
