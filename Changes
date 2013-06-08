@@ -2,6 +2,11 @@ Revision history for Perl extension Minilla
 
 {{$NEXT}}
 
+v0.4.8 2013-06-08T01:25:45Z
+
+    - Win32 Portability fix for testing code.
+      (tokuhirom)
+
 v0.4.7 2013-06-04T21:44:45Z
 
     - Set PERL_CPANM_HOME for cpanm-reporter in test case.
