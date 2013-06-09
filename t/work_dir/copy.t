@@ -26,7 +26,7 @@ subtest 'copy' => sub {
     $profile->generate();
     mkdir 'bin';
     spew('bin/foo', '');
-    chmod 0777, 'bin/foo';
+    chmod(0777, 'bin/foo') or die "chmod: $!";
     write_minil_toml('Acme-Foo');
 
     git_init_add_commit();
