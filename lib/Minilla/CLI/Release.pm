@@ -22,6 +22,7 @@ sub run {
         'test!' => \$opts->{test},
         'trial!' => \$opts->{trial},
         'dry-run!' => \$opts->{dry_run},
+        'pause-config=s' => \$opts->{pause_config},
     );
 
     my $project = Minilla::Project->new();
@@ -72,6 +73,7 @@ Minilla::CLI::Release - Release the module to CPAN!
         --no-test         Do not run test scripts
         --trial           Trial release
         --dry-run         Dry run mode
+        --pause-config    Path to a CPAN::Uploader configuration file
 
 =head1 DESCRIPTION
 
