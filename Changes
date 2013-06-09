@@ -2,6 +2,11 @@ Revision history for Perl extension Minilla
 
 {{$NEXT}}
 
+v0.5.0 2013-06-09T09:26:56Z
+
+    - Add 'pause_config' to release to an alternate PAUSE server.
+      (GeJ)
+
 v0.4.9 2013-06-08T04:58:01Z
 
     - s/allow_pure_perl/allow_pureperl/!
