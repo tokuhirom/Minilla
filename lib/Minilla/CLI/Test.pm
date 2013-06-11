@@ -27,12 +27,12 @@ sub run {
         $release = $author = $automated = 1;
     }
 
+    my $project = Minilla::Project->new();
+    $project->verify_prereqs( [qw(develop test runtime)], $_ ) for qw(requires recommends);
+
     $ENV{RELEASE_TESTING}   =1 if $release   == 0;
     $ENV{AUTHOR_TESTING}    =1 if $author    == 0;
     $ENV{AUTOMATED_TESTING} =1 if $automated == 0;
-
-    my $project = Minilla::Project->new();
-    $project->verify_prereqs( [qw(develop test runtime)], $_ ) for qw(requires recommends);
 
     my $work_dir = $project->work_dir;
     my $code = $work_dir->dist_test(@args);
