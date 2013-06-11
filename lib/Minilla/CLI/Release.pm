@@ -79,3 +79,14 @@ Minilla::CLI::Release - Release the module to CPAN!
 
 This sub-command release the module to CPAN.
 
+=head1 ENVIRONMENT VARIABLES
+
+=over 4
+
+=item FAKE_RELEASE
+
+    > FAKE_RELEASE=1 minil release
+
+If this is your first conversion to Minilla and want to make sure you're not going to mess CPAN with a bad archive when something goes wrong, you can run the release command with FAKE_RELEASE environment variable. This will run all the other release process, except the UploadToCPAN step.
+
+=back
