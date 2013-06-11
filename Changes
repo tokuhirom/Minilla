@@ -2,6 +2,11 @@ Revision history for Perl extension Minilla
 
 {{$NEXT}}
 
+v0.5.1 2013-06-11T08:05:45Z
+
+    - Note about FAKE_RELEASE in CLI::Release's document.
+      (tokuhirom)
+
 v0.5.0 2013-06-09T09:26:56Z
 
     - Add 'pause_config' to release to an alternate PAUSE server.
