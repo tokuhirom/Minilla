@@ -2,6 +2,11 @@ Revision history for Perl extension Minilla
 
 {{$NEXT}}
 
+v0.5.2 2013-06-11T08:52:49Z
+
+    - Set RELEASE_TESTING, AUTHOR_TESTING, AUTOMATED_TESTING after verified prereqs.
+      (Reported by aloelight++)
+
 v0.5.1 2013-06-11T08:05:45Z
 
     - Note about FAKE_RELEASE in CLI::Release's document.
