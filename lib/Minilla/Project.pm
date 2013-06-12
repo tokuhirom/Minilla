@@ -284,7 +284,7 @@ sub load_cpanfile {
 
 sub cpan_meta {
     my ($self, $release_status) = @_;
-    $release_status ||= 'stable';
+    $release_status ||= ($self->version =~ /_/ ? 'unstable' : 'stable');
 
     my $cpanfile = $self->load_cpanfile;
     my $merged_prereqs = $cpanfile->prereqs->with_merged_prereqs(

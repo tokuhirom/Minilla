@@ -121,7 +121,7 @@ sub build {
 
     # Generate meta file
     {
-        my $meta = $self->project->cpan_meta('stable');
+        my $meta = $self->project->cpan_meta();
         $meta->save('META.yml', {
             version => 1.4,
         });
