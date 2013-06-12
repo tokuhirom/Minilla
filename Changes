@@ -2,6 +2,12 @@ Revision history for Perl extension Minilla
 
 {{$NEXT}}
 
+v0.5.3 2013-06-12T02:42:17Z
+
+    - Set 'release_status' key in META.json as 'unstable' if the version number contains '_' character.
+      https://github.com/tokuhirom/Minilla/issues/61#issuecomment-19238382
+      (Reported by mlawren++)
+
 v0.5.2 2013-06-11T08:52:49Z
 
     - Set RELEASE_TESTING, AUTHOR_TESTING, AUTOMATED_TESTING after verified prereqs.
