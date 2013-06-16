@@ -28,7 +28,7 @@ sub gather_files {
     my @files = grep { _topdir($_) ne 'extlib' }
                 grep { not -l $_ }
                 map { File::Spec->abs2rel($_, $root) }
-                git_ls_files();
+                git_ls_files(), git_submodule_files();
     if ($self->exclude_match) {
         for my $pattern (@{$self->exclude_match || []}) {
             @files = grep { _normalize($_) !~ $pattern } @files;
@@ -50,6 +50,13 @@ sub gather_files {
             $x =~ s!\\!/!g;
             $x;
         } @files;
+    }
+
+    my @submodules = git_submodules;
+    if (@submodules) {
+        for my $filename (@submodules) {
+            @files = grep { $_ ne $filename } @files;
+        }
     }
 
     return @files;

@@ -20,7 +20,7 @@ subtest 'FileGatherer' => sub {
             exclude_match => ['^local/'],
         )->gather_files('.');
 
-        is(join(',', sort @files), 'META.json,README,foo');
+        is(join(',', sort @files), 'META.json,README,foo,libfoo/foo.c');
     };
 
     subtest include_dotfiles => sub {
@@ -29,7 +29,7 @@ subtest 'FileGatherer' => sub {
             include_dotfiles => 1,
         )->gather_files('.');
 
-        is(join(',', sort @files), '.dot/dot,.gitignore,META.json,README,foo,xtra/.dot,xtra/.dotdir/dot');
+        is(join(',', sort @files), '.dot/dot,.gitignore,.gitmodules,META.json,README,foo,libfoo/foo.c,xtra/.dot,xtra/.dotdir/dot');
     };
 
     subtest 'MANIFEST.SKIP' => sub {
@@ -40,7 +40,7 @@ subtest 'FileGatherer' => sub {
             exclude_match => ['^local/'],
         )->gather_files('.');
 
-        is(join(',', sort @files), 'MANIFEST.SKIP,META.json,README');
+        is(join(',', sort @files), 'MANIFEST.SKIP,META.json,README,libfoo/foo.c');
     };
 };
 
@@ -48,6 +48,7 @@ done_testing;
 
 sub init {
     my $guard = pushd(tempdir());
+    my $submodule_repo = create_submodule_repo();
 
     mkdir 'local';
     mkdir '.dot';
@@ -65,7 +66,20 @@ sub init {
 
     git_init();
     git_add('.');
+    git_submodule_add("file://$submodule_repo", 'libfoo');
     git_commit('-m', 'foo');
 
     $guard;
+}
+
+sub create_submodule_repo {
+    my $dir = tempdir();
+    my $guard = pushd($dir);
+
+    spew('foo.c', '...');
+    git_init();
+    git_add('.');
+    git_commit('-m', 'submodule');
+
+    return $dir;
 }
