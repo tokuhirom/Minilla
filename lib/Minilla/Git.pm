@@ -46,7 +46,7 @@ sub git_submodules {
     my @submodules = split /\n/, `git submodule status`;
     my @files;
     for (@submodules) {
-        my ($path) = $_ =~ /\s*[0-9a-f]+\x20+(.+)\x20.+/;
+        my ($path) = $_ =~ /^[+\-U\x20][0-9a-f]{40}\x20([^\x20]+).*$/;
         push @files, $path if $path;
     }
     return @files;
