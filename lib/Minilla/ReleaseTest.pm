@@ -16,11 +16,19 @@ sub write_release_tests {
     mkpath(catfile($dir, 'xt'));
 
     my $stopwords = do {
+        my $append_people_into_stopwords = sub {
+            my $people = shift;
+            my @stopwords;
+            for (@{$people || +[]}) {
+                s!<.*!!; # trim e-mail address
+                push @stopwords, split(/\s+/, $_);
+            }
+            return @stopwords;
+        };
+
         my @stopwords;
-        for (@{$project->contributors || +[]}) {
-            s!<.*!!; # trim e-mail address
-            push @stopwords, split(/\s+/, $_);
-        }
+        push @stopwords, $append_people_into_stopwords->($project->contributors);
+        push @stopwords, $append_people_into_stopwords->($project->authors);
         join(' ', @stopwords);
     };
     my $name = $project->dist_name;
