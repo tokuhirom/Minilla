@@ -123,6 +123,15 @@ But, you can write configurations to _minil.toml_ file in [TOML](https://github.
     by default. But if you want to change them, you can set this section variable. If this section is set,
     specified variables are only used, in fact default settings are not merged.
 
+- c\_source
+
+        c_source = ['src']
+
+    A directory which contains C source files that the rest of the build may depend
+    on.  Any ".c" files in the directory will be compiled to object files.
+    The directory will be added to the search path during the compilation and
+    linking phases of any C or XS files.
+
 - script\_files
 
         script_files = ['bin/foo', 'script/*']

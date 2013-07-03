@@ -2,6 +2,11 @@ Revision history for Perl extension Minilla
 
 {{$NEXT}}
 
+v0.5.4 2013-07-03T07:25:15Z
+
+    - Added new `c_source` configuration option.
+      (tokuhirom)
+
 v0.5.3 2013-06-12T02:42:17Z
 
     - Set 'release_status' key in META.json as 'unstable' if the version number contains '_' character.
