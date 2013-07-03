@@ -156,6 +156,11 @@ sub config {
     }
 }
 
+sub c_source {
+    my $self = shift;
+    $self->config->{c_source} ? join(' ', @{$self->config->{c_source}}) : '';
+}
+
 sub _build_dist_name {
     my $self = shift;
 

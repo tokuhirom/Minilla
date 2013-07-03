@@ -66,6 +66,7 @@ my %args = (
     allow_pureperl => <% $allow_pureperl %>,
 
     script_files => [<% $script_files %>],
+    c_source     => [qw(<% $c_source %>)],
 
     test_files           => ((-d '.git' || $ENV{RELEASE_TESTING}) && -d 'xt') ? 't/ xt/' : 't/',
     recursive_test_files => 1,
