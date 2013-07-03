@@ -448,6 +448,7 @@ sub _build_contributors {
     my %is_author = map { $normalize->($_) => 1 } @{$self->authors};
     @lines = grep { !$is_author{$normalize->($_)} } @lines;
     @lines = grep { $_ ne 'Your Name <you@example.com>' } @lines;
+    @lines = grep { ! /^\(no author\) <\(no author\)\@[\d\w\-]+>$/ } @lines;
     \@lines;
 }
 
