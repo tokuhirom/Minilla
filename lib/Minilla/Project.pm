@@ -98,7 +98,11 @@ sub allow_pureperl {
 
 sub version {
     my $self = shift;
-    $self->config->{version} || $self->metadata->version;
+    my $version = $self->config->{version} || $self->metadata->version;
+    unless (defined $version) {
+        errorf("Minilla can't aggregate version number from '" . $self->main_module_path . '"');
+    }
+    return $version;
 }
 
 sub authors {

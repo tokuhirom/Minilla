@@ -58,4 +58,5 @@ name = "Acme-Foo"
 
 @@ lib/Acme/Foo.pm
 package Acme::Foo;
+our $VERSION='0.01';
 1;
