@@ -3,11 +3,14 @@ use strict;
 use warnings;
 use utf8;
 
-use Minilla::Util qw(slurp spew);
+use Minilla::Util qw(check_git slurp spew);
 use Minilla::Migrate;
 
 sub run {
     my ($self, @args) = @_;
+
+    check_git;
+
     Minilla::Migrate->new()->run;
 }
 

@@ -8,12 +8,15 @@ use File::Basename qw(basename);
 use File::Copy qw(copy);
 
 use Minilla::Project;
-use Minilla::Util qw(parse_options);
+use Minilla::Util qw(check_git parse_options);
 
 sub run {
     my ($self, @args) = @_;
 
     my $test = 1;
+
+    check_git;
+
     parse_options(
         \@args,
         'test!' => \$test,
