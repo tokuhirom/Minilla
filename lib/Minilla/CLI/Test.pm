@@ -6,7 +6,7 @@ use File::pushd;
 
 use Minilla::WorkDir;
 use Minilla::Project;
-use Minilla::Util qw(parse_options);
+use Minilla::Util qw(check_git parse_options);
 
 sub run {
     my ($self, @args) = @_;
@@ -15,6 +15,9 @@ sub run {
     my $author    = 1;
     my $automated = 0;
     my $all       = 0;
+
+    check_git;
+
     parse_options(
         \@args,
         'release!'   => \$release,

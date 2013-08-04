@@ -5,6 +5,7 @@ use utf8;
 use Carp ();
 use File::Basename ();
 use File::Spec ();
+use File::Which 'which';
 use Minilla::Logger ();
 use Getopt::Long ();
 use Cwd();
@@ -19,7 +20,9 @@ our @EXPORT_OK = qw(
     edit_file require_optional
     cmd cmd_perl
     pod_escape
-    parse_options);
+    parse_options
+    check_git
+);
 
 our %EXPORT_TAGS = (
     all => \@EXPORT_OK
@@ -164,6 +167,12 @@ sub pod_escape {
     my %POD_ESCAPE = ( '<' => 'E<lt>', '>' => 'E<gt>' );
     s!([<>])!$POD_ESCAPE{$1}!ge;
     $_;
+}
+
+sub check_git {
+    unless (which 'git') {
+        Minilla::Logger::errorf("The \"git\" executable has not been found.\n");
+    }
 }
 
 1;

@@ -5,7 +5,7 @@ use utf8;
 use File::pushd;
 use File::Path qw(mkpath);
 
-use Minilla::Util qw(cmd parse_options);
+use Minilla::Util qw(check_git cmd parse_options);
 use Minilla::Logger;
 
 sub run {
@@ -23,6 +23,8 @@ sub run {
 
     my $module = shift @args or errorf("Missing module name\n");
        $module =~ s!-!::!g;
+
+    check_git;
 
     $username ||= `git config user.name`;
     $username =~ s/\n$//;
