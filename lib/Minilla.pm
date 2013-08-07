@@ -28,6 +28,7 @@ Minilla - CPAN module authoring tool
     minil dist    - Make your dist tarball
     minil install - Install your dist
     minil release - Release your dist to CPAN
+    minil run     - Run arbitrary commands against build dir
 
 =head1 DESCRIPTION
 

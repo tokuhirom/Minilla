@@ -218,4 +218,15 @@ sub dist {
     };
 }
 
+sub run {
+    my ($self, @cmd) = @_;
+    $self->build();
+
+    eval {
+        my $guard = pushd($self->dir);
+        cmd(@cmd);
+    };
+    return $@ ? 1 : 0;
+}
+
 1;
