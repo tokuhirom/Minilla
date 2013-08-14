@@ -4,7 +4,7 @@
       "Tokuhiro Matsuno < tokuhirom@gmail.com >"
    ],
    "dynamic_config" : 0,
-   "generated_by" : "Minilla/v0.5.5, CPAN::Meta::Converter version 2.130880",
+   "generated_by" : "Minilla/v0.5.6, CPAN::Meta::Converter version 2.131560",
    "license" : [
       "perl_5"
    ],
@@ -103,7 +103,7 @@
          "web" : "https://github.com/tokuhirom/Minilla"
       }
    },
-   "version" : "v0.5.6",
+   "version" : "v0.6.0",
    "x_contributors" : [
       "mattn <mattn.jp@gmail.com>",
       "Daisuke Murase <typester@cpan.org>",
@@ -113,11 +113,12 @@
       "xaicron <xaicron@gmail.com>",
       "Fuji, Goro <g.psy.va@gmail.com>",
       "Masayuki Matsuki <y.songmu@gmail.com>",
-      "Daisuke Maki <lestrrat+github@gmail.com>",
       "Syohei YOSHIDA <syohex@gmail.com>",
       "GeJ <geraud@hyaku.nijuu.nana>",
       "moznion <moznion@gmail.com>",
       "Ryo Okamoto <ryo@aquahill.net>",
+      "Oleg Gashev <oleg@gashev.net>",
+      "Daisuke Maki <lestrrat+github@gmail.com>",
       "tokuhirom <tokuhirom@gmail.com>"
    ]
 }

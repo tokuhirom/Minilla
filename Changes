@@ -2,6 +2,15 @@ Revision history for Perl extension Minilla
 
 {{$NEXT}}
 
+v0.6.0 2013-08-14T05:49:51Z
+
+    - Added version number validation while release process.
+      (tokuhirom)
+    - Add a minil run command
+      (lestrrat)
+    - Added check git exist on exec some cli commands.
+      (gashev)
+
 v0.5.6 2013-07-07T02:36:17Z
 
     - Show error message when Minilla can't get version number.
