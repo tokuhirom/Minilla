@@ -7,6 +7,7 @@ use ExtUtils::MakeMaker qw(prompt);
 use Minilla::Util qw(find_file require_optional cmd);
 use Minilla::Logger;
 use Module::BumpVersion;
+use version ();
 
 sub init {
     require_optional(
@@ -21,6 +22,10 @@ sub run {
     my ($self, $project, $opts) = @_;
 
     if (my $ver = prompt("Next Release?", $self->default_new_version($project))) {
+        if (!version::is_strict($ver)) {
+            errorf("Sorry, version '%s' is invalid.  Stopping.\n", $ver);
+        }
+
         my @opts;
         push @opts, '-set', $ver;
         if ($opts->{dry_run}) {
