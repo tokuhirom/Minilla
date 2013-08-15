@@ -66,6 +66,7 @@
             "Pod::Markdown" : "1.322",
             "TOML" : "0.92",
             "Term::ANSIColor" : "0",
+            "Text::MicroTemplate" : "0.2",
             "Time::Piece" : "1.16",
             "Try::Tiny" : "0",
             "parent" : "0",
