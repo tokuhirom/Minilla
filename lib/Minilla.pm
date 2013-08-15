@@ -168,6 +168,13 @@ linking phases of any C or XS files.
 
 Minilla sets install script files as C<< ['script/*', 'bin/*'] >> by default.
 
+=item PL_files
+
+Specify the PL files.
+
+    [PL_files]
+    lib/Foo/Bar.pm.PL="lib/Foo/Bar.pm"
+
 =item build.build_class
 
 Specify a custom Module::Build subclass.

@@ -4,6 +4,7 @@ use warnings;
 use utf8;
 use Data::Section::Simple qw(get_data_section);
 use Text::MicroTemplate qw(render_mt);
+use Data::Dumper;
 
 use Moo;
 
@@ -14,6 +15,10 @@ use Minilla::Util qw(spew_raw);
 sub generate {
     my ($self, $project) = @_;
 
+    local $Data::Dumper::Terse = 1;
+    local $Data::Dumper::Useqq = 1;
+    local $Data::Dumper::Purity = 1;
+    local $Data::Dumper::Indent = 0;
     my $content = get_data_section('Build.PL');
     my $mt = Text::MicroTemplate->new(template => $content, escape_func => sub { $_[0] });
     my $src = $mt->build->($project);
@@ -68,6 +73,7 @@ my %args = (
 
     script_files => [<?= $project->script_files ?>],
     c_source     => [qw(<?= $project->c_source ?>)],
+    PL_files => <?= Data::Dumper::Dumper($project->PL_files) ?>,
 
     test_files           => ((-d '.git' || $ENV{RELEASE_TESTING}) && -d 'xt') ? 't/ xt/' : 't/',
     recursive_test_files => 1,

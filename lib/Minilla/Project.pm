@@ -483,5 +483,7 @@ sub perl_files {
     } @files;
 }
 
+sub PL_files { shift->config->{PL_files} || +{} }
+
 1;
 
