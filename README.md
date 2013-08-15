@@ -139,6 +139,13 @@ But, you can write configurations to _minil.toml_ file in [TOML](https://github.
 
     Minilla sets install script files as `['script/*', 'bin/*']` by default.
 
+- PL\_files
+
+    Specify the PL files.
+
+        [PL_files]
+        lib/Foo/Bar.pm.PL="lib/Foo/Bar.pm"
+
 - build.build\_class
 
     Specify a custom Module::Build subclass.
