@@ -29,7 +29,11 @@ sub write_release_tests {
         my @stopwords;
         push @stopwords, $append_people_into_stopwords->($project->contributors);
         push @stopwords, $append_people_into_stopwords->($project->authors);
-        join(' ', @stopwords);
+        local $Data::Dumper::Terse = 1;
+        local $Data::Dumper::Useqq = 1;
+        local $Data::Dumper::Purity = 1;
+        local $Data::Dumper::Indent = 0;
+        Data::Dumper::Dumper([map { split /\s+/, $_ } @stopwords]);
     };
     my $name = $project->dist_name;
     for my $file (qw(
@@ -94,6 +98,6 @@ my $spelltest_switchfile = ".spellunker.en";
 plan skip_all => "no ~/$spelltest_switchfile" unless -e File::Spec->catfile($ENV{HOME}, $spelltest_switchfile);
 
 add_stopwords('<<DIST>>');
-add_stopwords(qw(<<STOPWORDS>>));
+add_stopwords(@{<<STOPWORDS>>});
 
 all_pod_files_spelling_ok('lib');
