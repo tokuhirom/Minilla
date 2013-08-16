@@ -45,10 +45,10 @@ subtest 'Contributors are included in stopwords' => sub {
 
     ok -f $spelling_test_file;
     my $spelling  = slurp($spelling_test_file);
-    my ($stopwords) = $spelling =~ /add_stopwords\(qw\((.*)\)\);/;
+    my ($stopwords) = $spelling =~ /add_stopwords\(\@(.*)\);/;
 
-    my @stopwords = sort split(/\s+/, $stopwords);
-    my @expected  = sort ('Foo', 'Bar', 'tokuhirom');
-    is_deeply \@stopwords, \@expected;
+    like $stopwords, qr(tokuhirom) or diag $spelling;
+    like $stopwords, qr(Foo) or diag $stopwords;
+    like $stopwords, qr(Bar);
 };
 done_testing;
