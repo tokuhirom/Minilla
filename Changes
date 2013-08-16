@@ -2,6 +2,11 @@ Revision history for Perl extension Minilla
 
 {{$NEXT}}
 
+v0.6.2 2013-08-16T00:48:07Z
+
+    - Generate stop words list by Dumper.
+      (reported by gfx++)
+
 v0.6.1 2013-08-15T06:14:53Z
 
     - Support PL_files
