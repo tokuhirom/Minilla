@@ -22,7 +22,8 @@ sub run {
     my ($self, $project, $opts) = @_;
 
     if (my $ver = prompt("Next Release?", $self->default_new_version($project))) {
-        if (!version::is_strict($ver)) {
+        # Do not use is_strict. is_strict rejects '5.00_01' style.
+        if (!version::is_lax($ver)) {
             errorf("Sorry, version '%s' is invalid.  Stopping.\n", $ver);
         }
 
