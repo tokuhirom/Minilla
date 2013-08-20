@@ -2,6 +2,10 @@ Revision history for Perl extension Minilla
 
 {{$NEXT}}
 
+v0.6.3 2013-08-20T04:27:22Z
+
+    - version::is_strict is too strict for me. Use version::is_lax instead.
+
 v0.6.2 2013-08-16T00:48:07Z
 
     - Generate stop words list by Dumper.
