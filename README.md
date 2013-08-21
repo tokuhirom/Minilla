@@ -100,6 +100,14 @@ But, you can write configurations to _minil.toml_ file in [TOML](https://github.
 
     Grab authors information from the file contains pod.
 
+- authority
+
+        authority = "cpan:TOKUHIROM"
+
+    Grab authors information from the file contains pod.
+
+
+
 - allow\_pureperl
 
         allow_pureperl=1

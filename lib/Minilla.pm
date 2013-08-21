@@ -129,6 +129,13 @@ Grab abstract information from the file contains pod.
 
 Grab authors information from the file contains pod.
 
+=item authority
+
+    authority = "cpan:TOKUHIROM"
+
+Set x_authority attribute to META.
+See L<http://jawnsy.wordpress.com/2011/02/20/what-is-x_authority/> for more details.
+
 =item allow_pureperl
 
     allow_pureperl=1

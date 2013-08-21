@@ -341,6 +341,9 @@ sub cpan_meta {
     if ($self->contributors && @{$self->contributors} > 0) {
         $dat->{x_contributors} = $self->contributors;
     }
+    if (my $authority = $self->config->{authority}) {
+        $dat->{x_authority} = $authority;
+    }
 
     # fill 'provides' section
     if ($release_status ne 'unstable') {
