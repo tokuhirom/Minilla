@@ -2,6 +2,11 @@ Revision history for Perl extension Minilla
 
 {{$NEXT}}
 
+v0.6.4 2013-08-21T08:06:10Z
+
+    - Addex x_authority support
+      (tokuhirom)
+
 v0.6.3 2013-08-20T04:27:22Z
 
     - version::is_strict is too strict for me. Use version::is_lax instead.
