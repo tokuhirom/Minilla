@@ -2,6 +2,10 @@ Revision history for Perl extension Minilla
 
 {{$NEXT}}
 
+v0.6.5 2013-09-01T23:35:54Z
+
+    - Fixed deps
+
 v0.6.4 2013-08-21T08:06:10Z
 
     - Addex x_authority support
