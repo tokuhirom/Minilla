@@ -16,7 +16,7 @@ requires 'MRO::Compat' if $] < 5.009_005;
 requires 'TOML', 0.92;
 
 # Templating
-requires 'Text::MicroTemplate', 0.20;
+requires 'Text::MicroTemplate', '0.20';
 
 # CPAN related
 requires 'App::cpanminus', '1.6902';
