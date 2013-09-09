@@ -34,7 +34,10 @@ subtest 'copy' => sub {
     my $work_dir = Minilla::Project->new()->work_dir;
     ok($work_dir);
     ok -f catfile($work_dir->dir, 'bin/foo');
-    ok -x catfile($work_dir->dir, 'bin/foo');
+    SKIP: {
+        skip "-x test is not portable", 1 if $^O eq 'MSWin32';
+        ok -x catfile($work_dir->dir, 'bin/foo');
+    }
 };
 
 done_testing;
