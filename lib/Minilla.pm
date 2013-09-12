@@ -230,6 +230,12 @@ Note that this feature is not officially documented in L<CPAN::Uploader>.
 
 =over 4
 
+=item How can I manage B<contributors> section?
+
+Minilla aggregates contributors list from C<< git log --format="%aN <%aE>" | sort | uniq >>.
+
+You can merge accounts by .mailmap file. See L<https://www.kernel.org/pub/software/scm/git/docs/git-shortlog.html>
+
 =item Why don't you provide plug-in support?
 
 If you want to pluggable thing, it's already exist dzil :P
