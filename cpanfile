@@ -27,6 +27,7 @@ requires 'Pod::Markdown', '1.322';
 # File operation
 requires 'File::pushd';
 requires 'File::Copy::Recursive';
+requires 'File::Which';
 
 # OOPS
 requires 'Moo' => 1.001000;
@@ -57,7 +58,6 @@ recommends 'Test::CPAN::Meta';
 on 'test' => sub {
     requires 'Test::More' => '0.98';
     requires 'Test::Requires' => 0;
-    requires 'File::Which';
     requires 'File::Temp';
     recommends 'Devel::CheckLib';
     suggests 'Dist::Zilla';
