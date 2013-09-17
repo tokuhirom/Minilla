@@ -197,6 +197,12 @@ But, you can write configurations to _minil.toml_ file in [TOML](https://github.
 
 # FAQ
 
+- How can I manage __contributors__ section?
+
+    Minilla aggregates contributors list from `git log --format="%aN <%aE>" | sort | uniq`.
+
+    You can merge accounts by .mailmap file. See [https://www.kernel.org/pub/software/scm/git/docs/git-shortlog.html](https://www.kernel.org/pub/software/scm/git/docs/git-shortlog.html)
+
 - Why don't you provide plug-in support?
 
     If you want to pluggable thing, it's already exist dzil :P

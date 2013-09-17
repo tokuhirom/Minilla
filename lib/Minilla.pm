@@ -2,7 +2,7 @@ package Minilla;
 use strict;
 use warnings;
 use 5.008005;
-use version; our $VERSION = version->declare("v0.6.5");
+use version; our $VERSION = version->declare("v0.6.6");
 
 our $DEBUG;
 our $AUTO_INSTALL;
@@ -13,7 +13,7 @@ sub auto_install { $AUTO_INSTALL }
 1;
 __END__
 
-=for stopwords MINILLA
+=for stopwords MINILLA .mailmap
 
 =encoding utf8
 

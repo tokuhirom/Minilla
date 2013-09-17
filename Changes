@@ -2,6 +2,15 @@ Revision history for Perl extension Minilla
 
 {{$NEXT}}
 
+v0.6.6 2013-09-17T02:47:55Z
+
+    - Fixed dependencies
+      (keita.iseki)
+    - Documented about .mailmap
+      (tokuhirom)
+    - skip -x test that has a portability issue on win32 (see perlport; chmod has an issue as well)
+      (Kenichi Ishigaki)
+
 v0.6.5 2013-09-01T23:35:54Z
 
     - Fixed deps
