@@ -320,7 +320,7 @@ sub cpan_meta {
             "version" => "2",
             "url"     => "http://search.cpan.org/perldoc?CPAN::Meta::Spec"
         },
-        license        => $self->license->meta2_name,
+        license        => [ $self->license->meta2_name ],
         abstract       => $self->abstract,
         dynamic_config => 0,
         version        => $self->version,
