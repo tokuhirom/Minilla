@@ -12,6 +12,7 @@ use File::Basename qw(dirname);
 use File::Path qw(mkpath);
 use Minilla::Profile::Default;
 use Minilla::Project;
+use CPAN::Meta::Validator;
 
 subtest 'develop deps' => sub {
     my $guard = pushd(tempdir());
@@ -49,6 +50,9 @@ subtest 'develop deps' => sub {
             directory => [qw/t xt inc share eg examples author/],
         },
     );
+
+    my $validator = CPAN::Meta::Validator->new($meta->as_struct);
+    ok($validator->is_valid) or diag join( "\n", $validator->errors );
 };
 
 done_testing;

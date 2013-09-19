@@ -61,6 +61,7 @@ on 'test' => sub {
     requires 'File::Temp';
     recommends 'Devel::CheckLib';
     suggests 'Dist::Zilla';
+    requires 'CPAN::Meta::Validator';
 };
 
 on 'configure' => sub {
