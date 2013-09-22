@@ -175,6 +175,13 @@ linking phases of any C or XS files.
 
 Minilla sets install script files as C<< ['script/*', 'bin/*'] >> by default.
 
+=item license
+
+    license="artistic_2"
+
+You can specify your favorite license on minil.toml. The license key is same as CPAN Meta spec 2.0.
+See L<CPAN::Meta::Spec>.
+
 =item PL_files
 
 Specify the PL files.
