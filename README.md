@@ -146,6 +146,13 @@ But, you can write configurations to _minil.toml_ file in [TOML](https://github.
 
     Minilla sets install script files as `['script/*', 'bin/*']` by default.
 
+- license
+
+        license="artistic_2"
+
+    You can specify your favorite license on minil.toml. The license key is same as CPAN Meta spec 2.0.
+    See [CPAN::Meta::Spec](http://search.cpan.org/perldoc?CPAN::Meta::Spec).
+
 - PL\_files
 
     Specify the PL files.

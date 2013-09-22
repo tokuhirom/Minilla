@@ -2,6 +2,11 @@ Revision history for Perl extension Minilla
 
 {{$NEXT}}
 
+v0.6.8 2013-09-22T10:28:05Z
+
+    - Better license support in minil.toml.
+      (tokuhirom)
+
 v0.6.7 2013-09-19T04:16:29Z
 
     - license field in prulal field.

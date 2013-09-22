@@ -24,10 +24,28 @@ subtest 'develop deps' => sub {
         email => 'tokuhirom@example.com',
     );
     $profile->generate();
-    write_minil_toml('Acme-Foo', {
-        license => 'artistic_2_0',
-    });
-    git_init_add_commit();
+
+    write_minil_toml('Acme-Foo');
+
+    git_init();
+    git_add('.');
+    git_config(qw(user.name), 'Tokuhiro Matsuno');
+    git_config(qw(user.email tokuhirom@example.com));
+    git_commit('-m', 'initial import');
+
+    # other name, but same address
+    git_config(qw(user.name tokuhirom));
+    git_config(qw(user.email tokuhirom@example.com));
+    git_commit('--allow-empty', '-m', 'foo');
+
+    git_config(qw(user.name Foo));
+    git_config(qw(user.email foo@example.com));
+    git_commit('--allow-empty', '-m', 'foo');
+
+    git_config(qw(user.name Bar));
+    git_config(qw(user.email bar@example.com));
+    git_commit('--allow-empty', '-m', 'bar');
+    git_commit('--allow-empty', '-m', 'bar2');
 
     my $project = Minilla::Project->new();
     is_deeply(
