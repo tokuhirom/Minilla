@@ -127,6 +127,46 @@ sub abstract {
     $self->config->{abstract} || $self->metadata->abstract;
 }
 
+sub use_xsutil {
+    my $self = shift;
+    return defined $self->config->{XSUtil} ? 1 : 0;
+}
+
+sub needs_compiler_c99 {
+    my $self = shift;
+    if( my $xsutil = $self->config->{XSUtil} ){
+        return $xsutil->{needs_compiler_c99} ? 1 : 0;
+    }
+}
+
+sub needs_compiler_cpp {
+    my $self = shift;
+    if( my $xsutil = $self->config->{XSUtil} ){
+        return $xsutil->{needs_compiler_cpp} ? 1 : 0;
+    }
+}
+
+sub generate_ppport_h {
+    my $self = shift;
+    if( my $xsutil = $self->config->{XSUtil} ){
+        return $xsutil->{generate_ppport_h} || 0;
+    }
+}
+
+sub generate_xshelper_h {
+    my $self = shift;
+    if( my $xsutil = $self->config->{XSUtil} ){
+        return $xsutil->{generate_xshelper_h} || 0;
+    }
+}
+
+sub cc_warnings{
+    my $self = shift;
+    if( my $xsutil = $self->config->{XSUtil} ){
+        return $xsutil->{cc_warnings} ? 1 : 0;
+    }
+}
+
 sub _build_dir {
     my $self = shift;
 
@@ -202,8 +242,10 @@ sub _build_build_class {
     if (my $conf = $self->config) {
         $build_class = $conf->{build}{build_class};
     }
+    
+    return $build_class if $build_class;
 
-    return $build_class || 'Module::Build';
+    return $self->use_xsutil ? 'Module::Build::XSUtil' : 'Module::Build';
 }
 
 sub _build_main_module_path {
@@ -297,7 +339,7 @@ sub cpan_meta {
 
     my $cpanfile = $self->load_cpanfile;
     my $merged_prereqs = $cpanfile->prereqs->with_merged_prereqs(
-        CPAN::Meta::Prereqs->new($self->module_maker->prereqs)
+        CPAN::Meta::Prereqs->new($self->module_maker->prereqs($self))
     );
     $merged_prereqs = $merged_prereqs->with_merged_prereqs(
         CPAN::Meta::Prereqs->new(Minilla::ReleaseTest->prereqs)
