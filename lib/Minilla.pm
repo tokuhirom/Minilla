@@ -182,6 +182,12 @@ Minilla sets install script files as C<< ['script/*', 'bin/*'] >> by default.
 You can specify your favorite license on minil.toml. The license key is same as CPAN Meta spec 2.0.
 See L<CPAN::Meta::Spec>.
 
+=item badges
+
+    badges = [ "[![alt text](http://example.com/badge.jpg)](http://example.com)", ... ]
+
+Embed badges image (e.g. Travis-CI) to README.md. It ought to be array and each elements must be markdown notation for image.
+
 =item PL_files
 
 Specify the PL files.
@@ -219,7 +225,7 @@ In almost all cases, the default value (false) is correct.
     [release]
     pause_config="/path/to/some/.pause"
 
-By setting this value to another PAUSE configuration file (see 
+By setting this value to another PAUSE configuration file (see
 L<cpan_upload/CONFIGURATION> for the details), it is possible to use another
 PAUSE server (or anything good enough to mimick its upload process) for the
 release step.
