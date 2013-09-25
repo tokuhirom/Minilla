@@ -127,6 +127,11 @@ sub abstract {
     $self->config->{abstract} || $self->metadata->abstract;
 }
 
+sub badges {
+    my $self = shift;
+    $self->config->{badges} || [];
+}
+
 sub _build_dir {
     my $self = shift;
 
@@ -426,7 +431,14 @@ sub regenerate_readme_md {
     $parser->parse_from_file($self->readme_from);
 
     my $fname = File::Spec->catfile($self->dir, 'README.md');
-    spew_raw($fname, $parser->as_markdown);
+    my $markdown = $parser->as_markdown;
+
+    if (ref $self->badges eq 'ARRAY' && scalar @{$self->badges} > 0) {
+        $markdown = "\n" . $markdown;
+        $markdown = join(' ', @{$self->badges}) . $markdown
+    }
+
+    spew_raw($fname, $markdown);
 }
 
 sub verify_prereqs {
@@ -489,4 +501,5 @@ sub perl_files {
 sub PL_files { shift->config->{PL_files} || +{} }
 
 1;
+
 
