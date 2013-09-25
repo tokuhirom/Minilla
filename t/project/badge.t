@@ -5,6 +5,7 @@ use Test::More;
 use t::Util;
 use File::Temp qw(tempdir);
 use File::pushd;
+use File::Spec::Functions qw(catdir);
 use Minilla::Profile::Default;
 use Minilla::Project;
 
@@ -24,17 +25,27 @@ subtest 'Badge' => sub {
     git_init_add_commit();
     my $project = Minilla::Project->new();
 
-    subtest 'Badges exist' => sub {
-        my $badge_markdowns = ["[![badge1](http://example.com/badge1.png)](http://example.com)", "[![badge2](http://example.org/badge2.png)](http://example.org)"];
+    # Add remote information
+    {
+        open my $fh, '>>', catdir('.git', 'config');
+        print $fh <<'...';
+[remote "origin"]
+    fetch = +refs/heads/*:refs/remotes/origin/*
+    url = git@github.com:tokuhirom/Minilla.git
+...
+    }
 
+    subtest 'Badges exist' => sub {
         write_minil_toml({
             name   => 'Acme-Foo',
-            badges => $badge_markdowns,
+            badges => ['travis', 'coveralls'],
         });
         $project->regenerate_files;
 
         open my $fh, '<', 'README.md';
         ok chomp (my $got = <$fh>);
+
+        my $badge_markdowns = ["[![Build Status](https://travis-ci.org/tokuhirom/Minilla.png?branch=master)](https://travis-ci.org/tokuhirom/Minilla)", "[![Coverage Status](https://coveralls.io/repos/tokuhirom/Minilla/badge.png?branch=master)](https://coveralls.io/r/tokuhirom/Minilla?branch=master)"];
         my $expected = join(' ', @$badge_markdowns);
         is $got, $expected;
     };
