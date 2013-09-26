@@ -202,6 +202,41 @@ Specify a custom Module::Build subclass.
     [build]
     build_class = builder::MyBuilder
 
+=item XSUtil.needs_compiler_c99
+
+    [XSUtil]
+    needs_compiler_c99 = 1
+
+You can specify C<needs_compiler_c99> parameter of L<Module::Build::XSUtil>.
+
+=item XSUtil.needs_compiler_cpp
+
+    [XSUtil]
+    needs_compiler_cpp = 1
+
+You can specify C<needs_compiler_cpp> parameter of L<Module::Build::XSUtil>.
+
+=item XSUtil.generate_ppport_h
+
+    [XSUtil]
+    generate_ppport_h = 1
+
+You can specify C<generate_ppport_h> parameter of L<Module::Build::XSUtil>.
+
+=item XSUtil.generate_xshelper_h
+
+    [XSUtil]
+    generate_xshelper_h = 1
+    
+You can specify C<generate_xshelper_h> parameter of L<Module::Build::XSUtil>.
+
+=item XSUtil.cc_warnings
+
+    [XSUtil]
+    cc_warnings = 1
+
+You can specify C<cc_warnings> parameter of L<Module::Build::XSUtil>.
+
 =item FileGatherer.exclude_match
 
     [FileGatherer]
