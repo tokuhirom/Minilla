@@ -2,6 +2,13 @@ Revision history for Perl extension Minilla
 
 {{$NEXT}}
 
+v0.7.0 2013-09-26T05:07:27Z
+
+    - Support Module::Build::XSUtil
+      (hideo55)
+    - Support 'badges' attribute for showing travis badges!
+      (moznion)
+
 v0.6.8 2013-09-22T10:28:05Z
 
     - Better license support in minil.toml.
