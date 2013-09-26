@@ -13,7 +13,7 @@ sub auto_install { $AUTO_INSTALL }
 1;
 __END__
 
-=for stopwords MINILLA .mailmap mimick
+=for stopwords MINILLA .mailmap mimick XSUtil travis XSUtil.needs_compiler_cpp XSUtil.generate_xshelper_h XSUtil.cc_warnings
 
 =encoding utf8
 

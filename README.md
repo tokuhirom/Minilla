@@ -153,6 +153,12 @@ But, you can write configurations to _minil.toml_ file in [TOML](https://github.
     You can specify your favorite license on minil.toml. The license key is same as CPAN Meta spec 2.0.
     See [CPAN::Meta::Spec](http://search.cpan.org/perldoc?CPAN::Meta::Spec).
 
+- badges
+
+        badges = ['travis', 'coveralls']
+
+    Embed badges image (e.g. Travis-CI) to README.md. It ought to be array and each elements must be service name. Now, supported services are only 'travis' and 'coveralls'.
+
 - PL\_files
 
     Specify the PL files.
@@ -166,6 +172,42 @@ But, you can write configurations to _minil.toml_ file in [TOML](https://github.
 
         [build]
         build_class = builder::MyBuilder
+
+- XSUtil.needs\_compiler\_c99
+
+        [XSUtil]
+        needs_compiler_c99 = 1
+
+    You can specify `needs_compiler_c99` parameter of [Module::Build::XSUtil](http://search.cpan.org/perldoc?Module::Build::XSUtil).
+
+- XSUtil.needs\_compiler\_cpp
+
+        [XSUtil]
+        needs_compiler_cpp = 1
+
+    You can specify `needs_compiler_cpp` parameter of [Module::Build::XSUtil](http://search.cpan.org/perldoc?Module::Build::XSUtil).
+
+- XSUtil.generate\_ppport\_h
+
+        [XSUtil]
+        generate_ppport_h = 1
+
+    You can specify `generate_ppport_h` parameter of [Module::Build::XSUtil](http://search.cpan.org/perldoc?Module::Build::XSUtil).
+
+- XSUtil.generate\_xshelper\_h
+
+        [XSUtil]
+        generate_xshelper_h = 1
+        
+
+    You can specify `generate_xshelper_h` parameter of [Module::Build::XSUtil](http://search.cpan.org/perldoc?Module::Build::XSUtil).
+
+- XSUtil.cc\_warnings
+
+        [XSUtil]
+        cc_warnings = 1
+
+    You can specify `cc_warnings` parameter of [Module::Build::XSUtil](http://search.cpan.org/perldoc?Module::Build::XSUtil).
 
 - FileGatherer.exclude\_match
 
@@ -190,7 +232,7 @@ But, you can write configurations to _minil.toml_ file in [TOML](https://github.
         [release]
         pause_config="/path/to/some/.pause"
 
-    By setting this value to another PAUSE configuration file (see 
+    By setting this value to another PAUSE configuration file (see
     ["CONFIGURATION" in cpan\_upload](http://search.cpan.org/perldoc?cpan\_upload#CONFIGURATION) for the details), it is possible to use another
     PAUSE server (or anything good enough to mimick its upload process) for the
     release step.
