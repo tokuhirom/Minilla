@@ -3,7 +3,9 @@ use warnings;
 use utf8;
 use Test::More;
 use t::Util;
-use Test::Requires qw(Dist::Zilla);
+use Test::Requires {
+    'Dist::Zilla' => 4.300039
+};
 use File::Which;
 
 plan skip_all => "No dzil command" unless which 'dzil';
