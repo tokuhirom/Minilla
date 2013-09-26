@@ -26,7 +26,8 @@ sub generate {
 }
 
 sub prereqs {
-    return +{
+    my ($self, $project) = @_;
+    my $prereqs = +{
         configure => {
             requires => {
                 'Module::Build'       => 0.38,
@@ -34,7 +35,12 @@ sub prereqs {
                 'CPAN::Meta::Prereqs' => 0,
             }
         }
+    };
+    if( $project->use_xsutil ){
+        delete $prereqs->{configure}{requires}{'Module::Build'};
+        $prereqs->{configure}{requires}{'Module::Build::XSUtil'} = '0.03';
     }
+    return $prereqs;
 }
 
 1;
@@ -77,6 +83,14 @@ my %args = (
 
     test_files           => ((-d '.git' || $ENV{RELEASE_TESTING}) && -d 'xt') ? 't/ xt/' : 't/',
     recursive_test_files => 1,
+    
+? if( $project->use_xsutil ){
+    needs_compiler_c99 => <?= $project->needs_compiler_c99 ?>,
+    needs_compiler_cpp => <?= $project->needs_compiler_cpp ?>,
+    generate_ppport_h => <?= $project->generate_ppport_h ?>,
+    generate_xshelper_h => <?= $project->generate_xshelper_h ?>,
+    cc_warnings => <?= $project->cc_warnings ?>,
+? }
 );
 if (-d 'share') {
     $args{share_dir} = 'share';
