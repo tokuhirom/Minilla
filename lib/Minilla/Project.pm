@@ -224,12 +224,7 @@ sub _build_dist_name {
     }
     unless (defined $dist_name) {
         infof("Detecting project name from directory name.\n");
-        $dist_name = do {
-            local $_ = basename($self->dir);
-            $_ =~ s!--!-!g;
-            $_ =~ s!\Ap5-!!;
-            $_;
-        };
+        $dist_name = $self->_detect_project_name_from_dir;
     }
     if ($dist_name eq '.') { Carp::confess("Heh? " . $self->dir); }
 
@@ -240,6 +235,15 @@ sub _build_dist_name {
     return $dist_name;
 }
 
+sub _detect_project_name_from_dir {
+    my $self = shift;
+
+    local $_ = basename($self->dir);
+    $_ =~ s!--!-!g;
+    $_ =~ s!\Ap5-!!;
+    return $_;
+}
+
 sub _build_build_class {
     my $self = shift;
 
@@ -247,7 +251,7 @@ sub _build_build_class {
     if (my $conf = $self->config) {
         $build_class = $conf->{build}{build_class};
     }
-    
+
     return $build_class if $build_class;
 
     return $self->use_xsutil ? 'Module::Build::XSUtil' : 'Module::Build';
@@ -484,6 +488,15 @@ sub regenerate_meta_json {
     $meta->save(File::Spec->catfile($self->dir, 'META.json'), {
         version => '2.0'
     });
+}
+
+sub generate_minil_toml {
+    my $self = shift;
+
+    my $fname        = File::Spec->catfile($self->dir, 'minil.toml');
+    my $project_name = $self->_detect_project_name_from_dir;
+    my $content      = qq{name = "$project_name"};
+    spew_raw($fname, $content);
 }
 
 sub regenerate_readme_md {
