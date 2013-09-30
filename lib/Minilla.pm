@@ -117,6 +117,12 @@ You can write 'name' instead of automatically detecting project name out of the 
 
 You can specify the file to generate the README.md. This is a main module path by default.
 
+=item tag_format
+
+    tag_format="perl/%v"
+
+format of the tag to apply. Defaults to %v. C<%v> will replace with the distribution version.
+
 =item abstract_from
 
     abstract_from="lib/My/Foo.pod"

@@ -15,8 +15,9 @@ sub run {
         return;
     }
 
-    cmd('git', 'tag', $ver);
-    cmd('git', "push", 'origin', tag => $ver);
+    my $tag = $project->format_tag($ver);
+    cmd('git', 'tag', $tag);
+    cmd('git', "push", 'origin', tag => $tag);
 }
 
 1;

@@ -314,6 +314,16 @@ sub _case_insensitive_match {
     return $realpath;
 }
 
+sub format_tag {
+    my ($self, $version) = @_;
+    if (defined(my $format = $self->config->{tag_format})) {
+        (my $tag = $format) =~ s/%v/$version/;
+        $tag;
+    } else {
+        $version;
+    }
+}
+
 sub _detect_source_path {
     my ($self, $dir) = @_;
 

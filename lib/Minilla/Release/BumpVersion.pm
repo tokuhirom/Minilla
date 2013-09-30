@@ -38,7 +38,7 @@ sub run {
             # clear old version information
             $project->clear_metadata();
             my $newver = $project->metadata->version;
-            if (exists_tagged_version($newver)) {
+            if (exists_tag($project->format_tag($newver))) {
                 errorf("Sorry, version '%s' is already tagged.  Stopping.\n", $newver);
             }
         }
@@ -61,7 +61,7 @@ sub default_new_version {
     @_==2 or die;
 
     my $curver = $project->metadata->version;
-    if (not exists_tagged_version($curver)) {
+    if (not exists_tag($project->format_tag($curver))) {
         $curver;
     } else {
         # $project->metadata->version returns version.pm object.
@@ -70,10 +70,10 @@ sub default_new_version {
     }
 }
 
-sub exists_tagged_version {
-    my ( $ver ) = @_;
+sub exists_tag {
+    my ( $tag ) = @_;
 
-    my $x       = `git tag -l $ver`;
+    my $x       = `git tag -l $tag`;
     chomp $x;
     return !!$x;
 }
