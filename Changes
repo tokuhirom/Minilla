@@ -2,6 +2,10 @@ Revision history for Perl extension Minilla
 
 {{$NEXT}}
 
+v0.7.2 2013-09-30T07:38:09Z
+
+    - release again.
+
 v0.7.1 2013-09-30T07:30:08Z
 
     - Added tag_format option.
