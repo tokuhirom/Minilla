@@ -88,6 +88,12 @@ But, you can write configurations to _minil.toml_ file in [TOML](https://github.
 
     You can specify the file to generate the README.md. This is a main module path by default.
 
+- tag\_format
+
+        tag_format="perl/%v"
+
+    format of the tag to apply. Defaults to %v. `%v` will replace with the distribution version.
+
 - abstract\_from
 
         abstract_from="lib/My/Foo.pod"

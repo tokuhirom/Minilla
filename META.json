@@ -4,7 +4,7 @@
       "Tokuhiro Matsuno < tokuhirom@gmail.com >"
    ],
    "dynamic_config" : 0,
-   "generated_by" : "Minilla/v0.6.7, CPAN::Meta::Converter version 2.132661",
+   "generated_by" : "Minilla/v0.7.0, CPAN::Meta::Converter version 2.132510",
    "license" : [
       "perl_5"
    ],
@@ -105,7 +105,7 @@
          "web" : "https://github.com/tokuhirom/Minilla"
       }
    },
-   "version" : "v0.7.0",
+   "version" : "v0.7.1",
    "x_authority" : "cpan:TOKUHIROM",
    "x_contributors" : [
       "mattn <mattn.jp@gmail.com>",
