@@ -41,7 +41,7 @@ subtest 'Contributors are included in stopwords' => sub {
 
     my $work_dir = Minilla::Project->new()->work_dir();
     $work_dir->build;
-    my $spelling_test_file = catfile($work_dir->project->work_dir->dir, 'xt', 'spelling.t');
+    my $spelling_test_file = catfile($work_dir->project->work_dir->dir, 'xt', 'minilla', 'spelling.t');
 
     ok -f $spelling_test_file;
     my $spelling  = slurp($spelling_test_file);

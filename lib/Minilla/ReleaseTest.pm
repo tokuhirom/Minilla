@@ -13,7 +13,7 @@ use Minilla::Util qw(spew);
 sub write_release_tests {
     my ($class, $project, $dir) = @_;
 
-    mkpath(catfile($dir, 'xt'));
+    mkpath(catfile($dir, 'xt', 'minilla'));
 
     my $stopwords = do {
         my $append_people_into_stopwords = sub {
@@ -37,10 +37,10 @@ sub write_release_tests {
     };
     my $name = $project->dist_name;
     for my $file (qw(
-        xt/minimum_version.t
-        xt/cpan_meta.t
-        xt/pod.t
-        xt/spelling.t
+        xt/minilla/minimum_version.t
+        xt/minilla/cpan_meta.t
+        xt/minilla/pod.t
+        xt/minilla/spelling.t
     )) {
         infof("Writing release tests: %s\n", $file);
         my $content = get_data_section($file);
@@ -66,27 +66,27 @@ sub prereqs {
 1;
 __DATA__
 
-@@ xt/minimum_version.t
+@@ xt/minilla/minimum_version.t
 use Test::More;
 eval "use Test::MinimumVersion 0.101080";
 plan skip_all => "Test::MinimumVersion required for testing perl minimum version" if $@;
 all_minimum_version_from_metayml_ok();
 
-@@ xt/cpan_meta.t
+@@ xt/minilla/cpan_meta.t
 use Test::More;
 eval "use Test::CPAN::Meta";
 plan skip_all => "Test::CPAN::Meta required for testing META.yml" if $@;
 plan skip_all => "There is no META.yml" unless -f "META.yml";
 meta_yaml_ok();
 
-@@ xt/pod.t
+@@ xt/minilla/pod.t
 use strict;
 use Test::More;
 eval "use Test::Pod 1.41";
 plan skip_all => "Test::Pod 1.41 required for testing POD" if $@;
 all_pod_files_ok();
 
-@@ xt/spelling.t
+@@ xt/minilla/spelling.t
 use strict;
 use Test::More;
 use File::Spec;
