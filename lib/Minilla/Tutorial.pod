@@ -51,6 +51,9 @@ Now, make sure you have Changes file ready and have a new entry under C<{{$NEXT}
 
     % $EDITOR Changes
     % minil test
+
+Before you proceed to release step, please ensure the C<~/.pause> file is configured correctly because Minilla uses L<CPAN::Uploader> to upload your distribution to CPAN.  You can specify the location of PAUSE configuration file on I<minil.toml> if you want to.  See L<Minilla/"CONFIGURATION"> for further information.
+
     % minil release
 
 And your first release is done. The release is tagged on git and all the changes automatically made are committed to git as well.
