@@ -10,8 +10,7 @@ Minilla::Tutorial - Tutorial document for Minilla
 
     > cpanm Minilla
 
-You can install L<Minilla> from CPAN
-(I don't released yet@20130325)
+You can install L<Minilla> from CPAN.
 
 Unlike L<dzil>, you don't need to any setup. L<Minilla> aggregates user name and e-mail address from
 your C<~/.gitconfig> (You already set, isn't it?)
