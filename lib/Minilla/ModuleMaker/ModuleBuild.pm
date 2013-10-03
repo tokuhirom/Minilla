@@ -87,8 +87,8 @@ my %args = (
 ? if( $project->use_xsutil ){
     needs_compiler_c99 => <?= $project->needs_compiler_c99 ?>,
     needs_compiler_cpp => <?= $project->needs_compiler_cpp ?>,
-    generate_ppport_h => <?= $project->generate_ppport_h ?>,
-    generate_xshelper_h => <?= $project->generate_xshelper_h ?>,
+    generate_ppport_h => '<?= $project->generate_ppport_h ?>',
+    generate_xshelper_h => '<?= $project->generate_xshelper_h ?>',
     cc_warnings => <?= $project->cc_warnings ?>,
 ? }
 );
