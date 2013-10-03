@@ -8,10 +8,9 @@ Minilla::Tutorial - Tutorial document for Minilla
 
 =head2 Installing
 
-    % cpanm Minilla
+    > cpanm Minilla
 
-You can install L<Minilla> from CPAN
-(I don't released yet@20130325)
+You can install L<Minilla> from CPAN.
 
 Unlike L<dzil>, you don't need to any setup. L<Minilla> aggregates user name and e-mail address from
 your C<~/.gitconfig> (You already set, isn't it?)
@@ -20,24 +19,24 @@ your C<~/.gitconfig> (You already set, isn't it?)
 
 Now it's time to make a new distribution.
 
-    % minil new Dist-Name
-    % cd Dist-Name/
+    > minil new Dist-Name
+    > cd Dist-Name/
 
 At this point, you will have a really simple Dist-Name directory that contains your module file with as minimum boilerplate as possible.
 
 L<minil> done C<git init> and C<git add .>. You need to commit it ASAP.
 
-    % git commit -m 'initial import'
+    > git commit -m 'initial import'
 
 Now start writing your code, edit the docs, tests and manage CPAN dependencies with L<cpanfile>.
 
-    % $EDITOR lib/Dist/Name.pm t/dist-name.t cpanfile
+    > $EDITOR lib/Dist/Name.pm t/dist-name.t cpanfile
 
 =head2 Making the first release
 
 When you get confident and it's about time to ship to CPAN, use the test and release command. Before doing so, make sure your git directory is not dirty i.e. all changes are committed.
 
-    % git commit -a -m "Done initial version"
+    > git commit -a -m "Done initial version"
 
 Minilla assumes you have a git remote setup so that you can push all your changes to. I recommend you to use either hub gem or L<App::ph> to create a new github repository.
 
@@ -49,9 +48,9 @@ Minilla assumes you have a git remote setup so that you can push all your change
 
 Now, make sure you have Changes file ready and have a new entry under C<{{$NEXT}}>, which will be expanded to the next version of your module.
 
-    % $EDITOR Changes
-    % minil test
-    % minil release
+    > $EDITOR Changes
+    > minil test
+    > minil release
 
 And your first release is done. The release is tagged on git and all the changes automatically made are committed to git as well.
 
@@ -71,8 +70,8 @@ Then make sure to edit Changes file and contain entries for the next release und
 
 Now, make a release!
 
-    % minil test
-    % minil release
+    > minil test
+    > minil release
 
 The release command will automatically bump the version for you - if you have 0.10, the next version will be 0.11 by default, but you will be prompted to confirm that version in case you need a major bump.
 
@@ -103,7 +102,7 @@ The easiest way to convert existing dependencies to cpanfile is to use the comma
     on test => sub {
         requires 'Test::More', '0.86';
     }
-        
+    
     ...
 
 You can redirect the output to cpanfile if you like. It is important to pass --no-configure option here, since otherwise modules like ExtUtils::MakeMaker will be included. It is not required with Minilla setup, since Minilla knows which configuration tool (installer) to use and include them in META files upon the releases. You can leave that out from the cpanfile.
@@ -156,7 +155,7 @@ Also, new C<Build.PL>, C<META.json> and C<README.md> are added in your
 working directory for git-friendliness. C<git add> them and commit it.
 
    > git add Build.PL META.json README.md && git commit -m "git stuff"
-    
+
 Now you're ready to roll a new release with Minilla. Before doing so,
 convert your C<Changes> file format a little bit, and make sure you
 have a following header in the top:
@@ -168,9 +167,9 @@ have a following header in the top:
 The C<{{$NEXT}}> is a template variable that gets replaced with the
 version and date string, when you make a next release. This is almost
 the I<only> change you're required to make in your code base.
- 
+
 Now, run the release command:
-  
+
     > minil release
 
 to make a new release, in the same way described above for a new Minilla
