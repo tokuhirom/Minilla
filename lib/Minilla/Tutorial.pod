@@ -8,7 +8,7 @@ Minilla::Tutorial - Tutorial document for Minilla
 
 =head2 Installing
 
-    % cpanm Minilla
+    > cpanm Minilla
 
 You can install L<Minilla> from CPAN
 (I don't released yet@20130325)
@@ -20,24 +20,24 @@ your C<~/.gitconfig> (You already set, isn't it?)
 
 Now it's time to make a new distribution.
 
-    % minil new Dist-Name
-    % cd Dist-Name/
+    > minil new Dist-Name
+    > cd Dist-Name/
 
 At this point, you will have a really simple Dist-Name directory that contains your module file with as minimum boilerplate as possible.
 
 L<minil> done C<git init> and C<git add .>. You need to commit it ASAP.
 
-    % git commit -m 'initial import'
+    > git commit -m 'initial import'
 
 Now start writing your code, edit the docs, tests and manage CPAN dependencies with L<cpanfile>.
 
-    % $EDITOR lib/Dist/Name.pm t/dist-name.t cpanfile
+    > $EDITOR lib/Dist/Name.pm t/dist-name.t cpanfile
 
 =head2 Making the first release
 
 When you get confident and it's about time to ship to CPAN, use the test and release command. Before doing so, make sure your git directory is not dirty i.e. all changes are committed.
 
-    % git commit -a -m "Done initial version"
+    > git commit -a -m "Done initial version"
 
 Minilla assumes you have a git remote setup so that you can push all your changes to. I recommend you to use either hub gem or L<App::ph> to create a new github repository.
 
@@ -49,9 +49,9 @@ Minilla assumes you have a git remote setup so that you can push all your change
 
 Now, make sure you have Changes file ready and have a new entry under C<{{$NEXT}}>, which will be expanded to the next version of your module.
 
-    % $EDITOR Changes
-    % minil test
-    % minil release
+    > $EDITOR Changes
+    > minil test
+    > minil release
 
 And your first release is done. The release is tagged on git and all the changes automatically made are committed to git as well.
 
@@ -71,8 +71,8 @@ Then make sure to edit Changes file and contain entries for the next release und
 
 Now, make a release!
 
-    % minil test
-    % minil release
+    > minil test
+    > minil release
 
 The release command will automatically bump the version for you - if you have 0.10, the next version will be 0.11 by default, but you will be prompted to confirm that version in case you need a major bump.
 
