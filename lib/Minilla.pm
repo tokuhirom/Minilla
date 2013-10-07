@@ -162,7 +162,7 @@ Minilla sets bugtracker as github issues by default. But if you want to use RT, 
     [no_index]
     directory=['t', 'xt', 'tools']
 
-Minilla sets META.json's no_index as C<< directory => ['t', 'xt', 'inc', 'share', 'eg', 'examples', 'author'] >>
+Minilla sets META.json's no_index as C<< directory => ['t', 'xt', 'inc', 'share', 'eg', 'examples', 'author', 'builder'] >>
 by default. But if you want to change them, you can set this section variable. If this section is set,
 specified variables are only used, in fact default settings are not merged.
 

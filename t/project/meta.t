@@ -47,7 +47,7 @@ subtest 'develop deps' => sub {
     is_deeply(
         $meta->no_index,
         {
-            directory => [qw/t xt inc share eg examples author/],
+            directory => [qw/t xt inc share eg examples author builder/],
         },
     );
 

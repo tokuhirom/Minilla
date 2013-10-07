@@ -72,7 +72,7 @@ has no_index => (
             $self->config->{no_index} :
             {
                 directory => [qw(
-                    t xt inc share eg examples author
+                    t xt inc share eg examples author builder
                 ) ]
             };
     },

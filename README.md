@@ -133,7 +133,7 @@ But, you can write configurations to _minil.toml_ file in [TOML](https://github.
         [no_index]
         directory=['t', 'xt', 'tools']
 
-    Minilla sets META.json's no\_index as `directory => ['t', 'xt', 'inc', 'share', 'eg', 'examples', 'author']`
+    Minilla sets META.json's no\_index as `directory => ['t', 'xt', 'inc', 'share', 'eg', 'examples', 'author', 'builder']`
     by default. But if you want to change them, you can set this section variable. If this section is set,
     specified variables are only used, in fact default settings are not merged.
 
@@ -177,7 +177,7 @@ But, you can write configurations to _minil.toml_ file in [TOML](https://github.
     Specify a custom Module::Build subclass.
 
         [build]
-        build_class = builder::MyBuilder
+        build_class = "builder::MyBuilder"
 
 - XSUtil.needs\_compiler\_c99
 
