@@ -206,7 +206,7 @@ Specify the PL files.
 Specify a custom Module::Build subclass.
 
     [build]
-    build_class = builder::MyBuilder
+    build_class = "builder::MyBuilder"
 
 =item XSUtil.needs_compiler_c99
 
