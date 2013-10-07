@@ -2,6 +2,11 @@ Revision history for Perl extension Minilla
 
 {{$NEXT}}
 
+v0.7.4 2013-10-07T00:41:07Z
+
+    - Added 'builder' directory as default no_index.
+      (tokuhirom)
+
 v0.7.3 2013-10-05T00:32:34Z
 
     - Fixed a problem when you specify a path string in XSUtil section
