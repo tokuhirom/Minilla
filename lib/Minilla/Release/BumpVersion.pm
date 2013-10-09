@@ -50,6 +50,7 @@ sub bump_version {
 
     for my $file ($project->perl_files) {
         next if $file =~ /\.t$/;
+        next if $file =~ m{\Ashare/};
 
         my $bump = Module::BumpVersion->load($file);
         $bump->set_version($version);
