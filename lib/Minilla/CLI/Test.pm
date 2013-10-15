@@ -24,7 +24,6 @@ sub run {
         'author!'    => \$author,
         'automated!' => \$automated,
         'all!'       => \$all,
-        'core-only!' => \my $core_only, # Experimental, Undocumented.
     );
 
     if ($all) {
@@ -32,17 +31,7 @@ sub run {
     }
 
     my $project = Minilla::Project->new();
-    if ($core_only) {
-        my $guard = pushd($project->work_dir->dir);
-        system('cpanm', '--with-recommends', '--notest', '-L', '_local_lib/', '--installdeps', '.')==0
-            or die "ABORT\n";
-        $ENV{PERL5OPT} = sprintf('-Mlib::core::only -Mlib=%s -Mlib=%s',
-            File::Spec->rel2abs('_local_lib/lib/perl5'),
-            File::Spec->rel2abs('lib')
-        );
-    } else {
-        $project->verify_prereqs( [qw(develop test runtime)], $_ ) for qw(requires recommends);
-    }
+    $project->verify_prereqs( [qw(develop test runtime)], $_ ) for qw(requires recommends);
 
     $ENV{RELEASE_TESTING}   =1 if $release   == 0;
     $ENV{AUTHOR_TESTING}    =1 if $author    == 0;
