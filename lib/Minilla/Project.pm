@@ -489,6 +489,10 @@ sub regenerate_files {
     $self->regenerate_meta_json();
     $self->regenerate_readme_md();
     $self->module_maker->generate($self);
+    if (Cwd::getcwd() ne $self->dir) {
+        my $guard = pushd($self->dir);
+        $self->module_maker->generate($self);
+    }
 }
 
 sub regenerate_meta_json {
