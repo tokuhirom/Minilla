@@ -4,7 +4,7 @@
       "Tokuhiro Matsuno < tokuhirom@gmail.com >"
    ],
    "dynamic_config" : 0,
-   "generated_by" : "Minilla/v0.7.0, CPAN::Meta::Converter version 2.132510",
+   "generated_by" : "Minilla/v0.7.5, CPAN::Meta::Converter version 2.132510",
    "license" : [
       "perl_5"
    ],
@@ -21,7 +21,8 @@
          "share",
          "eg",
          "examples",
-         "author"
+         "author",
+         "builder"
       ]
    },
    "prereqs" : {
@@ -105,7 +106,7 @@
          "web" : "https://github.com/tokuhirom/Minilla"
       }
    },
-   "version" : "v0.7.5",
+   "version" : "v0.8.0",
    "x_authority" : "cpan:TOKUHIROM",
    "x_contributors" : [
       "mattn <mattn.jp@gmail.com>",
@@ -126,6 +127,8 @@
       "moznion <moznion@gmail.com>",
       "hideo55 <hide.o.j55@gmail.com>",
       "ITO Nobuaki <daydream.trippers@gmail.com>",
+      "ysasaki <aloelight@gmail.com>",
+      "Shoichi Kaji <skaji@outlook.com>",
       "tokuhirom <tokuhirom@gmail.com>"
    ]
 }

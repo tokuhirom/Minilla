@@ -2,6 +2,13 @@ Revision history for Perl extension Minilla
 
 {{$NEXT}}
 
+v0.8.0 2013-10-15T04:48:11Z
+
+    - Supports git-submodule
+      (ysasaki)
+    - Regenerate Build.PL after
+      (Shoichi Kaji)
+
 v0.7.5 2013-10-09T04:05:16Z
 
     - Do not bump up version in share/ directory.
