@@ -7,6 +7,7 @@ use Minilla::Util qw(slurp_raw spew_raw);
 sub run {
     my ($self, $project, $opts) = @_;
     return if $opts->{dry_run};
+    return if !$ENV{FAKE_RELEASE};
 
     my $content = slurp_raw('Changes');
     $content =~ s!\{\{\$NEXT\}\}!

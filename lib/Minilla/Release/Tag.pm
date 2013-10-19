@@ -14,10 +14,12 @@ sub run {
         infof("DRY-RUN.  Would have tagged version $ver.\n");
         return;
     }
-
-    my $tag = $project->format_tag($ver);
-    cmd('git', 'tag', $tag);
-    cmd('git', "push", 'origin', tag => $tag);
+    
+    if(!$ENV{FAKE_RELEASE}){
+        my $tag = $project->format_tag($ver);
+        cmd('git', 'tag', $tag);
+        cmd('git', "push", 'origin', tag => $tag);
+    }
 }
 
 1;
