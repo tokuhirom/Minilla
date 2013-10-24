@@ -228,6 +228,7 @@ sub migrate_gitignore {
         /.build
         /_build_params
         /Build
+        /Build.bat
         !Build/
         !META.json
         !LICENSE
