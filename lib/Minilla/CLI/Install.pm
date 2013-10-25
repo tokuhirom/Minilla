@@ -26,7 +26,7 @@ sub run {
 
     cmd(
         'cpanm',
-        ($test ? () : ('--notest')),
+        '--notest',
         $tar
     );
     unlink($tar) unless Minilla->debug;
