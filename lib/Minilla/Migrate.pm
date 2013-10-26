@@ -35,6 +35,12 @@ sub _build_project {
 sub run {
     my $self = shift;
 
+    if (!-d '.git') {
+        # init git repo
+        infof("Initializing git\n");
+        cmd('git', 'init');
+    }
+
     my $guard = pushd($self->project->dir);
 
     # Generate cpanfile from Build.PL/Makefile.PL
