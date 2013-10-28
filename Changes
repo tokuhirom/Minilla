@@ -2,6 +2,15 @@ Revision history for Perl extension Minilla
 
 {{$NEXT}}
 
+v0.8.1 2013-10-28T04:45:46Z
+
+    - git init before migrating if necessary
+      (charsbar)
+    - do not test twice on installation by default.
+      (charsbar)
+    - ignore /Build.bat (generated when you run "perl Build.PL" on Win32)
+      (charsbar)
+
 v0.8.0 2013-10-15T04:48:11Z
 
     - Supports git-submodule

@@ -106,7 +106,7 @@
          "web" : "https://github.com/tokuhirom/Minilla"
       }
    },
-   "version" : "v0.8.0",
+   "version" : "v0.8.1",
    "x_authority" : "cpan:TOKUHIROM",
    "x_contributors" : [
       "mattn <mattn.jp@gmail.com>",
@@ -122,13 +122,13 @@
       "Ryo Okamoto <ryo@aquahill.net>",
       "Oleg Gashev <oleg@gashev.net>",
       "Daisuke Maki <lestrrat+github@gmail.com>",
-      "Kenichi Ishigaki <ishigaki@cpan.org>",
       "keita.iseki <keita.iseki@gmail.com>",
       "moznion <moznion@gmail.com>",
       "hideo55 <hide.o.j55@gmail.com>",
       "ITO Nobuaki <daydream.trippers@gmail.com>",
       "ysasaki <aloelight@gmail.com>",
       "Shoichi Kaji <skaji@outlook.com>",
+      "Kenichi Ishigaki <ishigaki@cpan.org>",
       "tokuhirom <tokuhirom@gmail.com>"
    ]
 }
