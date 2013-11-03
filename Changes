@@ -2,6 +2,11 @@ Revision history for Perl extension Minilla
 
 {{$NEXT}}
 
+v0.8.2 2013-11-03T10:30:11Z
+
+    - Added exmperimental support for tap_harness_args.
+      (tokuhirom)
+
 v0.8.1 2013-10-28T04:45:46Z
 
     - git init before migrating if necessary
