@@ -132,6 +132,11 @@ sub badges {
     $self->config->{badges} || [];
 }
 
+sub tap_harness_args {
+    my $self = shift;
+    $self->config->{tap_harness_args};
+}
+
 sub use_xsutil {
     my $self = shift;
     return defined $self->config->{XSUtil} ? 1 : 0;

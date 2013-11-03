@@ -152,6 +152,13 @@ But, you can write configurations to _minil.toml_ file in [TOML](https://github.
 
     Minilla sets install script files as `['script/*', 'bin/*']` by default.
 
+- tap\_harness\_args(EXPERIMENTAL)
+
+        [tap_harness_args]
+        jobs=19
+
+    This parameters pass to TAP::Harness when running tests. See the [TAP::Harness](http://search.cpan.org/perldoc?TAP::Harness) documentation for details.
+
 - license
 
         license="artistic_2"

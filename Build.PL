@@ -33,6 +33,8 @@ my %args = (
 
     test_files           => ((-d '.git' || $ENV{RELEASE_TESTING}) && -d 'xt') ? 't/ xt/' : 't/',
     recursive_test_files => 1,
+
+    tap_harness_args => {"jobs" => 3},
     
 );
 if (-d 'share') {

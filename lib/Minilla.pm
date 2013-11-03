@@ -181,6 +181,13 @@ linking phases of any C or XS files.
 
 Minilla sets install script files as C<< ['script/*', 'bin/*'] >> by default.
 
+=item tap_harness_args(EXPERIMENTAL)
+
+    [tap_harness_args]
+    jobs=19
+
+This parameters pass to TAP::Harness when running tests. See the L<TAP::Harness> documentation for details.
+
 =item license
 
     license="artistic_2"

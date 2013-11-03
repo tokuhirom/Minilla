@@ -1,0 +1,5 @@
+name="Minilla"
+authority = "cpan:TOKUHIROM"
+
+[tap_harness_args]
+jobs=3
