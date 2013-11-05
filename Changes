@@ -2,6 +2,18 @@ Revision history for Perl extension Minilla
 
 {{$NEXT}}
 
+v0.8.3 2013-11-05T02:59:38Z
+
+    [BUG FIX]
+    -  Fixed `minil release --no-test`.
+      The flag does not affected on older version.
+      (hirobanex)
+
+    [DOCUMENTATION]
+    - Delete note that upload uri is unofficiall.
+      Added notes about OrePAN2::Server.
+      (hirobanex)
+
 v0.8.2 2013-11-03T10:30:11Z
 
     - Added exmperimental support for tap_harness_args.

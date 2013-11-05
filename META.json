@@ -87,6 +87,7 @@
             "CPAN::Meta::Validator" : "0",
             "File::Temp" : "0",
             "Test::More" : "0.98",
+            "Test::Output" : "0",
             "Test::Requires" : "0"
          },
          "suggests" : {
@@ -106,7 +107,7 @@
          "web" : "https://github.com/tokuhirom/Minilla"
       }
    },
-   "version" : "v0.8.2",
+   "version" : "v0.8.3",
    "x_authority" : "cpan:TOKUHIROM",
    "x_contributors" : [
       "mattn <mattn.jp@gmail.com>",
@@ -129,6 +130,7 @@
       "ysasaki <aloelight@gmail.com>",
       "Shoichi Kaji <skaji@outlook.com>",
       "Kenichi Ishigaki <ishigaki@cpan.org>",
+      "Hiroyuki Akabane <hirobanex@gmail.com>",
       "tokuhirom <tokuhirom@gmail.com>"
    ]
 }

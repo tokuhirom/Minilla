@@ -255,7 +255,7 @@ But, you can write configurations to _minil.toml_ file in [TOML](https://github.
 
         upload_uri http://127.0.0.1:5000/pause/authenquery
 
-    Note that this feature is not officially documented in [CPAN::Uploader](http://search.cpan.org/perldoc?CPAN::Uploader).
+    If you instantly launch your origin upload server as DarkPAN, See [OrePAN2::Server](http://search.cpan.org/perldoc?OrePAN2::Server).
 
 # FAQ
 
