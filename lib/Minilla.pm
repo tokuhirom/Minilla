@@ -300,7 +300,7 @@ You can merge accounts by .mailmap file. See L<https://www.kernel.org/pub/softwa
 =item Why don't you provide plug-in support?
 
 If you want a pluggable tool, it already exists: It's called L<Dist::Zilla> :P
-If you like Minilla's behaviro but you really want something pluggable, you can use L<Dist::Milla>, Minilla's sister project.
+If you like Minilla's behavior but you really want something pluggable, you can use L<Dist::Milla>, Minilla's sister project.
 L<Dist::Milla>'s behavior is almost identical to that of Minilla.
 
 =item Why does minil only support git?
