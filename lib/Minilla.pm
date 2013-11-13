@@ -299,11 +299,11 @@ You can merge accounts by .mailmap file. See L<https://www.kernel.org/pub/softwa
 
 =item Why don't you provide plug-in support?
 
-If you want to pluggable thing, it's already exist dzil :P
-And if you like a behavior like Minilla, you can use L<Dist::Milla>, the sister project of Minilla.
-L<Dist::Milla>'s behavior is mostly like Minilla.
+If you want a pluggable tool, it already exists: It's called L<Dist::Zilla> :P
+If you like Minilla's behaviro but you really want something pluggable, you can use L<Dist::Milla>, Minilla's sister project.
+L<Dist::Milla>'s behavior is almost identical to that of Minilla.
 
-=item Why minil only supports git?
+=item Why does minil only support git?
 
 I think git is a best VC for CPAN modules, for now.
 
