@@ -253,7 +253,7 @@ You can specify C<cc_warnings> parameter of L<Module::Build::XSUtil>.
 =item FileGatherer.exclude_match
 
     [FileGatherer]
-    exclude_match=['^author_tools/.*']
+    exclude_match = ['^author_tools/.*']
 
 Nothing by default. To exclude certain files from being gathered into dist, use the
 C<exclude_match> option. Files matching the patterns are not gathered.
@@ -261,7 +261,7 @@ C<exclude_match> option. Files matching the patterns are not gathered.
 =item FileGatherer.include_dotfiles
 
     [FileGatherer]
-    include_dotfiles=false
+    include_dotfiles = false
 
 By default, files will not be included in dist if they begin with a dot. This goes
 both for files and for directories.
@@ -271,7 +271,7 @@ In almost all cases, the default value (false) is correct.
 =item release.pause_config
 
     [release]
-    pause_config="/path/to/some/.pause"
+    pause_config = "/path/to/some/.pause"
 
 By setting this value to another PAUSE configuration file (see
 L<cpan_upload/CONFIGURATION> for the details), it is possible to use another
@@ -300,7 +300,7 @@ You can merge accounts by .mailmap file. See L<https://www.kernel.org/pub/softwa
 =item Why don't you provide plug-in support?
 
 If you want a pluggable tool, it already exists: It's called L<Dist::Zilla> :P
-If you like Minilla's behaviro but you really want something pluggable, you can use L<Dist::Milla>, Minilla's sister project.
+If you like Minilla's behavior but you really want something pluggable, you can use L<Dist::Milla>, Minilla's sister project.
 L<Dist::Milla>'s behavior is almost identical to that of Minilla.
 
 =item Why does minil only support git?
