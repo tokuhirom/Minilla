@@ -330,6 +330,12 @@ Your executables must be in F<script/>. It's L<Module::Build::Tiny>'s rule.
 You can use experimental `minil migrate` sub-command.
 See L<Minilla::CLI::Migrate> for more details.
 
+=item How should I manage the files you do not want to upload to CPAN?
+
+Please use FileGatherer.exclude_match for ignoring files to upload tar ball.
+
+You can use MANIFEST.SKIP file for ignoring files. ref. L<ExtUtils::Manifest>.
+
 =back
 
 =head1 AUTHORS
