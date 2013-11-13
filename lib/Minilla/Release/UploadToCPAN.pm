@@ -20,6 +20,8 @@ sub run {
 
     if ($opts->{dry_run} || $ENV{FAKE_RELEASE}) {
         infof("Dry run. You don't need the module upload to CPAN\n");
+    } elsif ($project->config->{release}->{do_not_upload_to_cpan}) {
+        infof("You disabled CPAN uploading feature in minil.toml.\n");
     } else {
         infof("Upload to CPAN\n");
 

@@ -2,6 +2,11 @@ Revision history for Perl extension Minilla
 
 {{$NEXT}}
 
+v0.9.0 2013-11-13T11:07:20Z
+
+    - Added release.do_not_upload_to_cpan
+      (tokuhirom)
+
 v0.8.4 2013-11-11T06:59:28Z
 
     - Add 5.18 to default .travis.yml

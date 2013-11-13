@@ -2,7 +2,7 @@ package Minilla;
 use strict;
 use warnings;
 use 5.008005;
-use version; our $VERSION = version->declare("v0.8.4");
+use version; our $VERSION = version->declare("v0.9.0");
 
 our $DEBUG;
 our $AUTO_INSTALL;
@@ -284,6 +284,13 @@ server, i.e :
     upload_uri http://127.0.0.1:5000/pause/authenquery
 
 If you instantly launch your origin upload server as DarkPAN, See L<OrePAN2::Server>.
+
+=item release.do_not_upload_to_cpan
+
+    [release]
+    do_not_upload_to_cpan=true
+
+This variable disables CPAN upload feature.
 
 =back
 

@@ -225,7 +225,7 @@ But, you can write configurations to _minil.toml_ file in [TOML](https://github.
 - FileGatherer.exclude\_match
 
         [FileGatherer]
-        exclude_match=['^author_tools/.*']
+        exclude_match = ['^author_tools/.*']
 
     Nothing by default. To exclude certain files from being gathered into dist, use the
     `exclude_match` option. Files matching the patterns are not gathered.
@@ -233,7 +233,7 @@ But, you can write configurations to _minil.toml_ file in [TOML](https://github.
 - FileGatherer.include\_dotfiles
 
         [FileGatherer]
-        include_dotfiles=false
+        include_dotfiles = false
 
     By default, files will not be included in dist if they begin with a dot. This goes
     both for files and for directories.
@@ -243,7 +243,7 @@ But, you can write configurations to _minil.toml_ file in [TOML](https://github.
 - release.pause\_config
 
         [release]
-        pause_config="/path/to/some/.pause"
+        pause_config = "/path/to/some/.pause"
 
     By setting this value to another PAUSE configuration file (see
     ["CONFIGURATION" in cpan\_upload](http://search.cpan.org/perldoc?cpan\_upload#CONFIGURATION) for the details), it is possible to use another
@@ -257,6 +257,13 @@ But, you can write configurations to _minil.toml_ file in [TOML](https://github.
 
     If you instantly launch your origin upload server as DarkPAN, See [OrePAN2::Server](http://search.cpan.org/perldoc?OrePAN2::Server).
 
+- release.do\_not\_upload\_to\_cpan
+
+        [release]
+        do_not_upload_to_cpan=true
+
+    This variable disables CPAN upload feature.
+
 # FAQ
 
 - How can I manage __contributors__ section?
@@ -267,11 +274,11 @@ But, you can write configurations to _minil.toml_ file in [TOML](https://github.
 
 - Why don't you provide plug-in support?
 
-    If you want to pluggable thing, it's already exist dzil :P
-    And if you like a behavior like Minilla, you can use [Dist::Milla](http://search.cpan.org/perldoc?Dist::Milla), the sister project of Minilla.
-    [Dist::Milla](http://search.cpan.org/perldoc?Dist::Milla)'s behavior is mostly like Minilla.
+    If you want a pluggable tool, it already exists: It's called [Dist::Zilla](http://search.cpan.org/perldoc?Dist::Zilla) :P
+    If you like Minilla's behavior but you really want something pluggable, you can use [Dist::Milla](http://search.cpan.org/perldoc?Dist::Milla), Minilla's sister project.
+    [Dist::Milla](http://search.cpan.org/perldoc?Dist::Milla)'s behavior is almost identical to that of Minilla.
 
-- Why minil only supports git?
+- Why does minil only support git?
 
     I think git is a best VC for CPAN modules, for now.
 
@@ -297,6 +304,12 @@ But, you can write configurations to _minil.toml_ file in [TOML](https://github.
 
     You can use experimental \`minil migrate\` sub-command.
     See [Minilla::CLI::Migrate](http://search.cpan.org/perldoc?Minilla::CLI::Migrate) for more details.
+
+- How should I manage the files you do not want to upload to CPAN?
+
+    Please use FileGatherer.exclude\_match for ignoring files to upload tar ball.
+
+    You can use MANIFEST.SKIP file for ignoring files. ref. [ExtUtils::Manifest](http://search.cpan.org/perldoc?ExtUtils::Manifest).
 
 # AUTHORS
 
