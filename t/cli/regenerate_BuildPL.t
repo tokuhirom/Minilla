@@ -3,7 +3,7 @@ use warnings;
 use utf8;
 use Test::More;
 use t::Util;
-use Test::Requires 'Version::Next';
+use Test::Requires 'Version::Next', 'CPAN::Uploader';
 use Minilla::CLI::Build;
 use Minilla::CLI::Dist;
 use Minilla::CLI::New;
