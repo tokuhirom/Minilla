@@ -74,7 +74,7 @@ _minil()
     release)
       subcommands=''
       if [[ "${cur}" == -* ]] ; then
-        subcommands='--no-test --trial --dry-test --help'
+        subcommands='--no-test --trial --dry-run --pause-config --help'
       fi
       ;;
     migrate)
