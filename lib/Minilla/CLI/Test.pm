@@ -33,9 +33,9 @@ sub run {
     my $project = Minilla::Project->new();
     $project->verify_prereqs( );
 
-    $ENV{RELEASE_TESTING}   =1 if $release   == 0;
-    $ENV{AUTHOR_TESTING}    =1 if $author    == 0;
-    $ENV{AUTOMATED_TESTING} =1 if $automated == 0;
+    $ENV{RELEASE_TESTING}   =1 if $release;
+    $ENV{AUTHOR_TESTING}    =1 if $author;
+    $ENV{AUTOMATED_TESTING} =1 if $automated;
 
     my $work_dir = $project->work_dir;
     my $code = $work_dir->dist_test(@args);
