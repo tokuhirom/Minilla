@@ -2,7 +2,7 @@ package Minilla;
 use strict;
 use warnings;
 use 5.008005;
-use version; our $VERSION = version->declare("v0.9.1");
+use version; our $VERSION = version->declare("v0.10.0");
 
 our $DEBUG;
 our $AUTO_INSTALL;
@@ -146,7 +146,7 @@ See L<http://jawnsy.wordpress.com/2011/02/20/what-is-x_authority/> for more deta
 
     allow_pureperl=1
 
-A bool indicating the module is still functional without its XS parts.  When an XS module is build
+A boolean indicating the module is still functional without its XS parts.  When an XS module is build
 with C<--pureperl_only>, it will otherwise fail.
 
 It affects to L<Module::Build> 0.4005+ only.
@@ -297,7 +297,7 @@ This variable disables CPAN upload feature.
     [ReleaseTest]
     MinimumVersion = false
 
-If you set this key false, minilla will not generate 'xt/minilla/minimum_version.t'.
+If you set this key false, Minilla will not generate 'xt/minilla/minimum_version.t'.
 
 =back
 

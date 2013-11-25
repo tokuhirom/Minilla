@@ -2,6 +2,11 @@ Revision history for Perl extension Minilla
 
 {{$NEXT}}
 
+v0.10.0 2013-11-25T13:26:03Z
+
+    - ReleaseTest.MinimumVersion for skipping Test::MinimumVersion test.
+      (Suggested by gfx)
+
 v0.9.1 2013-11-25T07:55:49Z
 
     - Fixed logic in `minil test`.

@@ -117,7 +117,7 @@ But, you can write configurations to _minil.toml_ file in [TOML](https://github.
 
         allow_pureperl=1
 
-    A bool indicating the module is still functional without its XS parts.  When an XS module is build
+    A boolean indicating the module is still functional without its XS parts.  When an XS module is build
     with `--pureperl_only`, it will otherwise fail.
 
     It affects to [Module::Build](http://search.cpan.org/perldoc?Module::Build) 0.4005+ only.
@@ -263,6 +263,13 @@ But, you can write configurations to _minil.toml_ file in [TOML](https://github.
         do_not_upload_to_cpan=true
 
     This variable disables CPAN upload feature.
+
+- ReleaseTest.MinimumVersion
+
+        [ReleaseTest]
+        MinimumVersion = false
+
+    If you set this key false, Minilla will not generate 'xt/minilla/minimum\_version.t'.
 
 # FAQ
 
