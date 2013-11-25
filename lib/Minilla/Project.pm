@@ -514,8 +514,11 @@ sub generate_minil_toml {
 
     my $fname        = File::Spec->catfile($self->dir, 'minil.toml');
     my $project_name = $self->_detect_project_name_from_dir;
-    my $content      = qq{name = "$project_name"};
-    spew_raw($fname, $content);
+    my $content      = join("\n",
+        qq{name = "$project_name"},
+        qq{# badges = ["travis"]},
+    );
+    spew_raw($fname, $content . "\n");
 }
 
 sub regenerate_readme_md {
