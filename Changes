@@ -2,6 +2,17 @@ Revision history for Perl extension Minilla
 
 {{$NEXT}}
 
+v0.9.1 2013-11-25T07:55:49Z
+
+    - Fixed logic in `minil test`.
+      (tokuhirom)
+    - Inject the badges line in minil.toml skelton.
+      (tokuhirom)
+    - Update bash/zsh completion
+      (Syohei YOSHIDA)
+    - Display upload url when prompting for upload if `upload_uri` is specified in `pause_config`
+      (Songmu)
+
 v0.9.0 2013-11-13T11:07:20Z
 
     - Added release.do_not_upload_to_cpan
