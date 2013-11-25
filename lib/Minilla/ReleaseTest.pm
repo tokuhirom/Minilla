@@ -35,6 +35,8 @@ sub write_release_tests {
         local $Data::Dumper::Indent = 0;
         Data::Dumper::Dumper([map { split /\s+/, $_ } @stopwords]);
     };
+
+    my $config = $project->config->{ReleaseTest};
     my $name = $project->dist_name;
     for my $file (qw(
         xt/minilla/minimum_version.t
@@ -43,6 +45,12 @@ sub write_release_tests {
         xt/minilla/spelling.t
     )) {
         infof("Writing release tests: %s\n", $file);
+
+        if ($file eq 'xt/minilla/minimum_version.t' && $config->{MinimumVersion} eq 'false') {
+            infof("Skipping MinimumVersion");
+            next;
+        }
+
         my $content = get_data_section($file);
         $content =~s!<<DIST>>!$name!g;
         $content =~s!<<STOPWORDS>>!$stopwords!g;

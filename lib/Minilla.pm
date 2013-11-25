@@ -292,6 +292,13 @@ If you instantly launch your origin upload server as DarkPAN, See L<OrePAN2::Ser
 
 This variable disables CPAN upload feature.
 
+=item ReleaseTest.MinimumVersion
+
+    [ReleaseTest]
+    MinimumVersion = false
+
+If you set this key false, minilla will not generate 'xt/minilla/minimum_version.t'.
+
 =back
 
 =head1 FAQ
