@@ -25,7 +25,12 @@ sub run {
     } else {
         infof("Upload to CPAN\n");
 
-        unless (prompt("Release to CPAN?", 'y') =~ /y/i) {
+        my $pause_config = ($opts->{pause_config})          ? $opts->{pause_config}
+            : ($project->config->{release}->{pause_config}) ? $project->config->{release}->{pause_config}
+            :                                                 undef;
+        my $config = CPAN::Uploader->read_config_file($pause_config);
+
+        unless (prompt("Release to " . ($config->{upload_uri} || 'CPAN') . ' ?') =~ /y/i) {
             errorf("Giving up!\n");
         }
 
@@ -37,10 +42,6 @@ sub run {
             rename $orig_file, $tar or errorf("Renaming $orig_file -> $tar failed: $!\n");
         }
 
-        my $pause_config = ($opts->{pause_config})          ? $opts->{pause_config} 
-            : ($project->config->{release}->{pause_config}) ? $project->config->{release}->{pause_config}
-            :                                                 undef;
-        my $config = CPAN::Uploader->read_config_file($pause_config);
         my $uploader = CPAN::Uploader->new(+{
             tar => $tar,
             %$config

@@ -70,7 +70,8 @@ _minil() {
           opts=(
             '--no-test[Do not run test]'
             '--trial[Trial release]'
-            '--dry-test[Dry run mode]'
+            '--dry-run[Dry run mode]'
+            '--pause-config=[Path to a CPAN::Uploader configuration file]:file:_files'
           )
           ;;
         test)
