@@ -562,7 +562,7 @@ sub regenerate_readme_md {
 }
 
 sub verify_prereqs {
-    my ($self, $phases, $type) = @_;
+    my ($self) = @_;
 
     if ($Minilla::AUTO_INSTALL) {
         system('cpanm', '--quiet', '--installdeps', '--with-develop', '.');

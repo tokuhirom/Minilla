@@ -31,7 +31,7 @@ sub run {
     }
 
     my $project = Minilla::Project->new();
-    $project->verify_prereqs( [qw(develop test runtime)], $_ ) for qw(requires recommends);
+    $project->verify_prereqs( );
 
     $ENV{RELEASE_TESTING}   =1 if $release   == 0;
     $ENV{AUTHOR_TESTING}    =1 if $author    == 0;

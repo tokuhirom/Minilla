@@ -186,8 +186,7 @@ sub dist_test {
 
     $self->build();
 
-    $self->project->verify_prereqs([qw(runtime)], $_) for qw(requires recommends);
-    $self->project->verify_prereqs([qw(test)], $_) for qw(requires recommends);
+    $self->project->verify_prereqs();
 
     eval {
         my $guard = pushd($self->dir);
