@@ -30,8 +30,15 @@ sub run {
             :                                                 undef;
         my $config = CPAN::Uploader->read_config_file($pause_config);
 
-        unless (prompt("Release to " . ($config->{upload_uri} || 'CPAN') . ' ?') =~ /y/i) {
-            errorf("Giving up!\n");
+        PROMPT: while (1) {
+            my $answer = prompt("Release to " . ($config->{upload_uri} || 'CPAN') . ' ? [y/n] ');
+            if ($answer =~ /y/i) {
+                last PROMPT;
+            } elsif ($answer =~ /n/i) {
+                errorf("Giving up!\n");
+            } else {
+                redo PROMPT;
+            }
         }
 
         if ($opts->{trial}) {
