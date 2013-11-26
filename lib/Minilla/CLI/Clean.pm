@@ -9,7 +9,13 @@ use Minilla::Project;
 use Minilla::Util qw(parse_options);
 
 sub run {
-    my $self = shift;
+    my ($self, @args) = @_;
+
+    my $yes_opt = 0;
+    parse_options(
+        \@args,
+        'y!' => \$yes_opt,
+    );
 
     my $project = Minilla::Project->new();
     my @targets = grep { -e $_ } (
@@ -22,7 +28,7 @@ sub run {
         '_build',       # M::B
     );
     print("Would remove $_\n") for (@targets);
-    if (prompt('Remove it?', 'y') =~ /y/i) {
+    if ($yes_opt || prompt('Remove it?', 'y') =~ /y/i) {
         rmtree($_) for @targets;
     }
 }
@@ -37,6 +43,8 @@ Minilla::CLI::Clean - Clean up directory
 =head1 SYNOPSIS
 
     % minil clean
+
+        -y    delete files without asking
 
 =head1 DESCRIPTION
 
