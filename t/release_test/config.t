@@ -23,9 +23,11 @@ MinimumVersion = false
         my $workdir = $project->work_dir();
         $workdir->build;
 
-        my $guard = pushd($workdir->dir);
-        ok -f 'xt/minilla/pod.t', 'Exists xt/minilla/minimum_version.t';
-        ok !-f 'xt/minilla/minimum_version.t';
+        {
+            my $guard = pushd($workdir->dir);
+            ok -f 'xt/minilla/pod.t', 'Exists xt/minilla/minimum_version.t';
+            ok !-f 'xt/minilla/minimum_version.t';
+        }
     };
 
     subtest 'normal case' => sub {

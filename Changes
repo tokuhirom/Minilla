@@ -2,6 +2,13 @@ Revision history for Perl extension Minilla
 
 {{$NEXT}}
 
+v0.11.0 2013-11-27T00:17:41Z
+
+    - Support `-y` option for clean command
+      (moznion)
+    - Release::UploadToCPAN: Do not abort if user doesn't provide input char.
+      (Suggested by gfx++)
+
 v0.10.0 2013-11-25T13:26:03Z
 
     - ReleaseTest.MinimumVersion for skipping Test::MinimumVersion test.
