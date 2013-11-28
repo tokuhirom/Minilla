@@ -56,7 +56,7 @@ _minil()
     clean)
       subcommands=''
       if [[ "${cur}" == -* ]] ; then
-        subcommands='--help'
+        subcommands='--help -y'
       fi
       ;;
     dist)
