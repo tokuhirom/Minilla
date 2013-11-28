@@ -63,6 +63,9 @@ _minil() {
             '(-p|--profile)'{-p,--profile}'[Minilla profile]: :(XS)'
           )
           ;;
+        clean)
+          opts=('(-y)-y[delete files without asking]')
+          ;;
         install)
           opts=('--no-test[Do not run test]')
           ;;
@@ -81,6 +84,12 @@ _minil() {
             '--author[enable the AUTHOR_TESTING env variable]'
             '--all[enable the All env variables]'
           )
+          ;;
+        help)
+          local -a subcommands
+          subcommands=(new build test clean dist install release migrate help)
+          _arguments -s : "()"'*: :'"($subcommands)"
+          return 0
           ;;
         *)
           opts=()
