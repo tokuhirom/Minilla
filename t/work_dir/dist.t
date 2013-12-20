@@ -6,6 +6,7 @@ use Test::More;
 use t::Util;
 use File::Spec::Functions qw(catfile);
 use Archive::Tar;
+use Fcntl qw(:mode);
 
 use Minilla::Profile::Default;
 use Minilla::Project;
@@ -26,6 +27,8 @@ subtest 'dist' => sub {
     $profile->generate();
     write_minil_toml('Acme-Foo');
     spew 'empty.txt', '';
+    spew 'executable.pl', "#/usr/bin/perl\n";
+    chmod 0755, 'executable.pl';
 
     git_init();
     git_add('.');
@@ -66,6 +69,9 @@ subtest 'dist' => sub {
 
     like($tar->get_content('Acme-Foo-0.01/MANIFEST'), qr{^empty.txt$}sm, 'Contains empty.txt in MANIFEST');
     ok($tar->contains_file('Acme-Foo-0.01/empty.txt'), 'Contains empty.txt in archive');
+
+    my ($executable) = $tar->get_files('Acme-Foo-0.01/executable.pl');
+    is($executable->mode & (S_IRWXU|S_IRWXG|S_IRWXO), 0755, 'Contains executable file');
 };
 
 done_testing;
