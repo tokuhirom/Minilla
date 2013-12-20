@@ -40,12 +40,13 @@ subtest 'Badge' => sub {
             name   => 'Acme-Foo',
             badges => ['travis', 'coveralls'],
         });
+        git_create_checkout_branch();
         $project->regenerate_files;
 
         open my $fh, '<', 'README.md';
         ok chomp (my $got = <$fh>);
 
-        my $badge_markdowns = ["[![Build Status](https://travis-ci.org/tokuhirom/Minilla.png?branch=master)](https://travis-ci.org/tokuhirom/Minilla)", "[![Coverage Status](https://coveralls.io/repos/tokuhirom/Minilla/badge.png?branch=master)](https://coveralls.io/r/tokuhirom/Minilla?branch=master)"];
+        my $badge_markdowns = ["[![Build Status](https://travis-ci.org/tokuhirom/Minilla.png?branch=new-branch)](https://travis-ci.org/tokuhirom/Minilla)", "[![Coverage Status](https://coveralls.io/repos/tokuhirom/Minilla/badge.png?branch=new-branch)](https://coveralls.io/r/tokuhirom/Minilla?branch=new-branch)"];
         my $expected = join(' ', @$badge_markdowns);
         is $got, $expected;
     };

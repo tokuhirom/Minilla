@@ -5,7 +5,7 @@ use utf8;
 
 use parent qw(Exporter);
 
-our @EXPORT = qw(git_ls_files git_init git_add git_rm git_commit git_config git_remote git_submodule_add git_submodules git_submodule_files);
+our @EXPORT = qw(git_ls_files git_init git_add git_rm git_commit git_config git_remote git_branch git_checkout git_submodule_add git_submodules git_submodule_files);
 
 use Minilla::Util qw(cmd);
 
@@ -31,6 +31,14 @@ sub git_commit {
 
 sub git_remote {
     cmd('git', 'remote', @_);
+}
+
+sub git_branch {
+    cmd('git', 'branch', @_);
+}
+
+sub git_checkout {
+    cmd('git', 'checkout', @_);
 }
 
 sub git_ls_files {

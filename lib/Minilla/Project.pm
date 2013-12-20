@@ -17,7 +17,7 @@ use Minilla::Metadata;
 use Minilla::WorkDir;
 use Minilla::ReleaseTest;
 use Minilla::ModuleMaker::ModuleBuild;
-use Minilla::Util qw(slurp_utf8 find_dir cmd spew_raw slurp_raw);
+use Minilla::Util qw(slurp_utf8 find_dir cmd spew_raw slurp_raw get_branch);
 
 use Moo;
 
@@ -544,12 +544,14 @@ sub regenerate_readme_md {
 
         my @badges;
         if ($user_name && $repository_name) {
+            my $branch = get_branch()
+                or return;
             for my $badge (@{$self->badges}) {
                 if ($badge eq 'travis') {
-                    push @badges, "[![Build Status](https://travis-ci.org/$user_name/$repository_name.png?branch=master)](https://travis-ci.org/$user_name/$repository_name)";
+                    push @badges, "[![Build Status](https://travis-ci.org/$user_name/$repository_name.png?branch=$branch)](https://travis-ci.org/$user_name/$repository_name)";
                 }
                 if ($badge eq 'coveralls') {
-                    push @badges, "[![Coverage Status](https://coveralls.io/repos/$user_name/$repository_name/badge.png?branch=master)](https://coveralls.io/r/$user_name/$repository_name?branch=master)"
+                    push @badges, "[![Coverage Status](https://coveralls.io/repos/$user_name/$repository_name/badge.png?branch=$branch)](https://coveralls.io/r/$user_name/$repository_name?branch=$branch)"
                 }
             }
         }
