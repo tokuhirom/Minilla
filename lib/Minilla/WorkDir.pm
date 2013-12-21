@@ -207,8 +207,11 @@ sub dist {
         my $tarball = sprintf('%s-%s.tar.gz', $self->project->dist_name, $self->project->version);
 
         my $tar = Archive::Tar->new;
-        for (@{$self->manifest_files}) {
-            $tar->add_data(File::Spec->catfile($self->project->dist_name . '-' . $self->project->version, $_), slurp($_));
+        for my $file (@{$self->manifest_files}) {
+            my $filename = File::Spec->catfile($self->project->dist_name . '-' . $self->project->version, $file);
+            my $data = slurp($file);
+            my $mode = (stat($file))[2];
+            $tar->add_data($filename, $data, { mode => $mode });
         }
         $tar->write($tarball, COMPRESS_GZIP);
         infof("Wrote %s\n", $tarball);
