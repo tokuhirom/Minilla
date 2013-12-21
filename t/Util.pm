@@ -24,7 +24,7 @@ plan skip_all => "No git configuration" unless `git config user.email` =~ /\@/;
 $ENV{PERL_CPANM_HOME} = tempdir();
 
 our @EXPORT = (
-    qw(git_init_add_commit write_minil_toml),
+    qw(git_init_add_commit git_create_checkout_branch write_minil_toml),
     qw(tempdir pushd),
     @Minilla::Git::EXPORT, @Minilla::Util::EXPORT_OK, qw(spew),
     qw(catfile),
@@ -35,6 +35,12 @@ sub git_init_add_commit() {
     git_init();
     git_add('.');
     git_commit('-m', 'initial import');
+}
+
+sub git_create_checkout_branch() {
+    my $branch = 'new-branch';
+    git_branch($branch);
+    git_checkout($branch);
 }
 
 sub write_minil_toml {

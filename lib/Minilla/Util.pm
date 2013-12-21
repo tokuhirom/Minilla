@@ -22,6 +22,7 @@ our @EXPORT_OK = qw(
     pod_escape
     parse_options
     check_git
+    get_branch
 );
 
 our %EXPORT_TAGS = (
@@ -173,6 +174,16 @@ sub check_git {
     unless (which 'git') {
         Minilla::Logger::errorf("The \"git\" executable has not been found.\n");
     }
+}
+
+sub get_branch {
+    open my $fh, '<', '.git/HEAD';
+    chomp( my $head = do { local $/; <$fh> });
+    close $fh;
+
+    my ($branch) = $head =~ m!ref: refs/heads/(\S+)!;
+    $branch =~ s/\n//g;
+    return $branch;
 }
 
 1;
