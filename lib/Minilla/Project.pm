@@ -96,6 +96,12 @@ sub allow_pureperl {
     $self->config->{allow_pureperl} ? 1 : 0;
 }
 
+sub module_build_version {
+    my $self = shift;
+    # --pureperl-only support was added in 0.4005
+    $self->allow_pureperl ? 0.4005 : 0.38;
+}
+
 sub version {
     my $self = shift;
     my $version = $self->config->{version} || $self->metadata->version;

@@ -30,12 +30,13 @@ sub prereqs {
     my $prereqs = +{
         configure => {
             requires => {
-                'Module::Build'       => 0.38,
+                'Module::Build'       => $project->module_build_version,
                 'CPAN::Meta'          => 0,
                 'CPAN::Meta::Prereqs' => 0,
             }
         }
     };
+
     if( $project->use_xsutil ){
         delete $prereqs->{configure}{requires}{'Module::Build'};
         $prereqs->{configure}{requires}{'Module::Build::XSUtil'} = '0.03';
@@ -71,7 +72,7 @@ my %args = (
     dynamic_config       => 0,
 
     configure_requires => {
-        'Module::Build' => 0.38,
+        'Module::Build' => <?= $project->module_build_version ?>,
     },
 
     name            => '<?= $project->dist_name ?>',
