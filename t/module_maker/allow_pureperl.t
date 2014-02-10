@@ -8,10 +8,14 @@ use Minilla::Profile::ModuleBuild;
 use Minilla::Project;
 
 test(1, sub {
-    like(slurp('Build.PL'), qr{allow_pureperl\s+=>\s+1});
+    my $build_pl = slurp('Build.PL');
+    like($build_pl, qr{allow_pureperl\s+=>\s+1});
+    like($build_pl, qr{'Module::Build'\s+=>\s+0\.4005});
 });
 test(0, sub {
-    like(slurp('Build.PL'), qr{allow_pureperl\s+=>\s+0});
+    my $build_pl = slurp('Build.PL');
+    like($build_pl, qr{allow_pureperl\s+=>\s+0});
+    like($build_pl, qr{'Module::Build'\s+=>\s+0\.38});
 });
 
 done_testing;
