@@ -2,6 +2,17 @@ Revision history for Perl extension Minilla
 
 {{$NEXT}}
 
+v0.11.1 2014-02-27T03:20:09Z
+
+    - Add Debian standard inc
+      (syohex, helmut)
+    - allow_pureperl requires Module::Build 0.4005. http://blog.64p.org/entry/2013/04/27/091019
+      (kazeburo)
+    - Save file mode when creating a dist tarball
+      (Jiro Nishiguchi)
+    - Update bash/zsh completions
+      (syohex)
+
 v0.11.0 2013-11-27T00:17:41Z
 
     - Support `-y` option for clean command
