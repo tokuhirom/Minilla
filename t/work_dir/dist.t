@@ -71,7 +71,10 @@ subtest 'dist' => sub {
     ok($tar->contains_file('Acme-Foo-0.01/empty.txt'), 'Contains empty.txt in archive');
 
     my ($executable) = $tar->get_files('Acme-Foo-0.01/executable.pl');
+SKIP: {
+    skip "chmod has a portability issue under Windows", 1 if $^O eq 'MSWin32';
     is($executable->mode & (S_IRWXU|S_IRWXG|S_IRWXO), 0755, 'Contains executable file');
+    }
 };
 
 done_testing;
