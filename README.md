@@ -13,7 +13,7 @@ Minilla - CPAN module authoring tool
 
 # DESCRIPTION
 
-Minilla is a CPAN module authoring tool. Minilla provides [minil](http://search.cpan.org/perldoc?minil) command for authorizing a CPAN distribution.
+Minilla is a CPAN module authoring tool. Minilla provides [minil](https://metacpan.org/pod/minil) command for authorizing a CPAN distribution.
 
     (M::I - inc) + shipit + (dzil - plugins)
 
@@ -23,12 +23,12 @@ __THIS IS A DEVELOPMENT RELEASE. API MAY CHANGE WITHOUT NOTICE__.
 
 # CONVENTION
 
-As stated above, Minilla is opinionated. Minilla has a bold assumption and convention like the followings, which are almost compatible to the sister project [Dist::Milla](http://search.cpan.org/perldoc?Dist::Milla).
+As stated above, Minilla is opinionated. Minilla has a bold assumption and convention like the followings, which are almost compatible to the sister project [Dist::Milla](https://metacpan.org/pod/Dist::Milla).
 
 - Your module written in Pure Perl are located in _lib/_.
 - Your executable file is in _script/_ directory, if any
 - Your module is maintained with __Git__ and `git ls-files` matches with what you will release
-- Your module has a static list of prerequisites that can be described in [cpanfile](http://search.cpan.org/perldoc?cpanfile)
+- Your module has a static list of prerequisites that can be described in [cpanfile](https://metacpan.org/pod/cpanfile)
 - Your module has a Changes file
 
 # GETTING STARTED
@@ -52,7 +52,7 @@ As stated above, Minilla is opinionated. Minilla has a bold assumption and conve
 
 It's that easy.
 
-You already have distributions with [Module::Install](http://search.cpan.org/perldoc?Module::Install), [Module::Build](http://search.cpan.org/perldoc?Module::Build), [Dist::Zilla](http://search.cpan.org/perldoc?Dist::Zilla) or [ShipIt](http://search.cpan.org/perldoc?ShipIt)? Migrating is also trivial. See "MIGRATING" in [Minilla::Tutorial](http://search.cpan.org/perldoc?Minilla::Tutorial) for more details.
+You already have distributions with [Module::Install](https://metacpan.org/pod/Module::Install), [Module::Build](https://metacpan.org/pod/Module::Build), [Dist::Zilla](https://metacpan.org/pod/Dist::Zilla) or [ShipIt](https://metacpan.org/pod/ShipIt)? Migrating is also trivial. See "MIGRATING" in [Minilla::Tutorial](https://metacpan.org/pod/Minilla::Tutorial) for more details.
 
 # WHY MINILLA?
 
@@ -111,7 +111,7 @@ But, you can write configurations to _minil.toml_ file in [TOML](https://github.
         authority = "cpan:TOKUHIROM"
 
     Set x\_authority attribute to META.
-    See [http://jawnsy.wordpress.com/2011/02/20/what-is-x\_authority/](http://jawnsy.wordpress.com/2011/02/20/what-is-x\_authority/) for more details.
+    See [http://jawnsy.wordpress.com/2011/02/20/what-is-x_authority/](http://jawnsy.wordpress.com/2011/02/20/what-is-x_authority/) for more details.
 
 - allow\_pureperl
 
@@ -120,7 +120,7 @@ But, you can write configurations to _minil.toml_ file in [TOML](https://github.
     A boolean indicating the module is still functional without its XS parts.  When an XS module is build
     with `--pureperl_only`, it will otherwise fail.
 
-    It affects to [Module::Build](http://search.cpan.org/perldoc?Module::Build) 0.4005+ only.
+    It affects to [Module::Build](https://metacpan.org/pod/Module::Build) 0.4005+ only.
 
 - no\_github\_issues
 
@@ -157,14 +157,14 @@ But, you can write configurations to _minil.toml_ file in [TOML](https://github.
         [tap_harness_args]
         jobs=19
 
-    This parameters pass to TAP::Harness when running tests. See the [TAP::Harness](http://search.cpan.org/perldoc?TAP::Harness) documentation for details.
+    This parameters pass to TAP::Harness when running tests. See the [TAP::Harness](https://metacpan.org/pod/TAP::Harness) documentation for details.
 
 - license
 
         license="artistic_2"
 
     You can specify your favorite license on minil.toml. The license key is same as CPAN Meta spec 2.0.
-    See [CPAN::Meta::Spec](http://search.cpan.org/perldoc?CPAN::Meta::Spec).
+    See [CPAN::Meta::Spec](https://metacpan.org/pod/CPAN::Meta::Spec).
 
 - badges
 
@@ -191,21 +191,21 @@ But, you can write configurations to _minil.toml_ file in [TOML](https://github.
         [XSUtil]
         needs_compiler_c99 = 1
 
-    You can specify `needs_compiler_c99` parameter of [Module::Build::XSUtil](http://search.cpan.org/perldoc?Module::Build::XSUtil).
+    You can specify `needs_compiler_c99` parameter of [Module::Build::XSUtil](https://metacpan.org/pod/Module::Build::XSUtil).
 
 - XSUtil.needs\_compiler\_cpp
 
         [XSUtil]
         needs_compiler_cpp = 1
 
-    You can specify `needs_compiler_cpp` parameter of [Module::Build::XSUtil](http://search.cpan.org/perldoc?Module::Build::XSUtil).
+    You can specify `needs_compiler_cpp` parameter of [Module::Build::XSUtil](https://metacpan.org/pod/Module::Build::XSUtil).
 
 - XSUtil.generate\_ppport\_h
 
         [XSUtil]
         generate_ppport_h = 1
 
-    You can specify `generate_ppport_h` parameter of [Module::Build::XSUtil](http://search.cpan.org/perldoc?Module::Build::XSUtil).
+    You can specify `generate_ppport_h` parameter of [Module::Build::XSUtil](https://metacpan.org/pod/Module::Build::XSUtil).
 
 - XSUtil.generate\_xshelper\_h
 
@@ -213,14 +213,14 @@ But, you can write configurations to _minil.toml_ file in [TOML](https://github.
         generate_xshelper_h = 1
         
 
-    You can specify `generate_xshelper_h` parameter of [Module::Build::XSUtil](http://search.cpan.org/perldoc?Module::Build::XSUtil).
+    You can specify `generate_xshelper_h` parameter of [Module::Build::XSUtil](https://metacpan.org/pod/Module::Build::XSUtil).
 
 - XSUtil.cc\_warnings
 
         [XSUtil]
         cc_warnings = 1
 
-    You can specify `cc_warnings` parameter of [Module::Build::XSUtil](http://search.cpan.org/perldoc?Module::Build::XSUtil).
+    You can specify `cc_warnings` parameter of [Module::Build::XSUtil](https://metacpan.org/pod/Module::Build::XSUtil).
 
 - FileGatherer.exclude\_match
 
@@ -246,7 +246,7 @@ But, you can write configurations to _minil.toml_ file in [TOML](https://github.
         pause_config = "/path/to/some/.pause"
 
     By setting this value to another PAUSE configuration file (see
-    ["CONFIGURATION" in cpan\_upload](http://search.cpan.org/perldoc?cpan\_upload#CONFIGURATION) for the details), it is possible to use another
+    ["CONFIGURATION" in cpan_upload](https://metacpan.org/pod/cpan_upload#CONFIGURATION) for the details), it is possible to use another
     PAUSE server (or anything good enough to mimick its upload process) for the
     release step.
 
@@ -255,7 +255,7 @@ But, you can write configurations to _minil.toml_ file in [TOML](https://github.
 
         upload_uri http://127.0.0.1:5000/pause/authenquery
 
-    If you instantly launch your origin upload server as DarkPAN, See [OrePAN2::Server](http://search.cpan.org/perldoc?OrePAN2::Server).
+    If you instantly launch your origin upload server as DarkPAN, See [OrePAN2::Server](https://metacpan.org/pod/OrePAN2::Server).
 
 - release.do\_not\_upload\_to\_cpan
 
@@ -281,19 +281,19 @@ But, you can write configurations to _minil.toml_ file in [TOML](https://github.
 
 - Why don't you provide plug-in support?
 
-    If you want a pluggable tool, it already exists: It's called [Dist::Zilla](http://search.cpan.org/perldoc?Dist::Zilla) :P
-    If you like Minilla's behavior but you really want something pluggable, you can use [Dist::Milla](http://search.cpan.org/perldoc?Dist::Milla), Minilla's sister project.
-    [Dist::Milla](http://search.cpan.org/perldoc?Dist::Milla)'s behavior is almost identical to that of Minilla.
+    If you want a pluggable tool, it already exists: It's called [Dist::Zilla](https://metacpan.org/pod/Dist::Zilla) :P
+    If you like Minilla's behavior but you really want something pluggable, you can use [Dist::Milla](https://metacpan.org/pod/Dist::Milla), Minilla's sister project.
+    [Dist::Milla](https://metacpan.org/pod/Dist::Milla)'s behavior is almost identical to that of Minilla.
 
 - Why does minil only support git?
 
     I think git is a best VC for CPAN modules, for now.
 
-    If you want to use another version control system, you can probably use [Dist::Milla](http://search.cpan.org/perldoc?Dist::Milla).
+    If you want to use another version control system, you can probably use [Dist::Milla](https://metacpan.org/pod/Dist::Milla).
 
 - And why...
 
-    Yes. You can use [Dist::Milla](http://search.cpan.org/perldoc?Dist::Milla).
+    Yes. You can use [Dist::Milla](https://metacpan.org/pod/Dist::Milla).
 
 - Should I add (META.json|Build.PL) to repository?
 
@@ -305,18 +305,18 @@ But, you can write configurations to _minil.toml_ file in [TOML](https://github.
 
 - How can I install script files?
 
-    Your executables must be in `script/`. It's [Module::Build::Tiny](http://search.cpan.org/perldoc?Module::Build::Tiny)'s rule.
+    Your executables must be in `script/`. It's [Module::Build::Tiny](https://metacpan.org/pod/Module::Build::Tiny)'s rule.
 
 - How to switch from Module::Install/Module::Build/Dist::Zilla?
 
     You can use experimental \`minil migrate\` sub-command.
-    See [Minilla::CLI::Migrate](http://search.cpan.org/perldoc?Minilla::CLI::Migrate) for more details.
+    See [Minilla::CLI::Migrate](https://metacpan.org/pod/Minilla::CLI::Migrate) for more details.
 
 - How should I manage the files you do not want to upload to CPAN?
 
     Please use FileGatherer.exclude\_match for ignoring files to upload tar ball.
 
-    You can use MANIFEST.SKIP file for ignoring files. ref. [ExtUtils::Manifest](http://search.cpan.org/perldoc?ExtUtils::Manifest).
+    You can use MANIFEST.SKIP file for ignoring files. ref. [ExtUtils::Manifest](https://metacpan.org/pod/ExtUtils::Manifest).
 
 # AUTHORS
 
@@ -326,7 +326,7 @@ Tatsuhiko Miyagawa
 
 # THANKS TO
 
-RJBS, the author of [Dist::Zilla](http://search.cpan.org/perldoc?Dist::Zilla). [Dist::Zilla](http://search.cpan.org/perldoc?Dist::Zilla) points CPAN authorizing tool.
+RJBS, the author of [Dist::Zilla](https://metacpan.org/pod/Dist::Zilla). [Dist::Zilla](https://metacpan.org/pod/Dist::Zilla) points CPAN authorizing tool.
 
 # SEE ALSO
 

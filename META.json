@@ -4,7 +4,7 @@
       "Tokuhiro Matsuno < tokuhirom@gmail.com >"
    ],
    "dynamic_config" : 0,
-   "generated_by" : "Minilla/v0.11.0, CPAN::Meta::Converter version 2.132830",
+   "generated_by" : "Minilla/v0.11.0, CPAN::Meta::Converter version 2.133380",
    "license" : [
       "perl_5"
    ],
@@ -130,8 +130,11 @@
       "TAGOMORI Satoshi <tagomoris@gmail.com>",
       "Daisuke Maki <lestrrat+github@gmail.com>",
       "Songmu <y.songmu@gmail.com>",
-      "Syohei YOSHIDA <syohex@gmail.com>",
       "moznion <moznion@gmail.com>",
+      "Syohei YOSHIDA <syohex@gmail.com>",
+      "Jiro Nishiguchi <jiro@cpan.org>",
+      "Masahiro Nagano <kazeburo@gmail.com>",
+      "Helmut Wollmersdorfer <helmut@wollmersdorfer.at>",
       "tokuhirom <tokuhirom@gmail.com>"
    ]
 }
