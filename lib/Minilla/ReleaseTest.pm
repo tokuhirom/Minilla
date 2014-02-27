@@ -46,7 +46,7 @@ sub write_release_tests {
     )) {
         infof("Writing release tests: %s\n", $file);
 
-        if ($file eq 'xt/minilla/minimum_version.t' && $config->{MinimumVersion} eq 'false') {
+        if ($file eq 'xt/minilla/minimum_version.t' && ($config->{MinimumVersion}||'') eq 'false') {
             infof("Skipping MinimumVersion");
             next;
         }
