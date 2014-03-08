@@ -18,6 +18,7 @@ use Minilla::WorkDir;
 use Minilla::ReleaseTest;
 use Minilla::ModuleMaker::ModuleBuild;
 use Minilla::Util qw(slurp_utf8 find_dir cmd spew_raw slurp_raw);
+use Encode qw(decode_utf8);
 
 use Moo;
 
@@ -591,6 +592,7 @@ sub _build_contributors {
         reverse grep { !$uniq{$normalize->($_)}++ } split /\n/, `git log --format="%aN <%aE>"`
     };
     my %is_author = map { $normalize->($_) => 1 } @{$self->authors};
+    @lines = map { decode_utf8($_) } @lines;
     @lines = grep { !$is_author{$normalize->($_)} } @lines;
     @lines = grep { $_ ne 'Your Name <you@example.com>' } @lines;
     @lines = grep { ! /^\(no author\) <\(no author\)\@[\d\w\-]+>$/ } @lines;
