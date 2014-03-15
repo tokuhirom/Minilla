@@ -240,7 +240,7 @@ You can specify C<generate_ppport_h> parameter of L<Module::Build::XSUtil>.
 
     [XSUtil]
     generate_xshelper_h = 1
-    
+
 You can specify C<generate_xshelper_h> parameter of L<Module::Build::XSUtil>.
 
 =item XSUtil.cc_warnings
@@ -291,6 +291,16 @@ If you instantly launch your origin upload server as DarkPAN, See L<OrePAN2::Ser
     do_not_upload_to_cpan=true
 
 This variable disables CPAN upload feature.
+
+=item release.hooks
+
+    [release]
+    hooks = [
+        "COMMAND1",
+        "COMMAND2"
+    ]
+
+Commands that are specified by this option will be executed when releasing. If result of commands is not successful, it will abort.
 
 =item ReleaseTest.MinimumVersion
 

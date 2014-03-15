@@ -33,6 +33,7 @@ sub run {
         BumpVersion
         CheckChanges
         RegenerateFiles
+        RunHooks
         DistTest
         MakeDist
 
