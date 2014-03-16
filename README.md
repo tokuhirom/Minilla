@@ -111,7 +111,7 @@ But, you can write configurations to _minil.toml_ file in [TOML](https://github.
         authority = "cpan:TOKUHIROM"
 
     Set x\_authority attribute to META.
-    See [http://jawnsy.wordpress.com/2011/02/20/what-is-x_authority/](http://jawnsy.wordpress.com/2011/02/20/what-is-x_authority/) for more details.
+    See [http://jawnsy.wordpress.com/2011/02/20/what-is-x\_authority/](http://jawnsy.wordpress.com/2011/02/20/what-is-x_authority/) for more details.
 
 - allow\_pureperl
 
@@ -211,7 +211,6 @@ But, you can write configurations to _minil.toml_ file in [TOML](https://github.
 
         [XSUtil]
         generate_xshelper_h = 1
-        
 
     You can specify `generate_xshelper_h` parameter of [Module::Build::XSUtil](https://metacpan.org/pod/Module::Build::XSUtil).
 
@@ -246,7 +245,7 @@ But, you can write configurations to _minil.toml_ file in [TOML](https://github.
         pause_config = "/path/to/some/.pause"
 
     By setting this value to another PAUSE configuration file (see
-    ["CONFIGURATION" in cpan_upload](https://metacpan.org/pod/cpan_upload#CONFIGURATION) for the details), it is possible to use another
+    ["CONFIGURATION" in cpan\_upload](https://metacpan.org/pod/cpan_upload#CONFIGURATION) for the details), it is possible to use another
     PAUSE server (or anything good enough to mimick its upload process) for the
     release step.
 
@@ -263,6 +262,16 @@ But, you can write configurations to _minil.toml_ file in [TOML](https://github.
         do_not_upload_to_cpan=true
 
     This variable disables CPAN upload feature.
+
+- release.hooks
+
+        [release]
+        hooks = [
+            "COMMAND1",
+            "COMMAND2"
+        ]
+
+    Commands that are specified by this option will be executed when releasing. If result of commands is not successful, it will abort.
 
 - ReleaseTest.MinimumVersion
 

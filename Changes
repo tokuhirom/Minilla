@@ -2,6 +2,26 @@ Revision history for Perl extension Minilla
 
 {{$NEXT}}
 
+v0.12.0 2014-03-16T03:25:25Z
+
+    commit 0e929d2a63cee1ab9778f676744602978baab524
+    Author: moznion <moznion@gmail.com>
+    Date:   Sun Mar 16 00:55:13 2014 +0900
+
+        Add release hook feature
+
+    commit dc3da3cc010a7453ecdc0afafd245db6cd8df306
+    Author: Graham Knop <haarg@haarg.org>
+    Date:   Sat Mar 8 16:37:48 2014 -0500
+
+        decode contributor names
+
+    commit 5516ab9c07441dedde25fc5ce81cee01edcc2c89
+    Author: Kenichi Ishigaki <ishigaki@cpan.org>
+    Date:   Thu Feb 27 16:54:10 2014 +0900
+
+        chmod has a portability issue under Win32 (see perlport)
+
 v0.11.1 2014-02-27T03:20:09Z
 
     - Add Debian standard inc
