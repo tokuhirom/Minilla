@@ -2,6 +2,10 @@ Revision history for Perl extension Minilla
 
 {{$NEXT}}
 
+v0.13.0 2014-03-26T03:06:36Z
+
+    - Switch to Perl::MinimumVersion::Fast
+
 v0.12.0 2014-03-16T03:25:25Z
 
     commit 0e929d2a63cee1ab9778f676744602978baab524
