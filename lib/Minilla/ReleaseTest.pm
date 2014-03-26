@@ -62,7 +62,7 @@ sub prereqs {
     +{
         develop => {
             requires => {
-                'Test::MinimumVersion' => 0.101080,
+                'Test::MinimumVersion::Fast' => 0.04,
                 'Test::CPAN::Meta' => 0,
                 'Test::Pod' => 1.41,
                 'Test::Spellunker' => 'v0.2.7',
@@ -76,8 +76,10 @@ __DATA__
 
 @@ xt/minilla/minimum_version.t
 use Test::More;
-eval "use Test::MinimumVersion 0.101080";
-plan skip_all => "Test::MinimumVersion required for testing perl minimum version" if $@;
+eval "use Test::MinimumVersion::Fast 0.04";
+if ($@) {
+    plan skip_all => "Test::MinimumVersion::Fast required for testing perl minimum version";
+}
 all_minimum_version_from_metayml_ok();
 
 @@ xt/minilla/cpan_meta.t
