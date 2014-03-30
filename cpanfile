@@ -47,7 +47,7 @@ requires 'Try::Tiny';
 requires 'Getopt::Long', 2.36;
 
 # Module required for license otherwise Perl_5 license.
-recommends 'Software::License';
+recommends 'Software::License', '0.103010';
 
 # release testing
 recommends 'Test::Pod';
