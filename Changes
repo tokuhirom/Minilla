@@ -2,6 +2,15 @@ Revision history for Perl extension Minilla
 
 {{$NEXT}}
 
+v0.14.0 2014-04-07T21:15:35Z
+
+    - Generate 'authority' section in minil.toml by default.
+      (tokuhirom)
+    - Support Test::PAUSE::Permissions.
+      (tokuhirom)
+    - Update requirement 'Software::License'
+      (syohex)
+
 v0.13.0 2014-03-26T03:06:36Z
 
     - Switch to Perl::MinimumVersion::Fast
