@@ -10,6 +10,7 @@ use DirHandle;
 use File::pushd;
 use CPAN::Meta;
 use Module::CPANfile;
+use Config::Identity::PAUSE;
 
 use Minilla;
 use Minilla::Logger;
@@ -525,6 +526,14 @@ sub generate_minil_toml {
         qq{name = "$project_name"},
         qq{# badges = ["travis"]},
     );
+
+    my %pause;
+    if (eval { %pause = Config::Identity::PAUSE->load; 1; }) {
+        my $user = uc($pause{user});
+        $content .= qq{\nauthority="cpan:${user}"\n},
+    }
+    warn $@;
+
     spew_raw($fname, $content . "\n");
 }
 

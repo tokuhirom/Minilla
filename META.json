@@ -37,6 +37,7 @@
          "requires" : {
             "Test::CPAN::Meta" : "0",
             "Test::MinimumVersion::Fast" : "0.04",
+            "Test::PAUSE::Permissions" : "0.04",
             "Test::Pod" : "1.41",
             "Test::Spellunker" : "v0.2.7"
          }
@@ -45,7 +46,7 @@
          "recommends" : {
             "CPAN::Uploader" : "0",
             "Pod::Escapes" : "0",
-            "Software::License" : "0",
+            "Software::License" : "0.103010",
             "Test::CPAN::Meta" : "0",
             "Test::MinimumVersion" : "0.101080",
             "Test::PAUSE::Permissions" : "0",
@@ -57,6 +58,7 @@
             "App::cpanminus" : "1.6902",
             "Archive::Tar" : "1.60",
             "CPAN::Meta" : "0",
+            "Config::Identity" : "0",
             "Data::Section::Simple" : "0.04",
             "ExtUtils::Manifest" : "1.54",
             "File::Copy::Recursive" : "0",
@@ -133,10 +135,10 @@
       "Jiro Nishiguchi <jiro@cpan.org>",
       "Masahiro Nagano <kazeburo@gmail.com>",
       "Helmut Wollmersdorfer <helmut@wollmersdorfer.at>",
-      "Syohei YOSHIDA <syohex@gmail.com>",
       "Kenichi Ishigaki <ishigaki@cpan.org>",
       "Graham Knop <haarg@haarg.org>",
       "moznion <moznion@gmail.com>",
+      "Syohei YOSHIDA <syohex@gmail.com>",
       "tokuhirom <tokuhirom@gmail.com>"
    ]
 }

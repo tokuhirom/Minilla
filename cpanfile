@@ -23,6 +23,7 @@ requires 'App::cpanminus', '1.6902';
 requires 'Module::CPANfile', '0.9025';
 requires 'Module::Metadata' => '1.000012';
 requires 'Pod::Markdown', '1.322';
+requires 'Config::Identity';
 
 # File operation
 requires 'File::pushd';
