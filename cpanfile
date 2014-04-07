@@ -54,6 +54,7 @@ recommends 'Test::Pod';
 recommends 'Test::Spellunker', 'v0.2.7';
 recommends 'Test::MinimumVersion' => '0.101080';
 recommends 'Test::CPAN::Meta';
+recommends 'Test::PAUSE::Permissions';
 
 on 'test' => sub {
     requires 'Test::More' => '0.98';

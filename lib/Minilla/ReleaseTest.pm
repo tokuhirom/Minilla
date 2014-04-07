@@ -43,6 +43,7 @@ sub write_release_tests {
         xt/minilla/cpan_meta.t
         xt/minilla/pod.t
         xt/minilla/spelling.t
+        xt/minilla/permissions.t
     )) {
         infof("Writing release tests: %s\n", $file);
 
@@ -66,6 +67,7 @@ sub prereqs {
                 'Test::CPAN::Meta' => 0,
                 'Test::Pod' => 1.41,
                 'Test::Spellunker' => 'v0.2.7',
+                'Test::PAUSE::Permissions' => 0.04,
             },
         },
     };
@@ -111,3 +113,12 @@ add_stopwords('<<DIST>>');
 add_stopwords(@{<<STOPWORDS>>});
 
 all_pod_files_spelling_ok('lib');
+
+@@ xt/minilla/permissions.t
+use strict;
+use Test::More;
+
+eval q{ use Test::PAUSE::Permissions 0.04 };
+plan skip_all => "Test::PAUSE::Permissions is not installed." if $@;
+
+all_permissions_ok();
