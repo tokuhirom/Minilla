@@ -2,6 +2,11 @@ Revision history for Perl extension Minilla
 
 {{$NEXT}}
 
+v0.14.1 2014-04-08T03:12:02Z
+
+    - Fix case that there is no '.pause'.
+      (syohex, gcs)
+
 v0.14.0 2014-04-07T21:15:35Z
 
     - Generate 'authority' section in minil.toml by default.
