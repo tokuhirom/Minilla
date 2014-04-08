@@ -528,7 +528,7 @@ sub generate_minil_toml {
     );
 
     my %pause;
-    if (eval { %pause = Config::Identity::PAUSE->load; 1; }) {
+    if (eval { %pause = Config::Identity::PAUSE->load; 1; } && exists $pause{user}) {
         my $user = uc($pause{user});
         $content .= qq{\nauthority="cpan:${user}"\n},
     }
