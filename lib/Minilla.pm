@@ -2,7 +2,7 @@ package Minilla;
 use strict;
 use warnings;
 use 5.008005;
-use version; our $VERSION = version->declare("v0.14.1");
+use version; our $VERSION = version->declare("v0.15.0");
 
 our $DEBUG;
 our $AUTO_INSTALL;
@@ -359,6 +359,19 @@ See L<Minilla::CLI::Migrate> for more details.
 Please use FileGatherer.exclude_match for ignoring files to upload tar ball.
 
 You can use MANIFEST.SKIP file for ignoring files. ref. L<ExtUtils::Manifest>.
+
+=item How do I use Module::Build::Tiny with Minilla?
+
+Minilla v0.15.0+ supports v0.15.0(EXPERIMENTAL).
+
+If you want to create new project with Module::Build::Tiny, run the command as following.
+
+    % minil new -p ModuleBuildTiny My::Awesome::Module
+
+If you want to migrate existing project, you need to rewrite minil.toml file.
+You need to add following line:
+
+    module_maker="ModuleBuildTiny"
 
 =back
 

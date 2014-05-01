@@ -2,6 +2,11 @@ Revision history for Perl extension Minilla
 
 {{$NEXT}}
 
+v0.15.0 2014-05-01T03:51:37Z
+
+    - Added experimental Module::Build::Tiny support.
+      (tokuhirom)
+
 v0.14.1 2014-04-08T03:12:02Z
 
     - Fix case that there is no '.pause'.

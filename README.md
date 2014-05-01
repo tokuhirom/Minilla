@@ -327,6 +327,19 @@ But, you can write configurations to _minil.toml_ file in [TOML](https://github.
 
     You can use MANIFEST.SKIP file for ignoring files. ref. [ExtUtils::Manifest](https://metacpan.org/pod/ExtUtils::Manifest).
 
+- How do I use Module::Build::Tiny with Minilla?
+
+    Minilla v0.15.0+ supports v0.15.0(EXPERIMENTAL).
+
+    If you want to create new project with Module::Build::Tiny, run the command as following.
+
+        % minil new -p ModuleBuildTiny My::Awesome::Module
+
+    If you want to migrate existing project, you need to rewrite minil.toml file.
+    You need to add following line:
+
+        module_maker="ModuleBuildTiny"
+
 # AUTHORS
 
 Tokuhiro Matsuno < tokuhirom@gmail.com >
