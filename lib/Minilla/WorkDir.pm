@@ -189,7 +189,7 @@ sub dist_test {
 
     eval {
         my $guard = pushd($self->dir);
-        cmd_perl('Build', 'test');
+        $self->project->module_maker->run_tests();
     };
     return $@ ? 1 : 0;
 }
