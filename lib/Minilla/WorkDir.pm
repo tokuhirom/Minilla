@@ -145,7 +145,6 @@ sub build {
 
     cmd_perl('Build.PL');
     cmd_perl('Build', 'build');
-    cmd_perl('Build', 'build');
 }
 
 sub _rewrite_changes {
@@ -190,7 +189,7 @@ sub dist_test {
 
     eval {
         my $guard = pushd($self->dir);
-        cmd_perl('Build', 'test');
+        $self->project->module_maker->run_tests();
     };
     return $@ ? 1 : 0;
 }

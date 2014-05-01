@@ -5,6 +5,7 @@ use utf8;
 use Data::Section::Simple qw(get_data_section);
 use Text::MicroTemplate qw(render_mt);
 use Data::Dumper;
+use Minilla::Util qw(cmd_perl);
 
 use Moo;
 
@@ -42,6 +43,10 @@ sub prereqs {
         $prereqs->{configure}{requires}{'Module::Build::XSUtil'} = '0.03';
     }
     return $prereqs;
+}
+
+sub run_tests {
+    cmd_perl('Build', 'test');
 }
 
 1;
@@ -89,7 +94,7 @@ my %args = (
 ? if( $project->tap_harness_args ){
     tap_harness_args => <?= Dumper($project->tap_harness_args) ?>,
 ? }
-    
+
 ? if( $project->use_xsutil ){
     needs_compiler_c99 => <?= $project->needs_compiler_c99 ?>,
     needs_compiler_cpp => <?= $project->needs_compiler_cpp ?>,

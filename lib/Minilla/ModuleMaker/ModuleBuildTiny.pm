@@ -5,6 +5,9 @@ use utf8;
 use Data::Section::Simple qw(get_data_section);
 use Text::MicroTemplate qw(render_mt);
 use Data::Dumper;
+use File::Spec::Functions qw(catdir rel2abs);
+use File::Find ();
+use TAP::Harness::Env;
 
 use Moo;
 
@@ -41,6 +44,26 @@ sub prereqs {
         }
     }
     return $prereqs;
+}
+
+sub run_tests {
+    my $harness = TAP::Harness::Env->create({
+        verbosity => 0,
+        lib       => [ map { rel2abs(catdir(qw/blib/, $_)) } qw/arch lib/ ],
+        color     => -t STDOUT
+    });
+    my @tests = sort +_find(qr/\.t$/, 't');
+    if ($ENV{RELEASE_TESTING}) {
+        push @tests, sort +_find(qr/\.t$/, 'xt');
+    }
+    $harness->runtests(@tests)->has_errors and die;
+}
+
+sub _find {
+    my ($pattern, $dir) = @_;
+    my @ret;
+    File::Find::find(sub { push @ret, $File::Find::name if /$pattern/ && -f }, $dir) if -d $dir;
+    return @ret;
 }
 
 1;

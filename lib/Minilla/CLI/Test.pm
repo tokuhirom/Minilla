@@ -38,7 +38,7 @@ sub run {
     $ENV{AUTOMATED_TESTING} =1 if $automated;
 
     my $work_dir = $project->work_dir;
-    my $code = $work_dir->dist_test(@args);
+    my $code = $work_dir->dist_test();
     exit $code;
 }
 
