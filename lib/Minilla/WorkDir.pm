@@ -145,7 +145,6 @@ sub build {
 
     cmd_perl('Build.PL');
     cmd_perl('Build', 'build');
-    cmd_perl('Build', 'build');
 }
 
 sub _rewrite_changes {
