@@ -215,6 +215,8 @@ cover_db/
 
 !LICENSE
 
+/_build_params
+
 MYMETA.*
 
 /<% $dist %>-*
