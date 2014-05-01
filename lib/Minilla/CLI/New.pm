@@ -76,8 +76,8 @@ sub run {
 
         # generate project after initialize git repo
         my $project = Minilla::Project->new();
+        $project->generate_minil_toml($profile);
         $project->regenerate_files();
-        $project->generate_minil_toml();
 
         # and git add all things
         cmd('git', 'add', '.');

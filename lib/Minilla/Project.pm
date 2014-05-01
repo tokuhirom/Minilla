@@ -18,6 +18,7 @@ use Minilla::Metadata;
 use Minilla::WorkDir;
 use Minilla::ReleaseTest;
 use Minilla::ModuleMaker::ModuleBuild;
+use Minilla::ModuleMaker::ModuleBuildTiny;
 use Minilla::Util qw(slurp_utf8 find_dir cmd spew_raw slurp_raw);
 use Encode qw(decode_utf8);
 
@@ -32,7 +33,17 @@ has dir => (
 
 has module_maker => (
     is => 'ro',
-    default => sub { Minilla::ModuleMaker::ModuleBuild->new() },
+    default => sub {
+        my $self = shift;
+        if ($self->config && defined($self->config->{module_maker})) {
+            # Automatic require.
+            my $klass = $self->config->{module_maker};
+            $klass = $klass =~ s/^\+// ? $klass : "Minilla::ModuleMaker::$klass";
+            return $klass->new();
+        }
+        Minilla::ModuleMaker::ModuleBuild->new()
+    },
+    lazy => 1,
 );
 
 has dist_name => (
@@ -518,7 +529,7 @@ sub regenerate_meta_json {
 }
 
 sub generate_minil_toml {
-    my $self = shift;
+    my ($self, $profile) = @_;
 
     my $fname        = File::Spec->catfile($self->dir, 'minil.toml');
     my $project_name = $self->_detect_project_name_from_dir;
@@ -532,7 +543,12 @@ sub generate_minil_toml {
         my $user = uc($pause{user});
         $content .= qq{\nauthority="cpan:${user}"\n},
     }
-    warn $@;
+    warn $@ if $@;
+
+    # Experimental Module::Build::Tiny support
+    if ($profile eq 'ModuleBuildTiny') {
+        $content .= qq{\nmodule_maker="ModuleBuildTiny"\n};
+    }
 
     spew_raw($fname, $content . "\n");
 }
