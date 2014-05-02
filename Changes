@@ -2,6 +2,10 @@ Revision history for Perl extension Minilla
 
 {{$NEXT}}
 
+v0.15.2 2014-05-02T01:28:42Z
+
+    - Updaated prereqs
+
 v0.15.1 2014-05-01T07:38:30Z
 
     - Run the xt/*.t with Module::Build::Tiny.
