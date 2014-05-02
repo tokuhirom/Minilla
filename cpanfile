@@ -8,6 +8,7 @@ requires 'version';
 requires 'CPAN::Meta';
 requires 'ExtUtils::Manifest', 1.54; # make maniskip a public routine, and allow an argument to override $mfile
 suggests 'Devel::PPPort'; # XS
+requires 'TAP::Harness::Env'; # From 5.19.5
 
 # Module for compatibility
 requires 'MRO::Compat' if $] < 5.009_005;
