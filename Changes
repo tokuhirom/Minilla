@@ -2,6 +2,11 @@ Revision history for Perl extension Minilla
 
 {{$NEXT}}
 
+v1.0.0 2014-05-12T04:47:31Z
+
+    - Default module builder is now Module::Builder::Tiny.
+      (tokuhirom)
+
 v0.15.2 2014-05-02T01:28:42Z
 
     - Updaated prereqs
