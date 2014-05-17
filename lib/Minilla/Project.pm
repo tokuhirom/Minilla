@@ -545,8 +545,10 @@ sub generate_minil_toml {
     }
     warn $@ if $@;
 
-    # Experimental Module::Build::Tiny support
-    if ($profile eq 'ModuleBuildTiny') {
+    if ($profile eq 'ModuleBuild') {
+        $content .= qq{\nmodule_maker="ModuleBuild"\n};
+    }
+    else {
         $content .= qq{\nmodule_maker="ModuleBuildTiny"\n};
     }
 
