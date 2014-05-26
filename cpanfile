@@ -14,7 +14,7 @@ requires 'TAP::Harness::Env'; # From 5.19.5
 requires 'MRO::Compat' if $] < 5.009_005;
 
 # The TOML parser
-requires 'TOML', 0.92;
+requires 'TOML', 0.94;
 
 # Templating
 requires 'Text::MicroTemplate', '0.20';
