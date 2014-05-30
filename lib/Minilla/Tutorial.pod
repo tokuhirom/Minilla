@@ -78,6 +78,8 @@ Now, make a release!
 
 The release command will automatically bump the version for you - if you have 0.10, the next version will be 0.11 by default, but you will be prompted to confirm that version in case you need a major bump.
 
+You can annotate any lines for which you would like the automatic version bump to be skipped by appending, `# No BumpVersion`.
+
 This will update C<Changes>, C<META.json> and bump C<$VERSION> in your main module. These changes made by Minilla will be automatically committed, tagged and pushed to the remote.
 
 =head1 MIGRATING
