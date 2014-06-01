@@ -34,6 +34,37 @@ use version; our $VERSION = version->declare("v0.0.1");
     test($tmpfile);
 };
 
+subtest 'no bumpversion' => sub {
+    my $tmpfile = "$tmpdir/Baz.pm";
+    open my $fh, '>', $tmpfile or die $!;
+    print {$fh} q{
+package Baz;
+our $VERSION="v0.0.1"; # No BumpVersion
+1;
+};
+    close $fh;
+
+    # check
+    {
+        my $meta = Module::Metadata->new_from_file($tmpfile);
+        is($meta->version('Baz'), 'v0.0.1');
+    }
+
+    # bump
+    {
+        my $bump = Module::BumpVersion->load($tmpfile);
+        ok($bump);
+        ok(!$bump->find_version);
+        $bump->set_version('v0.0.2');
+    }
+
+    # test.
+    {
+        my $meta = Module::Metadata->new_from_file($tmpfile);
+        is($meta->version('Baz'), 'v0.0.1');
+    }
+};
+
 
 done_testing;
 

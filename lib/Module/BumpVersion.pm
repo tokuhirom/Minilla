@@ -75,6 +75,8 @@ sub _find_version_for_doc {
     for my $ln ( 0 .. @$lines - 1 ) {
         my $line = $lines->[$ln];
 
+        next LINE if $line =~ /# No BumpVersion/;
+
         # Bail out when we're in a state with no possible actions.
         last LINE unless @$state;
 
