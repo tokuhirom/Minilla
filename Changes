@@ -2,6 +2,20 @@ Revision history for Perl extension Minilla
 
 {{$NEXT}}
 
+v1.1.0 2014-06-01T02:50:15Z
+
+    commit ee9b9f7498c2fc260453cd5701a9009fbb275191
+    Author: Nathaniel Nutter <iam@nnutter.com>
+    Date:   Fri May 30 17:24:09 2014 -0500
+
+        allow a line to be annotated with '# No BumpVersion' to skip
+
+    commit 3330d6984747b1c9d02b579a56ce2353bbc43548
+    Author: moznion <moznion@gmail.com>
+    Date:   Sat May 17 14:09:26 2014 +0900
+
+        Fixed the problem where the default is not set to MBT
+
 v1.0.0 2014-05-12T04:47:31Z
 
     - Default module builder is now Module::Builder::Tiny.
