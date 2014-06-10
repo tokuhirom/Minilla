@@ -15,21 +15,8 @@ use Minilla::Util qw(spew_raw);
 
 sub generate {
     my ($self, $project) = @_;
+
     Carp::croak('Usage: $module_maker->generate($project)') unless defined $project;
-
-    my %stash = (
-        dist_name => scalar($project->dist_name),
-        name      => scalar($project->name),
-        prepare   => '',
-    );
-
-    if ($project->requires_external_bin && @{$project->requires_external_bin}) {
-        $stash{prepare} = join(
-            "\n",
-            q{use Devel::CheckBin;},
-            map { qq{check_bin("$_");} } @{$project->requires_external_bin}
-        );
-    }
 
     local $Data::Dumper::Terse = 1;
     local $Data::Dumper::Useqq = 1;
@@ -38,9 +25,6 @@ sub generate {
     my $content = get_data_section('Build.PL');
     my $mt = Text::MicroTemplate->new(template => $content, escape_func => sub { $_[0] });
     my $src = $mt->build->($project);
-    $src =~ s!<%\s*\$([a-z_]+)\s*%>!
-        $stash{$1}
-    !ge;
     spew_raw('Build.PL', $src);
 }
 
@@ -100,7 +84,13 @@ use File::Spec;
 use CPAN::Meta;
 use CPAN::Meta::Prereqs;
 
-<% $prepare %>
+? if ( @{ $project->requires_external_bin || [] } ) {
+use Devel::CheckBin;
+
+?   for my $bin ( @{ $project->requires_external_bin } ) {
+check_bin(<?= $bin ?>);
+?   }
+? }
 
 my %args = (
     license              => 'perl',
