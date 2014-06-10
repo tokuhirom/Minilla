@@ -93,7 +93,7 @@ use Module::Build::Tiny 0.035;
 use Devel::CheckBin;
 
 ?   for my $bin ( @{ $project->requires_external_bin } ) {
-check_bin(<?= $bin ?>);
+check_bin('<?= $bin ?>');
 ?   }
 
 ? }

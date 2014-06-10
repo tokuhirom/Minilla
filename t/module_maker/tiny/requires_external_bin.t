@@ -9,14 +9,14 @@ plan skip_all => 'Missing "tar"' unless can_run('tar');
 
 use CPAN::Meta;
 
-use Minilla::Profile::ModuleBuild;
+use Minilla::Profile::ModuleBuildTiny;
 use Minilla::Project;
 use Minilla::Git;
 
 subtest 'develop deps' => sub {
     my $guard = pushd(tempdir());
 
-    my $profile = Minilla::Profile::ModuleBuild->new(
+    my $profile = Minilla::Profile::ModuleBuildTiny->new(
         author => 'Tokuhiro Matsuno',
         dist => 'Acme-Foo',
         path => 'Acme/Foo.pm',
