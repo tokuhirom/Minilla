@@ -178,10 +178,10 @@ it under the same terms as Perl itself.
 @@ .travis.yml
 language: perl
 perl:
-  - 5.12
-  - 5.14
-  - 5.16
-  - 5.18
+  - "5.12"
+  - "5.14"
+  - "5.16"
+  - "5.18"
 
 @@ Changes
 Revision history for Perl extension <% $dist %>
