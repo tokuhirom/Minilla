@@ -90,8 +90,8 @@ use Devel::CheckBin;
 ?   for my $bin ( @{ $project->requires_external_bin } ) {
 check_bin(<?= $bin ?>);
 ?   }
-? }
 
+? }
 my %args = (
     license              => 'perl',
     dynamic_config       => 0,
