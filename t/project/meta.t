@@ -39,7 +39,7 @@ subtest 'develop deps' => sub {
     is_deeply(
         $meta->{prereqs}->{runtime}->{requires},
         {
-            'perl'  => '5.008005',
+            'perl'  => '5.008001',
             'Moose' => '0'
         }
     );
