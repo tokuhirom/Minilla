@@ -309,6 +309,13 @@ Commands that are specified by this option will be executed when releasing. If r
 
 If you set this key false, Minilla will not generate 'xt/minilla/minimum_version.t'.
 
+=item requires_external_bin
+
+    requires_external_bin=['tar']
+
+The C<requires_external_bin> command takes the name of a system command
+or program. Build fail if the command does not exist.
+
 =back
 
 =head1 FAQ

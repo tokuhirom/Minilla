@@ -16,6 +16,8 @@ use Minilla::Util qw(spew_raw);
 sub generate {
     my ($self, $project) = @_;
 
+    Carp::croak('Usage: $module_maker->generate($project)') unless defined $project;
+
     local $Data::Dumper::Terse = 1;
     local $Data::Dumper::Useqq = 1;
     local $Data::Dumper::Purity = 1;
@@ -28,12 +30,22 @@ sub generate {
 
 sub prereqs {
     my ($self, $project) = @_;
+
+    Carp::croak('Usage: $module_maker->prereqs($project)') unless defined $project;
+
+    my %configure_requires = (
+        'Module::Build'       => $project->module_build_version,
+        'CPAN::Meta'          => 0,
+        'CPAN::Meta::Prereqs' => 0,
+    );
+    if ($project->requires_external_bin && @{$project->requires_external_bin}) {
+        $configure_requires{'Devel::CheckBin'} = 0;
+    }
+
     my $prereqs = +{
         configure => {
             requires => {
-                'Module::Build'       => $project->module_build_version,
-                'CPAN::Meta'          => 0,
-                'CPAN::Meta::Prereqs' => 0,
+                %configure_requires,
             }
         }
     };
@@ -72,6 +84,14 @@ use File::Spec;
 use CPAN::Meta;
 use CPAN::Meta::Prereqs;
 
+? if ( @{ $project->requires_external_bin || [] } ) {
+use Devel::CheckBin;
+
+?   for my $bin ( @{ $project->requires_external_bin } ) {
+check_bin('<?= $bin ?>');
+?   }
+
+? }
 my %args = (
     license              => 'perl',
     dynamic_config       => 0,

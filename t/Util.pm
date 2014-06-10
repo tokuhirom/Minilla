@@ -15,6 +15,7 @@ use TOML 0.92 qw(to_toml);
 use Minilla;
 use Minilla::Git;
 use Minilla::Util qw/:all/;
+use TOML;
 
 $Minilla::DEBUG=1 if $ENV{MINILLA_DEBUG};
 

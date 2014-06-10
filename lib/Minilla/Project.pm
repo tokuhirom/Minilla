@@ -655,6 +655,9 @@ sub perl_files {
 
 sub PL_files { shift->config->{PL_files} || +{} }
 
+sub requires_external_bin {
+    my $self = shift;
+    return $self->config->{requires_external_bin};
+}
+
 1;
-
-

@@ -30,10 +30,18 @@ sub generate {
 
 sub prereqs {
     my ($self, $project) = @_;
+
+    my %configure_requires = (
+        'Module::Build::Tiny' => '0.035',
+    );
+    if ( @{$project->requires_external_bin || []} ) {
+        $configure_requires{'Devel::CheckBin'} = 0;
+    }
+
     my $prereqs = +{
         configure => {
             requires => {
-                'Module::Build::Tiny' => '0.035',
+                %configure_requires,
             }
         }
     };
@@ -81,5 +89,13 @@ use strict;
 
 use Module::Build::Tiny 0.035;
 
+? if ( @{ $project->requires_external_bin || [] } ) {
+use Devel::CheckBin;
+
+?   for my $bin ( @{ $project->requires_external_bin } ) {
+check_bin('<?= $bin ?>');
+?   }
+
+? }
 Build_PL();
 
