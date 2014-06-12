@@ -127,7 +127,7 @@ __DATA__
 
 @@ t/00_compile.t
 use strict;
-use Test::More;
+use Test::More 0.98;
 
 use_ok $_ for qw(
     <% $module %>
@@ -137,7 +137,7 @@ done_testing;
 
 @@ Module.pm
 package <% $module %>;
-use 5.008005;
+use 5.008001;
 use strict;
 use warnings;
 
@@ -178,10 +178,10 @@ it under the same terms as Perl itself.
 @@ .travis.yml
 language: perl
 perl:
-  - 5.12
-  - 5.14
-  - 5.16
-  - 5.18
+  - "5.12"
+  - "5.14"
+  - "5.16"
+  - "5.18"
 
 @@ Changes
 Revision history for Perl extension <% $dist %>
