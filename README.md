@@ -17,7 +17,7 @@ Minilla is a CPAN module authoring tool. Minilla provides [minil](https://metacp
 
     (M::I - inc) + shipit + (dzil - plugins)
 
-__THIS IS A DEVELOPMENT RELEASE. API MAY CHANGE WITHOUT NOTICE__.
+**THIS IS A DEVELOPMENT RELEASE. API MAY CHANGE WITHOUT NOTICE**.
 
 # MOTIVATION
 
@@ -27,7 +27,7 @@ As stated above, Minilla is opinionated. Minilla has a bold assumption and conve
 
 - Your module written in Pure Perl are located in _lib/_.
 - Your executable file is in _script/_ directory, if any
-- Your module is maintained with __Git__ and `git ls-files` matches with what you will release
+- Your module is maintained with **Git** and `git ls-files` matches with what you will release
 - Your module has a static list of prerequisites that can be described in [cpanfile](https://metacpan.org/pod/cpanfile)
 - Your module has a Changes file
 
@@ -74,7 +74,7 @@ Minilla is built on only few small libraries. You can install Minilla without a 
 
 # CONFIGURATION
 
-Minilla uses __Convention over Configuration__.
+Minilla uses **Convention over Configuration**.
 
 But, you can write configurations to _minil.toml_ file in [TOML](https://github.com/mojombo/toml) format. Minilla reads the _minil.toml_ file in the root directory of your project.
 
@@ -280,9 +280,16 @@ But, you can write configurations to _minil.toml_ file in [TOML](https://github.
 
     If you set this key false, Minilla will not generate 'xt/minilla/minimum\_version.t'.
 
+- requires\_external\_bin
+
+        requires_external_bin=['tar']
+
+    The `requires_external_bin` command takes the name of a system command
+    or program. Build fail if the command does not exist.
+
 # FAQ
 
-- How can I manage __contributors__ section?
+- How can I manage **contributors** section?
 
     Minilla aggregates contributors list from `git log --format="%aN <%aE>" | sort | uniq`.
 
