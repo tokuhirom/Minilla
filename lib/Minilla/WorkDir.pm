@@ -11,6 +11,7 @@ use Time::Piece qw(gmtime);
 use File::Basename qw(dirname);
 use File::Path qw(mkpath);
 use File::Copy qw(copy);
+use Config;
 
 use Minilla::Logger;
 use Minilla::Util qw(randstr cmd cmd_perl slurp slurp_raw spew spew_raw pod_escape);
@@ -143,8 +144,15 @@ sub build {
         Minilla::ReleaseTest->write_release_tests($self->project, $self->dir);
     }
 
-    cmd_perl('Build.PL');
-    cmd_perl('Build', 'build');
+    if (-f 'Build.PL') {
+        cmd_perl('Build.PL');
+        cmd_perl('Build', 'build');
+    } elsif (-f 'Makefile.PL') {
+        cmd_perl('Makefile.PL');
+        cmd($Config{make});
+    } else {
+       die "There is no Makefile.PL/Build.PL";
+    }
 }
 
 sub _rewrite_changes {

@@ -19,6 +19,7 @@ use Minilla::WorkDir;
 use Minilla::ReleaseTest;
 use Minilla::ModuleMaker::ModuleBuild;
 use Minilla::ModuleMaker::ModuleBuildTiny;
+use Minilla::ModuleMaker::ExtUtilsMakeMaker;
 use Minilla::Util qw(slurp_utf8 find_dir cmd spew_raw slurp_raw);
 use Encode qw(decode_utf8);
 
@@ -547,8 +548,9 @@ sub generate_minil_toml {
 
     if ($profile eq 'ModuleBuild') {
         $content .= qq{\nmodule_maker="ModuleBuild"\n};
-    }
-    else {
+    } elsif ($profile eq 'ExtUtilsMakeMaker') {
+        $content .= qq{\nmodule_maker="ExtUtilsMakeMaker"\n};
+    } else {
         $content .= qq{\nmodule_maker="ModuleBuildTiny"\n};
     }
 
