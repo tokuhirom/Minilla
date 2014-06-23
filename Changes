@@ -2,6 +2,14 @@ Revision history for Perl extension Minilla
 
 {{$NEXT}}
 
+v2.0.0 2014-06-23T10:08:59Z
+
+    - Do not use CPAN::Meta in Build.PL...
+      Previous version uses CPAN::Meta in Build.PL.
+      It breaks really old environment that doesn't supports
+      configure_requires.
+      (tokuhirom)
+
 v1.1.0 2014-06-01T02:50:15Z
 
     commit ee9b9f7498c2fc260453cd5701a9009fbb275191
