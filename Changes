@@ -2,6 +2,10 @@ Revision history for Perl extension Minilla
 
 {{$NEXT}}
 
+v2.1.0 2014-06-24T01:11:14Z
+
+    - Added EXPERIMENTAL EUMM support.
+
 v2.0.0 2014-06-23T10:08:59Z
 
     - Do not use CPAN::Meta in Build.PL...

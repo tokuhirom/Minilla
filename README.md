@@ -347,6 +347,20 @@ But, you can write configurations to _minil.toml_ file in [TOML](https://github.
 
         module_maker="ModuleBuildTiny"
 
+- How do I use ExtUtils::MakeMaker with Minilla?
+
+    Minilla v2.1.0+ supports EUMM(EXPERIMENTAL).
+
+    You need to rewrite minil.toml file.
+    You need to add following line:
+
+        module_maker="ExtUtilsMakeMaker"
+
+    (There is no profile, yet. Patches welcome.)
+
+    I don't suggest to use this module... But you can use this option for maintaining
+    primitive modules like Test::TCP.
+
 # AUTHORS
 
 Tokuhiro Matsuno < tokuhirom@gmail.com >
