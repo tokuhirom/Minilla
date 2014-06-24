@@ -25,6 +25,7 @@ sub generate {
     local $Data::Dumper::Useqq = 1;
     local $Data::Dumper::Purity = 1;
     local $Data::Dumper::Indent = 0;
+    local $Data::Dumper::Sortkeys = 1;
     my $content = get_data_section('Makefile.PL');
     my $mt = Text::MicroTemplate->new(template => $content, escape_func => sub { $_[0] });
     my $src = $mt->build->($project);
@@ -125,6 +126,13 @@ if ($ExtUtils::MakeMaker::VERSION >= 6.64) {
     $args{PREREQ_PM}          = <?= Dumper($prereqs->merged_requirements([qw(configure build runtime test)])->as_string_hash) ?>;
 }
 
+if ($ExtUtils::MakeMaker::VERSION >= 6.57_01) {
+    $args{NO_MYMETA} = 1;
+}
+
 WriteMakefile(
+    NAME     => '<?= $project->name ?>',
+    DISTNAME => '<?= $project->dist_name ?>',
+    VERSION  => '<?= $project->version ?>',
     %args,
 );
