@@ -2,7 +2,7 @@ package Minilla;
 use strict;
 use warnings;
 use 5.008005;
-use version; our $VERSION = version->declare("v2.0.0");
+use version; our $VERSION = version->declare("v2.1.0");
 
 our $DEBUG;
 our $AUTO_INSTALL;
@@ -379,6 +379,20 @@ If you want to migrate existing project, you need to rewrite minil.toml file.
 You need to add following line:
 
     module_maker="ModuleBuildTiny"
+
+=item How do I use ExtUtils::MakeMaker with Minilla?
+
+Minilla v2.1.0+ supports EUMM(EXPERIMENTAL).
+
+You need to rewrite minil.toml file.
+You need to add following line:
+
+    module_maker="ExtUtilsMakeMaker"
+
+(There is no profile, yet. Patches welcome.)
+
+I don't suggest to use this module... But you can use this option for maintaining
+primitive modules like Test::TCP.
 
 =back
 
