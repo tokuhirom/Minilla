@@ -2,6 +2,7 @@ package Minilla::Project;
 use strict;
 use warnings;
 use utf8;
+use Encode qw(decode_utf8);
 
 use TOML 0.92 qw(from_toml);
 use File::Basename qw(basename dirname);
@@ -407,7 +408,7 @@ sub cpan_meta {
             "url"     => "http://search.cpan.org/perldoc?CPAN::Meta::Spec"
         },
         license        => [ $self->license->meta2_name ],
-        abstract       => $self->abstract,
+        abstract       => decode_utf8($self->abstract),
         dynamic_config => 0,
         version        => $self->version,
         name           => $self->dist_name,
