@@ -4,7 +4,7 @@
       "Tokuhiro Matsuno < tokuhirom@gmail.com >"
    ],
    "dynamic_config" : 0,
-   "generated_by" : "Minilla/v2.0.0, CPAN::Meta::Converter version 2.141520",
+   "generated_by" : "Minilla/v2.1.0, CPAN::Meta::Converter version 2.141520",
    "license" : [
       "perl_5"
    ],
@@ -55,7 +55,7 @@
          "requires" : {
             "App::cpanminus" : "1.6902",
             "Archive::Tar" : "1.60",
-            "CPAN::Meta" : "0",
+            "CPAN::Meta" : "2.132830",
             "Config::Identity" : "0",
             "Data::Section::Simple" : "0.04",
             "ExtUtils::Manifest" : "1.54",

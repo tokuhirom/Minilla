@@ -5,7 +5,7 @@ requires 'parent' => '0';
 requires 'Archive::Tar', '1.60';
 requires 'Time::Piece' => 1.16; # older Time::Piece was broken
 requires 'version';
-requires 'CPAN::Meta';
+requires 'CPAN::Meta', '2.132830'; # merged_requirements is 2.132830+
 requires 'ExtUtils::Manifest', 1.54; # make maniskip a public routine, and allow an argument to override $mfile
 suggests 'Devel::PPPort'; # XS
 requires 'TAP::Harness::Env'; # From 5.19.5
