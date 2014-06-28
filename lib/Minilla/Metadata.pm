@@ -10,7 +10,7 @@ use Pod::Escapes;
 
 use Moo;
 
-has [qw(abstract perl_version authors license)] => (
+has [qw(abstract perl_version authors license encoding)] => (
     is => 'lazy',
 );
 
@@ -251,6 +251,20 @@ sub _build_license {
                 holder => $holder,
             });
         }
+    }
+}
+
+sub _build_encoding {
+    my ($self) = @_;
+
+    my $pm_text = slurp($self->source);
+
+    if ($pm_text =~ /^=encoding\s+(.+)$/m) {
+        my $encoding = $1;
+        $encoding =~ s/\s+$//;
+        return $encoding;
+    } else {
+        return 'latin1';
     }
 }
 

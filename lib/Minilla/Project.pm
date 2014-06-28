@@ -20,7 +20,7 @@ use Minilla::ReleaseTest;
 use Minilla::ModuleMaker::ModuleBuild;
 use Minilla::ModuleMaker::ModuleBuildTiny;
 use Minilla::ModuleMaker::ExtUtilsMakeMaker;
-use Minilla::Util qw(slurp_utf8 find_dir cmd spew_raw slurp_raw);
+use Minilla::Util qw(slurp_utf8 find_dir cmd spew_raw slurp_raw spew_utf8);
 use Encode qw(decode_utf8);
 
 use Moo;
@@ -401,13 +401,21 @@ sub cpan_meta {
     }
     $merged_prereqs = $merged_prereqs->as_string_hash;
 
+    my $abstract = $self->abstract;
+
+    if ($abstract) {
+        $abstract = decode_utf8($abstract) if $self->metadata->encoding =~ /^utf-?8$/i;
+    } else {
+        errorf("Cannot retrieve 'abstract' from %s. You need to write POD in your main module.\n", $self->dir);
+    }
+
     my $dat = {
         "meta-spec" => {
             "version" => "2",
             "url"     => "http://search.cpan.org/perldoc?CPAN::Meta::Spec"
         },
         license        => [ $self->license->meta2_name ],
-        abstract       => $self->abstract,
+        abstract       => $abstract,
         dynamic_config => 0,
         version        => $self->version,
         name           => $self->dist_name,
@@ -416,9 +424,6 @@ sub cpan_meta {
         release_status => $release_status || 'stable',
         no_index       => $self->no_index,
     };
-    unless ($dat->{abstract}) {
-        errorf("Cannot retrieve 'abstract' from %s. You need to write POD in your main module.\n", $self->dir);
-    }
     if ($self->authors) {
         $dat->{author} = $self->authors;
     } else {
@@ -510,7 +515,6 @@ sub readme_from {
 
 sub regenerate_files {
     my $self = shift;
-
     $self->regenerate_meta_json();
     $self->regenerate_readme_md();
     $self->module_maker->generate($self);
@@ -594,7 +598,11 @@ sub regenerate_readme_md {
         $markdown = join(' ', @badges) . $markdown
     }
 
-    spew_raw($fname, $markdown);
+    if ($self->metadata->encoding =~ /^utf-?8$/i) {
+        spew_utf8($fname, $markdown);
+    } else {
+        spew_raw($fname, $markdown);
+    }
 }
 
 sub verify_prereqs {
