@@ -23,6 +23,9 @@ sub run {
     );
 
     my $project = Minilla::Project->new();
+    unless ($project->validate()) {
+        return;
+    }
     my $work_dir = $project->work_dir;
     if ($test) {
         local $ENV{RELEASE_TESTING} = 1;

@@ -26,6 +26,9 @@ sub run {
     );
 
     my $project = Minilla::Project->new();
+    unless ($project->validate()) {
+        return;
+    }
 
     my @steps = qw(
         CheckUntrackedFiles

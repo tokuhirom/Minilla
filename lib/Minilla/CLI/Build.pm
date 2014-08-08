@@ -22,6 +22,9 @@ sub run {
 
     my $project = Minilla::Project->new();
     $project->regenerate_files();
+    unless ($project->validate()) {
+        return;
+    }
 
     my $dst = File::Spec->rel2abs(sprintf("%s-%s", $project->dist_name, $project->version));
 

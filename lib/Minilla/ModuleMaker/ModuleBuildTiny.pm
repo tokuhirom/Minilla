@@ -28,6 +28,16 @@ sub generate {
     spew_raw('Build.PL', $src);
 }
 
+sub validate {
+    my $self = shift;
+
+    if (-d 'bin/') {
+        warn "[ERROR] Module::Build::Tiny doesn't install bin/ directory. You should rename bin/ to script/\n";
+        return 0;
+    }
+    return 1; # Yes. It's valid project.
+}
+
 sub prereqs {
     my ($self, $project) = @_;
 

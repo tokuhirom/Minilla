@@ -662,4 +662,15 @@ sub requires_external_bin {
     return $self->config->{requires_external_bin};
 }
 
+# @return true if the project is valid, false otherwise.
+sub validate {
+    my $self = shift;
+    my $module_maker = $self->module_maker;
+    if ($module_maker->can('validate')) {
+        return $module_maker->validate();
+    } else {
+        return 1;
+    }
+}
+
 1;
