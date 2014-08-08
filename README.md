@@ -152,6 +152,8 @@ But, you can write configurations to _minil.toml_ file in [TOML](https://github.
 
     Minilla sets install script files as `['script/*', 'bin/*']` by default.
 
+    (Note. This option doesn't affect anything if you are using ModuleBuildTiny or ExtUtilsMakeMaker, for now. If you are using ModuleBuildTiny, you MUST put scripts in bin/ directory.)
+
 - tap\_harness\_args(EXPERIMENTAL)
 
         [tap_harness_args]
