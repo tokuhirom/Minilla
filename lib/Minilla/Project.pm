@@ -590,6 +590,9 @@ sub regenerate_readme_md {
                 if ($badge eq 'coveralls') {
                     push @badges, "[![Coverage Status](https://coveralls.io/repos/$user_name/$repository_name/badge.png?branch=master)](https://coveralls.io/r/$user_name/$repository_name?branch=master)"
                 }
+                if ($badge eq 'gitter') {
+                    push @badges, "[![Gitter chat](https://badges.gitter.im/$user_name/$repository_name.png)](https://gitter.im/$user_name/$repository_name)";
+                }
             }
         }
 
