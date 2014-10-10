@@ -212,6 +212,8 @@ Specify the PL files.
 
 This option is not supported by L<Minilla::ModuleMaker::ModuleBuildTiny>.
 
+Note. MBTiny executes *.PL files by default.
+
 =item build.build_class
 
 Specify a custom Module::Build subclass.
