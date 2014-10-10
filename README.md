@@ -181,6 +181,10 @@ But, you can write configurations to _minil.toml_ file in [TOML](https://github.
         [PL_files]
         lib/Foo/Bar.pm.PL="lib/Foo/Bar.pm"
 
+    This option is not supported by [Minilla::ModuleMaker::ModuleBuildTiny](https://metacpan.org/pod/Minilla::ModuleMaker::ModuleBuildTiny).
+
+    Note. MBTiny executes \*.PL files by default.
+
 - build.build\_class
 
     Specify a custom Module::Build subclass.
