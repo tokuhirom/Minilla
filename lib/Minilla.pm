@@ -210,6 +210,8 @@ Specify the PL files.
     [PL_files]
     lib/Foo/Bar.pm.PL="lib/Foo/Bar.pm"
 
+This option is not supported by L<Minilla::ModuleMaker::ModuleBuildTiny>.
+
 =item build.build_class
 
 Specify a custom Module::Build subclass.

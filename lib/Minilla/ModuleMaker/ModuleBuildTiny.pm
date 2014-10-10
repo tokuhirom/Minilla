@@ -56,7 +56,7 @@ sub prereqs {
         }
     };
 
-    for my $key (qw(tap_harness_args use_xsutil c_source allow_pureperl)) {
+    for my $key (qw(tap_harness_args use_xsutil c_source allow_pureperl PL_files)) {
         if( $project->$key ){
             die "$key does not supported by " . __PACKAGE__;
         }
