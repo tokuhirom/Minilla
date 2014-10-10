@@ -170,9 +170,9 @@ But, you can write configurations to _minil.toml_ file in [TOML](https://github.
 
 - badges
 
-        badges = ['travis', 'coveralls']
+        badges = ['travis', 'coveralls', 'gitter']
 
-    Embed badges image (e.g. Travis-CI) to README.md. It ought to be array and each elements must be service name. Now, supported services are only 'travis' and 'coveralls'.
+    Embed badges image (e.g. Travis-CI) to README.md. It ought to be array and each elements must be service name. Now, supported services are only 'travis', 'coveralls' and 'gitter'.
 
 - PL\_files
 

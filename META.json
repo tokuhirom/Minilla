@@ -68,7 +68,7 @@
             "Moo" : "1.001",
             "Pod::Markdown" : "1.322",
             "TAP::Harness::Env" : "0",
-            "TOML" : "0.94",
+            "TOML" : "0.95",
             "Term::ANSIColor" : "0",
             "Text::MicroTemplate" : "0.20",
             "Time::Piece" : "1.16",
@@ -109,7 +109,7 @@
          "web" : "https://github.com/tokuhirom/Minilla"
       }
    },
-   "version" : "v2.1.1",
+   "version" : "v2.1.2",
    "x_authority" : "cpan:TOKUHIROM",
    "x_contributors" : [
       "mattn <mattn.jp@gmail.com>",
@@ -139,6 +139,9 @@
       "moznion <moznion@gmail.com>",
       "Nathaniel Nutter <iam@nnutter.com>",
       "Songmu <y.songmu@gmail.com>",
+      "Manni Heumann <github@lxxi.org>",
+      "iwata-motonori <motonori.iwata@dena.com>",
+      "aereal <aereal@aereal.org>",
       "tokuhirom <tokuhirom@gmail.com>"
    ]
 }

@@ -2,6 +2,16 @@ Revision history for Perl extension Minilla
 
 {{$NEXT}}
 
+v2.1.2 2014-10-10T02:13:02Z
+
+    - Depended on latest TOML.pm
+
+    commit 343eba6a5a0b6980d4341f08a3aa18e80ce968f8
+    Author: iwata-motonori <motonori.iwata@dena.com>
+    Date:   Tue Aug 26 19:22:29 2014 +0900
+
+        now correspond to a badge of Gitter
+
 v2.1.1 2014-06-27T00:41:51Z
 
     - Fixed deps.
