@@ -66,6 +66,7 @@ on 'test' => sub {
     recommends 'Devel::CheckLib';
     suggests 'Dist::Zilla';
     requires 'CPAN::Meta::Validator';
+    requires 'JSON';
 };
 
 on 'configure' => sub {
