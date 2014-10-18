@@ -470,7 +470,7 @@ sub extract_git_info {
     if ( `git remote show -n origin` =~ /URL: (.*)$/m && $1 ne 'origin' ) {
         # XXX Make it public clone URL, but this only works with github
         my $git_url = $1;
-        $git_url =~ s!\A[\w\-]+@([^:]+):!git://$1/!; # git@github.com:xxx/yyy -> git://github.com/xxx/yyy
+        $git_url =~ s!\A(?:ssh://)?[\w\-]+@([^:]+):!git://$1/!; # git@github.com:xxx/yyy -> git://github.com/xxx/yyy
         $git_url =~ s!\Ahttps?://!git://!; # https:// or http:// -> git://
 
         if ($git_url =~ /github\.com/) {
