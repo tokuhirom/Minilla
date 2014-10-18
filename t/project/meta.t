@@ -115,6 +115,10 @@ subtest 'resources' => sub {
         my $git_conf_url = 'git@github.com:tokuhirom/Minilla.git';
         $resources_url_of_meta_json_ok->($git_conf_url);
     };
+    subtest 'when remote of origin url is ssh with ssh scheme' => sub {
+        my $git_conf_url = 'ssh://git@github.com/tokuhirom/Minilla.git';
+        $resources_url_of_meta_json_ok->($git_conf_url);
+    };
 };
 
 
