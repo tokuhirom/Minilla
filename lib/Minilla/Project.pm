@@ -493,8 +493,6 @@ sub extract_git_info {
         } else {
             # normal repository
             if ($registered_url !~ m{^file://}) {
-                $registered_url =~ s!\A[\w\-]+@([^:]+):!git://$1/!; # git@github.com:xxx/yyy -
-                $registered_url =~ s!\Ahttps?://!git://!; # https:// or http:// -> git://
                 $repository = +{
                     url => $registered_url,
                 };
