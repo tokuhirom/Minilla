@@ -469,14 +469,17 @@ sub extract_git_info {
     my $homepage;
     if ( `git remote show -n origin` =~ /URL: (.*)$/m && $1 ne 'origin' ) {
         # XXX Make it public clone URL, but this only works with github
-        my $git_url = $1;
-        $git_url =~ s!\A[\w\-]+@([^:]+):!git://$1/!; # git@github.com:xxx/yyy -> git://github.com/xxx/yyy
-        $git_url =~ s!\Ahttps?://!git://!; # https:// or http:// -> git://
-
-        if ($git_url =~ /github\.com/) {
-            my $http_url = $git_url;
-            $http_url =~ s!\Agit://!https://!;
-            $http_url =~ s!\.git$!!;
+        my $registered_url = $1;
+        if ($registered_url =~ /github\.com/) {
+            my ($user, $repo) = $registered_url =~ m{
+                github\.com
+                [:/]([^/]+)
+                /
+                ([^/]+?)(?:\.git)?
+                $
+            }ix;
+            my $git_url = "git://github.com/$user/$repo.git";
+            my $http_url = "https://github.com/$user/$repo";
             unless ($self->config->{no_github_issues}) {
                 $bugtracker = +{
                     web => "$http_url/issues",
@@ -489,9 +492,9 @@ sub extract_git_info {
             $homepage = $self->config->{homepage} || $http_url;
         } else {
             # normal repository
-            if ($git_url !~ m{^file://}) {
+            if ($registered_url !~ m{^file://}) {
                 $repository = +{
-                    url => $git_url,
+                    url => $registered_url,
                 };
             }
         }
