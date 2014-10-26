@@ -491,6 +491,19 @@ sub extract_git_info {
             };
             $homepage = $self->config->{homepage} || $http_url;
         } else {
+            # We can't do much more than this, but we need to fix
+            # user@host:path/to/repo.git to git://$host/path/to/repo.git in
+            # order to work with CPAN::Meta
+            $registered_url =~ s{
+                \A
+                [^@]+       # user name, which we toss away
+                @
+                ([^:]+)     # anything other than a ":"
+                :
+                (.+)        # anything, which is the repository
+                \Z
+            }{git://$1/$2}gx;
+
             # normal repository
             if ($registered_url !~ m{^file://}) {
                 $repository = +{
