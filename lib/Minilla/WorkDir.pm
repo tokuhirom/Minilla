@@ -220,15 +220,30 @@ sub dist {
         # Create tar ball
         my $tarball = sprintf('%s-%s.tar.gz', $self->project->dist_name, $self->project->version);
 
+        my $force_mode = 0;
+
         my $tar = Archive::Tar->new;
         for my $file (@{$self->manifest_files}) {
             my $filename = File::Spec->catfile($self->project->dist_name . '-' . $self->project->version, $file);
             my $data = slurp($file);
+
             my $mode = (stat($file))[2];
+
+            # On Windows, (stat($file))[2] * ALWAYS * results in octal 0100666 (which means it is
+            # world writeable). World writeable files are always rejected by PAUSE. The solution is to
+            # change a file mode octal 0100666 to octal 000664, such that it is * NOT * world
+            # writeable. This works on Windows, as well as on other systems (Linux, Mac, etc...), because
+            # the filemode 0100666 only occurs on Windows. (If it occurred on Linux, it would be wrong anyway)
+
+            if ($mode == 0100666) {
+                $mode = 0644;
+                $force_mode++;
+            }
+
             $tar->add_data($filename, $data, { mode => $mode });
         }
         $tar->write($tarball, COMPRESS_GZIP);
-        infof("Wrote %s\n", $tarball);
+        infof("Wrote %s\n", $tarball.($force_mode == 0 ? '' : ' --> forced to mode 000664'));
 
         File::Spec->rel2abs($tarball);
     };
