@@ -4,7 +4,7 @@
       "Tokuhiro Matsuno < tokuhirom@gmail.com >"
    ],
    "dynamic_config" : 0,
-   "generated_by" : "Minilla/v2.1.2, CPAN::Meta::Converter version 2.141520",
+   "generated_by" : "Minilla/v2.2.0, CPAN::Meta::Converter version 2.141520",
    "license" : [
       "perl_5"
    ],
@@ -101,16 +101,16 @@
    "release_status" : "unstable",
    "resources" : {
       "bugtracker" : {
-         "web" : "https://git@github.com/tokuhirom/Minilla/issues"
+         "web" : "https://github.com/tokuhirom/Minilla/issues"
       },
-      "homepage" : "https://git@github.com/tokuhirom/Minilla",
+      "homepage" : "https://github.com/tokuhirom/Minilla",
       "repository" : {
          "type" : "git",
-         "url" : "git://git@github.com/tokuhirom/Minilla.git",
-         "web" : "https://git@github.com/tokuhirom/Minilla"
+         "url" : "git://github.com/tokuhirom/Minilla.git",
+         "web" : "https://github.com/tokuhirom/Minilla"
       }
    },
-   "version" : "v2.2.0",
+   "version" : "v2.2.1",
    "x_authority" : "cpan:TOKUHIROM",
    "x_contributors" : [
       "mattn <mattn.jp@gmail.com>",
@@ -143,6 +143,7 @@
       "aereal <aereal@aereal.org>",
       "moznion <moznion@gmail.com>",
       "Daisuke Maki <lestrrat+github@gmail.com>",
+      "Klaus Eichner <klaus03@gmail.com>",
       "tokuhirom <tokuhirom@gmail.com>"
    ]
 }

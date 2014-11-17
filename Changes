@@ -2,6 +2,16 @@ Revision history for Perl extension Minilla
 
 {{$NEXT}}
 
+v2.2.1 2014-11-17T02:31:30Z
+
+    - On Windows, (stat($file))[2] * ALWAYS * results in octal 0100666 (which means it is
+      world writeable). World writeable files are always rejected by PAUSE. The solution is to
+      change a file mode octal 0100666 to octal 000664, such that it is * NOT * world
+      writeable. This works on Windows, as well as on other systems (Linux, Mac, etc...), because
+      the filemode 0100666 only occurs on Windows. (If it occurred on Linux, it would be wrong anyway)
+      (klaus03)
+
+
 v2.2.0 2014-10-20T01:45:49Z
 
     - Work better with github urls(lestrrat)
