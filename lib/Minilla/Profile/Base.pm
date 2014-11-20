@@ -182,6 +182,7 @@ perl:
   - "5.14"
   - "5.16"
   - "5.18"
+  - "5.20"
 
 @@ Changes
 Revision history for Perl extension <% $dist %>
