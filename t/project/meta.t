@@ -59,7 +59,7 @@ subtest 'develop deps' => sub {
 
 subtest 'resources' => sub {
 
-    my $resources_url_of_meta_json_ok = sub {
+    my $prepare_meta_json_resources = sub {
         my $git_conf_url = shift;
 
         my $guard = pushd(tempdir());
@@ -94,26 +94,85 @@ subtest 'resources' => sub {
 
         open my $fh, '<', 'META.json';
         my $meta_json = decode_json(do { local $/; <$fh> });
-        my $resources = $meta_json->{resources};
-
-        my $https_url = '';
-        is $resources->{bugtracker}->{web}, 'https://github.com/tokuhirom/Minilla/issues';
-        is $resources->{homepage}, 'https://github.com/tokuhirom/Minilla';
-        is $resources->{repository}->{url}, 'git://github.com/tokuhirom/Minilla.git';
-        is $resources->{repository}->{web}, 'https://github.com/tokuhirom/Minilla'
+        return $meta_json->{resources};
     };
 
-    subtest 'when remote of origin url is https protocol' => sub {
-        my $git_conf_url = 'https://github.com/tokuhirom/Minilla.git';
-        $resources_url_of_meta_json_ok->($git_conf_url);
+    subtest 'github' => sub {
+        my $resources_url_of_meta_json_ok = sub {
+            my $git_conf_url = shift;
+            my $resources = $prepare_meta_json_resources->($git_conf_url);
+            is $resources->{bugtracker}->{web}, 'https://github.com/tokuhirom/Minilla/issues';
+            is $resources->{homepage}, 'https://github.com/tokuhirom/Minilla';
+            is $resources->{repository}->{url}, 'git://github.com/tokuhirom/Minilla.git';
+            is $resources->{repository}->{web}, 'https://github.com/tokuhirom/Minilla'
+        };
+
+        subtest 'when remote of origin url is https protocol' => sub {
+            my $git_conf_url = 'https://github.com/tokuhirom/Minilla.git';
+            $resources_url_of_meta_json_ok->($git_conf_url);
+        };
+        subtest 'when remote of origin url is https protocol with port' => sub {
+            my $git_conf_url = 'https://github.com:443/tokuhirom/Minilla.git';
+            $resources_url_of_meta_json_ok->($git_conf_url);
+        };
+        subtest 'when remote of origin url is git protocol' => sub {
+            my $git_conf_url = 'git://github.com/tokuhirom/Minilla.git';
+            $resources_url_of_meta_json_ok->($git_conf_url);
+        };
+        subtest 'when remote of origin url is git protocol without scheme' => sub {
+            my $git_conf_url = 'git@github.com:tokuhirom/Minilla.git';
+            $resources_url_of_meta_json_ok->($git_conf_url);
+        };
+        subtest 'when remote of origin url is git protocol with port' => sub {
+            my $git_conf_url = 'git://github.com:9418/tokuhirom/Minilla.git';
+            $resources_url_of_meta_json_ok->($git_conf_url);
+        };
+        subtest 'when remote of origin url is ssh' => sub {
+            my $git_conf_url = 'ssh://git@github.com/tokuhirom/Minilla.git';
+            $resources_url_of_meta_json_ok->($git_conf_url);
+        };
+        subtest 'when remote of origin url is ssh with port' => sub {
+            my $git_conf_url = 'ssh://git@github.com:22/tokuhirom/Minilla.git';
+            $resources_url_of_meta_json_ok->($git_conf_url);
+        };
     };
-    subtest 'when remote of origin url is git protocol' => sub {
-        my $git_conf_url = 'git://github.com/tokuhirom/Minilla.git';
-        $resources_url_of_meta_json_ok->($git_conf_url);
-    };
-    subtest 'when remote of origin url is ssh' => sub {
-        my $git_conf_url = 'git@github.com:tokuhirom/Minilla.git';
-        $resources_url_of_meta_json_ok->($git_conf_url);
+
+    subtest 'not github' => sub {
+        my $resources_url_of_meta_json_ok = sub {
+            my ($git_conf_url, $expected_url) = @_;
+            my $resources = $prepare_meta_json_resources->($git_conf_url);
+            is $resources->{repository}->{url}, $expected_url
+                or diag explain $resources;
+        };
+
+        subtest 'when remote of origin url is https protocol' => sub {
+            my $git_conf_url = 'https://git.local/tokuhirom/Minilla.git';
+            $resources_url_of_meta_json_ok->($git_conf_url, $git_conf_url);
+        };
+        subtest 'when remote of origin url is https protocol with port' => sub {
+            my $git_conf_url = 'https://git.local:443/tokuhirom/Minilla.git';
+            $resources_url_of_meta_json_ok->($git_conf_url, $git_conf_url);
+        };
+        subtest 'when remote of origin url is git protocol' => sub {
+            my $git_conf_url = 'git://git.local/tokuhirom/Minilla.git';
+            $resources_url_of_meta_json_ok->($git_conf_url, $git_conf_url);
+        };
+        subtest 'when remote of origin url is git protocol without scheme' => sub {
+            my $git_conf_url = 'git@git.local:tokuhirom/Minilla.git';
+            $resources_url_of_meta_json_ok->($git_conf_url, "git://git.local/tokuhirom/Minilla.git");
+        };
+        subtest 'when remote of origin url is git protocol with port' => sub {
+            my $git_conf_url = 'git://git.local:9418/tokuhirom/Minilla.git';
+            $resources_url_of_meta_json_ok->($git_conf_url, $git_conf_url);
+        };
+        subtest 'when remote of origin url is ssh' => sub {
+            my $git_conf_url = 'ssh://git@git.local/tokuhirom/Minilla.git';
+            $resources_url_of_meta_json_ok->($git_conf_url, $git_conf_url);
+        };
+        subtest 'when remote of origin url is ssh with port' => sub {
+            my $git_conf_url = 'ssh://git@git.local:22/tokuhirom/Minilla.git';
+            $resources_url_of_meta_json_ok->($git_conf_url, $git_conf_url);
+        };
     };
 };
 
