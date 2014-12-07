@@ -2,6 +2,13 @@ Revision history for Perl extension Minilla
 
 {{$NEXT}}
 
+v2.3.0 2014-12-07T11:28:37Z
+
+    - Fixed repository url was broken, when url contains port number.
+      (karupanerura++)
+    - Fixed testing deps
+      (reported by dotandimet++)
+
 v2.2.1 2014-11-17T02:31:30Z
 
     - On Windows, (stat($file))[2] * ALWAYS * results in octal 0100666 (which means it is

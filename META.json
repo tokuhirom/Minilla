@@ -89,6 +89,7 @@
             "CPAN::Meta::Validator" : "0",
             "File::Temp" : "0",
             "JSON" : "0",
+            "Module::Build::Tiny" : "0.035",
             "Test::More" : "0.98",
             "Test::Output" : "0",
             "Test::Requires" : "0"
@@ -110,7 +111,7 @@
          "web" : "https://github.com/tokuhirom/Minilla"
       }
    },
-   "version" : "v2.2.1",
+   "version" : "v2.3.0",
    "x_authority" : "cpan:TOKUHIROM",
    "x_contributors" : [
       "mattn <mattn.jp@gmail.com>",
@@ -135,15 +136,16 @@
       "Helmut Wollmersdorfer <helmut@wollmersdorfer.at>",
       "Kenichi Ishigaki <ishigaki@cpan.org>",
       "Graham Knop <haarg@haarg.org>",
-      "Syohei YOSHIDA <syohex@gmail.com>",
       "Nathaniel Nutter <iam@nnutter.com>",
       "Songmu <y.songmu@gmail.com>",
       "Manni Heumann <github@lxxi.org>",
       "iwata-motonori <motonori.iwata@dena.com>",
       "aereal <aereal@aereal.org>",
-      "moznion <moznion@gmail.com>",
       "Daisuke Maki <lestrrat+github@gmail.com>",
       "Klaus Eichner <klaus03@gmail.com>",
+      "moznion <moznion@gmail.com>",
+      "Syohei YOSHIDA <syohex@gmail.com>",
+      "karupanerura <karupa@cpan.org>",
       "tokuhirom <tokuhirom@gmail.com>"
    ]
 }
