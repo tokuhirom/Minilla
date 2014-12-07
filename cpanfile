@@ -67,6 +67,7 @@ on 'test' => sub {
     suggests 'Dist::Zilla';
     requires 'CPAN::Meta::Validator';
     requires 'JSON';
+    requires 'Module::Build::Tiny', 0.035; # https://github.com/tokuhirom/Minilla/issues/151
 };
 
 on 'configure' => sub {
