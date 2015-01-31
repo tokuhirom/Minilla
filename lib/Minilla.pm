@@ -181,7 +181,7 @@ linking phases of any C or XS files.
 
 Minilla sets install script files as C<< ['script/*', 'bin/*'] >> by default.
 
-(Note. This option doesn't affect anything if you are using ModuleBuildTiny or ExtUtilsMakeMaker, for now. If you are using ModuleBuildTiny, you MUST put scripts in bin/ directory.)
+(Note. This option doesn't affect anything if you are using ModuleBuildTiny or ExtUtilsMakeMaker, for now. If you are using ModuleBuildTiny, you MUST put scripts in script/ directory.)
 
 =item tap_harness_args(EXPERIMENTAL)
 
