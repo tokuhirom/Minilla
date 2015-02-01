@@ -604,7 +604,7 @@ sub regenerate_readme_md {
                     push @badges, "[![Build Status](https://travis-ci.org/$user_name/$repository_name.svg?branch=master)](https://travis-ci.org/$user_name/$repository_name)";
                 }
                 if ($badge eq 'coveralls') {
-                    push @badges, "[![Coverage Status](https://img.shields.io/coveralls/$user_name/$repository_name/master.svg)](https://coveralls.io/r/$user_name/$repository_name?branch=master)"
+                    push @badges, "[![Coverage Status](https://img.shields.io/coveralls/$user_name/$repository_name/master.svg?style=flat)](https://coveralls.io/r/$user_name/$repository_name?branch=master)"
                 }
                 if ($badge eq 'gitter') {
                     push @badges, "[![Gitter chat](https://badges.gitter.im/$user_name/$repository_name.png)](https://gitter.im/$user_name/$repository_name)";
