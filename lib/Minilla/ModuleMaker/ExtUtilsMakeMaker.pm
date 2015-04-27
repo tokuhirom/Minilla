@@ -24,7 +24,7 @@ sub generate {
     local $Data::Dumper::Terse = 1;
     local $Data::Dumper::Useqq = 1;
     local $Data::Dumper::Purity = 1;
-    local $Data::Dumper::Indent = 0;
+    local $Data::Dumper::Indent = 1;
     local $Data::Dumper::Sortkeys = 1;
     my $content = get_data_section('Makefile.PL');
     my $mt = Text::MicroTemplate->new(template => $content, escape_func => sub { $_[0] });
@@ -36,7 +36,7 @@ sub prereqs {
     my ($self, $project) = @_;
 
     my %configure_requires = (
-        'ExtUtils::MakeMaker' => '6.64', # TEST_REQUIRES
+        'ExtUtils::MakeMaker' => '0',
     );
 
     my $prereqs = +{
@@ -100,39 +100,34 @@ check_bin('<?= $bin ?>');
 
 ? }
 
-use File::Copy;
-
-print "cp META.json MYMETA.json\n";
-copy("META.json","MYMETA.json") or die "Copy failed(META.json): $!";
-
-if (-f 'META.yml') {
-    print "cp META.yml MYMETA.yml\n";
-    copy("META.yml","MYMETA.yml") or die "Copy failed(META.yml): $!";
-} else {
-    print "There is no META.yml... You may install this module from the repository...\n";
-}
-
 ? my $prereqs = $project->cpan_meta->effective_prereqs;
-? my $d = sub { Dumper($prereqs->merged_requirements([$_[0]])->as_string_hash) };
-my %args;
-if ($ExtUtils::MakeMaker::VERSION >= 6.64) {
-    # *_REQUIRES was supported.
-
-    $args{CONFIGURE_REQUIRES} = <?= $d->('configure') ?>;
-    $args{BUILD_REQUIRES}     = <?= $d->('build') ?>;
-    $args{TEST_REQUIRES}      = <?= $d->('test') ?>;
-    $args{PREREQ_PM}          = <?= $d->('runtime') ?>;
-} else {
-    $args{PREREQ_PM}          = <?= Dumper($prereqs->merged_requirements([qw(configure build runtime test)])->as_string_hash) ?>;
-}
-
-if ($ExtUtils::MakeMaker::VERSION >= 6.57_01) {
-    $args{NO_MYMETA} = 1;
-}
-
-WriteMakefile(
+? my $d = sub { Dumper($prereqs->merged_requirements([$_[0]], ['requires'])->as_string_hash) };
+my %WriteMakefileArgs = (
     NAME     => '<?= $project->name ?>',
     DISTNAME => '<?= $project->dist_name ?>',
     VERSION  => '<?= $project->version ?>',
-    %args,
+    CONFIGURE_REQUIRES => <?= $d->('configure') ?>,
+    BUILD_REQUIRES     => <?= $d->('build') ?>,
+    TEST_REQUIRES      => <?= $d->('test') ?>,
+    PREREQ_PM          => <?= $d->('runtime') ?>,
 );
+
+my $full_prereqs = <?= Dumper($prereqs->merged_requirements([qw(configure build runtime test)])->as_string_hash) ?>;
+
+unless (eval { ExtUtils::MakeMaker->VERSION(6.63_03) }) {
+    delete $WriteMakefileArgs{TEST_REQUIRES};
+    delete $WriteMakefileArgs{BUILD_REQUIRES};
+    $WriteMakefileArgs{PREREQ_PM} = $full_prereqs;
+}
+
+unless (eval { ExtUtils::MakeMaker->VERSION(6.52) }) {
+    delete $WriteMakefileArgs{CONFIGURE_REQUIRES};
+}
+
+unless (eval { ExtUtils::MakeMaker->VERSION(6.57_01) }) {
+    use File::Copy;
+    copy('META.yml', 'MYMETA.yml')   or warn "META.yml: $!";
+    copy('META.json', 'MYMETA.json') or warn "META.json: $!";
+}
+
+WriteMakefile(%WriteMakefileArgs);
