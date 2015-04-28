@@ -47,7 +47,7 @@ subtest 'Badge' => sub {
 
         my $badge_markdowns = [
             "[![Build Status](https://travis-ci.org/tokuhirom/Minilla.svg?branch=master)](https://travis-ci.org/tokuhirom/Minilla)",
-            "[![Coverage Status](https://img.shields.io/coveralls/tokuhirom/Minilla/master.svg)](https://coveralls.io/r/tokuhirom/Minilla?branch=master)",
+            "[![Coverage Status](https://img.shields.io/coveralls/tokuhirom/Minilla/master.svg?style=flat)](https://coveralls.io/r/tokuhirom/Minilla?branch=master)",
             "[![Gitter chat](https://badges.gitter.im/tokuhirom/Minilla.png)](https://gitter.im/tokuhirom/Minilla)",
         ];
         my $expected = join(' ', @$badge_markdowns);
