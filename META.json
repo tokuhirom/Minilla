@@ -111,13 +111,12 @@
          "web" : "https://github.com/tokuhirom/Minilla"
       }
    },
-   "version" : "v2.3.0",
+   "version" : "v2.4.0",
    "x_authority" : "cpan:TOKUHIROM",
    "x_contributors" : [
       "mattn <mattn.jp@gmail.com>",
       "Daisuke Murase <typester@cpan.org>",
       "kazhiramatsu <kazhiramatsu.github@gmail.com>",
-      "Tatsuhiko Miyagawa <miyagawa@bulknews.net>",
       "Keiji, Yoshimi <walf443@gmail.com>",
       "Yuji Shimada <xaicron@gmail.com>",
       "Fuji, Goro <g.psy.va@gmail.com>",
@@ -143,9 +142,11 @@
       "aereal <aereal@aereal.org>",
       "Daisuke Maki <lestrrat+github@gmail.com>",
       "Klaus Eichner <klaus03@gmail.com>",
-      "moznion <moznion@gmail.com>",
       "Syohei YOSHIDA <syohex@gmail.com>",
       "karupanerura <karupa@cpan.org>",
+      "Shoichi Kaji <skaji@cpan.org>",
+      "moznion <moznion@gmail.com>",
+      "Tatsuhiko Miyagawa <miyagawa@bulknews.net>",
       "tokuhirom <tokuhirom@gmail.com>"
    ]
 }

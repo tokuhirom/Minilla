@@ -2,6 +2,27 @@ Revision history for Perl extension Minilla
 
 {{$NEXT}}
 
+v2.4.0 2015-04-28T02:15:38Z
+
+    commit 28e4c4784f447ebccac651d4c1119ceb25a0f2b2
+    Author: Tatsuhiko Miyagawa <miyagawa@bulknews.net>
+    Date:   Mon Apr 27 09:26:01 2015 -0700
+
+        Relax MakeMaker requirement, and also trust MM's MYMETA generation.
+
+        Slighly tweaked the way falling back _REQUIRES to PREREQ_PM, so that
+        it will only revert to PREREQ_PM if MakeMaker is old.
+
+        Do not request higher MakeMaker in configure_requires since older MakeMaker
+        will just install the distribution fine.
+
+        Do not set NO_MYMETA since MakeMaker (CPAN::Meta) will preserve what's in
+        META files when creating MYMETA. Only copy to MYMETA when the feature
+        is not in MakeMaker.
+
+        Only requires what's in 'requires' type, since the default includes
+        'recommends' and MakeMaker dumps them into _REQUIRES.
+
 v2.3.0 2014-12-07T11:28:37Z
 
     - Fixed repository url was broken, when url contains port number.
