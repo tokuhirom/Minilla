@@ -2,6 +2,10 @@ Revision history for Perl extension Minilla
 
 {{$NEXT}}
 
+v2.4.1 2015-05-02T02:30:20Z
+
+    - Depends on latest Module::Metadata.
+
 v2.4.0 2015-04-28T02:15:38Z
 
     commit 28e4c4784f447ebccac651d4c1119ceb25a0f2b2
