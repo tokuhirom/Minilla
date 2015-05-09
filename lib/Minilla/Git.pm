@@ -55,7 +55,12 @@ sub git_submodules {
 sub git_submodule_files {
     # XXX: `git ls-files -z` does *NOT* print new line in last.
     #      So it breaks format when multiple submodules contains and combined with `git submodule foreach`. (and failed to parse.)
-    my @output = split /\n/, `git submodule foreach --recursive $^X -e 'system "git ls-files -z"; print "\n"'`;
+    my @output = split /\n/, `git submodule foreach --recursive git ls-files -z`;
+    for (my $i = 1; $i <= @output-2; $i += 2) {
+        $output[$i] =~ s/\0([^\0]*)$//;
+        splice @output, $i+1, 0, $1;
+    }
+
     my @files;
     while (@output) {
         my $submodule_line = shift @output;
