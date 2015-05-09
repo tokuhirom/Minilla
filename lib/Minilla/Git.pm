@@ -43,7 +43,7 @@ sub git_submodule_add {
 }
 
 sub git_submodules {
-    my @submodules = split /\n/, `git submodule status`;
+    my @submodules = split /\n/, `git submodule status --recursive`;
     my @files;
     for (@submodules) {
         my ($path) = $_ =~ /^[+\-U\x20][0-9a-f]{40}\x20([^\x20]+).*$/;
@@ -53,7 +53,7 @@ sub git_submodules {
 }
 
 sub git_submodule_files {
-    my @output = split /\n/, `git submodule foreach git ls-files -z`;
+    my @output = split /\n/, `git submodule foreach --recursive git ls-files -z`;
     my @files;
     while (@output) {
         my $submodule_line = shift @output;
