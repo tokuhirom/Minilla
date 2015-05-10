@@ -20,7 +20,7 @@ subtest 'FileGatherer' => sub {
             exclude_match => ['^local/'],
         )->gather_files('.');
 
-        is(join(',', sort @files), 'META.json,README,foo,libbar/bar.c,libfoo/foo.c');
+        is(join(',', sort @files), 'META.json,README,foo,libbar/bar.c,libbar/libbar/bar.c,libbar/libfoo/foo.c,libfoo/foo.c,libfoo/libbar/bar.c,libfoo/libfoo/foo.c');
     };
 
     subtest include_dotfiles => sub {
@@ -29,7 +29,7 @@ subtest 'FileGatherer' => sub {
             include_dotfiles => 1,
         )->gather_files('.');
 
-        is(join(',', sort @files), '.dot/dot,.gitignore,.gitmodules,META.json,README,foo,libbar/bar.c,libfoo/foo.c,xtra/.dot,xtra/.dotdir/dot');
+        is(join(',', sort @files), '.dot/dot,.gitignore,.gitmodules,META.json,README,foo,libbar/.gitmodules,libbar/bar.c,libbar/libbar/bar.c,libbar/libfoo/foo.c,libfoo/.gitmodules,libfoo/foo.c,libfoo/libbar/bar.c,libfoo/libfoo/foo.c,xtra/.dot,xtra/.dotdir/dot');
     };
 
     subtest 'MANIFEST.SKIP' => sub {
@@ -40,7 +40,7 @@ subtest 'FileGatherer' => sub {
             exclude_match => ['^local/'],
         )->gather_files('.');
 
-        is(join(',', sort @files), 'MANIFEST.SKIP,META.json,README,libbar/bar.c,libfoo/foo.c');
+        is(join(',', sort @files), 'MANIFEST.SKIP,META.json,README,libbar/bar.c,libbar/libbar/bar.c,libbar/libfoo/foo.c,libfoo/foo.c,libfoo/libbar/bar.c,libfoo/libfoo/foo.c');
     };
 };
 
@@ -48,7 +48,7 @@ done_testing;
 
 sub init {
     my $guard = pushd(tempdir());
-    my %submodule_repos = map { $_ => create_submodule_repo($_) } qw/foo bar/;
+    my %submodule_repos = map { $_ => create_deep_submodule_repo($_) } qw/foo bar/;
 
     mkdir 'local';
     mkdir '.dot';
@@ -67,9 +67,25 @@ sub init {
     git_init();
     git_add('.');
     git_submodule_add("file://$submodule_repos{$_}", "lib$_") for keys %submodule_repos;
+    system 'git submodule update --init --recursive';
     git_commit('-m', 'foo');
 
     $guard;
+}
+
+sub create_deep_submodule_repo {
+    my $name = shift;
+
+    my $dir = create_submodule_repo($name);
+    my $guard = pushd($dir);
+
+    my %submodule_repos = map { $_ => create_submodule_repo($_) } qw/foo bar/;
+
+    git_add('.');
+    git_submodule_add("file://$submodule_repos{$_}", "lib$_") for keys %submodule_repos;
+    git_commit('-m', 'deep submodule');
+
+    return $dir;
 }
 
 sub create_submodule_repo {

@@ -43,7 +43,7 @@ sub git_submodule_add {
 }
 
 sub git_submodules {
-    my @submodules = split /\n/, `git submodule status`;
+    my @submodules = split /\n/, `git submodule status --recursive`;
     my @files;
     for (@submodules) {
         my ($path) = $_ =~ /^[+\-U\x20][0-9a-f]{40}\x20([^\x20]+).*$/;
@@ -53,7 +53,14 @@ sub git_submodules {
 }
 
 sub git_submodule_files {
-    my @output = split /\n/, `git submodule foreach git ls-files -z`;
+    # XXX: `git ls-files -z` does *NOT* print new line in last.
+    #      So it breaks format when multiple submodules contains and combined with `git submodule foreach`. (and failed to parse.)
+    my @output = split /\n/, `git submodule foreach --recursive git ls-files -z`;
+    for (my $i = 1; $i <= @output-2; $i += 2) {
+        $output[$i] =~ s/\0([^\0]*)$//;
+        splice @output, $i+1, 0, $1;
+    }
+
     my @files;
     while (@output) {
         my $submodule_line = shift @output;
