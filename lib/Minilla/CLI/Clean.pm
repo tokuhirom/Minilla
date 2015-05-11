@@ -26,6 +26,8 @@ sub run {
         'MYMETA.yml',
         '_build_params',
         '_build',       # M::B
+        'Makefile',
+        'pm_to_blib',
     );
     print("Would remove $_\n") for (@targets);
     if ($yes_opt || prompt('Remove it?', 'y') =~ /y/i) {

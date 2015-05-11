@@ -198,6 +198,7 @@ Revision history for Perl extension <% $dist %>
 /Build.bat
 /blib
 /Makefile
+/pm_to_blib
 
 /carton.lock
 /.carton/
