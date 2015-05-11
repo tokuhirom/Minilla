@@ -106,6 +106,7 @@ my %WriteMakefileArgs = (
     NAME     => '<?= $project->name ?>',
     DISTNAME => '<?= $project->dist_name ?>',
     VERSION  => '<?= $project->version ?>',
+    EXE_FILES => [<?= $project->script_files ?>],
     CONFIGURE_REQUIRES => <?= $d->('configure') ?>,
     BUILD_REQUIRES     => <?= $d->('build') ?>,
     TEST_REQUIRES      => <?= $d->('test') ?>,
