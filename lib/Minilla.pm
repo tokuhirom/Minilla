@@ -322,6 +322,13 @@ If you set this key false, Minilla will not generate 'xt/minilla/minimum_version
 The C<requires_external_bin> command takes the name of a system command
 or program. Build fail if the command does not exist.
 
+=item markdown_maker
+
+    markdown_maker = "Pod::Markdown::Github"
+
+Use a different module to generate C<README.md> from your pod. This
+module must subclass L<Pod::Markdown>.
+
 =back
 
 =head1 FAQ
