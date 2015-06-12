@@ -11,6 +11,7 @@ use File::pushd;
 use CPAN::Meta;
 use Module::CPANfile;
 use Config::Identity::PAUSE;
+use Module::Runtime qw(require_module);
 
 use Minilla;
 use Minilla::Logger;
@@ -579,10 +580,16 @@ sub generate_minil_toml {
 sub regenerate_readme_md {
     my $self = shift;
 
-    require Pod::Markdown;
-    Pod::Markdown->VERSION('1.322');
+    my $markdown_maker = $self->config->{markdown_maker} || 'Pod::Markdown';
+    require_module($markdown_maker);
+    if ($markdown_maker eq 'Pod::Markdown') {
+        $markdown_maker->VERSION('1.322');
+    }
 
-    my $parser = Pod::Markdown->new;
+    my $parser = $markdown_maker->new;
+    if (not $parser->isa('Pod::Markdown')) {
+        errorf("'markdown_maker' config key must be a subclass of Pod::Markdown\n");
+    }
     $parser->parse_from_file($self->readme_from);
 
     my $fname = File::Spec->catfile($self->dir, 'README.md');

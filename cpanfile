@@ -37,6 +37,7 @@ requires 'Moo' => 1.001000;
 # Utilities
 requires 'Data::Section::Simple' => 0.04;
 requires 'Term::ANSIColor';
+requires 'Module::Runtime';
 
 # Modules required by minil new/minil dist/minil release are optional.
 # It's good for contributors
