@@ -637,6 +637,8 @@ sub verify_prereqs {
 sub _build_contributors {
     my $self = shift;
 
+    return [] unless (`git show-ref --head`);
+
     my $normalize = sub {
         local $_ = shift;
         if (/<([^>]+)>/) {
