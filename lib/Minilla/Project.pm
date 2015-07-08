@@ -225,10 +225,33 @@ sub config {
         if ($err) {
             errorf("TOML error in %s: %s\n", $toml_path, $err);
         }
+        $self->_patch_config_for_mb($conf) unless $conf->{module_maker};
         $conf;
     } else {
         +{};
     }
+}
+
+sub _patch_config_for_mb {
+    my($self, $conf) = @_;
+
+    if (exists $conf->{build} or exists $conf->{XSUtil}) {
+        warn <<WARN unless $self->{__already_warned}++;
+!
+! WARNING:
+! module_maker is not set in your Minilla config (minil.toml), but found [build] or [XSUtil] section in it.
+! Defaulting to Module::Build, but you're suggested to add the following to your minil.toml:
+!
+!   module_maker="ModuleBuild"
+!
+! This friendly warning will go away in the next major release, and Minilla will default to ModuleBuildTiny
+! when module_maker is not explicitly set in minil.toml.
+!
+WARN
+        $conf->{module_maker} = "ModuleBuild";
+    }
+
+    return;
 }
 
 sub c_source {
