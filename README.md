@@ -293,6 +293,13 @@ But, you can write configurations to _minil.toml_ file in [TOML](https://github.
     The `requires_external_bin` command takes the name of a system command
     or program. Build fail if the command does not exist.
 
+- markdown\_maker
+
+        markdown_maker = "Pod::Markdown::Github"
+
+    Use a different module to generate `README.md` from your pod. This
+    module must subclass [Pod::Markdown](https://metacpan.org/pod/Pod::Markdown).
+
 # FAQ
 
 - How can I manage **contributors** section?
@@ -327,7 +334,7 @@ But, you can write configurations to _minil.toml_ file in [TOML](https://github.
 
 - How can I install script files?
 
-    Your executables must be in `script/`. It's [Module::Build::Tiny](https://metacpan.org/pod/Module::Build::Tiny)'s rule.
+    Your executables must be in `script/` directory.
 
 - How to switch from Module::Install/Module::Build/Dist::Zilla?
 
@@ -342,23 +349,24 @@ But, you can write configurations to _minil.toml_ file in [TOML](https://github.
 
 - How do I use Module::Build::Tiny with Minilla?
 
-    Minilla v0.15.0+ supports v0.15.0(EXPERIMENTAL).
+    Minilla supports Module::Build::Tiny and uses it as a default installer since v1.0.0.
 
-    If you want to create new project with Module::Build::Tiny, run the command as following.
-
-        % minil new -p ModuleBuildTiny My::Awesome::Module
-
-    If you want to migrate existing project, you need to rewrite minil.toml file.
-    You need to add following line:
+    If you want to migrate an existing project created before Minilla v1.0, you need to rewrite `minil.toml` file.
+    You need to add the following line:
 
         module_maker="ModuleBuildTiny"
+
+- How do I use Module::Build with Minilla?
+
+    If you want to create new project with Module::Build, run the command as following.
+
+        % minil new -p ModuleBuild My::Awesome::Module
 
 - How do I use ExtUtils::MakeMaker with Minilla?
 
     Minilla v2.1.0+ supports EUMM(EXPERIMENTAL).
 
-    You need to rewrite minil.toml file.
-    You need to add following line:
+    You need to rewrite minil.toml file and add the following line:
 
         module_maker="ExtUtilsMakeMaker"
 
