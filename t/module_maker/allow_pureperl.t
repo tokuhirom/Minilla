@@ -40,6 +40,7 @@ sub test {
 ...
     write_minil_toml({
         name => 'Acme-Foo',
+        module_maker => "ModuleBuild",
         allow_pureperl => $allow,
     });
     git_init_add_commit();

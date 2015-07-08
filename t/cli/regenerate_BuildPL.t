@@ -29,6 +29,7 @@ sub regenerate_BuildPL_test {
 
         write_minil_toml({
             name  => 'Acme-Foo',
+            module_maker => "ModuleBuild",
             build => { build_class => "builder::MyBuilder" }
         });
 

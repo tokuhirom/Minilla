@@ -31,6 +31,7 @@ subtest 'Use XSUtil with default value' => sub {
     make_profile();
     write_minil_toml(
         {   name   => 'Acme-Foo',
+            module_maker => "ModuleBuild",
             XSUtil => {},
         }
     );
@@ -51,6 +52,7 @@ subtest 'Use XSUtil with specify value' => sub {
     make_profile();
     write_minil_toml(
         {   name   => 'Acme-Foo',
+            module_maker => "ModuleBuild",
             XSUtil => {
                 needs_compiler_c99 => 1,
                 needs_compiler_cpp => 1,

@@ -32,6 +32,7 @@ sub test {
 ...
     write_minil_toml({
         name => 'Acme-Foo',
+        module_maker => "ModuleBuild",
         c_source => ['src'],
     });
     git_init_add_commit();
