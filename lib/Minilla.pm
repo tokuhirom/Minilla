@@ -36,10 +36,6 @@ Minilla is a CPAN module authoring tool. Minilla provides L<minil> command for a
 
     (M::I - inc) + shipit + (dzil - plugins)
 
-B<THIS IS A DEVELOPMENT RELEASE. API MAY CHANGE WITHOUT NOTICE>.
-
-=head1 MOTIVATION
-
 =head1 CONVENTION
 
 As stated above, Minilla is opinionated. Minilla has a bold assumption and convention like the followings, which are almost compatible to the sister project L<Dist::Milla>.
