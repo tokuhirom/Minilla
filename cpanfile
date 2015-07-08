@@ -71,10 +71,6 @@ on 'test' => sub {
     requires 'Module::Build::Tiny', 0.035; # https://github.com/tokuhirom/Minilla/issues/151
 };
 
-on 'configure' => sub {
-    requires 'Module::Build';
-};
-
 on 'develop' => sub {
     # Dependencies for developers
 };
