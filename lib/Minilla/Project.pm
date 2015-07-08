@@ -43,7 +43,7 @@ has module_maker => (
             $klass = $klass =~ s/^\+// ? $klass : "Minilla::ModuleMaker::$klass";
             return $klass->new();
         }
-        Minilla::ModuleMaker::ModuleBuild->new()
+        Minilla::ModuleMaker::ModuleBuildTiny->new()
     },
     lazy => 1,
 );
