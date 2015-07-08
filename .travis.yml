@@ -1,3 +1,4 @@
+sudo: false
 language: perl
 before_script:
   - "git config --global user.email 'you@example.com'"
