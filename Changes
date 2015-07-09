@@ -2,6 +2,14 @@ Revision history for Perl extension Minilla
 
 {{$NEXT}}
 
+    - Make sure to always use Module::Build::Tiny by default, even when there's no
+      module_maker preference in minil.toml configuration file (or the configuration
+      file does not exist at all). Previously, `minil new` generates MBT by default,
+      but old distributions without the preference was still using Module::Build by
+      default. This version will switch to ModuleBuildTiny, unless you have a MB
+      specific options such as `[build]` or `[XSUtil]`. (miyagawa)
+    - Switch to Module::Build::Tiny in Minilla itself.
+
 v2.4.1 2015-05-02T02:30:20Z
 
     - Depends on latest Module::Metadata.
