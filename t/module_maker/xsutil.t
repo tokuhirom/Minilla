@@ -74,6 +74,7 @@ sub test {
     write_minil_toml(
         {   name   => 'Acme-Foo',
             XSUtil => $xsutil,
+            module_maker => "ModuleBuild",
         }
     );
     git_init_add_commit();

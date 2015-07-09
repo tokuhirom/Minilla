@@ -1,13 +1,15 @@
+sudo: false
 language: perl
 before_script:
   - "git config --global user.email 'you@example.com'"
   - "git config --global user.name 'Your Name'"
+install:
+  - cpanm -nq --installdeps --with-develop --with-recommends .
 perl:
+  - "5.20"
+  - "5.18"
   - 5.16
   - 5.14
-before_install:
-  cpanm -n Devel::Cover::Report::Coveralls
-script:
-  perl Build.PL && ./Build build && cover -test
-after_success:
-  cover -report coveralls
+  - 5.12
+  - "5.10"
+  - 5.8

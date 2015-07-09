@@ -36,10 +36,6 @@ Minilla is a CPAN module authoring tool. Minilla provides L<minil> command for a
 
     (M::I - inc) + shipit + (dzil - plugins)
 
-B<THIS IS A DEVELOPMENT RELEASE. API MAY CHANGE WITHOUT NOTICE>.
-
-=head1 MOTIVATION
-
 =head1 CONVENTION
 
 As stated above, Minilla is opinionated. Minilla has a bold assumption and convention like the followings, which are almost compatible to the sister project L<Dist::Milla>.
@@ -367,7 +363,7 @@ Is there a reason to remove ppport.h from repo?
 
 =item How can I install script files?
 
-Your executables must be in F<script/>. It's L<Module::Build::Tiny>'s rule.
+Your executables must be in F<script/> directory.
 
 =item How to switch from Module::Install/Module::Build/Dist::Zilla?
 
@@ -382,23 +378,24 @@ You can use MANIFEST.SKIP file for ignoring files. ref. L<ExtUtils::Manifest>.
 
 =item How do I use Module::Build::Tiny with Minilla?
 
-Minilla v0.15.0+ supports v0.15.0(EXPERIMENTAL).
+Minilla supports Module::Build::Tiny and uses it as a default installer since v1.0.0.
 
-If you want to create new project with Module::Build::Tiny, run the command as following.
-
-    % minil new -p ModuleBuildTiny My::Awesome::Module
-
-If you want to migrate existing project, you need to rewrite minil.toml file.
-You need to add following line:
+If you want to migrate an existing project created before Minilla v1.0, you need to rewrite C<minil.toml> file.
+You need to add the following line:
 
     module_maker="ModuleBuildTiny"
+
+=item How do I use Module::Build with Minilla?
+
+If you want to create new project with Module::Build, run the command as following.
+
+    % minil new -p ModuleBuild My::Awesome::Module
 
 =item How do I use ExtUtils::MakeMaker with Minilla?
 
 Minilla v2.1.0+ supports EUMM(EXPERIMENTAL).
 
-You need to rewrite minil.toml file.
-You need to add following line:
+You need to rewrite minil.toml file and add the following line:
 
     module_maker="ExtUtilsMakeMaker"
 

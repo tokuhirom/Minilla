@@ -33,6 +33,7 @@ sub test {
 
     write_minil_toml({
         name => 'Acme-Foo',
+        module_maker => "ModuleBuild",
         tap_harness_args => {
             jobs => 9,
         },

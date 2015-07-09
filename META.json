@@ -4,7 +4,7 @@
       "Tokuhiro Matsuno < tokuhirom@gmail.com >"
    ],
    "dynamic_config" : 0,
-   "generated_by" : "Minilla/v2.4.0, CPAN::Meta::Converter version 2.141520",
+   "generated_by" : "Minilla/v2.4.1, CPAN::Meta::Converter version 2.150005",
    "license" : [
       "perl_5"
    ],
@@ -28,7 +28,7 @@
    "prereqs" : {
       "configure" : {
          "requires" : {
-            "Module::Build" : "0.38"
+            "Module::Build::Tiny" : "0.035"
          }
       },
       "develop" : {
@@ -65,6 +65,7 @@
             "Getopt::Long" : "2.36",
             "Module::CPANfile" : "0.9025",
             "Module::Metadata" : "1.000027",
+            "Module::Runtime" : "0",
             "Moo" : "1.001",
             "Pod::Markdown" : "1.322",
             "TAP::Harness::Env" : "0",
@@ -143,10 +144,12 @@
       "Daisuke Maki <lestrrat+github@gmail.com>",
       "Klaus Eichner <klaus03@gmail.com>",
       "Syohei YOSHIDA <syohex@gmail.com>",
+      "moznion <moznion@gmail.com>",
       "karupanerura <karupa@cpan.org>",
       "Shoichi Kaji <skaji@cpan.org>",
-      "moznion <moznion@gmail.com>",
-      "Tatsuhiko Miyagawa <miyagawa@bulknews.net>",
-      "tokuhirom <tokuhirom@gmail.com>"
-   ]
+      "Fitz Elliott <felliott@fiskur.org>",
+      "tokuhirom <tokuhirom@gmail.com>",
+      "Tatsuhiko Miyagawa <miyagawa@bulknews.net>"
+   ],
+   "x_serialization_backend" : "JSON::PP version 2.27300"
 }

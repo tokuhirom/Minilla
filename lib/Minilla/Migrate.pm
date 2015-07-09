@@ -54,6 +54,8 @@ sub run {
 
     if (-f 'dist.ini') {
         $self->dist_ini2minil_toml();
+    } elsif (!-f 'minil.toml') {
+        $self->project->generate_minil_toml('Default');
     }
 
     $self->remove_unused_files();
