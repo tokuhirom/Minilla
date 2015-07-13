@@ -17,10 +17,6 @@ Minilla is a CPAN module authoring tool. Minilla provides [minil](https://metacp
 
     (M::I - inc) + shipit + (dzil - plugins)
 
-**THIS IS A DEVELOPMENT RELEASE. API MAY CHANGE WITHOUT NOTICE**.
-
-# MOTIVATION
-
 # CONVENTION
 
 As stated above, Minilla is opinionated. Minilla has a bold assumption and convention like the followings, which are almost compatible to the sister project [Dist::Milla](https://metacpan.org/pod/Dist::Milla).

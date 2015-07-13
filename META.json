@@ -112,7 +112,7 @@
          "web" : "https://github.com/tokuhirom/Minilla"
       }
    },
-   "version" : "v2.4.1",
+   "version" : "v2.4.2",
    "x_authority" : "cpan:TOKUHIROM",
    "x_contributors" : [
       "mattn <mattn.jp@gmail.com>",
@@ -149,6 +149,7 @@
       "Shoichi Kaji <skaji@cpan.org>",
       "Fitz Elliott <felliott@fiskur.org>",
       "tokuhirom <tokuhirom@gmail.com>",
+      "Tatsuhiko Miyagawa <miyagawa@gmail.com>",
       "Tatsuhiko Miyagawa <miyagawa@bulknews.net>"
    ],
    "x_serialization_backend" : "JSON::PP version 2.27300"
