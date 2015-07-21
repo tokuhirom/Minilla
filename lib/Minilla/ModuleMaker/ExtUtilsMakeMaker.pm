@@ -36,7 +36,7 @@ sub prereqs {
     my ($self, $project) = @_;
 
     my %configure_requires = (
-        'ExtUtils::MakeMaker' => '0',
+        'ExtUtils::MakeMaker' => '6.64', # TEST_REQUIRES (and MYMETA)
     );
 
     my $prereqs = +{
@@ -89,7 +89,7 @@ __DATA__
 use 5.008_001;
 use strict;
 
-use ExtUtils::MakeMaker;
+use ExtUtils::MakeMaker 6.64;
 
 ? if ( @{ $project->requires_external_bin || [] } ) {
 use Devel::CheckBin;
@@ -112,23 +112,5 @@ my %WriteMakefileArgs = (
     TEST_REQUIRES      => <?= $d->('test') ?>,
     PREREQ_PM          => <?= $d->('runtime') ?>,
 );
-
-my $full_prereqs = <?= Dumper($prereqs->merged_requirements([qw(configure build runtime test)])->as_string_hash) ?>;
-
-unless (eval { ExtUtils::MakeMaker->VERSION(6.63_03) }) {
-    delete $WriteMakefileArgs{TEST_REQUIRES};
-    delete $WriteMakefileArgs{BUILD_REQUIRES};
-    $WriteMakefileArgs{PREREQ_PM} = $full_prereqs;
-}
-
-unless (eval { ExtUtils::MakeMaker->VERSION(6.52) }) {
-    delete $WriteMakefileArgs{CONFIGURE_REQUIRES};
-}
-
-unless (eval { ExtUtils::MakeMaker->VERSION(6.57_01) }) {
-    use File::Copy;
-    copy('META.yml', 'MYMETA.yml')   or warn "META.yml: $!";
-    copy('META.json', 'MYMETA.json') or warn "META.json: $!";
-}
 
 WriteMakefile(%WriteMakefileArgs);
