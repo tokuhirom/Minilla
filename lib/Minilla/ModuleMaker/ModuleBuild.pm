@@ -34,7 +34,7 @@ sub prereqs {
     Carp::croak('Usage: $module_maker->prereqs($project)') unless defined $project;
 
     my %configure_requires = (
-        'Module::Build'       => $project->module_build_version,
+        'Module::Build'       => 0.4005, # test_requires, --pureperl
     );
     if ($project->requires_external_bin && @{$project->requires_external_bin}) {
         $configure_requires{'Devel::CheckBin'} = 0;
@@ -49,7 +49,6 @@ sub prereqs {
     };
 
     if( $project->use_xsutil ){
-        delete $prereqs->{configure}{requires}{'Module::Build'};
         $prereqs->{configure}{requires}{'Module::Build::XSUtil'} = '0.03';
     }
     return $prereqs;
@@ -93,7 +92,7 @@ my %args = (
     dynamic_config       => 0,
 
     configure_requires => {
-        'Module::Build' => <?= $project->module_build_version ?>,
+        'Module::Build' => '0.4005',
     },
 
     name            => '<?= $project->dist_name ?>',
@@ -135,16 +134,4 @@ my $builder = <?= $project->build_class ?>->subclass(
     }
 )->new(%args);
 $builder->create_build_script();
-
-use File::Copy;
-
-print "cp META.json MYMETA.json\n";
-copy("META.json","MYMETA.json") or die "Copy failed(META.json): $!";
-
-if (-f 'META.yml') {
-    print "cp META.yml MYMETA.yml\n";
-    copy("META.yml","MYMETA.yml") or die "Copy failed(META.yml): $!";
-} else {
-    print "There is no META.yml... You may install this module from the repository...\n";
-}
 
