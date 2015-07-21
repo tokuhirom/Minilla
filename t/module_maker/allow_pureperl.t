@@ -10,12 +10,12 @@ use Minilla::Project;
 test(1, sub {
     my $build_pl = slurp('Build.PL');
     like($build_pl, qr{allow_pureperl\s+=>\s+1});
-    like($build_pl, qr{'Module::Build'\s+=>\s+0\.4005});
+    like($build_pl, qr{'Module::Build'\s+=>\s+'0\.4005'});
 });
 test(0, sub {
     my $build_pl = slurp('Build.PL');
     like($build_pl, qr{allow_pureperl\s+=>\s+0});
-    like($build_pl, qr{'Module::Build'\s+=>\s+0\.38});
+    like($build_pl, qr{'Module::Build'\s+=>\s+'0\.4005'});
 });
 
 done_testing;
