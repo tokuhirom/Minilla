@@ -42,15 +42,17 @@ As stated above, Minilla is opinionated. Minilla has a bold assumption and conve
 
 =over 4
 
-=item Your module written in Pure Perl are located in I<lib/>.
+=item Your modules are written in Pure Perl and are located in I<lib/>.
 
-=item Your executable file is in I<script/> directory, if any
+=item Your executable files are in I<script/> directory, if any
 
 =item Your module is maintained with B<Git> and C<git ls-files> matches with what you will release
 
 =item Your module has a static list of prerequisites that can be described in L<cpanfile>
 
 =item Your module has a Changes file
+
+=item Your module requires at least perl 5.8.1
 
 =back
 
