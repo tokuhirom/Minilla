@@ -86,7 +86,7 @@ __DATA__
 # DO NOT EDIT DIRECTLY.
 # =========================================================================
 
-use 5.008_001;
+use 5.006;
 use strict;
 
 use ExtUtils::MakeMaker 6.64;
