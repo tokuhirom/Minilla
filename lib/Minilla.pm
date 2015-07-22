@@ -2,7 +2,7 @@ package Minilla;
 use strict;
 use warnings;
 use 5.008005;
-use version; our $VERSION = version->declare("v2.4.2");
+use version; our $VERSION = version->declare("v2.4.3");
 
 our $DEBUG;
 our $AUTO_INSTALL;
@@ -405,6 +405,12 @@ You need to rewrite minil.toml file and add the following line:
 
 I don't suggest to use this module... But you can use this option for maintaining
 primitive modules like Test::TCP.
+
+=item Ho do I support Perl 5.6?
+
+EUMM can run on Perl 5.6. Write following statement in your minil.toml file.
+
+    module_maker="ExtUtilsMakeMaker"
 
 =back
 

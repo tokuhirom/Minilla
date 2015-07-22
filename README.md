@@ -21,11 +21,12 @@ Minilla is a CPAN module authoring tool. Minilla provides [minil](https://metacp
 
 As stated above, Minilla is opinionated. Minilla has a bold assumption and convention like the followings, which are almost compatible to the sister project [Dist::Milla](https://metacpan.org/pod/Dist::Milla).
 
-- Your module written in Pure Perl are located in _lib/_.
-- Your executable file is in _script/_ directory, if any
+- Your modules are written in Pure Perl and are located in _lib/_.
+- Your executable files are in _script/_ directory, if any
 - Your module is maintained with **Git** and `git ls-files` matches with what you will release
 - Your module has a static list of prerequisites that can be described in [cpanfile](https://metacpan.org/pod/cpanfile)
 - Your module has a Changes file
+- Your module requires at least perl 5.8.1
 
 # GETTING STARTED
 

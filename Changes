@@ -2,6 +2,37 @@ Revision history for Perl extension Minilla
 
 {{$NEXT}}
 
+v2.4.3 2015-07-22T00:38:38Z
+
+    commit 91919267d95b3ca04bb839842cfe9430a93f04a6
+    Author: Tokuhiro Matsuno <tokuhirom@gmail.com>
+    Date:   Tue Jul 21 20:53:44 2015 +0900
+
+        Support 5.6 with EUMM.
+
+    commit 4fd3815b3c1259d90f56020c476b2845896dabb1
+    Author: Tatsuhiko Miyagawa <miyagawa@bulknews.net>
+    Date:   Mon Jul 20 18:16:56 2015 -0700
+
+        require Module::Build 0.4005.
+
+    commit c0f6026ab38813da9b4ddd6a13dd9380e705eb06
+    Author: Tatsuhiko Miyagawa <miyagawa@bulknews.net>
+    Date:   Mon Jul 20 18:13:39 2015 -0700
+
+        require EUMM 6.64 and remove fallback
+
+        6.64+ supports TEST_REQUIRES, and of course generates and merges MYMETA correctly.
+
+
+    commit e1b0ebca3d2b079176b12c87e74d0a5fac6c79b1
+    Author: Tatsuhiko Miyagawa <miyagawa@bulknews.net>
+    Date:   Mon Jul 20 11:56:56 2015 -0700
+
+        Add perl 5.8.1 requirement in the assumption.
+
+        This makes Minilla more opinionated, and it is better to state so, rather than implicitly requiring 5.8.1 due to the build tool requirement (i.e. CPAN::Meta)
+
 v2.4.2 2015-07-13T02:55:57Z
 
     - Make sure to always use Module::Build::Tiny by default, even when there's no
