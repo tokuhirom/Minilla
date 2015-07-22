@@ -26,7 +26,7 @@ As stated above, Minilla is opinionated. Minilla has a bold assumption and conve
 - Your module is maintained with **Git** and `git ls-files` matches with what you will release
 - Your module has a static list of prerequisites that can be described in [cpanfile](https://metacpan.org/pod/cpanfile)
 - Your module has a Changes file
-- Your module requires at least perl 5.8.1
+- Your module requires at least perl 5.6.
 
 # GETTING STARTED
 
@@ -371,6 +371,12 @@ But, you can write configurations to _minil.toml_ file in [TOML](https://github.
 
     I don't suggest to use this module... But you can use this option for maintaining
     primitive modules like Test::TCP.
+
+- Ho do I support Perl 5.6?
+
+    EUMM can run on Perl 5.6. Write following statement in your minil.toml file.
+
+        module_maker="ExtUtilsMakeMaker"
 
 # AUTHORS
 

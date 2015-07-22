@@ -52,7 +52,7 @@ As stated above, Minilla is opinionated. Minilla has a bold assumption and conve
 
 =item Your module has a Changes file
 
-=item Your module requires at least perl 5.8.1
+=item Your module requires at least perl 5.6.
 
 =back
 
