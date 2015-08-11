@@ -38,7 +38,7 @@ subtest 'Badge' => sub {
     subtest 'Badges exist' => sub {
         write_minil_toml({
             name   => 'Acme-Foo',
-            badges => ['travis', 'coveralls', 'gitter'],
+            badges => ['travis', 'coveralls', 'gitter', 'codecov'],
         });
         $project->regenerate_files;
 
@@ -49,6 +49,7 @@ subtest 'Badge' => sub {
             "[![Build Status](https://travis-ci.org/tokuhirom/Minilla.svg?branch=master)](https://travis-ci.org/tokuhirom/Minilla)",
             "[![Coverage Status](https://img.shields.io/coveralls/tokuhirom/Minilla/master.svg?style=flat)](https://coveralls.io/r/tokuhirom/Minilla?branch=master)",
             "[![Gitter chat](https://badges.gitter.im/tokuhirom/Minilla.png)](https://gitter.im/tokuhirom/Minilla)",
+            "[![Coverage Status](http://codecov.io/github/tokuhirom/Minilla/coverage.svg?branch=master)](https://codecov.io/github/tokuhirom/Minilla?branch=master)",
         ];
         my $expected = join(' ', @$badge_markdowns);
         is $got, $expected;
