@@ -18,7 +18,7 @@ sub run {
     }
 
     until (slurp('Changes') =~ /^\{\{\$NEXT\}\}\n+[ \t]+\S/m) {
-        infof("No mention of version '%s' in changelog file 'Changes'\n", $version);
+        infof("No mention of {{\$NEXT}} in changelog file 'Changes'\n");
         if (prompt("Edit file?", 'y') =~ /y/i) {
             edit_file('Changes');
         } else {
