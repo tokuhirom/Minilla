@@ -88,7 +88,7 @@ check_bin('<?= $bin ?>');
 
 ? }
 my %args = (
-    license              => 'perl',
+    license              => '<?= $project->metadata->license->meta2_name ?>',
     dynamic_config       => 0,
 
     configure_requires => {
