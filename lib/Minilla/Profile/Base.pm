@@ -177,6 +177,7 @@ it under the same terms as Perl itself.
 
 @@ .travis.yml
 language: perl
+sudo: false
 perl:
   - "5.12"
   - "5.14"
