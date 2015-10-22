@@ -485,7 +485,7 @@ sub extract_git_info {
     my $bugtracker;
     my $repository;
     my $homepage;
-    if ( `git remote show -n origin` =~ /URL: (.*)$/m && $1 ne 'origin' ) {
+    if ( do{local $ENV{LANG}='C';`git remote show -n origin`} =~ /URL: (.*)$/m && $1 ne 'origin' ) {
         # XXX Make it public clone URL, but this only works with github
         my $registered_url = $1;
         if ($registered_url =~ /github\.com/) {
