@@ -2,6 +2,10 @@ Revision history for Perl extension Minilla
 
 {{$NEXT}}
 
+v2.4.4 2015-10-27T08:04:27Z
+
+    - enable 'sudo: false' by default in .travis.yml
+
 v2.4.3 2015-07-22T00:38:38Z
 
     commit 91919267d95b3ca04bb839842cfe9430a93f04a6
