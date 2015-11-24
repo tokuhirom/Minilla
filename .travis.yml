@@ -6,6 +6,7 @@ before_script:
 install:
   - cpanm -nq --installdeps --with-develop --with-recommends .
 perl:
+  - "5.22"
   - "5.20"
   - "5.18"
   - 5.16
