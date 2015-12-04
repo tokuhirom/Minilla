@@ -95,13 +95,13 @@ Minilla is built on only few small libraries. You can install Minilla without a 
 =head2 And, what is Minilla?
 
     Minilla is a Kaiju (Japanese giant monster) from the Godzilla series of films and is the first of several young Godzillas.
-    http://en.wikipedia.org/wiki/Minilla
+    https://en.wikipedia.org/wiki/Minilla
 
 =head1 CONFIGURATION
 
 Minilla uses B<Convention over Configuration>.
 
-But, you can write configurations to I<minil.toml> file in L<TOML|https://github.com/mojombo/toml> format. Minilla reads the I<minil.toml> file in the root directory of your project.
+But, you can write configurations to I<minil.toml> file in L<TOML|https://github.com/toml-lang/toml> format. Minilla reads the I<minil.toml> file in the root directory of your project.
 
 =over 4
 
@@ -138,7 +138,7 @@ Grab authors information from the file contains pod.
     authority = "cpan:TOKUHIROM"
 
 Set x_authority attribute to META.
-See L<http://jawnsy.wordpress.com/2011/02/20/what-is-x_authority/> for more details.
+See L<https://jawnsy.wordpress.com/2011/02/20/what-is-x_authority/> for more details.
 
 =item allow_pureperl
 
