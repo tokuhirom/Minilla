@@ -67,13 +67,13 @@ Minilla is built on only few small libraries. You can install Minilla without a 
 ## And, what is Minilla?
 
     Minilla is a Kaiju (Japanese giant monster) from the Godzilla series of films and is the first of several young Godzillas.
-    http://en.wikipedia.org/wiki/Minilla
+    https://en.wikipedia.org/wiki/Minilla
 
 # CONFIGURATION
 
 Minilla uses **Convention over Configuration**.
 
-But, you can write configurations to _minil.toml_ file in [TOML](https://github.com/mojombo/toml) format. Minilla reads the _minil.toml_ file in the root directory of your project.
+But, you can write configurations to _minil.toml_ file in [TOML](https://github.com/toml-lang/toml) format. Minilla reads the _minil.toml_ file in the root directory of your project.
 
 - name
 
@@ -108,7 +108,7 @@ But, you can write configurations to _minil.toml_ file in [TOML](https://github.
         authority = "cpan:TOKUHIROM"
 
     Set x\_authority attribute to META.
-    See [http://jawnsy.wordpress.com/2011/02/20/what-is-x\_authority/](http://jawnsy.wordpress.com/2011/02/20/what-is-x_authority/) for more details.
+    See [https://jawnsy.wordpress.com/2011/02/20/what-is-x_authority/\_authority/](https://jawnsy.wordpress.com/2011/02/20/what-is-x_authority/) for more details.
 
 - allow\_pureperl
 
