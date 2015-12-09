@@ -627,6 +627,9 @@ sub regenerate_readme_md {
                 if ($badge eq 'travis') {
                     push @badges, "[![Build Status](https://travis-ci.org/$user_name/$repository_name.svg?branch=master)](https://travis-ci.org/$user_name/$repository_name)";
                 }
+                if ($badge eq 'appveyor') {
+                    push @badges, "[![Build Status](https://img.shields.io/appveyor/ci/$user_name/$repository_name/master.svg)](https://ci.appveyor.com/project/$user_name/$repository_name/branch/master)";
+                }
                 if ($badge eq 'coveralls') {
                     push @badges, "[![Coverage Status](https://img.shields.io/coveralls/$user_name/$repository_name/master.svg?style=flat)](https://coveralls.io/r/$user_name/$repository_name?branch=master)"
                 }
