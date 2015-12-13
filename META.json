@@ -112,7 +112,7 @@
          "web" : "https://github.com/tokuhirom/Minilla"
       }
    },
-   "version" : "v3.0.0",
+   "version" : "v3.0.1",
    "x_authority" : "cpan:TOKUHIROM",
    "x_contributors" : [
       "mattn <mattn.jp@gmail.com>",
@@ -148,11 +148,12 @@
       "Fitz Elliott <felliott@fiskur.org>",
       "Tatsuhiko Miyagawa <miyagawa@gmail.com>",
       "Tatsuhiko Miyagawa <miyagawa@bulknews.net>",
-      "Syohei YOSHIDA <syohex@gmail.com>",
       "karupanerura <karupa@cpan.org>",
       "Alex Kapranoff <kappa@yandex.ru>",
       "Alex Kapranoff <alex@kapranoff.ru>",
       "Jose Luis Perez Diez <jluis@escomposlinux.org>",
+      "Pine Mizune <pinemz@gmail.com>",
+      "Syohei YOSHIDA <syohex@gmail.com>",
       "tokuhirom <tokuhirom@gmail.com>"
    ],
    "x_serialization_backend" : "JSON::PP version 2.27300"

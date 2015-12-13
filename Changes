@@ -2,6 +2,14 @@ Revision history for Perl extension Minilla
 
 {{$NEXT}}
 
+v3.0.1 2015-12-09T20:49:36Z
+
+    commit 480959a65a4c4df5109dce11e44919316eacf389
+    Author: Pine Mizune <pinemz@gmail.com>
+    Date:   Fri Dec 4 02:55:50 2015 +0900
+
+        Support to generate appveyor's badge.
+
 v3.0.0 2015-10-30T06:57:20Z
 
     - bump version
