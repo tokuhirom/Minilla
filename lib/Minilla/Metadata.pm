@@ -205,7 +205,7 @@ sub _guess_license_class_by_name {
             'sun'          => 'Software::License::Sun',
             'zlib'         => 'Software::License::Zlib',
         );
-        if (my $klass = $license_map{$name}) {
+        if (my $klass = $license_map{lc $name}) {
             eval "require $klass; 1" or die "$klass is required for supporting $name license. But: $@"; ## no critic.
             return $klass;
         } else {
