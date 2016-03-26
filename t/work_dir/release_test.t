@@ -11,6 +11,10 @@ use Minilla::Project;
 use Minilla::Git;
 
 subtest 'Contributors are included in stopwords' => sub {
+    local %ENV;
+    delete $ENV{GIT_AUTHOR_NAME};
+    delete $ENV{GIT_AUTHOR_EMAIL};
+
     my $guard = pushd(tempdir());
 
     my $profile = Minilla::Profile::Default->new(
