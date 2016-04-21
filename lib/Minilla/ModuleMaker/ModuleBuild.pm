@@ -94,6 +94,36 @@ my %args = (
     configure_requires => {
         'Module::Build' => '0.4005',
     },
+   
+    requires => {
+?       for my $requirement ( keys %{ $project->cpan_meta->prereqs->{runtime}{requires} } ){
+        '<?= $requirement ?>' => '<?= $project->cpan_meta->prereqs->{runtime}{requires}{$requirement} ?>',
+?       }
+    },
+
+    recomments => {
+?       for my $recommendation ( keys %{ $project->cpan_meta->prereqs->{runtime}{recomments} } ){
+        '<?= $recommendation ?>' => '<?= $project->cpan_meta->prereqs->{runtime}{recomments}{$recommendation} ?>',
+?       }
+    },
+
+    suggests => {
+?       for my $suggestion ( keys %{ $project->cpan_meta->prereqs->{runtime}{suggests} } ){
+        '<?= $suggestion ?>' => '<?= $project->cpan_meta->prereqs->{runtime}{suggests}{$suggestion} ?>',
+?       }
+    },
+
+    build_requires => {
+?       for my $requirement ( keys %{ $project->cpan_meta->prereqs->{build}{requires} } ){
+        '<?= $requirement ?>' => '<?= $project->cpan_meta->prereqs->{build}{requires}{$requirement} ?>',
+?       }
+    },
+
+    test_requires => {
+?       for my $requirement ( keys %{ $project->cpan_meta->prereqs->{test}{requires} } ){
+        '<?= $requirement ?>' => '<?= $project->cpan_meta->prereqs->{test}{requires}{$requirement} ?>',
+?       }
+    },
 
     name            => '<?= $project->dist_name ?>',
     module_name     => '<?= $project->name ?>',
