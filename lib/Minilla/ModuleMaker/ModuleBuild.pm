@@ -101,9 +101,9 @@ my %args = (
 ?       }
     },
 
-    recomments => {
-?       for my $recommendation ( keys %{ $project->cpan_meta->prereqs->{runtime}{recomments} } ){
-        '<?= $recommendation ?>' => '<?= $project->cpan_meta->prereqs->{runtime}{recomments}{$recommendation} ?>',
+    recommends => {
+?       for my $recommendation ( keys %{ $project->cpan_meta->prereqs->{runtime}{recommends} } ){
+        '<?= $recommendation ?>' => '<?= $project->cpan_meta->prereqs->{runtime}{recommends}{$recommendation} ?>',
 ?       }
     },
 
