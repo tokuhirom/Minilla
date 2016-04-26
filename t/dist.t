@@ -26,7 +26,6 @@ for my $datfile (map { File::Spec->rel2abs($_) } 't/dist/Acme-FooXS.dat') {
         extract_archive($datfile);
         git_init_add_commit();
 
-        system 'cat lib/Acme/FooXS.pm';
         cmd_perl($minil, 'test');
 
         pass $distname;
