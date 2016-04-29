@@ -94,7 +94,7 @@ my %args = (
     configure_requires => {
         'Module::Build' => '0.4005',
     },
-   
+
     requires => {
 ?       for my $requirement ( keys %{ $project->cpan_meta->prereqs->{runtime}{requires} } ){
         '<?= $requirement ?>' => '<?= $project->cpan_meta->prereqs->{runtime}{requires}{$requirement} ?>',
