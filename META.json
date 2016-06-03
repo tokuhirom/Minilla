@@ -4,7 +4,7 @@
       "Tokuhiro Matsuno < tokuhirom@gmail.com >"
    ],
    "dynamic_config" : 0,
-   "generated_by" : "Minilla/v2.5.0, CPAN::Meta::Converter version 2.150005",
+   "generated_by" : "Minilla/v3.0.1, CPAN::Meta::Converter version 2.150001",
    "license" : [
       "perl_5"
    ],
@@ -112,7 +112,7 @@
          "web" : "https://github.com/tokuhirom/Minilla"
       }
    },
-   "version" : "v3.0.1",
+   "version" : "v3.0.2",
    "x_authority" : "cpan:TOKUHIROM",
    "x_contributors" : [
       "mattn <mattn.jp@gmail.com>",
@@ -153,8 +153,9 @@
       "Alex Kapranoff <alex@kapranoff.ru>",
       "Jose Luis Perez Diez <jluis@escomposlinux.org>",
       "Pine Mizune <pinemz@gmail.com>",
-      "Syohei YOSHIDA <syohex@gmail.com>",
-      "tokuhirom <tokuhirom@gmail.com>"
-   ],
-   "x_serialization_backend" : "JSON::PP version 2.27300"
+      "sago35 <sago35@gmail.com>",
+      "tokuhirom <tokuhirom@gmail.com>",
+      "Jörg Forstreuter <forstreuter@belwue.de>",
+      "Syohei YOSHIDA <syohex@gmail.com>"
+   ]
 }

@@ -2,6 +2,52 @@ Revision history for Perl extension Minilla
 
 {{$NEXT}}
 
+v3.0.2 2016-06-03T23:07:05Z
+
+    commit 01fc3652ea8a892dc81ced2fe4534024b8d73777
+    Author: Jörg Forstreuter <forstreuter@belwue.de>
+    Date:   Thu Apr 21 15:26:11 2016 +0200
+
+        added requirements from cpan_meta information
+        
+        so that the generate Build.PL file has the correct information for Module::Build
+
+    commit 8924842129238ba3fbc29e68cbecb49807cea1bd
+    Author: sago35 <sago35@gmail.com>
+    Date:   Tue Mar 22 20:33:19 2016 +0900
+
+        Delete system() function call
+        
+        Delete system() function call.
+        Some operating system don't have 'cat' cmd.
+
+    commit da96e230055248870864e8215edd87094bae6433
+    Author: Syohei YOSHIDA <syohex@gmail.com>
+    Date:   Tue Mar 22 12:17:43 2016 +0900
+
+        Always use 'git.config'
+        
+        Both 'git.config' and environment variables are set, then
+        environment variables are used, this causes test failure.
+
+    commit cf64b33421971b62e96f7a3cb03b94c7405beb35
+    Author: Syohei YOSHIDA <syohex@gmail.com>
+    Date:   Tue Feb 16 10:51:55 2016 +0900
+
+        Lookup license package with case insensitive
+
+    commit 3188e8be17a1bd8c426689a7506b1fe8c8eb27f9
+    Author: Syohei YOSHIDA <syohex@gmail.com>
+    Date:   Tue Feb 16 10:50:48 2016 +0900
+
+        Add license case issue test(#184)
+
+    commit 06ab1d8027c251c329c74e813d222dfc263a0894
+    Author: Pine Mizune <pinemz@gmail.com>
+    Date:   Sun Dec 13 11:48:30 2015 +0000
+
+        Add Perl 5.22
+
 v3.0.1 2015-12-09T20:49:36Z
 
     commit 480959a65a4c4df5109dce11e44919316eacf389
