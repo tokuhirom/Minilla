@@ -12,7 +12,7 @@ use Minilla::Project;
 use Minilla::Git;
 
 subtest 'develop deps' => sub {
-    local %ENV;
+    local %ENV = %ENV;
     delete $ENV{GIT_AUTHOR_NAME};
     delete $ENV{GIT_AUTHOR_EMAIL};
 
