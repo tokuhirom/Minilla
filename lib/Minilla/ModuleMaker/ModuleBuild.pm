@@ -96,31 +96,31 @@ my %args = (
     },
 
     requires => {
-?       for my $requirement ( keys %{ $project->cpan_meta->prereqs->{runtime}{requires} } ){
+?       for my $requirement ( sort keys %{ $project->cpan_meta->prereqs->{runtime}{requires} } ){
         '<?= $requirement ?>' => '<?= $project->cpan_meta->prereqs->{runtime}{requires}{$requirement} ?>',
 ?       }
     },
 
     recommends => {
-?       for my $recommendation ( keys %{ $project->cpan_meta->prereqs->{runtime}{recommends} } ){
+?       for my $recommendation ( sort keys %{ $project->cpan_meta->prereqs->{runtime}{recommends} } ){
         '<?= $recommendation ?>' => '<?= $project->cpan_meta->prereqs->{runtime}{recommends}{$recommendation} ?>',
 ?       }
     },
 
     suggests => {
-?       for my $suggestion ( keys %{ $project->cpan_meta->prereqs->{runtime}{suggests} } ){
+?       for my $suggestion ( sort keys %{ $project->cpan_meta->prereqs->{runtime}{suggests} } ){
         '<?= $suggestion ?>' => '<?= $project->cpan_meta->prereqs->{runtime}{suggests}{$suggestion} ?>',
 ?       }
     },
 
     build_requires => {
-?       for my $requirement ( keys %{ $project->cpan_meta->prereqs->{build}{requires} } ){
+?       for my $requirement ( sort keys %{ $project->cpan_meta->prereqs->{build}{requires} } ){
         '<?= $requirement ?>' => '<?= $project->cpan_meta->prereqs->{build}{requires}{$requirement} ?>',
 ?       }
     },
 
     test_requires => {
-?       for my $requirement ( keys %{ $project->cpan_meta->prereqs->{test}{requires} } ){
+?       for my $requirement ( sort keys %{ $project->cpan_meta->prereqs->{test}{requires} } ){
         '<?= $requirement ?>' => '<?= $project->cpan_meta->prereqs->{test}{requires}{$requirement} ?>',
 ?       }
     },
