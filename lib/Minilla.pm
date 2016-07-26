@@ -414,6 +414,10 @@ EUMM can run on Perl 5.6. Write following statement in your minil.toml file.
 
 =back
 
+=head1 bash/zsh completion
+
+Minilla provides bash and zsh completion files under C<contrib/> directory.
+
 =head1 AUTHORS
 
 Tokuhiro Matsuno E<lt> tokuhirom@gmail.com E<gt>

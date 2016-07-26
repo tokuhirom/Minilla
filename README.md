@@ -378,6 +378,10 @@ But, you can write configurations to _minil.toml_ file in [TOML](https://github.
 
         module_maker="ExtUtilsMakeMaker"
 
+# bash/zsh completion
+
+Minilla provides bash and zsh completion files under `contrib/` directory.
+
 # AUTHORS
 
 Tokuhiro Matsuno < tokuhirom@gmail.com >
