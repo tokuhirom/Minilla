@@ -2,6 +2,12 @@ Revision history for Perl extension Minilla
 
 {{$NEXT}}
 
+v3.0.3 2016-07-27T22:49:54Z
+
+    - Update documentation
+    - Sort keys in Build.PL(#196)
+    - Fix environment variable issue of test(#195)
+
 v3.0.2 2016-06-03T23:07:05Z
 
     commit 01fc3652ea8a892dc81ced2fe4534024b8d73777
