@@ -626,18 +626,16 @@ sub regenerate_readme_md {
             for my $badge (@{$self->badges}) {
                 if ($badge eq 'travis') {
                     push @badges, "[![Build Status](https://travis-ci.org/$user_name/$repository_name.svg?branch=master)](https://travis-ci.org/$user_name/$repository_name)";
-                }
-                if ($badge eq 'appveyor') {
+                } elsif ($badge eq 'appveyor') {
                     push @badges, "[![Build Status](https://img.shields.io/appveyor/ci/$user_name/$repository_name/master.svg)](https://ci.appveyor.com/project/$user_name/$repository_name/branch/master)";
-                }
-                if ($badge eq 'coveralls') {
+                } elsif ($badge eq 'coveralls') {
                     push @badges, "[![Coverage Status](https://img.shields.io/coveralls/$user_name/$repository_name/master.svg?style=flat)](https://coveralls.io/r/$user_name/$repository_name?branch=master)"
-                }
-                if ($badge eq 'codecov') {
+                } elsif ($badge eq 'codecov') {
                     push @badges, "[![Coverage Status](http://codecov.io/github/$user_name/$repository_name/coverage.svg?branch=master)](https://codecov.io/github/$user_name/$repository_name?branch=master)";
-                }
-                if ($badge eq 'gitter') {
+                } elsif ($badge eq 'gitter') {
                     push @badges, "[![Gitter chat](https://badges.gitter.im/$user_name/$repository_name.png)](https://gitter.im/$user_name/$repository_name)";
+                } elsif ($badge eq 'circleci') {
+                    push @badges, "[![Build Status](https://circleci.com/gh/$user_name/$repository_name.svg)](https://circleci.com/gh/$user_name/$repository_name)";
                 }
             }
         }
