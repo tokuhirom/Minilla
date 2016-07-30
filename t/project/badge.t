@@ -38,7 +38,7 @@ subtest 'Badge' => sub {
     subtest 'Badges exist' => sub {
         write_minil_toml({
             name   => 'Acme-Foo',
-            badges => ['travis', 'appveyor', 'coveralls', 'gitter', 'codecov'],
+            badges => ['travis', 'circleci', 'appveyor', 'coveralls', 'gitter', 'codecov'],
         });
         $project->regenerate_files;
 
@@ -47,6 +47,7 @@ subtest 'Badge' => sub {
 
         my $badge_markdowns = [
             "[![Build Status](https://travis-ci.org/tokuhirom/Minilla.svg?branch=master)](https://travis-ci.org/tokuhirom/Minilla)",
+            "[![Build Status](https://circleci.com/gh/tokuhirom/Minilla.svg)](https://circleci.com/gh/tokuhirom/Minilla)",
             "[![Build Status](https://img.shields.io/appveyor/ci/tokuhirom/Minilla/master.svg)](https://ci.appveyor.com/project/tokuhirom/Minilla/branch/master)",
             "[![Coverage Status](https://img.shields.io/coveralls/tokuhirom/Minilla/master.svg?style=flat)](https://coveralls.io/r/tokuhirom/Minilla?branch=master)",
             "[![Gitter chat](https://badges.gitter.im/tokuhirom/Minilla.png)](https://gitter.im/tokuhirom/Minilla)",
