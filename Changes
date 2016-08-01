@@ -2,6 +2,9 @@ Revision history for Perl extension Minilla
 
 {{$NEXT}}
 
+v3.0.4 2016-08-01T13:31:03Z
+    - Support CircleCI badge
+
 v3.0.3 2016-07-27T22:49:54Z
 
     - Update documentation
