@@ -624,8 +624,14 @@ sub regenerate_readme_md {
         my @badges;
         if ($user_name && $repository_name) {
             for my $badge (@{$self->badges}) {
-                if ($badge eq 'travis') {
-                    push @badges, "[![Build Status](https://travis-ci.org/$user_name/$repository_name.svg?branch=master)](https://travis-ci.org/$user_name/$repository_name)";
+                if ($badge =~ /^travis(?:\?(.*?))?$/) {
+                    my $token = $1;
+                    if (!defined($token)) {
+                      push @badges, "[![Build Status](https://travis-ci.org/$user_name/$repository_name.svg?branch=master)](https://travis-ci.org/$user_name/$repository_name)";
+                    }
+                    else {
+                      push @badges, "[![Build Status](https://travis-ci.com/$user_name/$repository_name.svg?token=$token&branch=master)](https://travis-ci.com/$user_name/$repository_name)";
+                    }
                 } elsif ($badge eq 'appveyor') {
                     push @badges, "[![Build Status](https://img.shields.io/appveyor/ci/$user_name/$repository_name/master.svg)](https://ci.appveyor.com/project/$user_name/$repository_name/branch/master)";
                 } elsif ($badge eq 'coveralls') {
