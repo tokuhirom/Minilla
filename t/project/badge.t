@@ -77,6 +77,24 @@ subtest 'Badge' => sub {
         ok chomp (my $got = <$fh>);
         is $got, "# NAME";
     };
+
+    # NOTE: When we add support for other providers, we can extend this test.
+    subtest 'Private repo support' => sub {
+        write_minil_toml({
+            name   => 'Acme-Foo',
+            badges => ['travis?xxxyyyzzz'],
+        });
+        $project->regenerate_files;
+
+        open my $fh, '<', 'README.md';
+        ok chomp (my $got = <$fh>);
+
+        my $badge_markdowns = [
+            "[![Build Status](https://travis-ci.com/tokuhirom/Minilla.svg?token=xxxyyyzzz&branch=master)](https://travis-ci.com/tokuhirom/Minilla)",
+        ];
+        my $expected = join(' ', @$badge_markdowns);
+        is $got, $expected;
+    };
 };
 
 done_testing;
