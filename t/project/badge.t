@@ -79,10 +79,10 @@ subtest 'Badge' => sub {
     };
 
     # NOTE: When we add support for other providers, we can extend this test.
-    subtest 'Private repo support' => sub {
+    subtest 'Badge additional parameters' => sub {
         write_minil_toml({
             name   => 'Acme-Foo',
-            badges => ['travis?xxxyyyzzz'],
+            badges => ['travis?foo=bar&token=xxxyyyzzz'],
         });
         $project->regenerate_files;
 
@@ -90,7 +90,7 @@ subtest 'Badge' => sub {
         ok chomp (my $got = <$fh>);
 
         my $badge_markdowns = [
-            "[![Build Status](https://travis-ci.com/tokuhirom/Minilla.svg?token=xxxyyyzzz&branch=master)](https://travis-ci.com/tokuhirom/Minilla)",
+            "[![Build Status](https://travis-ci.com/tokuhirom/Minilla.svg?branch=master&foo=bar&token=xxxyyyzzz)](https://travis-ci.com/tokuhirom/Minilla)",
         ];
         my $expected = join(' ', @$badge_markdowns);
         is $got, $expected;

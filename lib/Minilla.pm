@@ -201,8 +201,8 @@ See L<CPAN::Meta::Spec>.
 
 Embed badges image (e.g. Travis-CI) to README.md. It ought to be array and each elements must be service name. Now, supported services are only 'travis', 'circleci', 'appveyor', 'coveralls', 'codecov' and 'gitter'.
 
-If your project is in a private repo, the badge needs a access token to show up which you can include in the service name
-like this: C<travis?[YOUR_TOKEN_GOES_HERE]>. Note: Only Travis CI is supported right now.
+You can send additional parameters as required by your CI provider by including a
+query string along with your service name: eg. C<travis?token=[YOUR_TOKEN_GOES_HERE]&branch=dev>
 
 =item PL_files
 
