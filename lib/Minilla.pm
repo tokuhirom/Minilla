@@ -197,9 +197,9 @@ See L<CPAN::Meta::Spec>.
 
 =item badges
 
-    badges = ['travis', 'circleci', 'appveyor', 'coveralls', 'codecov', 'gitter']
+    badges = ['travis', 'circleci', 'appveyor', 'coveralls', 'codecov', 'gitter', 'metacpan']
 
-Embed badges image (e.g. Travis-CI) to README.md. It ought to be array and each elements must be service name. Now, supported services are only 'travis', 'circleci', 'appveyor', 'coveralls', 'codecov' and 'gitter'.
+Embed badges image (e.g. Travis-CI) to README.md. It ought to be array and each elements must be service name. Now, supported services are only 'travis', 'circleci', 'appveyor', 'coveralls', 'codecov', 'gitter' and 'metacpan'.
 
 =item PL_files
 
