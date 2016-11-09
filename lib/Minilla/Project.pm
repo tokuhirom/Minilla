@@ -23,6 +23,7 @@ use Minilla::ModuleMaker::ModuleBuildTiny;
 use Minilla::ModuleMaker::ExtUtilsMakeMaker;
 use Minilla::Util qw(slurp_utf8 find_dir cmd spew_raw slurp_raw);
 use Encode qw(decode_utf8);
+use URI;
 
 use Moo;
 
@@ -624,17 +625,36 @@ sub regenerate_readme_md {
         my @badges;
         if ($user_name && $repository_name) {
             for my $badge (@{$self->badges}) {
-                if ($badge eq 'travis') {
-                    push @badges, "[![Build Status](https://travis-ci.org/$user_name/$repository_name.svg?branch=master)](https://travis-ci.org/$user_name/$repository_name)";
-                } elsif ($badge eq 'appveyor') {
+                my $uri = URI->new( $badge );
+                my $service_name = $uri->path;
+                if ($service_name eq 'travis') {
+                    my $build_uri = $uri->clone;
+                    $build_uri->scheme('https');
+                    $build_uri->path("$user_name/$repository_name");
+                    $build_uri->query_form({});
+                    my $image_uri = $uri->clone;
+                    $image_uri->scheme('https');
+                    $image_uri->path("$user_name/$repository_name.svg");
+                    my %image_uri_qs = $image_uri->query_form;
+                    $image_uri_qs{branch} = 'master' if !defined($image_uri_qs{branch});
+                    if (!defined($image_uri_qs{token})) {
+                        $_->host("travis-ci.org") foreach ($build_uri, $image_uri);
+                    } else {
+                        $_->host("travis-ci.com") foreach ($build_uri, $image_uri);
+                    }
+                    # Sort the query params so that the end URL is
+                    # deterministic and easier to test.
+                    $image_uri->query_form( map { ( $_, $image_uri_qs{$_} ) } sort keys %image_uri_qs );
+                    push @badges, "[![Build Status]($image_uri)]($build_uri)";
+                } elsif ($service_name eq 'appveyor') {
                     push @badges, "[![Build Status](https://img.shields.io/appveyor/ci/$user_name/$repository_name/master.svg)](https://ci.appveyor.com/project/$user_name/$repository_name/branch/master)";
-                } elsif ($badge eq 'coveralls') {
+                } elsif ($service_name eq 'coveralls') {
                     push @badges, "[![Coverage Status](https://img.shields.io/coveralls/$user_name/$repository_name/master.svg?style=flat)](https://coveralls.io/r/$user_name/$repository_name?branch=master)"
-                } elsif ($badge eq 'codecov') {
+                } elsif ($service_name eq 'codecov') {
                     push @badges, "[![Coverage Status](http://codecov.io/github/$user_name/$repository_name/coverage.svg?branch=master)](https://codecov.io/github/$user_name/$repository_name?branch=master)";
-                } elsif ($badge eq 'gitter') {
+                } elsif ($service_name eq 'gitter') {
                     push @badges, "[![Gitter chat](https://badges.gitter.im/$user_name/$repository_name.png)](https://gitter.im/$user_name/$repository_name)";
-                } elsif ($badge eq 'circleci') {
+                } elsif ($service_name eq 'circleci') {
                     push @badges, "[![Build Status](https://circleci.com/gh/$user_name/$repository_name.svg)](https://circleci.com/gh/$user_name/$repository_name)";
                 }
             }
