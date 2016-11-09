@@ -656,7 +656,7 @@ sub regenerate_readme_md {
                     push @badges, "[![Gitter chat](https://badges.gitter.im/$user_name/$repository_name.png)](https://gitter.im/$user_name/$repository_name)";
                 } elsif ($service_name eq 'circleci') {
                     push @badges, "[![Build Status](https://circleci.com/gh/$user_name/$repository_name.svg)](https://circleci.com/gh/$user_name/$repository_name)";
-                } elsif ($badge eq 'metacpan') {
+                } elsif ($service_name eq 'metacpan') {
                     push @badges, "[![MetaCPAN Release](https://badge.fury.io/pl/$repository_name.svg)](https://metacpan.org/release/$repository_name)";
                 }
             }
