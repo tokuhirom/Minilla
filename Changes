@@ -1,6 +1,8 @@
 Revision history for Perl extension Minilla
 
 {{$NEXT}}
+    - Support Travis private repository badge(#201)
+    - Support metacpan badge(#202, #203)
 
 v3.0.4 2016-08-01T13:31:03Z
     - Support CircleCI badge
