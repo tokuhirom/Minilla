@@ -4,7 +4,7 @@
       "Tokuhiro Matsuno < tokuhirom@gmail.com >"
    ],
    "dynamic_config" : 0,
-   "generated_by" : "Minilla/v3.0.3, CPAN::Meta::Converter version 2.150005",
+   "generated_by" : "Minilla/v3.0.4, CPAN::Meta::Converter version 2.150010",
    "license" : [
       "perl_5"
    ],
@@ -74,6 +74,7 @@
             "Text::MicroTemplate" : "0.20",
             "Time::Piece" : "1.16",
             "Try::Tiny" : "0",
+            "URI" : "0",
             "parent" : "0",
             "perl" : "5.008005",
             "version" : "0"
@@ -156,6 +157,8 @@
       "Jörg Forstreuter <forstreuter@belwue.de>",
       "tokuhirom <tokuhirom@gmail.com>",
       "Shoichi Kaji <skaji@cpan.org>",
+      "amarnus <amar@semantics3.com>",
+      "Zak B. Elep <zakame@zakame.net>",
       "Syohei YOSHIDA <syohex@gmail.com>"
    ],
    "x_serialization_backend" : "JSON::PP version 2.27400"
