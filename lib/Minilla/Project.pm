@@ -657,7 +657,8 @@ sub regenerate_readme_md {
                 } elsif ($service_name eq 'circleci') {
                     push @badges, "[![Build Status](https://circleci.com/gh/$user_name/$repository_name.svg)](https://circleci.com/gh/$user_name/$repository_name)";
                 } elsif ($service_name eq 'metacpan') {
-                    push @badges, "[![MetaCPAN Release](https://badge.fury.io/pl/$repository_name.svg)](https://metacpan.org/release/$repository_name)";
+                    my $module_name = $self->config->{name} || $repository_name;
+                    push @badges, "[![MetaCPAN Release](https://badge.fury.io/pl/$module_name.svg)](https://metacpan.org/release/$module_name)";
                 }
             }
         }
