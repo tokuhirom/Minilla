@@ -1,3 +1,4 @@
 name="Minilla"
 authority = "cpan:TOKUHIROM"
 module_maker = "ModuleBuildTiny"
+badges = ['travis', 'metacpan']
