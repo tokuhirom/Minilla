@@ -139,20 +139,10 @@ sub require_optional {
 sub cmd_perl {
     my(@args) = @_;
 
-    require Config;
+    my @abs_inc = map { $_ eq '.' ? $_ : File::Spec->rel2abs($_) }
+                      @INC;
 
-    my %std_inc = map { $_ => 1 } @Config::Config{qw(
-        sitelibexp sitearchexp
-        privlibexp archlibexp
-        otherlibdirs
-    )};
-    if ($Config::Config{usevendorprefix}) {
-        @std_inc{'vendorarchexp', 'vendorlibexp'} = (1, 1);
-    }
-    my @non_std_inc = map { $_ eq '.' ? $_ : File::Spec->rel2abs($_) }
-                      grep { not $std_inc{$_} } @INC;
-
-    cmd($^X, (map { "-I$_" } @non_std_inc), @args);
+    cmd($^X, (map { "-I$_" } @abs_inc), @args);
 }
 
 sub cmd {
