@@ -29,6 +29,18 @@ sub run {
             : ($project->config->{release}->{pause_config}) ? $project->config->{release}->{pause_config}
             :                                                 undef;
         my $config = CPAN::Uploader->read_config_file($pause_config);
+        if (!$config || !$config->{user} || !$config->{password}) {
+            die <<EOF
+
+Missing ~/.pause file or your ~/.pause file is wrong.
+You should put ~/.pause file in following format.
+
+    user {{YOUR_PAUSE_ID}}
+    password {{YOUR_PAUSE_PASSWORD}}
+
+
+EOF
+        }
 
         PROMPT: while (1) {
             my $answer = prompt("Release to " . ($config->{upload_uri} || 'CPAN') . ' ? [y/n] ');
