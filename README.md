@@ -70,6 +70,64 @@ Minilla is built on only few small libraries. You can install Minilla without a 
     Minilla is a Kaiju (Japanese giant monster) from the Godzilla series of films and is the first of several young Godzillas.
     https://en.wikipedia.org/wiki/Minilla
 
+# Minilla's release process
+
+Minilla's release process is the following.
+
+## CheckUntrackedFiles
+
+Checking git's untracked files. If there's untracked files, minilla will abort.
+
+## CheckOrigin
+
+This step will run the \`git remote\`. If there's no remote, minillla will abort.
+
+## BumpVersion
+
+Minilla will show 'Next Release?' prompt. You can input next version number.
+
+After that, minilla rewrites version numbers in \*\*/\*.pm, \*\*/\*.pl, and a script file contains perl-ish shebang.
+
+## CheckChanges
+
+You need to write Changes file. Your module's users need to know the difference between versions.
+
+Minilla's Changes file includes \`{{$NEXT}}\` next version indicator. You should put update informations after that.
+
+## RegenerateFiles
+
+In this step, minilla will regenerate META.json, README.md and (Makefile.PL|Build.PL).
+
+## RunHooks
+
+This step runs commands listed on \`release.hooks\` key in minil.toml.
+
+## DistTest
+
+This script runs test cases in clean working directory with `$ENV{RELEASE_TESTING} = 1`.
+
+## MakeDist
+
+Make distribution tar ball.
+
+## UploadToCPAN
+
+Upload your module to CPAN.
+
+## RewriteChanges
+
+Rewrite Changes file.
+Minilla replaces `{{$NEXT}}` with released version number and current date & time.
+And put `{{$NEXT}}` on the first line.
+
+## Commit
+
+Commit current directory with automatically generated commit message from Changes file. And push it to origin.
+
+## Tag
+
+Create new git tag and push it to origin.
+
 # CONFIGURATION
 
 Minilla uses **Convention over Configuration**.

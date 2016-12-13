@@ -2,6 +2,14 @@ Revision history for Perl extension Minilla
 
 {{$NEXT}}
 
+v3.0.7 2016-12-13T13:07:43Z
+    - Remove @INC optimization. It doesn't work on ubuntu( #205 ).
+      (reported by kazuho++)
+    - Show better error message when there's no .pause file.
+      (reported by kazuho++)
+    - Added documents about release flow
+      (suggested by kazuho++)
+
 v3.0.6 2016-11-23T04:08:12Z
     - Fix metacpan badge generating wrong URL issue
 
