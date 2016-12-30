@@ -388,6 +388,14 @@ or program. Build fail if the command does not exist.
 Use a different module to generate C<README.md> from your pod. This
 module must subclass L<Pod::Markdown>.
 
+=item Metadata
+
+    [Metadata]
+    x_static_install = 1
+    x_deprecated = 1
+
+Add arbitrary keys to C<META.json>/C<META.yml>.
+
 =back
 
 =head1 FAQ
