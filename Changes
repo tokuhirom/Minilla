@@ -2,6 +2,10 @@ Revision history for Perl extension Minilla
 
 {{$NEXT}}
 
+v3.0.8 2017-01-05T11:23:47Z
+    - Allow 'Metadata' section in minil.toml (#209)
+    - Use shebang '#!perl' so that toolchains rewrite it (#210)
+
 v3.0.7 2016-12-13T13:07:43Z
     - Remove @INC optimization. It doesn't work on ubuntu( #205 ).
       (reported by kazuho++)

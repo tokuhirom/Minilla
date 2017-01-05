@@ -80,7 +80,7 @@ Checking git's untracked files. If there's untracked files, minilla will abort.
 
 ## CheckOrigin
 
-This step will run the \`git remote\`. If there's no remote, minillla will abort.
+This step will run the \`git remote\`. If there's no remote, minilla will abort.
 
 ## BumpVersion
 
@@ -358,6 +358,14 @@ But, you can write configurations to _minil.toml_ file in [TOML](https://github.
 
     Use a different module to generate `README.md` from your pod. This
     module must subclass [Pod::Markdown](https://metacpan.org/pod/Pod::Markdown).
+
+- Metadata
+
+        [Metadata]
+        x_static_install = 1
+        x_deprecated = 1
+
+    Add arbitrary keys to `META.json`/`META.yml`.
 
 # FAQ
 
