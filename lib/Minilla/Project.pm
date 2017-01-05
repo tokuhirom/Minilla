@@ -449,6 +449,9 @@ sub cpan_meta {
     if (my $authority = $self->config->{authority}) {
         $dat->{x_authority} = $authority;
     }
+    if (my $metadata = $self->config->{Metadata}) {
+        $dat->{$_} = $metadata->{$_} for keys %$metadata;
+    }
 
     # fill 'provides' section
     if ($release_status ne 'unstable') {

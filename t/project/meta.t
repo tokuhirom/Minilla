@@ -176,6 +176,36 @@ subtest 'resources' => sub {
     };
 };
 
+subtest 'Metadata' => sub {
+    my $guard = pushd(tempdir());
+
+    my $profile = Minilla::Profile::Default->new(
+        author => 'foo',
+        dist => 'Acme-Foo',
+        path => 'Acme/Foo.pm',
+        suffix => 'Foo',
+        module => 'Acme::Foo',
+        version => '0.01',
+        email => 'foo@example.com',
+    );
+    $profile->generate();
+    write_minil_toml({
+        name => 'Acme-Foo',
+        Metadata => {
+            x_deprecated => 1,
+            x_static_install => 1,
+        },
+    });
+
+    git_init_add_commit();
+
+    Minilla::Project->new()->regenerate_files;
+
+    my $meta = CPAN::Meta->load_file('META.json');
+    ok $meta->{x_static_install};
+    ok $meta->{x_deprecated};
+};
+
 
 done_testing;
 
