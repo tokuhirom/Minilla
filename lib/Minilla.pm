@@ -13,7 +13,7 @@ sub auto_install { $AUTO_INSTALL }
 1;
 __END__
 
-=for stopwords MINILLA .mailmap mimick XSUtil travis XSUtil.needs_compiler_cpp XSUtil.generate_xshelper_h XSUtil.cc_warnings DarkPAN
+=for stopwords MINILLA .mailmap mimick XSUtil travis XSUtil.needs_compiler_cpp XSUtil.generate_xshelper_h XSUtil.cc_warnings DarkPAN minilla untracked UploadToCPAN circleci appveyor codecov gitter metacpan MBTiny
 
 =encoding utf8
 
@@ -107,7 +107,7 @@ Checking git's untracked files. If there's untracked files, minilla will abort.
 
 =head2 CheckOrigin
 
-This step will run the `git remote`. If there's no remote, minillla will abort.
+This step will run the `git remote`. If there's no remote, minilla will abort.
 
 =head2 BumpVersion
 
