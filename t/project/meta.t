@@ -15,6 +15,7 @@ use Minilla::Project;
 use CPAN::Meta::Validator;
 use File::Spec::Functions qw(catdir);
 use JSON qw(decode_json);
+use version;
 
 subtest 'develop deps' => sub {
     my $guard = pushd(tempdir());
@@ -204,6 +205,30 @@ subtest 'Metadata' => sub {
     my $meta = CPAN::Meta->load_file('META.json');
     ok $meta->{x_static_install};
     ok $meta->{x_deprecated};
+};
+
+subtest perl_version => sub {
+    my $guard = pushd(tempdir());
+
+    my $profile = Minilla::Profile::Default->new(
+        author => 'foo',
+        dist => 'Acme-Foo',
+        path => 'Acme/Foo.pm',
+        suffix => 'Foo',
+        module => 'Acme::Foo',
+        version => '0.01',
+        email => 'foo@example.com',
+    );
+    $profile->generate();
+    write_minil_toml('Acme-Foo');
+    my $content = slurp_raw 'lib/Acme/Foo.pm';
+    $content =~ s/use 5.008001/use v5.20/;
+    spew 'lib/Acme/Foo.pm', $content;
+    git_init_add_commit();
+    Minilla::Project->new()->regenerate_files;
+    my $meta = CPAN::Meta->load_file('META.json');
+    my $version = version->parse($meta->{prereqs}{runtime}{requires}{perl});
+    ok $version == version->declare('v5.20.0');
 };
 
 
