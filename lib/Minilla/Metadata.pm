@@ -73,8 +73,7 @@ sub _extract_perl_version {
         $_[0] =~ m/
         ^\s*
         (?:use|require) \s*
-        v?
-        ([\d_\.]+)
+        (v?[\d_\.]+)
         \s* ;
         /ixms
     ) {
