@@ -23,6 +23,7 @@ plan skip_all => "No git command" unless which('git');
 plan skip_all => "No cpanm command" unless which('cpanm');
 plan skip_all => "No git configuration" unless `git config user.email` =~ /\@/;
 $ENV{PERL_CPANM_HOME} = tempdir();
+delete $ENV{GIT_CONFIG};
 
 our @EXPORT = (
     qw(git_init_add_commit write_minil_toml),
