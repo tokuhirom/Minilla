@@ -4,7 +4,7 @@
       "Tokuhiro Matsuno < tokuhirom@gmail.com >"
    ],
    "dynamic_config" : 0,
-   "generated_by" : "Minilla/v3.0.7, CPAN::Meta::Converter version 2.150010",
+   "generated_by" : "Minilla/v3.0.8, CPAN::Meta::Converter version 2.150010",
    "license" : [
       "perl_5"
    ],
@@ -113,7 +113,7 @@
          "web" : "https://github.com/tokuhirom/Minilla"
       }
    },
-   "version" : "v3.0.8",
+   "version" : "v3.0.9",
    "x_authority" : "cpan:TOKUHIROM",
    "x_contributors" : [
       "mattn <mattn.jp@gmail.com>",
@@ -129,7 +129,6 @@
       "hideo55 <hide.o.j55@gmail.com>",
       "ITO Nobuaki <daydream.trippers@gmail.com>",
       "ysasaki <aloelight@gmail.com>",
-      "Shoichi Kaji <skaji@outlook.com>",
       "Hiroyuki Akabane <hirobanex@gmail.com>",
       "TAGOMORI Satoshi <tagomoris@gmail.com>",
       "Jiro Nishiguchi <jiro@cpan.org>",
@@ -157,9 +156,10 @@
       "Jörg Forstreuter <forstreuter@belwue.de>",
       "amarnus <amar@semantics3.com>",
       "Zak B. Elep <zakame@zakame.net>",
-      "Syohei YOSHIDA <syohex@gmail.com>",
       "tokuhirom <tokuhirom@gmail.com>",
-      "Shoichi Kaji <skaji@cpan.org>"
+      "Shoichi Kaji <skaji@cpan.org>",
+      "Shoichi Kaji <skaji@outlook.com>",
+      "Syohei YOSHIDA <syohex@gmail.com>"
    ],
    "x_serialization_backend" : "JSON::PP version 2.27400"
 }
