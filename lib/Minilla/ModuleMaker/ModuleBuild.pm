@@ -75,7 +75,7 @@ use strict;
 use warnings;
 use utf8;
 
-? if ( $project->build_class ne 'Module::Build' ) {
+? if ( $project->build_class !~ m/^Module::Build(?:::XSUtil)?$/ ) {
 BEGIN { push @INC, '.' }
 ? }
 use <?= $project->build_class ?>;
