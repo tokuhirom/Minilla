@@ -1,6 +1,7 @@
 Revision history for Perl extension Minilla
 
 {{$NEXT}}
+    - Set '.' to @INC when using custom builder for newer Perl(#216)
 
 v3.0.9 2017-01-12T04:30:41Z
     - Skip some tests if GIT_CONFIG environment variable is set(#213)
