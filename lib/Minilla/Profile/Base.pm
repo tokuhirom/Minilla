@@ -152,7 +152,7 @@ our $VERSION = "<% $version %>";
 
 =head1 NAME
 
-<% $module %> - It's new $module
+<% $module %> - It's new <% $module %>
 
 =head1 SYNOPSIS
 
