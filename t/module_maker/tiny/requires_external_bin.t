@@ -2,7 +2,8 @@ use strict;
 use warnings;
 use utf8;
 use Test::More;
-use t::Util;
+use lib "t/lib";
+use Util;
 use Test::Requires 'Devel::CheckBin';
 
 plan skip_all => 'Missing "tar"' unless can_run('tar');

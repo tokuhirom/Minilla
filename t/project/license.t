@@ -3,7 +3,8 @@ use warnings;
 use utf8;
 use Test::More;
 use Test::Requires 'Software::License';
-use t::Util;
+use lib "t/lib";
+use Util;
 
 use CPAN::Meta;
 
