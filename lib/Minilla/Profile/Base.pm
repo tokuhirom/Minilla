@@ -11,8 +11,6 @@ use Time::Piece;
 use Minilla::Util qw(spew_raw);
 use Minilla::Logger;
 
-BEGIN { eval "use MRO::Compat;1" or die $@ if $] < 5.009_005 }
-
 use Moo;
 
 has [qw(dist path module)] => (
