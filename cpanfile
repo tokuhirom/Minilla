@@ -1,4 +1,4 @@
-requires 'perl'   => '5.008005';
+requires 'perl'   => '5.010001';
 
 # Core module at recent Perl5.
 requires 'parent' => '0';
@@ -9,9 +9,6 @@ requires 'CPAN::Meta', '2.132830'; # merged_requirements is 2.132830+
 requires 'ExtUtils::Manifest', 1.54; # make maniskip a public routine, and allow an argument to override $mfile
 suggests 'Devel::PPPort'; # XS
 requires 'TAP::Harness::Env'; # From 5.19.5
-
-# Module for compatibility
-requires 'MRO::Compat' if $] < 5.009_005;
 
 # The TOML parser
 requires 'TOML', 0.95;

@@ -1,7 +1,7 @@
 package Minilla;
 use strict;
 use warnings;
-use 5.008005;
+use 5.010001;
 use version; our $VERSION = version->declare("v3.0.10");
 
 our $DEBUG;
