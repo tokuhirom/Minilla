@@ -113,7 +113,7 @@
          "web" : "https://github.com/tokuhirom/Minilla"
       }
    },
-   "version" : "v3.0.10",
+   "version" : "v3.0.11",
    "x_authority" : "cpan:TOKUHIROM",
    "x_contributors" : [
       "mattn <mattn.jp@gmail.com>",
@@ -156,10 +156,10 @@
       "Jörg Forstreuter <forstreuter@belwue.de>",
       "amarnus <amar@semantics3.com>",
       "Zak B. Elep <zakame@zakame.net>",
+      "Syohei YOSHIDA <syohex@gmail.com>",
       "tokuhirom <tokuhirom@gmail.com>",
       "Shoichi Kaji <skaji@cpan.org>",
-      "Shoichi Kaji <skaji@outlook.com>",
-      "Syohei YOSHIDA <syohex@gmail.com>"
+      "Shoichi Kaji <skaji@outlook.com>"
    ],
    "x_serialization_backend" : "JSON::PP version 2.27400"
 }

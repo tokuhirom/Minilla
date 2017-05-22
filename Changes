@@ -2,6 +2,10 @@ Revision history for Perl extension Minilla
 
 {{$NEXT}}
 
+v3.0.11 2017-05-22T10:22:00Z
+    - Fix tests for no-dot-in-inc (eserte #220, #221)
+    - Now Minilla requires perl 5.10.1+ (#222)
+
 v3.0.10 2017-02-20T16:30:43Z
     - Set '.' to @INC when using custom builder for newer Perl(#216)
 
