@@ -3,7 +3,8 @@ use warnings;
 use utf8;
 use Test::More;
 use File::Basename qw(basename);
-use t::Util;
+use lib "t/lib";
+use Util;
 
 use Minilla;
 use Minilla::Project;

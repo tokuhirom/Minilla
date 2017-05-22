@@ -2,7 +2,8 @@ use strict;
 use warnings;
 use utf8;
 use Test::More;
-use t::Util;
+use lib "t/lib";
+use Util;
 use File::Spec::Functions qw(catfile);
 
 use Minilla::Profile::Default;

@@ -3,7 +3,8 @@ use warnings;
 use utf8;
 use Test::More;
 use Test::Requires 'Devel::PPPort';
-use t::Util;
+use lib "t/lib";
+use Util;
 
 use File::Spec;
 use File::Path;

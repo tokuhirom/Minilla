@@ -2,7 +2,8 @@ use strict;
 use warnings;
 use utf8;
 use Test::More;
-use t::Util;
+use lib "t/lib";
+use Util;
 
 package Minilla::Profile::NoChanges;
 use parent qw(Minilla::Profile::Default);
