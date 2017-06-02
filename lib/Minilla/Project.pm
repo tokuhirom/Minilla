@@ -703,7 +703,7 @@ sub _build_contributors {
     @lines = grep { !$is_author{$normalize->($_)} } @lines;
     @lines = grep { $_ ne 'Your Name <you@example.com>' } @lines;
     @lines = grep { ! /^\(no author\) <\(no author\)\@[\d\w\-]+>$/ } @lines;
-    \@lines;
+    [sort @lines];
 }
 
 sub _build_work_dir {

@@ -55,14 +55,14 @@ subtest 'develop deps' => sub {
     my $project = Minilla::Project->new();
     is_deeply(
         $project->contributors,
-        ['Foo <foo@example.com>',
-        'Bar <bar@example.com>'],
+        ['Bar <bar@example.com>',
+        'Foo <foo@example.com>'],
     );
     $project->regenerate_files();
     is_deeply(
         CPAN::Meta->load_file('META.json')->{x_contributors},
-        ['Foo <foo@example.com>',
-        'Bar <bar@example.com>'],
+        ['Bar <bar@example.com>',
+        'Foo <foo@example.com>'],
     );
 };
 
