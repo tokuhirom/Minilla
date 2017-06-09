@@ -2,6 +2,10 @@ Revision history for Perl extension Minilla
 
 {{$NEXT}}
 
+v3.0.12 2017-06-09T19:47:56Z
+    - Sort x_contributors in META files (#223)
+    - Add perl 5.24 and 5.26 to travis.yml template (#224)
+
 v3.0.11 2017-05-22T10:22:00Z
     - Fix tests for no-dot-in-inc (eserte #220, #221)
     - Now Minilla requires perl 5.10.1+ (#222)
