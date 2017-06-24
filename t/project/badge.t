@@ -97,6 +97,56 @@ subtest 'Badge' => sub {
         my $expected = join(' ', @$badge_markdowns);
         is $got, $expected;
     };
+
+    subtest 'AppVeyor repository rename' => sub {
+        my $guard   = pushd( tempdir() );
+        my $profile = Minilla::Profile::Default->new(
+            dist    => 'Hashids',
+            path    => 'Hashids.pm',
+            module  => 'Hashids',
+        );
+        $profile->generate();
+        git_init_add_commit();
+        my $project = Minilla::Project->new();
+        {
+            open my $fh, '>>', catdir('.git', 'config');
+            print $fh <<'...';
+[remote "origin"]
+    fetch = +refs/heads/*:refs/remotes/origin/*
+    url = git@github.com:zakame/hashids.pm.git
+...
+        }
+
+        {
+            write_minil_toml(
+                {   name   => 'Hashids',
+                    badges => ['appveyor'],
+                }
+            );
+            $project->regenerate_files;
+
+            open my $fh, '<', 'README.md';
+            ok chomp( my $got = <$fh> );
+
+            is $got,
+                "[![Build Status](https://img.shields.io/appveyor/ci/zakame/hashids-pm/master.svg)](https://ci.appveyor.com/project/zakame/hashids-pm/branch/master)";
+        }
+
+        subtest 'AppVeyor in badge list' => sub {
+            write_minil_toml(
+                {   name   => 'Hashids',
+                    badges => [ 'appveyor', 'travis' ],
+                }
+            );
+            $project->regenerate_files;
+
+            open my $fh, '<', 'README.md';
+            ok chomp( my $got = <$fh> );
+
+            my $expected = "[![Build Status](https://img.shields.io/appveyor/ci/zakame/hashids-pm/master.svg)](https://ci.appveyor.com/project/zakame/hashids-pm/branch/master) [![Build Status](https://travis-ci.org/zakame/hashids.pm.svg?branch=master)](https://travis-ci.org/zakame/hashids.pm)";
+            is $got, $expected;
+        };
+    };
 };
 
 done_testing;

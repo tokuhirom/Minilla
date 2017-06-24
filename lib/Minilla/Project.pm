@@ -650,7 +650,8 @@ sub regenerate_readme_md {
                     $image_uri->query_form( map { ( $_, $image_uri_qs{$_} ) } sort keys %image_uri_qs );
                     push @badges, "[![Build Status]($image_uri)]($build_uri)";
                 } elsif ($service_name eq 'appveyor') {
-                    push @badges, "[![Build Status](https://img.shields.io/appveyor/ci/$user_name/$repository_name/master.svg)](https://ci.appveyor.com/project/$user_name/$repository_name/branch/master)";
+                    ( my $appveyor_repository_name = $repository_name ) =~ s/\./-/g;
+                    push @badges, "[![Build Status](https://img.shields.io/appveyor/ci/$user_name/$appveyor_repository_name/master.svg)](https://ci.appveyor.com/project/$user_name/$appveyor_repository_name/branch/master)";
                 } elsif ($service_name eq 'coveralls') {
                     push @badges, "[![Coverage Status](https://img.shields.io/coveralls/$user_name/$repository_name/master.svg?style=flat)](https://coveralls.io/r/$user_name/$repository_name?branch=master)"
                 } elsif ($service_name eq 'codecov') {
