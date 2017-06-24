@@ -117,16 +117,35 @@ subtest 'Badge' => sub {
 ...
         }
 
-        write_minil_toml({
-            name => 'Hashids',
-            badges => ['appveyor'],
-        });
-        $project->regenerate_files;
+        {
+            write_minil_toml(
+                {   name   => 'Hashids',
+                    badges => ['appveyor'],
+                }
+            );
+            $project->regenerate_files;
 
-        open my $fh, '<', 'README.md';
-        ok chomp (my $got = <$fh>);
+            open my $fh, '<', 'README.md';
+            ok chomp( my $got = <$fh> );
 
-        is $got, "[![Build Status](https://img.shields.io/appveyor/ci/zakame/hashids-pm/master.svg)](https://ci.appveyor.com/project/zakame/hashids-pm/branch/master)";
+            is $got,
+                "[![Build Status](https://img.shields.io/appveyor/ci/zakame/hashids-pm/master.svg)](https://ci.appveyor.com/project/zakame/hashids-pm/branch/master)";
+        }
+
+        subtest 'AppVeyor in badge list' => sub {
+            write_minil_toml(
+                {   name   => 'Hashids',
+                    badges => [ 'appveyor', 'travis' ],
+                }
+            );
+            $project->regenerate_files;
+
+            open my $fh, '<', 'README.md';
+            ok chomp( my $got = <$fh> );
+
+            my $expected = "[![Build Status](https://img.shields.io/appveyor/ci/zakame/hashids-pm/master.svg)](https://ci.appveyor.com/project/zakame/hashids-pm/branch/master) [![Build Status](https://travis-ci.org/zakame/hashids.pm.svg?branch=master)](https://travis-ci.org/zakame/hashids.pm)";
+            is $got, $expected;
+        };
     };
 };
 
