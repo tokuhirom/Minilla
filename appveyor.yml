@@ -7,6 +7,7 @@ branches:
 init:
   - git config --global user.email 'you@example.com'
   - git config --global user.name 'Your Name'
+  - git config --global core.autoCRLF false
 
 install:
   # https://chocolatey.org/packages/StrawberryPerl
