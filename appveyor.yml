@@ -1,0 +1,26 @@
+branches:
+  only:
+    - master
+    - av_before
+    - av_after
+
+init:
+
+install:
+  # https://chocolatey.org/packages/StrawberryPerl
+  - if not exist "C:\strawberry" choco install strawberryperl --version 5.24.1.1
+  - SET PATH=C:\Strawberry\c\bin;C:\Strawberry\perl\site\bin;C:\Strawberry\perl\bin;%PATH%
+
+  - cpanm install Carton
+  - carton install
+
+build: off
+
+test_script:
+  - carton exec prove -lr t
+
+cache:
+  - local
+  - C:\Strawberry
+
+shallow_clone: true
