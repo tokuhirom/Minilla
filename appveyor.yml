@@ -5,6 +5,8 @@ branches:
     - av_after
 
 init:
+  - git config --global user.email 'you@example.com'
+  - git config --global user.name 'Your Name'
 
 install:
   # https://chocolatey.org/packages/StrawberryPerl
