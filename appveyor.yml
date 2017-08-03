@@ -1,0 +1,30 @@
+branches:
+  only:
+    - master
+    - av_before
+    - av_after
+
+init:
+  - git config --global user.email 'you@example.com'
+  - git config --global user.name 'Your Name'
+  - git config --global core.autoCRLF false
+
+install:
+  # https://chocolatey.org/packages/StrawberryPerl
+  - if not exist "C:\strawberry" choco install strawberryperl --version 5.24.1.1
+  - set PATH=C:\Strawberry\c\bin;C:\Strawberry\perl\site\bin;C:\Strawberry\perl\bin;%PATH%
+
+  - cpanm install Carton
+  - carton install
+
+build: off
+
+test_script:
+  - set PATH=C:\Strawberry\c\bin;C:\Strawberry\perl\site\bin;C:\Strawberry\perl\bin;%PATH%
+  - carton exec prove -lr t
+
+cache:
+  - local
+  - C:\Strawberry
+
+shallow_clone: true
