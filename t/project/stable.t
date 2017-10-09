@@ -15,7 +15,7 @@ use File::Spec;
 
 use Minilla::CLI::Build;
 
-subtest 'unstable' => sub {
+subtest 'stable' => sub {
     my $guard = pushd(tempdir());
 
     my $profile = Minilla::Profile::Default->new(
@@ -24,7 +24,7 @@ subtest 'unstable' => sub {
         path => 'Acme/Foo.pm',
         suffix => 'Foo',
         module => 'Acme::Foo',
-        version => '0.01_01',
+        version => '3.008008',
         email => 'tokuhirom@example.com',
     );
     $profile->generate();
@@ -39,10 +39,10 @@ subtest 'unstable' => sub {
     my $metapath = File::Spec->catfile($work_dir->dir, 'META.json');
     ok -f $metapath;
     my $meta = CPAN::Meta->load_file($metapath);
-    is($meta->{release_status}, 'unstable');
+    is($meta->{release_status}, 'stable');
 };
 
-subtest 'unstable_with_cli' => sub {
+subtest 'stable_with_cli' => sub {
     my $guard = pushd(tempdir());
 
     my $profile = Minilla::Profile::Default->new(
@@ -51,7 +51,7 @@ subtest 'unstable_with_cli' => sub {
         path => 'Acme/Foo.pm',
         suffix => 'Foo',
         module => 'Acme::Foo',
-        version => '0.01_01',
+        version => '3.008008',
         email => 'tokuhirom@example.com',
     );
     $profile->generate();
@@ -66,7 +66,7 @@ subtest 'unstable_with_cli' => sub {
     my $metapath = File::Spec->catfile($guard, 'META.json');
     ok -f $metapath;
     my $meta = CPAN::Meta->load_file($metapath);
-    is($meta->{release_status}, 'unstable');
+    is($meta->{release_status}, 'stable');
 };
 
 done_testing;
