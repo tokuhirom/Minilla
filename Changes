@@ -2,6 +2,9 @@ Revision history for Perl extension Minilla
 
 {{$NEXT}}
 
+v3.0.14 2017-12-12T13:17:27Z
+    - Fix an issue where run_tests.t fails on Windows (sago35 #227)
+
 v3.0.13 2017-06-25T07:08:29Z
     - Handle repository rename on AppVeyor badge (zakame #225)
 
