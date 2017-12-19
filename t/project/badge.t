@@ -49,7 +49,7 @@ subtest 'Badge' => sub {
         my $badge_markdowns = [
             "[![Build Status](https://travis-ci.org/tokuhirom/Minilla.svg?branch=master)](https://travis-ci.org/tokuhirom/Minilla)",
             "[![Build Status](https://circleci.com/gh/tokuhirom/Minilla.svg)](https://circleci.com/gh/tokuhirom/Minilla)",
-            "[![Build Status](https://img.shields.io/appveyor/ci/tokuhirom/Minilla/master.svg)](https://ci.appveyor.com/project/tokuhirom/Minilla/branch/master)",
+            "[![Build Status](https://img.shields.io/appveyor/ci/tokuhirom/Minilla/master.svg?logo=appveyor)](https://ci.appveyor.com/project/tokuhirom/Minilla/branch/master)",
             "[![Coverage Status](https://img.shields.io/coveralls/tokuhirom/Minilla/master.svg?style=flat)](https://coveralls.io/r/tokuhirom/Minilla?branch=master)",
             "[![Gitter chat](https://badges.gitter.im/tokuhirom/Minilla.png)](https://gitter.im/tokuhirom/Minilla)",
             "[![Coverage Status](http://codecov.io/github/tokuhirom/Minilla/coverage.svg?branch=master)](https://codecov.io/github/tokuhirom/Minilla?branch=master)",
@@ -129,7 +129,7 @@ subtest 'Badge' => sub {
             ok chomp( my $got = <$fh> );
 
             is $got,
-                "[![Build Status](https://img.shields.io/appveyor/ci/zakame/hashids-pm/master.svg)](https://ci.appveyor.com/project/zakame/hashids-pm/branch/master)";
+                "[![Build Status](https://img.shields.io/appveyor/ci/zakame/hashids-pm/master.svg?logo=appveyor)](https://ci.appveyor.com/project/zakame/hashids-pm/branch/master)";
         }
 
         subtest 'AppVeyor in badge list' => sub {
@@ -143,7 +143,7 @@ subtest 'Badge' => sub {
             open my $fh, '<', 'README.md';
             ok chomp( my $got = <$fh> );
 
-            my $expected = "[![Build Status](https://img.shields.io/appveyor/ci/zakame/hashids-pm/master.svg)](https://ci.appveyor.com/project/zakame/hashids-pm/branch/master) [![Build Status](https://travis-ci.org/zakame/hashids.pm.svg?branch=master)](https://travis-ci.org/zakame/hashids.pm)";
+            my $expected = "[![Build Status](https://img.shields.io/appveyor/ci/zakame/hashids-pm/master.svg?logo=appveyor)](https://ci.appveyor.com/project/zakame/hashids-pm/branch/master) [![Build Status](https://travis-ci.org/zakame/hashids.pm.svg?branch=master)](https://travis-ci.org/zakame/hashids.pm)";
             is $got, $expected;
         };
     };
