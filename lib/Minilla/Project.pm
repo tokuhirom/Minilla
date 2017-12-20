@@ -651,7 +651,7 @@ sub regenerate_readme_md {
                     push @badges, "[![Build Status]($image_uri)]($build_uri)";
                 } elsif ($service_name eq 'appveyor') {
                     ( my $appveyor_repository_name = $repository_name ) =~ s/\./-/g;
-                    push @badges, "[![Build Status](https://img.shields.io/appveyor/ci/$user_name/$appveyor_repository_name/master.svg)](https://ci.appveyor.com/project/$user_name/$appveyor_repository_name/branch/master)";
+                    push @badges, "[![Build Status](https://img.shields.io/appveyor/ci/$user_name/$appveyor_repository_name/master.svg?logo=appveyor)](https://ci.appveyor.com/project/$user_name/$appveyor_repository_name/branch/master)";
                 } elsif ($service_name eq 'coveralls') {
                     push @badges, "[![Coverage Status](https://img.shields.io/coveralls/$user_name/$repository_name/master.svg?style=flat)](https://coveralls.io/r/$user_name/$repository_name?branch=master)"
                 } elsif ($service_name eq 'codecov') {
