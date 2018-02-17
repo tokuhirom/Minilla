@@ -53,7 +53,7 @@ recommends 'Software::License', '0.103010';
 # release testing
 recommends 'Test::Pod';
 recommends 'Test::Spellunker', 'v0.2.7';
-recommends 'Test::MinimumVersion' => '0.101080';
+recommends 'Test::MinimumVersion::Fast' => '0.04';
 recommends 'Test::CPAN::Meta';
 recommends 'Test::PAUSE::Permissions';
 
