@@ -25,7 +25,6 @@ requires 'Config::Identity';
 
 # File operation
 requires 'File::pushd';
-requires 'File::Copy::Recursive';
 requires 'File::Which';
 
 # OOPS
@@ -61,6 +60,7 @@ on 'test' => sub {
     requires 'Test::More' => '0.98';
     requires 'Test::Requires' => 0;
     requires 'Test::Output';
+    requires 'File::Copy::Recursive';
     requires 'File::Temp';
     recommends 'Devel::CheckLib';
     suggests 'Dist::Zilla';
