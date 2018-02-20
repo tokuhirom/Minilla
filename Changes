@@ -2,6 +2,10 @@ Revision history for Perl extension Minilla
 
 {{$NEXT}}
 
+v3.0.15 2018-02-20T10:43:04Z
+    - Add logo to AppVeyor badge (zakame #231)
+    - Adjust dependency around release testing (Songmu #233)
+
 v3.0.14 2017-12-12T13:17:27Z
     - Fix an issue where run_tests.t fails on Windows (sago35 #227)
 
