@@ -9,7 +9,6 @@ use File::Spec;
 use File::Spec::Functions qw(catdir);
 use File::Path;
 use File::Basename;
-use File::Copy::Recursive qw(rcopy);
 
 use Minilla::Git;
 

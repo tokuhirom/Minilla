@@ -25,7 +25,6 @@ requires 'Config::Identity';
 
 # File operation
 requires 'File::pushd';
-requires 'File::Copy::Recursive';
 requires 'File::Which';
 
 # OOPS
@@ -53,7 +52,7 @@ recommends 'Software::License', '0.103010';
 # release testing
 recommends 'Test::Pod';
 recommends 'Test::Spellunker', 'v0.2.7';
-recommends 'Test::MinimumVersion' => '0.101080';
+recommends 'Test::MinimumVersion::Fast' => '0.04';
 recommends 'Test::CPAN::Meta';
 recommends 'Test::PAUSE::Permissions';
 
@@ -61,6 +60,7 @@ on 'test' => sub {
     requires 'Test::More' => '0.98';
     requires 'Test::Requires' => 0;
     requires 'Test::Output';
+    requires 'File::Copy::Recursive';
     requires 'File::Temp';
     recommends 'Devel::CheckLib';
     suggests 'Dist::Zilla';
