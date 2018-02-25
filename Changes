@@ -2,6 +2,9 @@ Revision history for Perl extension Minilla
 
 {{$NEXT}}
 
+v3.0.16 2018-02-25T17:28:30Z
+    - Suppress `Wide character` warnings while regenerating README.md (Songmu #234)
+
 v3.0.15 2018-02-20T10:43:04Z
     - Add logo to AppVeyor badge (zakame #231)
     - Adjust dependency around release testing (Songmu #233)
