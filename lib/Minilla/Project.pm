@@ -18,6 +18,7 @@ use Minilla::Logger;
 use Minilla::Metadata;
 use Minilla::WorkDir;
 use Minilla::ReleaseTest;
+use Minilla::Unsupported;
 use Minilla::ModuleMaker::ModuleBuild;
 use Minilla::ModuleMaker::ModuleBuildTiny;
 use Minilla::ModuleMaker::ExtUtilsMakeMaker;
@@ -130,6 +131,12 @@ sub authors {
         return $meta->authors;
     }
     $self->config->{authors} || $self->metadata->authors;
+}
+
+sub unsupported {
+    my $self = shift;
+    my $unsupported = $self->config->{unsupported} || {};
+    return Minilla::Unsupported->new(%$unsupported);
 }
 
 sub abstract {

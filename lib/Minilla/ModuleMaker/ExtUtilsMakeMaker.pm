@@ -37,7 +37,7 @@ sub prereqs {
     my ($self, $project) = @_;
 
     my %configure_requires = (
-        'ExtUtils::MakeMaker' => '6.64', # TEST_REQUIRES (and MYMETA)
+        'ExtUtils::MakeMaker' => $self->_eumm_minimum_version($project),
     );
 
     my $prereqs = +{
@@ -54,6 +54,15 @@ sub prereqs {
         }
     }
     return $prereqs;
+}
+
+sub _eumm_minimum_version {
+    my ($self, $project) = @_;
+
+    if (@{ $project->unsupported->os }) {
+        return '7.26'; # os_unsupported
+    }
+    return '6.64'; # TEST_REQUIRES (and MYMETA)
 }
 
 sub run_tests {
@@ -90,8 +99,14 @@ __DATA__
 use 5.006;
 use strict;
 
-use ExtUtils::MakeMaker 6.64;
+use ExtUtils::MakeMaker <?= $project->module_maker->_eumm_minimum_version($project) ?>;
 
+? if ( @{ $project->unsupported->os } ) {
+?   for my $os ( @{ $project->unsupported->os } ) {
+os_unsupported if $^O eq <?= B::perlstring($os) ?>;
+?   }
+
+? }
 ? if ( @{ $project->requires_external_bin || [] } ) {
 use Devel::CheckBin;
 
@@ -100,7 +115,6 @@ check_bin('<?= $bin ?>');
 ?   }
 
 ? }
-
 ? my $prereqs = $project->cpan_meta->effective_prereqs;
 ? my $d = sub { Dumper($prereqs->merged_requirements([$_[0]], ['requires'])->as_string_hash) };
 my %WriteMakefileArgs = (
