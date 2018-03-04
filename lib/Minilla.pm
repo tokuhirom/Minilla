@@ -367,6 +367,16 @@ This variable disables CPAN upload feature.
 
 Commands that are specified by this option will be executed when releasing. If result of commands is not successful, it will abort.
 
+=item unsupported.os
+
+    [unsupported]
+    os = [
+        "MSWin32",
+        "darwin"
+    ]
+
+By setting this value to add unsupported OS checks for (Build.PL|Makefile.PL).
+
 =item ReleaseTest.MinimumVersion
 
     [ReleaseTest]
