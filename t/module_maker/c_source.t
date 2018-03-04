@@ -8,14 +8,17 @@ use Util;
 use Minilla::Profile::ModuleBuild;
 use Minilla::Project;
 
-test(sub {
+test(["src"], sub {
     like(slurp('Build.PL'), qr{c_source\s+=>\s+\[qw\(src\)\]});
+});
+test([], sub {
+    unlike(slurp('Build.PL'), qr{c_source});
 });
 
 done_testing;
 
 sub test {
-    my $code = shift;
+    my ($c_source, $code) = @_;
 
     my $guard = pushd(tempdir());
 
@@ -34,7 +37,7 @@ sub test {
     write_minil_toml({
         name => 'Acme-Foo',
         module_maker => "ModuleBuild",
-        c_source => ['src'],
+        c_source => $c_source,
     });
     git_init_add_commit();
     Minilla::Project->new()->regenerate_files();
