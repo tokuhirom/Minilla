@@ -105,6 +105,12 @@ use strict;
 
 use Module::Build::Tiny 0.035;
 
+? if ( @{ $project->unsupported->os } ) {
+?   for my $os ( @{ $project->unsupported->os } ) {
+die "OS unsupported\n" if $^O eq <?= B::perlstring($os) ?>;
+?   }
+
+? }
 ? if ( @{ $project->requires_external_bin || [] } ) {
 use Devel::CheckBin;
 
