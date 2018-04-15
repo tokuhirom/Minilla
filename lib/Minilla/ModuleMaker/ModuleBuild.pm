@@ -133,7 +133,9 @@ my %args = (
     allow_pureperl => <?= $project->allow_pureperl ?>,
 
     script_files => [<?= $project->script_files ?>],
+? if ($project->c_source) {
     c_source     => [qw(<?= $project->c_source ?>)],
+? }
     PL_files => <?= Data::Dumper::Dumper($project->PL_files) ?>,
 
     test_files           => ((-d '.git' || $ENV{RELEASE_TESTING}) && -d 'xt') ? 't/ xt/' : 't/',
