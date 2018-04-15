@@ -338,6 +338,16 @@ But, you can write configurations to _minil.toml_ file in [TOML](https://github.
 
     Commands that are specified by this option will be executed when releasing. If result of commands is not successful, it will abort.
 
+- unsupported.os
+
+        [unsupported]
+        os = [
+            "MSWin32",
+            "darwin"
+        ]
+
+    By setting this value to add unsupported OS checks for (Build.PL|Makefile.PL).
+
 - ReleaseTest.MinimumVersion
 
         [ReleaseTest]

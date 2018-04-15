@@ -4,7 +4,7 @@
       "Tokuhiro Matsuno < tokuhirom@gmail.com >"
    ],
    "dynamic_config" : 0,
-   "generated_by" : "Minilla/v3.0.15, CPAN::Meta::Converter version 2.150010",
+   "generated_by" : "Minilla/v3.0.16, CPAN::Meta::Converter version 2.150010",
    "license" : [
       "perl_5"
    ],
@@ -113,7 +113,7 @@
          "web" : "https://github.com/tokuhirom/Minilla"
       }
    },
-   "version" : "v3.0.16",
+   "version" : "v3.0.17",
    "x_authority" : "cpan:TOKUHIROM",
    "x_contributors" : [
       "Alex Kapranoff <alex@kapranoff.ru>",
@@ -144,6 +144,7 @@
       "Songmu <y.songmu@gmail.com>",
       "Syohei YOSHIDA <syohex@gmail.com>",
       "TAGOMORI Satoshi <tagomoris@gmail.com>",
+      "Takumi Akiyama <t.akiym@gmail.com>",
       "Tatsuhiko Miyagawa <miyagawa@bulknews.net>",
       "Tatsuhiko Miyagawa <miyagawa@gmail.com>",
       "Yuji Shimada <xaicron@gmail.com>",

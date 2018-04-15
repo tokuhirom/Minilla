@@ -2,6 +2,11 @@ Revision history for Perl extension Minilla
 
 {{$NEXT}}
 
+v3.0.17 2018-04-15T14:43:09Z
+    - Fix permissions test at dev version release (akiym #238)
+    - Add os_unsupported support (karupanerura #237)
+    - Set c_source only if it is defined (ppisar #235, #236)
+
 v3.0.16 2018-02-25T17:28:30Z
     - Suppress `Wide character` warnings while regenerating README.md (Songmu #234)
 
