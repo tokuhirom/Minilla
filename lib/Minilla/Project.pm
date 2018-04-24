@@ -122,6 +122,23 @@ sub version {
     return $version;
 }
 
+sub static_install {
+    my $self = shift;
+    my $v = exists $self->config->{static_install} ? $self->config->{static_install} : 'auto';
+    return 0+$v if $v =~ /^\d+$/;
+    errorf "Found unsupported value '%s' for static_install in minil.toml", $v if $v ne 'auto';
+
+    return 0 if $self->build_class ne 'Module::Build';
+    return 0 if $self->requires_external_bin;
+    my @script_files = eval $self->script_files; # XXX
+    return 0 if grep { !/^script\b/ } @script_files;
+    return 0 if %{$self->PL_files} or grep { /^lib\b.*\.PL$/ } @{$self->files};
+    return 0 if grep { /\.xs$/ } @{$self->files};
+    return 0 if @{$self->unsupported->os};
+
+    return 1;
+}
+
 sub authors {
     my $self = shift;
     if (my $authors_from = $self->config->{authors_from}) {
@@ -441,6 +458,7 @@ sub cpan_meta {
         generated_by   => "Minilla/$Minilla::VERSION",
         release_status => $release_status || 'stable',
         no_index       => $self->no_index,
+        x_static_install => $self->static_install,
     };
     unless ($dat->{abstract}) {
         errorf("Cannot retrieve 'abstract' from %s. You need to write POD in your main module.\n", $self->dir);
@@ -601,6 +619,7 @@ sub generate_minil_toml {
     } else {
         $content .= qq{\nmodule_maker="ModuleBuildTiny"\n};
     }
+    $content .= qq{static_install = "auto"\n};
 
     spew_raw($fname, $content . "\n");
 }
