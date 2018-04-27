@@ -101,7 +101,7 @@ sub _build_authors {
 
     my $content = slurp_utf8($self->source);
     if ($content =~ m/
-        =head \d \s+ (?:authors?)\b \s*
+        =head1 \s+ (?:authors?)\b \s*
         ([^\n]*)
         |
         =head \d \s+ (?:licen[cs]e|licensing|copyright|legal)\b \s*
