@@ -499,7 +499,7 @@ sub extract_git_info {
     if ( my $registered_url = `git config --get remote.origin.url` ) {
         $registered_url =~ s/\n//g;
         # XXX Make it public clone URL, but this only works with github
-        if ($registered_url =~ /github\.com/) {
+        if ($registered_url !~ m{^file://} && $registered_url =~ /github\.com/) {
             my ($user, $repo) = $registered_url =~ m{
                 github\.com
                 (?:(?::[0-9]+)?/|:)([^/]+)
