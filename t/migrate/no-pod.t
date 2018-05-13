@@ -23,7 +23,7 @@ use Minilla::Migrate;
 use Minilla::Git;
 
 subtest 'No Changes' => sub {
-    my $guard = pushd(tempdir());
+    my $guard = pushd(tempdir(CLEANUP => 1));
 
     my $profile = __PACKAGE__->new(
         author => 'foo',

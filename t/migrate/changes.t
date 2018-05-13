@@ -23,7 +23,7 @@ use Minilla::Migrate;
 use Minilla::Git;
 
 subtest 'Insert {{$NEXT}}' => sub {
-    my $guard = pushd(tempdir());
+    my $guard = pushd(tempdir(CLEANUP => 1));
 
     my $profile = Minilla::Profile::Changes->new(
         author => 'foo',
@@ -48,7 +48,7 @@ subtest 'Insert {{$NEXT}}' => sub {
 };
 
 subtest 'Do not {{$NEXT}} twice' => sub {
-    my $guard = pushd(tempdir());
+    my $guard = pushd(tempdir(CLEANUP => 1));
 
     my $profile = Minilla::Profile::Changes->new(
         author => 'foo',

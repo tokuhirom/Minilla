@@ -12,7 +12,7 @@ use Minilla::Project;
 use Minilla::Git;
 
 subtest 'No xsutil' => sub {
-    my $guard = pushd( tempdir() );
+    my $guard = pushd( tempdir(CLEANUP => 1) );
 
     make_profile();
     write_minil_toml(
@@ -27,7 +27,7 @@ subtest 'No xsutil' => sub {
 
 
 subtest 'Use XSUtil with default value' => sub {
-    my $guard = pushd( tempdir() );
+    my $guard = pushd( tempdir(CLEANUP => 1) );
 
     make_profile();
     write_minil_toml(
@@ -48,7 +48,7 @@ subtest 'Use XSUtil with default value' => sub {
 };
 
 subtest 'Use XSUtil with specify value' => sub {
-    my $guard = pushd( tempdir() );
+    my $guard = pushd( tempdir(CLEANUP => 1) );
 
     make_profile();
     write_minil_toml(

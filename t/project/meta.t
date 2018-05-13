@@ -19,7 +19,7 @@ use JSON qw(decode_json);
 use version;
 
 subtest 'develop deps' => sub {
-    my $guard = pushd(tempdir());
+    my $guard = pushd(tempdir(CLEANUP => 1));
 
     my $profile = Minilla::Profile::Default->new(
         author => 'foo',
@@ -64,7 +64,7 @@ subtest 'resources' => sub {
     my $prepare_meta_json_resources = sub {
         my $git_conf_url = shift;
 
-        my $guard = pushd(tempdir());
+        my $guard = pushd(tempdir(CLEANUP => 1));
 
         my $profile = Minilla::Profile::Default->new(
             author => 'Tokuhiro Matsuno',
@@ -179,7 +179,7 @@ subtest 'resources' => sub {
 };
 
 subtest 'Metadata' => sub {
-    my $guard = pushd(tempdir());
+    my $guard = pushd(tempdir(CLEANUP => 1));
 
     my $profile = Minilla::Profile::Default->new(
         author => 'foo',
@@ -209,7 +209,7 @@ subtest 'Metadata' => sub {
 };
 
 subtest perl_version => sub {
-    my $guard = pushd(tempdir());
+    my $guard = pushd(tempdir(CLEANUP => 1));
 
     my $profile = Minilla::Profile::Default->new(
         author => 'foo',

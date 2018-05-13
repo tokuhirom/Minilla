@@ -17,7 +17,7 @@ subtest 'develop deps' => sub {
     delete $ENV{GIT_AUTHOR_NAME};
     delete $ENV{GIT_AUTHOR_EMAIL};
 
-    my $guard = pushd(tempdir());
+    my $guard = pushd(tempdir(CLEANUP => 1));
 
     my $profile = Minilla::Profile::Default->new(
         author => 'Tokuhiro Matsuno',

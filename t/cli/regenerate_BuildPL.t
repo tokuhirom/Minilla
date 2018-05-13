@@ -16,7 +16,7 @@ sub regenerate_BuildPL_test {
     my $fork  = $opt{fork};
     my $repo  = $opt{repo};
 
-    my $guard = pushd(tempdir());
+    my $guard = pushd(tempdir(CLEANUP => 1));
     Minilla::CLI::New->run("Acme::Foo");
 
     {
@@ -55,7 +55,7 @@ sub regenerate_BuildPL_test {
 }
 
 {
-    my $repo = tempdir();
+    my $repo = tempdir(CLEANUP => 1);
     { my $guard = pushd($repo); cmd('git', 'init', '--bare'); }
     local $ENV{PERL_MM_USE_DEFAULT} = 1;
     local $ENV{PERL_MINILLA_SKIP_CHECK_CHANGE_LOG} = 1;

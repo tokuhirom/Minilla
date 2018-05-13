@@ -8,7 +8,7 @@ use Util;
 use Minilla;
 use Minilla::Project;
 
-my $guard = pushd(tempdir());
+my $guard = pushd(tempdir(CLEANUP => 1));
 
 spew('minil.toml', <<'...');
 name = "foo-bar"

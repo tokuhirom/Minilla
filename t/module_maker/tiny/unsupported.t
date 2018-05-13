@@ -17,7 +17,7 @@ done_testing;
 sub test {
     my $code = shift;
 
-    my $guard = pushd(tempdir());
+    my $guard = pushd(tempdir(CLEANUP => 1));
 
     Minilla::Profile::ModuleBuild->new(
         author => 'hoge',

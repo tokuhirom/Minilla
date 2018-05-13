@@ -13,7 +13,7 @@ use Minilla::Project;
 use Minilla::Git;
 
 subtest 'develop deps' => sub {
-    my $guard = pushd(tempdir());
+    my $guard = pushd(tempdir(CLEANUP => 1));
 
     my $profile = Minilla::Profile::Default->new(
         author => 'Tokuhiro Matsuno',

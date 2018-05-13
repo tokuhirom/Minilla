@@ -6,7 +6,7 @@ use lib "t/lib";
 use Util;
 use Minilla::CLI::Clean;
 
-my $guard = pushd(tempdir());
+my $guard = pushd(tempdir(CLEANUP => 1));
 
 {
     write_minil_toml({

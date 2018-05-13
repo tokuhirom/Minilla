@@ -11,7 +11,7 @@ use Minilla::Profile::Default;
 use Minilla::Project;
 
 subtest 'Badge' => sub {
-    my $guard = pushd(tempdir());
+    my $guard = pushd(tempdir(CLEANUP => 1));
 
     my $profile = Minilla::Profile::Default->new(
         author => 'foo',
@@ -99,7 +99,7 @@ subtest 'Badge' => sub {
     };
 
     subtest 'AppVeyor repository rename' => sub {
-        my $guard   = pushd( tempdir() );
+        my $guard   = pushd( tempdir(CLEANUP => 1) );
         my $profile = Minilla::Profile::Default->new(
             dist    => 'Hashids',
             path    => 'Hashids.pm',
