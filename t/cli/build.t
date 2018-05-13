@@ -7,7 +7,7 @@ use Util;
 use Minilla::Profile::ModuleBuild;
 use Minilla::CLI::Build;
 
-my $guard = pushd(tempdir());
+my $guard = pushd(tempdir(CLEANUP => 1));
 
 {
     Minilla::Profile::ModuleBuild->new(

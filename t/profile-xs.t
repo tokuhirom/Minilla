@@ -14,7 +14,7 @@ use Minilla::Git;
 use Minilla::Profile::XS;
 use Minilla::Project;
 
-my $guard = pushd(tempdir(CLEANUP => 0));
+my $guard = pushd(tempdir(CLEANUP => 1));
 
 Minilla::Profile::XS->new(
     dist => 'Acme-Foo',

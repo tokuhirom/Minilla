@@ -12,7 +12,7 @@ use Minilla::Project;
 
 subtest 'ReleaseTest.MinimumVersion' => sub {
     subtest 'no minimumversion' => sub {
-        my $guard = pushd(tempdir());
+        my $guard = pushd(tempdir(CLEANUP => 1));
 
         my $project = create_project();
 
@@ -32,7 +32,7 @@ MinimumVersion = false
     };
 
     subtest 'normal case' => sub {
-        my $guard = pushd(tempdir());
+        my $guard = pushd(tempdir(CLEANUP => 1));
 
         my $project = create_project();
 

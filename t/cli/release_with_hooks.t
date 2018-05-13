@@ -12,13 +12,13 @@ if (system('which touch') != 0) {
     plan skip_all => "touch: command not found";
 }
 
-my $repo = tempdir();
+my $repo = tempdir(CLEANUP => 1);
 {
     my $guard = pushd($repo);
     cmd('git', 'init', '--bare');
 }
 
-my $guard = pushd(tempdir());
+my $guard = pushd(tempdir(CLEANUP => 1));
 
 Minilla::Profile::ModuleBuild->new(
     author => 'hoge',

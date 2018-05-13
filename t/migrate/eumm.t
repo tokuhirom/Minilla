@@ -23,7 +23,7 @@ use Minilla::Migrate;
 use Minilla::Git;
 
 subtest 'Removing committed README' => sub {
-    my $guard = pushd(tempdir());
+    my $guard = pushd(tempdir(CLEANUP => 1));
 
     my $profile = Minilla::Profile::EUMM->new(
         author => 'foo',

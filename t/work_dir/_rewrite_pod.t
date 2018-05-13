@@ -13,7 +13,7 @@ use Minilla::Git;
 plan skip_all => 'Pod rewriting is temporary disabled.';
 
 subtest 'rewrite pod' => sub {
-    my $guard = pushd(tempdir());
+    my $guard = pushd(tempdir(CLEANUP => 1));
 
     my $profile = Minilla::Profile::Default->new(
         author => 'tokuhirom',

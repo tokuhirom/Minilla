@@ -8,6 +8,7 @@ use Test::Requires {
     'Dist::Zilla' => 4.300039
 };
 use File::Which;
+use Cwd 'getcwd';
 
 plan skip_all => "No dzil command" unless which 'dzil';
 plan skip_all => "No git configuration" unless `git config user.email` =~ /\@/;
@@ -21,9 +22,10 @@ use Minilla::Git;
 
 @INC = map { File::Spec->rel2abs($_) } @INC;
 
-my $tmp = tempdir(CLEANUP => 0);
+my $tmp = tempdir(CLEANUP => 1);
 rcopy('t/migrate/dzil/' => $tmp);
 my $dst = File::Spec->catdir($tmp, 'Acme-Dzil');
+my $cwd = getcwd;
 chdir $dst;
 git_init();
 git_add('.');
@@ -42,5 +44,6 @@ for (qw(Build.PL cpanfile minil.toml)) {
     note slurp($_);
 }
 
+chdir $cwd; # this is need for File::Temp
 done_testing;
 

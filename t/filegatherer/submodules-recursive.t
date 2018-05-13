@@ -48,7 +48,7 @@ subtest 'FileGatherer' => sub {
 done_testing;
 
 sub init {
-    my $guard = pushd(tempdir());
+    my $guard = pushd(tempdir(CLEANUP => 1));
     my %submodule_repos = map { $_ => create_deep_submodule_repo($_) } qw/foo bar/;
 
     mkdir 'local';
@@ -92,7 +92,7 @@ sub create_deep_submodule_repo {
 sub create_submodule_repo {
     my $name = shift;
 
-    my $dir = tempdir();
+    my $dir = tempdir(CLEANUP => 1);
     my $guard = pushd($dir);
 
     spew("$name.c", '...');

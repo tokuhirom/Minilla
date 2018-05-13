@@ -14,7 +14,7 @@ use CPAN::Meta;
 use File::Spec;
 
 subtest 'unsupported' => sub {
-    my $guard = pushd(tempdir());
+    my $guard = pushd(tempdir(CLEANUP => 1));
 
     my $profile = Minilla::Profile::Default->new(
         author => 'Tokuhiro Matsuno',
@@ -41,7 +41,7 @@ subtest 'unsupported' => sub {
 };
 
 subtest 'empty unsupported' => sub {
-    my $guard = pushd(tempdir());
+    my $guard = pushd(tempdir(CLEANUP => 1));
 
     my $profile = Minilla::Profile::Default->new(
         author => 'Tokuhiro Matsuno',
