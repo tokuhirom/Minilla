@@ -4,7 +4,7 @@
       "Tokuhiro Matsuno < tokuhirom@gmail.com >"
    ],
    "dynamic_config" : 0,
-   "generated_by" : "Minilla/v3.0.16, CPAN::Meta::Converter version 2.150010",
+   "generated_by" : "Minilla/v3.0.17, CPAN::Meta::Converter version 2.150010",
    "license" : [
       "perl_5"
    ],
@@ -113,13 +113,14 @@
          "web" : "https://github.com/tokuhirom/Minilla"
       }
    },
-   "version" : "v3.0.17",
+   "version" : "v3.0.18",
    "x_authority" : "cpan:TOKUHIROM",
    "x_contributors" : [
       "Alex Kapranoff <alex@kapranoff.ru>",
       "Alex Kapranoff <kappa@yandex.ru>",
       "Daisuke Maki <lestrrat+github@gmail.com>",
       "Daisuke Murase <typester@cpan.org>",
+      "Dan Book <grinnz@gmail.com>",
       "Fitz Elliott <felliott@fiskur.org>",
       "Fuji, Goro <g.psy.va@gmail.com>",
       "GeJ <geraud@hyaku.nijuu.nana>",

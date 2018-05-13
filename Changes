@@ -2,6 +2,11 @@ Revision history for Perl extension Minilla
 
 {{$NEXT}}
 
+v3.0.18 2018-05-13T13:24:39Z
+    - Only extract authors from =head1 (Grinnz, jmacdotorg #240, #243)
+    - Remove temp directories in test (#245)
+    - Do not count file:// repository as github (#246)
+
 v3.0.17 2018-04-15T14:43:09Z
     - Fix permissions test at dev version release (akiym #238)
     - Add os_unsupported support (karupanerura #237)
