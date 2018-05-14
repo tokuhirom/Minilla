@@ -401,10 +401,19 @@ module must subclass L<Pod::Markdown>.
 =item Metadata
 
     [Metadata]
-    x_static_install = 1
     x_deprecated = 1
 
 Add arbitrary keys to C<META.json>/C<META.yml>.
+
+=item static_install
+
+    static_install = "auto"
+
+If C<static_install = "auto"> (or nothing is specified at all),
+then minil tries to detect whether distributions are ready for static install or not, and set C<x_static_install> in META files accordingly.
+You can also set C<static_install = 0/1> explicitly; then minil will respect it.
+
+For static install itself, please refer to L<https://github.com/Perl-Toolchain-Gang/cpan-static>.
 
 =back
 
