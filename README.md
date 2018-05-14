@@ -372,10 +372,19 @@ But, you can write configurations to _minil.toml_ file in [TOML](https://github.
 - Metadata
 
         [Metadata]
-        x_static_install = 1
         x_deprecated = 1
 
     Add arbitrary keys to `META.json`/`META.yml`.
+
+- static\_install
+
+        static_install = "auto"
+
+    If `static_install = "auto"` (or nothing is specified at all),
+    then minil tries to detect whether distributions are ready for static install or not, and set `x_static_install` in META files accordingly.
+    You can also set `static_install = 0/1` explicitly; then minil will respect it.
+
+    For static install itself, please refer to [https://github.com/Perl-Toolchain-Gang/cpan-static](https://github.com/Perl-Toolchain-Gang/cpan-static).
 
 # FAQ
 

@@ -2,6 +2,9 @@ Revision history for Perl extension Minilla
 
 {{$NEXT}}
 
+v3.1.0 2018-05-14T23:06:23Z
+    - Set x_static_install 1 if it is appropriate (#241)
+
 v3.0.18 2018-05-13T13:24:39Z
     - Only extract authors from =head1 (Grinnz, jmacdotorg #240, #243)
     - Remove temp directories in test (#245)
