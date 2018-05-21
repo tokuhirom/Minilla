@@ -176,6 +176,64 @@ subtest 'resources' => sub {
             $resources_url_of_meta_json_ok->($git_conf_url, $git_conf_url);
         };
     };
+
+    subtest 'manual' => sub {
+        my $guard = pushd(tempdir(CLEANUP => 1));
+
+        my $profile = Minilla::Profile::Default->new(
+            author => 'foo',
+            dist => 'Acme-Foo',
+            path => 'Acme/Foo.pm',
+            suffix => 'Foo',
+            module => 'Acme::Foo',
+            version => '0.01',
+            email => 'foo@example.com',
+        );
+        $profile->generate();
+
+        write_minil_toml({
+            name       => 'Acme-Foo',
+            resources  => {
+                homepage   => 'http://www.acme.example/foo',
+                bugtracker => { web => 'http://www.acme.example/foo/bugs' },
+            },
+        });
+
+        git_init_add_commit();
+
+        # Add remote information
+        {
+            my $git_conf_url = 'https://github.com/icklekitten/Acme-Foo.git';
+            open my $fh, '>>', catdir('.git', 'config');
+            print $fh <<"...";
+[remote "origin"]
+    url = $git_conf_url
+    fetch = +refs/heads/*:refs/remotes/origin/*
+...
+        }
+
+        Minilla::Project->new()->regenerate_files;
+
+        my $meta = CPAN::Meta->load_file('META.json');
+
+        is_deeply(
+            $meta->resources,
+            {
+                'bugtracker' => {
+                    'web' => 'http://www.acme.example/foo/bugs'
+                },
+                'homepage' => 'http://www.acme.example/foo',
+                'repository' => {
+                    'type'  => 'git',
+                    'url'   => 'git://github.com/icklekitten/Acme-Foo.git',
+                    'web'   => 'https://github.com/icklekitten/Acme-Foo'
+                }
+            },
+        );
+
+        my $validator = CPAN::Meta::Validator->new($meta->as_struct);
+        ok($validator->is_valid) or diag join( "\n", $validator->errors );
+    };
 };
 
 subtest 'Metadata' => sub {
