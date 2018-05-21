@@ -502,6 +502,10 @@ sub cpan_meta {
         $dat->{resources}->{homepage}   = $git_info->{homepage};
     }
 
+    if (my $resources = $self->config->{resources}) {
+        $dat->{resources}{$_} = $resources->{$_} for keys %$resources;
+    }
+
     my $meta = CPAN::Meta->new($dat);
     return $meta;
 }
