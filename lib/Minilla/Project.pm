@@ -455,6 +455,7 @@ sub cpan_meta {
         version        => $self->version,
         name           => $self->dist_name,
         prereqs        => $merged_prereqs,
+        optional_features => {},
         generated_by   => "Minilla/$Minilla::VERSION",
         release_status => $release_status || 'stable',
         no_index       => $self->no_index,
@@ -500,6 +501,14 @@ sub cpan_meta {
     }
     if ($git_info->{homepage}) {
         $dat->{resources}->{homepage}   = $git_info->{homepage};
+    }
+
+    # optional features
+    foreach my $feature ( $cpanfile->features ) {
+        $dat->{optional_features}->{$feature->identifier} = {
+            description => $feature->description,
+            prereqs => $feature->prereqs->as_string_hash,
+        }
     }
 
     my $meta = CPAN::Meta->new($dat);
