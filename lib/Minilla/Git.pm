@@ -72,8 +72,12 @@ sub git_submodule_files {
 }
 
 sub git_show_toplevel {
-    my $top_level = `git rev-parse --show-toplevel`
-        // errorf("Top-level git directory could not be found for %s\n", Cwd::getcwd());
+    my $top_level = `git rev-parse --show-toplevel`;
+    if ( $? != 0 ) {
+        errorf("Top-level git directory could not be found for %s: %s\n", Cwd::getcwd(),
+               $? == -1 ? "$!" :
+               $? & 127 ? "git received signal ". ($? & 127) : "git exited ". ($? >> 8))
+    }
     chomp $top_level;
     return $top_level;
 }
