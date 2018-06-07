@@ -12,7 +12,7 @@ use CPAN::Meta;
 use TOML qw(from_toml to_toml);
 
 subtest basic => sub {
-    my $guard = pushd(tempdir());
+    my $guard = pushd(tempdir(CLEANUP => 1));
     Minilla::CLI::New->run('Acme::Foo');
     chdir "Acme-Foo";
 
@@ -38,7 +38,7 @@ subtest basic => sub {
 
 my $static_install = sub {
     my $sub = shift;
-    my $guard = pushd(tempdir());
+    my $guard = pushd(tempdir(CLEANUP => 1));
     Minilla::CLI::New->run('Acme::Foo');
     chdir "Acme-Foo";
     $sub->();
