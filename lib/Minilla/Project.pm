@@ -502,6 +502,18 @@ sub cpan_meta {
         $dat->{resources}->{homepage}   = $git_info->{homepage};
     }
 
+    # optional features
+    if ($cpanfile->features) {
+        my $optional_features = {};
+        foreach my $feature ($cpanfile->features) {
+            $optional_features->{$feature->identifier} = {
+                description => $feature->description,
+                prereqs => $feature->prereqs->as_string_hash,
+            }
+        }
+        $dat->{optional_features} = $optional_features;
+    }
+
     my $meta = CPAN::Meta->new($dat);
     return $meta;
 }

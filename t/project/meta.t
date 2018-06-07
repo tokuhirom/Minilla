@@ -232,6 +232,49 @@ subtest perl_version => sub {
     ok $version == version->declare('v5.20.0');
 };
 
+subtest 'optional features' => sub {
+    my $guard = pushd(tempdir(CLEANUP => 1));
+
+    my $profile = Minilla::Profile::Default->new(
+        author => 'foo',
+        dist => 'Acme-Foo',
+        path => 'Acme/Foo.pm',
+        suffix => 'Foo',
+        module => 'Acme::Foo',
+        version => '0.01',
+        email => 'foo@example.com',
+    );
+    $profile->generate();
+    spew('cpanfile', <<'...');
+feature 'bar', 'Optional feature Bar' => sub {
+    requires 'Acme::Bar';
+};
+...
+    write_minil_toml('Acme-Foo');
+
+    git_init_add_commit();
+
+    Minilla::Project->new()->regenerate_files;
+
+    my $meta = CPAN::Meta->load_file('META.json');
+    is_deeply(
+        $meta->{optional_features}->{bar},
+        {
+            "description" => "Optional feature Bar",
+            "prereqs" => {
+                "runtime" => {
+                    "requires" => {
+                        "Acme::Bar" => "0",
+                    },
+                },
+            },
+        }
+    );
+
+    my $validator = CPAN::Meta::Validator->new($meta->as_struct);
+    ok($validator->is_valid) or diag join( "\n", $validator->errors );
+};
+
 
 done_testing;
 
