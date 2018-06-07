@@ -2,6 +2,9 @@ Revision history for Perl extension Minilla
 
 {{$NEXT}}
 
+v3.1.1 2018-06-07T13:37:18Z
+    - Pass features from cpanfile to optional_features in META.json (mavit #251, #35)
+
 v3.1.0 2018-05-14T23:06:23Z
     - Set x_static_install 1 if it is appropriate (#241)
 
