@@ -255,9 +255,9 @@ See L<CPAN::Meta::Spec>.
 
 =item badges
 
-    badges = ['travis', 'circleci', 'appveyor', 'coveralls', 'codecov', 'gitter', 'metacpan', 'kritika']
+    badges = ['travis-ci.com', 'travis-ci.org', 'circleci', 'appveyor', 'coveralls', 'codecov', 'gitter', 'metacpan', 'kritika']
 
-Embed badges image (e.g. Travis-CI) to README.md. It ought to be array and each elements must be service name. Now, supported services are only 'travis', 'circleci', 'appveyor', 'coveralls', 'codecov', 'gitter', 'metacpan' and 'kritika'.
+Embed badges image (e.g. Travis-CI) to README.md. It ought to be array and each elements must be service name. Now, supported services are 'travis-ci.com', 'travis-ci.org', 'circleci', 'appveyor', 'coveralls', 'codecov', 'gitter', 'metacpan' and 'kritika'.
 
 You can send additional parameters as required by your CI provider by including a
 query string along with your service name: e.g. C<travis?token=[YOUR_TOKEN_GOES_HERE]&branch=dev>
