@@ -2,6 +2,9 @@ Revision history for Perl extension Minilla
 
 {{$NEXT}}
 
+v3.1.2 2018-07-05T15:45:57Z
+    - Ask Git for the top level, rather than inferring from .git/ (mavit #250)
+
 v3.1.1 2018-06-07T13:37:18Z
     - Pass features from cpanfile to optional_features in META.json (mavit #251, #35)
 
