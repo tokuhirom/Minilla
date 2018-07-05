@@ -14,6 +14,7 @@ use Config::Identity::PAUSE;
 use Module::Runtime qw(require_module);
 
 use Minilla;
+use Minilla::Git qw(git_show_toplevel);
 use Minilla::Logger;
 use Minilla::Metadata;
 use Minilla::WorkDir;
@@ -219,13 +220,7 @@ sub cc_warnings{
 
 sub _build_dir {
     my $self = shift;
-
-    my $gitdir = find_dir('.git')
-        or errorf("Current directory is not in git(%s)\n", Cwd::getcwd());
-    $gitdir = File::Spec->rel2abs($gitdir);
-    my $base_dir = dirname($gitdir);
-
-    return $base_dir;
+    return git_show_toplevel();
 }
 
 sub _trigger_dir {

@@ -5,8 +5,9 @@ use utf8;
 
 use parent qw(Exporter);
 
-our @EXPORT = qw(git_ls_files git_init git_add git_rm git_commit git_config git_remote git_submodule_add git_submodules git_submodule_files);
+our @EXPORT = qw(git_ls_files git_init git_add git_rm git_commit git_config git_remote git_submodule_add git_submodules git_submodule_files git_show_toplevel);
 
+use Minilla::Logger qw(errorf);
 use Minilla::Util qw(cmd);
 
 sub git_init {
@@ -68,6 +69,17 @@ sub git_submodule_files {
         push @files, map "$submodule_name/$_", split /\0/, shift @output;
     }
     return @files;
+}
+
+sub git_show_toplevel {
+    my $top_level = `git rev-parse --show-toplevel`;
+    if ( $? != 0 ) {
+        errorf("Top-level git directory could not be found for %s: %s\n", Cwd::getcwd(),
+               $? == -1 ? "$!" :
+               $? & 127 ? "git received signal ". ($? & 127) : "git exited ". ($? >> 8))
+    }
+    chomp $top_level;
+    return $top_level;
 }
 
 1;
