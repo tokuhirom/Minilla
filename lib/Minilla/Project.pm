@@ -696,6 +696,17 @@ sub regenerate_readme_md {
                 } elsif ($service_name eq 'metacpan') {
                     my $module_name = $self->config->{name} || $repository_name;
                     push @badges, "[![MetaCPAN Release](https://badge.fury.io/pl/$module_name.svg)](https://metacpan.org/release/$module_name)";
+                } elsif ($service_name eq 'kritika') {
+                    my $build_uri = $uri->clone;
+                    $build_uri->scheme('https');
+                    $build_uri->host('kritika.io');
+                    $build_uri->path("/users/$user_name/repos/$user_name+$repository_name");
+                    $build_uri->query_form({});
+                    my $image_uri = $uri->clone;
+                    $image_uri->scheme('https');
+                    $image_uri->host('kritika.io');
+                    $image_uri->path("/users/$user_name/repos/$user_name+$repository_name/heads/master/status.svg");
+                    push @badges, "[![Kritika Status]($image_uri)]($build_uri)";
                 }
             }
         }
