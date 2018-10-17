@@ -226,9 +226,9 @@ But, you can write configurations to _minil.toml_ file in [TOML](https://github.
 
 - badges
 
-        badges = ['travis', 'circleci', 'appveyor', 'coveralls', 'codecov', 'gitter', 'metacpan']
+        badges = ['travis', 'circleci', 'appveyor', 'coveralls', 'codecov', 'gitter', 'metacpan', 'kritika']
 
-    Embed badges image (e.g. Travis-CI) to README.md. It ought to be array and each elements must be service name. Now, supported services are only 'travis', 'circleci', 'appveyor', 'coveralls', 'codecov', 'gitter' and 'metacpan'.
+    Embed badges image (e.g. Travis-CI) to README.md. It ought to be array and each elements must be service name. Now, supported services are only 'travis', 'circleci', 'appveyor', 'coveralls', 'codecov', 'gitter', 'metacpan' and 'kritika'.
 
     You can send additional parameters as required by your CI provider by including a
     query string along with your service name: e.g. `travis?token=[YOUR_TOKEN_GOES_HERE]&branch=dev`

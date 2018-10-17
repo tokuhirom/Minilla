@@ -2,6 +2,10 @@ Revision history for Perl extension Minilla
 
 {{$NEXT}}
 
+v3.1.3 2018-10-17T23:08:14Z
+    - Add kritika badge (vti #255)
+    - Do not bump versions of files which are listed as no_index (vti #256, #257)
+
 v3.1.2 2018-07-05T15:45:57Z
     - Ask Git for the top level, rather than inferring from .git/ (mavit #250)
 
