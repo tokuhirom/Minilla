@@ -52,6 +52,11 @@ sub bump_version {
         next if $file =~ /\.t$/;
         next if $file =~ m{\Ashare/};
 
+        next if $file eq 'Makefile.PL' || $file eq 'Build.PL';
+        # copy from Menlo::CLI::Compat
+        next if grep { $file =~ m!^$_/! } @{$project->no_index->{directory} || []};
+        next if grep { $file eq $_ } @{$project->no_index->{file} || []};
+
         my $bump = Module::BumpVersion->load($file);
         $bump->set_version($version);
     }
