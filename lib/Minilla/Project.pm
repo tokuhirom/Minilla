@@ -609,7 +609,7 @@ sub generate_minil_toml {
     my $project_name = $self->_detect_project_name_from_dir;
     my $content      = join("\n",
         qq{name = "$project_name"},
-        qq{# badges = ["travis"]},
+        qq{# badges = ["travis-ci.com"]},
     );
 
     my %pause;
@@ -663,7 +663,7 @@ sub regenerate_readme_md {
             for my $badge (@{$self->badges}) {
                 my $uri = URI->new( $badge );
                 my $service_name = $uri->path;
-                if ($service_name eq 'travis') {
+                if ($service_name =~ /^travis(?:-ci\.(?:org|com))?$/) {
                     my $build_uri = $uri->clone;
                     $build_uri->scheme('https');
                     $build_uri->path("$user_name/$repository_name");
@@ -673,7 +673,9 @@ sub regenerate_readme_md {
                     $image_uri->path("$user_name/$repository_name.svg");
                     my %image_uri_qs = $image_uri->query_form;
                     $image_uri_qs{branch} = 'master' if !defined($image_uri_qs{branch});
-                    if (!defined($image_uri_qs{token})) {
+                    if ($service_name =~ /^travis(?:-ci\.(?:org|com))$/) {
+                        $_->host($service_name) foreach ($build_uri, $image_uri);
+                    } elsif (!defined($image_uri_qs{token})) {
                         $_->host("travis-ci.org") foreach ($build_uri, $image_uri);
                     } else {
                         $_->host("travis-ci.com") foreach ($build_uri, $image_uri);
