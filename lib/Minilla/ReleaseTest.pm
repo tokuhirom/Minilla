@@ -67,7 +67,7 @@ sub prereqs {
                 'Test::CPAN::Meta' => 0,
                 'Test::Pod' => 1.41,
                 'Test::Spellunker' => 'v0.2.7',
-                'Test::PAUSE::Permissions' => 0.04,
+                'Test::PAUSE::Permissions' => 0.07,
             },
         },
     };
