@@ -3,7 +3,7 @@ use warnings;
 use utf8;
 use Test::More;
 use File::Find;
- 
+
 find {
     wanted => sub {
         return unless /\.pm$/;

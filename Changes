@@ -90,7 +90,7 @@ v3.0.2 2016-06-03T23:07:05Z
     Date:   Thu Apr 21 15:26:11 2016 +0200
 
         added requirements from cpan_meta information
-        
+
         so that the generate Build.PL file has the correct information for Module::Build
 
     commit 8924842129238ba3fbc29e68cbecb49807cea1bd
@@ -98,7 +98,7 @@ v3.0.2 2016-06-03T23:07:05Z
     Date:   Tue Mar 22 20:33:19 2016 +0900
 
         Delete system() function call
-        
+
         Delete system() function call.
         Some operating system don't have 'cat' cmd.
 
@@ -107,7 +107,7 @@ v3.0.2 2016-06-03T23:07:05Z
     Date:   Tue Mar 22 12:17:43 2016 +0900
 
         Always use 'git.config'
-        
+
         Both 'git.config' and environment variables are set, then
         environment variables are used, this causes test failure.
 

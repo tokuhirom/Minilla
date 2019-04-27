@@ -15,7 +15,7 @@ no Moo;
 sub load {
     my ($class, $filename) = @_;
 
-    open my $fh, '<', $filename 
+    open my $fh, '<', $filename
         or die "Cannot open $filename: $!";
     my @lines;
     while (defined($_ = <$fh>)) {

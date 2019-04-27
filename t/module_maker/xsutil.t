@@ -40,7 +40,7 @@ test(
 );
 
 test(
-    {   
+    {
         generate_ppport_h   => 'lib/ppport.h',
         generate_xshelper_h => 'lib/xshelper.h',
     },

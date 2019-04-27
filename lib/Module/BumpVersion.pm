@@ -115,8 +115,8 @@ sub version_re_perl {
     my $ver_re = shift;
 
     return qr{ ^ ( .*?  [\$\*] (?: \w+ (?: :: | ' ) )* VERSION \s* =
-                    \D*? ) 
-                 $ver_re 
+                    \D*? )
+                 $ver_re
                  ( .* ) $ }x;
 }
 
