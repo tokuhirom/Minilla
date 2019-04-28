@@ -17,7 +17,7 @@ sub run {
         return;
     }
 
-    until (slurp('Changes') =~ /^\{\{\$NEXT\}\}\n+[ \t]+\S/m) {
+    until (slurp('Changes') =~ /^\{\{\$NEXT\}\}\h*\R+\h+\S/m) {
         infof("No mention of {{\$NEXT}} in changelog file 'Changes'\n");
         if (prompt("Edit file?", 'y') =~ /y/i) {
             edit_file('Changes');
