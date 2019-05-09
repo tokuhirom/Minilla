@@ -84,7 +84,7 @@ sub _extract_perl_version {
         return;
     }
 }
- 
+
 sub _build_perl_version {
     my ($self) = @_;
 
@@ -109,7 +109,7 @@ sub _build_authors {
         ([^\n]*)
     /ixms) {
         my $author = $1 || $2;
- 
+
         $author =~ s{ E<( (\d+) | ([A-Za-z]+) )> }{
             defined $2
             ? chr($2)
@@ -151,7 +151,7 @@ sub _is_perl5_license {
         /xms
     );
 }
- 
+
 sub __extract_license {
     my $license_text = shift or return;
     my @phrases      = (

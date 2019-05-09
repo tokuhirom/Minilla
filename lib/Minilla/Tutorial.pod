@@ -42,7 +42,7 @@ Minilla assumes you have a git remote setup so that you can push all your change
 
     # Use hub rubygem
     > hub create
-    
+
     # Use App::ph
     > ph import
 
@@ -103,11 +103,11 @@ The easiest way to convert existing dependencies to cpanfile is to use the comma
     > perl Makefile.PL
     > mymeta-cpanfile --no-configure
     requires 'DBI', '1.000';
-    
+
     on test => sub {
         requires 'Test::More', '0.86';
     }
-    
+
     ...
 
 You can redirect the output to cpanfile if you like. It is important to pass --no-configure option here, since otherwise modules like ExtUtils::MakeMaker will be included. It is not required with Minilla setup, since Minilla knows which configuration tool (installer) to use and include them in META files upon the releases. You can leave that out from the cpanfile.
@@ -197,5 +197,5 @@ Tatsuhiko Miyagawa
 =head1 SEE ALSO
 
 L<Minilla>, L<Dist::Milla::Tutorial>
-    
+
 =cut

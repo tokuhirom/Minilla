@@ -24,7 +24,7 @@ no Moo;
 
 sub run {
     my ($self, @args) = @_;
- 
+
     local $Minilla::AUTO_INSTALL = 1;
     local $Minilla::Logger::COLOR = -t STDOUT ? 1 : 0;
     local @ARGV = @args;
@@ -45,12 +45,12 @@ sub run {
         print "Minilla: $Minilla::VERSION\n";
         exit 0;
     }
- 
+
     push @commands, @ARGV;
- 
+
     my $cmd = shift @commands || 'help';
     my $klass = sprintf("Minilla::CLI::%s", ucfirst($cmd));
- 
+
     ## no critic
     if (eval sprintf("require %s; 1;", $klass)) {
         try {
