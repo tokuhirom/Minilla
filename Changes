@@ -2,6 +2,11 @@ Revision history for Perl extension Minilla
 
 {{$NEXT}}
 
+v3.1.5 2019-07-25T14:14:10Z
+    - Older Test::Pause::Permissions may have bugs. we need to depend on the latest version (#258)
+    - Add perl 5.28, 5.30 to travis.yml (akiym #267)
+    - Fix the usage of `git submodule foreach` for git 2.22.0 (bluefeet #268, #269)
+
 v3.1.4 2018-12-30T05:46:15Z
     - Support travis-ci.com badge (#253)
 

@@ -113,11 +113,12 @@
          "web" : "https://github.com/tokuhirom/Minilla"
       }
    },
-   "version" : "v3.1.4",
+   "version" : "v3.1.5",
    "x_authority" : "cpan:TOKUHIROM",
    "x_contributors" : [
       "Alex Kapranoff <alex@kapranoff.ru>",
       "Alex Kapranoff <kappa@yandex.ru>",
+      "Chris White <chrisw@leehayes.com>",
       "Daisuke Maki <lestrrat+github@gmail.com>",
       "Daisuke Murase <typester@cpan.org>",
       "Dan Book <grinnz@gmail.com>",
@@ -165,6 +166,6 @@
       "vti <viacheslav.t@gmail.com>",
       "ysasaki <aloelight@gmail.com>"
    ],
-   "x_serialization_backend" : "JSON::PP version 4.00",
+   "x_serialization_backend" : "JSON::PP version 4.04",
    "x_static_install" : 1
 }
