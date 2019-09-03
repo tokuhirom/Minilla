@@ -211,7 +211,8 @@ It affects to L<Module::Build> 0.4005+ only.
 
     no_github_issues=true
 
-Minilla sets bugtracker as github issues by default. But if you want to use RT, you can set this variable.
+Minilla sets bugtracker to github/GitLab's issue tracker by default. But if you
+want to use RT, you can set this variable.
 
 =item no_index
 
