@@ -46,6 +46,8 @@ Minilla assumes you have a git remote setup so that you can push all your change
     # Use App::ph
     > ph import
 
+Alternatively, if you prefer to use GitLab you can create a project in thier web interface and follow the instructions it provides to I<Push an existing Git repository>.
+
 Now, make sure you have Changes file ready and have a new entry under C<{{$NEXT}}>, which will be expanded to the next version of your module.
 
     > $EDITOR Changes
