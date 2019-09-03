@@ -525,15 +525,15 @@ sub extract_git_info {
         $registered_url =~ s/\n//g;
         # XXX Make it public clone URL, but this only works with github
         if ($registered_url !~ m{^file://} && $registered_url =~ /(?:github|gitlab)\.com/) {
-            my ($gitService, $user, $repo) = $registered_url =~ m{
+            my ($git_service, $user, $repo) = $registered_url =~ m{
                 (github\.com|gitlab\.com)
                 (?:(?::[0-9]+)?/|:)([^/]+)
                 /
                 (.+?)(?:\.git)?
                 $
             }ix;
-            my $git_url = "git://$gitService/$user/$repo.git";
-            my $http_url = "https://$gitService/$user/$repo";
+            my $git_url = "git://$git_service/$user/$repo.git";
+            my $http_url = "https://$git_service/$user/$repo";
             unless ($self->config->{no_github_issues}) {
                 $bugtracker = +{
                     web => "$http_url/issues",
