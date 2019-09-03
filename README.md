@@ -182,7 +182,8 @@ But, you can write configurations to _minil.toml_ file in [TOML](https://github.
 
         no_github_issues=true
 
-    Minilla sets bugtracker as github issues by default. But if you want to use RT, you can set this variable.
+    Minilla sets bugtracker to github/GitLab's issue tracker by default. But if you
+    want to use RT, you can set this variable.
 
 - no\_index
 

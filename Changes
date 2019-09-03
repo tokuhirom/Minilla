@@ -2,6 +2,9 @@ Revision history for Perl extension Minilla
 
 {{$NEXT}}
 
+v3.1.6 2019-09-03T22:23:16Z
+    - Support GitLab hosted repositories (jlcooper #271)
+
 v3.1.5 2019-07-25T14:14:10Z
     - Older Test::Pause::Permissions may have bugs. we need to depend on the latest version (#258)
     - Add perl 5.28, 5.30 to travis.yml (akiym #267)
