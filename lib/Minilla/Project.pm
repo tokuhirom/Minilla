@@ -524,16 +524,16 @@ sub extract_git_info {
     if ( my $registered_url = `git config --get remote.origin.url` ) {
         $registered_url =~ s/\n//g;
         # XXX Make it public clone URL, but this only works with github
-        if ($registered_url !~ m{^file://} && $registered_url =~ /github\.com/) {
-            my ($user, $repo) = $registered_url =~ m{
-                github\.com
+        if ($registered_url !~ m{^file://} && $registered_url =~ /(?:github|gitlab)\.com/) {
+            my ($git_service, $user, $repo) = $registered_url =~ m{
+                (github\.com|gitlab\.com)
                 (?:(?::[0-9]+)?/|:)([^/]+)
                 /
-                ([^/]+?)(?:\.git)?
+                (.+?)(?:\.git)?
                 $
             }ix;
-            my $git_url = "git://github.com/$user/$repo.git";
-            my $http_url = "https://github.com/$user/$repo";
+            my $git_url = "git://$git_service/$user/$repo.git";
+            my $http_url = "https://$git_service/$user/$repo";
             unless ($self->config->{no_github_issues}) {
                 $bugtracker = +{
                     web => "$http_url/issues",
