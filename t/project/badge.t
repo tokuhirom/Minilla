@@ -100,6 +100,23 @@ subtest 'Badge' => sub {
         is $got, $expected;
     };
 
+    subtest 'GitHub Actions workflow name' => sub {
+        write_minil_toml({
+            name   => 'Acme-Foo',
+            badges => ['github-actions/foo'],
+        });
+        $project->regenerate_files;
+
+        open my $fh, '<', 'README.md';
+        ok chomp (my $got = <$fh>);
+
+        my $badge_markdowns = [
+            "[![Actions Status](https://github.com/tokuhirom/Minilla/workflows/foo/badge.svg)](https://github.com/tokuhirom/Minilla/actions)",
+        ];
+        my $expected = join(' ', @$badge_markdowns);
+        is $got, $expected;
+    };
+
     subtest 'AppVeyor repository rename' => sub {
         my $guard   = pushd( tempdir(CLEANUP => 1) );
         my $profile = Minilla::Profile::Default->new(
