@@ -7,7 +7,7 @@ use Util;
 use File::Temp qw(tempdir);
 use File::pushd;
 
-use Minilla::Util qw(spew);
+use Minilla::Util qw(cmd spew);
 use Minilla::FileGatherer;
 use Minilla::Git;
 
@@ -68,7 +68,7 @@ sub init {
     git_init();
     git_add('.');
     git_submodule_add("file://$submodule_repos{$_}", "lib$_") for keys %submodule_repos;
-    system 'git submodule update --init --recursive';
+    cmd(qw(git submodule update --init --recursive));
     git_commit('-m', 'foo');
 
     $guard;

@@ -9,6 +9,8 @@ use File::Which 'which';
 use Minilla::Logger ();
 use Getopt::Long ();
 use Cwd();
+use IPC::Open3 ();
+use Symbol qw(gensym);
 
 use parent qw(Exporter);
 
@@ -147,8 +149,17 @@ sub cmd_perl {
 
 sub cmd {
     Minilla::Logger::infof("[%s] \$ %s\n", File::Basename::basename(Cwd::getcwd()), "@_");
-    system(@_) == 0
-        or Minilla::Logger::errorf("Giving up.\n");
+
+    my $exit_status;
+    if (!$ENV{TEST_VERBOSE}) {
+        open(my $devnull, '+>', File::Spec->devnull);
+        my $pid = IPC::Open3::open3(gensym, $devnull, $devnull, @_);
+        waitpid($pid, 0);
+        $exit_status = $? >> 8;
+    } else {
+        $exit_status = system(@_);
+    }
+    Minilla::Logger::errorf("Giving up.\n") if $exit_status != 0;
 }
 
 sub parse_options {

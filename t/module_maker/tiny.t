@@ -9,6 +9,7 @@ use FindBin;
 use lib "$FindBin::Bin/../../lib";
 use File::Temp qw(tempdir);
 use File::pushd;
+use File::Which qw(which);
 
 use Minilla::CLI::New;
 use Minilla::CLI;
@@ -43,7 +44,7 @@ subtest 'Acme::Speciality' => sub {
         ok -f 'Build.PL';
         is(system($^X, 'Build.PL'), 0);
         is(system($^X, './Build'), 0);
-        system 'tree';
+        note `tree` if which('tree');
     }
 };
 
