@@ -709,6 +709,9 @@ sub regenerate_readme_md {
                     $image_uri->host('kritika.io');
                     $image_uri->path("/users/$user_name/repos/$user_name+$repository_name/heads/master/status.svg");
                     push @badges, "[![Kritika Status]($image_uri)]($build_uri)";
+                } elsif ($service_name =~ m!^github-actions(?:/(.+))?$!) {
+                    my $workflow_name = $1 || 'test';
+                    push @badges, "[![Actions Status](https://github.com/$user_name/$repository_name/workflows/$workflow_name/badge.svg)](https://github.com/$user_name/$repository_name/actions)";
                 }
             }
         }

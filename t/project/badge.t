@@ -39,7 +39,7 @@ subtest 'Badge' => sub {
     subtest 'Badges exist' => sub {
         write_minil_toml({
             name   => 'Acme-Foo',
-            badges => ['travis', 'travis-ci.com', 'circleci', 'appveyor', 'coveralls', 'gitter', 'codecov', 'metacpan'],
+            badges => ['travis', 'travis-ci.com', 'circleci', 'appveyor', 'coveralls', 'gitter', 'codecov', 'metacpan', 'github-actions'],
         });
         $project->regenerate_files;
 
@@ -54,7 +54,8 @@ subtest 'Badge' => sub {
             "[![Coverage Status](https://img.shields.io/coveralls/tokuhirom/Minilla/master.svg?style=flat)](https://coveralls.io/r/tokuhirom/Minilla?branch=master)",
             "[![Gitter chat](https://badges.gitter.im/tokuhirom/Minilla.png)](https://gitter.im/tokuhirom/Minilla)",
             "[![Coverage Status](http://codecov.io/github/tokuhirom/Minilla/coverage.svg?branch=master)](https://codecov.io/github/tokuhirom/Minilla?branch=master)",
-            "[![MetaCPAN Release](https://badge.fury.io/pl/Acme-Foo.svg)](https://metacpan.org/release/Acme-Foo)"
+            "[![MetaCPAN Release](https://badge.fury.io/pl/Acme-Foo.svg)](https://metacpan.org/release/Acme-Foo)",
+            "[![Actions Status](https://github.com/tokuhirom/Minilla/workflows/test/badge.svg)](https://github.com/tokuhirom/Minilla/actions)",
         ];
         my $expected = join(' ', @$badge_markdowns);
         is $got, $expected;
@@ -94,6 +95,23 @@ subtest 'Badge' => sub {
 
         my $badge_markdowns = [
             "[![Build Status](https://travis-ci.com/tokuhirom/Minilla.svg?branch=master&foo=bar&token=xxxyyyzzz)](https://travis-ci.com/tokuhirom/Minilla)",
+        ];
+        my $expected = join(' ', @$badge_markdowns);
+        is $got, $expected;
+    };
+
+    subtest 'GitHub Actions workflow name' => sub {
+        write_minil_toml({
+            name   => 'Acme-Foo',
+            badges => ['github-actions/foo'],
+        });
+        $project->regenerate_files;
+
+        open my $fh, '<', 'README.md';
+        ok chomp (my $got = <$fh>);
+
+        my $badge_markdowns = [
+            "[![Actions Status](https://github.com/tokuhirom/Minilla/workflows/foo/badge.svg)](https://github.com/tokuhirom/Minilla/actions)",
         ];
         my $expected = join(' ', @$badge_markdowns);
         is $got, $expected;
