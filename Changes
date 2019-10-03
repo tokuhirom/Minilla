@@ -2,6 +2,9 @@ Revision history for Perl extension Minilla
 
 {{$NEXT}}
 
+v3.1.7 2019-10-03T11:22:06Z
+    - Add badge for github actions (karupanerura #274)
+
 v3.1.6 2019-09-03T22:23:16Z
     - Support GitLab hosted repositories (jlcooper #271)
 
