@@ -175,18 +175,23 @@ it under the same terms as Perl itself.
 
 @@ .travis.yml
 language: perl
-sudo: false
-perl:
-  - "5.12"
-  - "5.14"
-  - "5.16"
-  - "5.18"
-  - "5.20"
-  - "5.22"
-  - "5.24"
-  - "5.26"
-  - "5.28"
-  - "5.30"
+matrix:
+  include:
+    - perl: "5.12"
+      dist: trusty
+    - perl: "5.14"
+      dist: trusty
+    - perl: "5.16"
+      dist: trusty
+    - perl: "5.18"
+      dist: trusty
+    - perl: "5.20"
+      dist: trusty
+    - perl: "5.22"
+    - perl: "5.24"
+    - perl: "5.26"
+    - perl: "5.28"
+    - perl: "5.30"
 
 @@ Changes
 Revision history for Perl extension <% $dist %>
