@@ -20,7 +20,7 @@ Minilla is a CPAN module authoring tool. Minilla provides [minil](https://metacp
 
 # CONVENTION
 
-As stated above, Minilla is opinionated. Minilla has a bold assumption and convention like the followings, which are almost compatible to the sister project [Dist::Milla](https://metacpan.org/pod/Dist::Milla).
+As stated above, Minilla is opinionated. Minilla has a bold assumption and convention like the followings, which are almost compatible to the sister project [Dist::Milla](https://metacpan.org/pod/Dist%3A%3AMilla).
 
 - Your modules are written in Pure Perl and are located in _lib/_.
 - Your executable files are in _script/_ directory, if any
@@ -50,7 +50,7 @@ As stated above, Minilla is opinionated. Minilla has a bold assumption and conve
 
 It's that easy.
 
-You already have distributions with [Module::Install](https://metacpan.org/pod/Module::Install), [Module::Build](https://metacpan.org/pod/Module::Build), [Dist::Zilla](https://metacpan.org/pod/Dist::Zilla) or [ShipIt](https://metacpan.org/pod/ShipIt)? Migrating is also trivial. See "MIGRATING" in [Minilla::Tutorial](https://metacpan.org/pod/Minilla::Tutorial) for more details.
+You already have distributions with [Module::Install](https://metacpan.org/pod/Module%3A%3AInstall), [Module::Build](https://metacpan.org/pod/Module%3A%3ABuild), [Dist::Zilla](https://metacpan.org/pod/Dist%3A%3AZilla) or [ShipIt](https://metacpan.org/pod/ShipIt)? Migrating is also trivial. See "MIGRATING" in [Minilla::Tutorial](https://metacpan.org/pod/Minilla%3A%3ATutorial) for more details.
 
 # WHY MINILLA?
 
@@ -176,7 +176,7 @@ But, you can write configurations to _minil.toml_ file in [TOML](https://github.
     A boolean indicating the module is still functional without its XS parts.  When an XS module is build
     with `--pureperl_only`, it will otherwise fail.
 
-    It affects to [Module::Build](https://metacpan.org/pod/Module::Build) 0.4005+ only.
+    It affects to [Module::Build](https://metacpan.org/pod/Module%3A%3ABuild) 0.4005+ only.
 
 - no\_github\_issues
 
@@ -216,14 +216,14 @@ But, you can write configurations to _minil.toml_ file in [TOML](https://github.
         [tap_harness_args]
         jobs=19
 
-    This parameters pass to TAP::Harness when running tests. See the [TAP::Harness](https://metacpan.org/pod/TAP::Harness) documentation for details.
+    This parameters pass to TAP::Harness when running tests. See the [TAP::Harness](https://metacpan.org/pod/TAP%3A%3AHarness) documentation for details.
 
 - license
 
         license="artistic_2"
 
     You can specify your favorite license on minil.toml. The license key is same as CPAN Meta spec 2.0.
-    See [CPAN::Meta::Spec](https://metacpan.org/pod/CPAN::Meta::Spec).
+    See [CPAN::Meta::Spec](https://metacpan.org/pod/CPAN%3A%3AMeta%3A%3ASpec).
 
 - badges
 
@@ -241,7 +241,7 @@ But, you can write configurations to _minil.toml_ file in [TOML](https://github.
         [PL_files]
         lib/Foo/Bar.pm.PL="lib/Foo/Bar.pm"
 
-    This option is not supported by [Minilla::ModuleMaker::ModuleBuildTiny](https://metacpan.org/pod/Minilla::ModuleMaker::ModuleBuildTiny).
+    This option is not supported by [Minilla::ModuleMaker::ModuleBuildTiny](https://metacpan.org/pod/Minilla%3A%3AModuleMaker%3A%3AModuleBuildTiny).
 
     Note. MBTiny executes \*.PL files by default.
 
@@ -257,35 +257,35 @@ But, you can write configurations to _minil.toml_ file in [TOML](https://github.
         [XSUtil]
         needs_compiler_c99 = 1
 
-    You can specify `needs_compiler_c99` parameter of [Module::Build::XSUtil](https://metacpan.org/pod/Module::Build::XSUtil).
+    You can specify `needs_compiler_c99` parameter of [Module::Build::XSUtil](https://metacpan.org/pod/Module%3A%3ABuild%3A%3AXSUtil).
 
 - XSUtil.needs\_compiler\_cpp
 
         [XSUtil]
         needs_compiler_cpp = 1
 
-    You can specify `needs_compiler_cpp` parameter of [Module::Build::XSUtil](https://metacpan.org/pod/Module::Build::XSUtil).
+    You can specify `needs_compiler_cpp` parameter of [Module::Build::XSUtil](https://metacpan.org/pod/Module%3A%3ABuild%3A%3AXSUtil).
 
 - XSUtil.generate\_ppport\_h
 
         [XSUtil]
         generate_ppport_h = 1
 
-    You can specify `generate_ppport_h` parameter of [Module::Build::XSUtil](https://metacpan.org/pod/Module::Build::XSUtil).
+    You can specify `generate_ppport_h` parameter of [Module::Build::XSUtil](https://metacpan.org/pod/Module%3A%3ABuild%3A%3AXSUtil).
 
 - XSUtil.generate\_xshelper\_h
 
         [XSUtil]
         generate_xshelper_h = 1
 
-    You can specify `generate_xshelper_h` parameter of [Module::Build::XSUtil](https://metacpan.org/pod/Module::Build::XSUtil).
+    You can specify `generate_xshelper_h` parameter of [Module::Build::XSUtil](https://metacpan.org/pod/Module%3A%3ABuild%3A%3AXSUtil).
 
 - XSUtil.cc\_warnings
 
         [XSUtil]
         cc_warnings = 1
 
-    You can specify `cc_warnings` parameter of [Module::Build::XSUtil](https://metacpan.org/pod/Module::Build::XSUtil).
+    You can specify `cc_warnings` parameter of [Module::Build::XSUtil](https://metacpan.org/pod/Module%3A%3ABuild%3A%3AXSUtil).
 
 - FileGatherer.exclude\_match
 
@@ -320,7 +320,7 @@ But, you can write configurations to _minil.toml_ file in [TOML](https://github.
 
         upload_uri http://127.0.0.1:5000/pause/authenquery
 
-    If you instantly launch your origin upload server as DarkPAN, See [OrePAN2::Server](https://metacpan.org/pod/OrePAN2::Server).
+    If you instantly launch your origin upload server as DarkPAN, See [OrePAN2::Server](https://metacpan.org/pod/OrePAN2%3A%3AServer).
 
 - release.do\_not\_upload\_to\_cpan
 
@@ -368,7 +368,7 @@ But, you can write configurations to _minil.toml_ file in [TOML](https://github.
         markdown_maker = "Pod::Markdown::Github"
 
     Use a different module to generate `README.md` from your pod. This
-    module must subclass [Pod::Markdown](https://metacpan.org/pod/Pod::Markdown).
+    module must subclass [Pod::Markdown](https://metacpan.org/pod/Pod%3A%3AMarkdown).
 
 - Metadata
 
@@ -397,19 +397,19 @@ But, you can write configurations to _minil.toml_ file in [TOML](https://github.
 
 - Why don't you provide plug-in support?
 
-    If you want a pluggable tool, it already exists: It's called [Dist::Zilla](https://metacpan.org/pod/Dist::Zilla) :P
-    If you like Minilla's behavior but you really want something pluggable, you can use [Dist::Milla](https://metacpan.org/pod/Dist::Milla), Minilla's sister project.
-    [Dist::Milla](https://metacpan.org/pod/Dist::Milla)'s behavior is almost identical to that of Minilla.
+    If you want a pluggable tool, it already exists: It's called [Dist::Zilla](https://metacpan.org/pod/Dist%3A%3AZilla) :P
+    If you like Minilla's behavior but you really want something pluggable, you can use [Dist::Milla](https://metacpan.org/pod/Dist%3A%3AMilla), Minilla's sister project.
+    [Dist::Milla](https://metacpan.org/pod/Dist%3A%3AMilla)'s behavior is almost identical to that of Minilla.
 
 - Why does minil only support git?
 
     I think git is a best VC for CPAN modules, for now.
 
-    If you want to use another version control system, you can probably use [Dist::Milla](https://metacpan.org/pod/Dist::Milla).
+    If you want to use another version control system, you can probably use [Dist::Milla](https://metacpan.org/pod/Dist%3A%3AMilla).
 
 - And why...
 
-    Yes. You can use [Dist::Milla](https://metacpan.org/pod/Dist::Milla).
+    Yes. You can use [Dist::Milla](https://metacpan.org/pod/Dist%3A%3AMilla).
 
 - Should I add (META.json|Build.PL) to repository?
 
@@ -426,13 +426,13 @@ But, you can write configurations to _minil.toml_ file in [TOML](https://github.
 - How to switch from Module::Install/Module::Build/Dist::Zilla?
 
     You can use experimental \`minil migrate\` sub-command.
-    See [Minilla::CLI::Migrate](https://metacpan.org/pod/Minilla::CLI::Migrate) for more details.
+    See [Minilla::CLI::Migrate](https://metacpan.org/pod/Minilla%3A%3ACLI%3A%3AMigrate) for more details.
 
 - How should I manage the files you do not want to upload to CPAN?
 
     Please use FileGatherer.exclude\_match for ignoring files to upload tar ball.
 
-    You can use MANIFEST.SKIP file for ignoring files. ref. [ExtUtils::Manifest](https://metacpan.org/pod/ExtUtils::Manifest).
+    You can use MANIFEST.SKIP file for ignoring files. ref. [ExtUtils::Manifest](https://metacpan.org/pod/ExtUtils%3A%3AManifest).
 
 - How do I use Module::Build::Tiny with Minilla?
 
@@ -480,7 +480,7 @@ Tatsuhiko Miyagawa
 
 # THANKS TO
 
-RJBS, the author of [Dist::Zilla](https://metacpan.org/pod/Dist::Zilla). [Dist::Zilla](https://metacpan.org/pod/Dist::Zilla) points CPAN authorizing tool.
+RJBS, the author of [Dist::Zilla](https://metacpan.org/pod/Dist%3A%3AZilla). [Dist::Zilla](https://metacpan.org/pod/Dist%3A%3AZilla) points CPAN authorizing tool.
 
 # SEE ALSO
 

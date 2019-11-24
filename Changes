@@ -2,6 +2,9 @@ Revision history for Perl extension Minilla
 
 {{$NEXT}}
 
+v3.1.8 2019-11-24T01:42:11Z
+    - Update travis.yml template; set `dist: trusty` for perl <= 5.20 (#279)
+
 v3.1.7 2019-10-03T11:22:06Z
     - Add badge for github actions (karupanerura #274)
 
