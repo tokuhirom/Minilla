@@ -23,7 +23,7 @@ sub run {
         return;
     }
 
-    cmd('git', 'commit', '-a', '-m', $msg);
+    cmd('git', 'commit', '-a', '-m', $msg, '--cleanup=verbatim');
 
     $self->_push_to_origin();
 }
