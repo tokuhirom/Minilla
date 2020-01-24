@@ -2,6 +2,10 @@ Revision history for Perl extension Minilla
 
 {{$NEXT}}
 
+v3.1.9 2020-01-24T13:59:54Z
+    - Use '--cleanup=verbatim' option with commit not to erase empty line in diff output (kaz-utashiro #281)
+    - Fix grammar (anirvan #286)
+
 v3.1.8 2019-11-24T01:42:11Z
     - Update travis.yml template; set `dist: trusty` for perl <= 5.20 (#279)
 
