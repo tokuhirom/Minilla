@@ -46,7 +46,7 @@ As stated above, Minilla is opinionated. Minilla has a bold assumption and conve
 
 =item Your executable files are in I<script/> directory, if any
 
-=item Your module is maintained with B<Git> and C<git ls-files> matches with what you will release
+=item Your module is maintained with B<Git>, C<git ls-files> matches with what you will release and your remote is named I<origin>
 
 =item Your module has a static list of prerequisites that can be described in L<cpanfile>
 
