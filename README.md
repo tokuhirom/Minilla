@@ -24,7 +24,7 @@ As stated above, Minilla is opinionated. Minilla has a bold assumption and conve
 
 - Your modules are written in Pure Perl and are located in _lib/_.
 - Your executable files are in _script/_ directory, if any
-- Your module is maintained with **Git**, `git ls-files` matches with what you will release and your remote is named _origin_
+- Your module is maintained with **Git**, `git ls-files` matches with what you will release, your remote is named _origin_ and your main branch is named _master_
 - Your module has a static list of prerequisites that can be described in [cpanfile](https://metacpan.org/pod/cpanfile)
 - Your module has a Changes file
 - Your module requires at least perl 5.6.
@@ -227,9 +227,9 @@ But, you can write configurations to _minil.toml_ file in [TOML](https://github.
 
 - badges
 
-        badges = ['travis-ci.com', 'travis-ci.org', 'circleci', 'appveyor', 'coveralls', 'codecov', 'gitter', 'metacpan', 'kritika', 'github-actions/$workflow_name']
+        badges = ['travis-ci.com', 'travis-ci.org', 'circleci', 'appveyor', 'coveralls', 'codecov', 'gitter', 'metacpan', 'kritika', 'github-actions/$workflow_name', 'gitlab-pipeline', 'gitlab-coverage']
 
-    Embed badges image (e.g. Travis-CI) to README.md. It ought to be array and each elements must be service name. Now, supported services are 'travis-ci.com', 'travis-ci.org', 'circleci', 'appveyor', 'coveralls', 'codecov', 'gitter', 'metacpan' and 'kritika'.
+    Embed badges image (e.g. Travis-CI) to README.md. It ought to be array and each elements must be service name. Now, supported services are 'travis-ci.com', 'travis-ci.org', 'circleci', 'appveyor', 'coveralls', 'codecov', 'gitter', 'metacpan', 'kritika' 'github-actions', 'gitlab-pipeline' and 'gitlab-coverage'.
 
     You can send additional parameters as required by your CI provider by including a
     query string along with your service name: e.g. `travis?token=[YOUR_TOKEN_GOES_HERE]&branch=dev`
