@@ -2,6 +2,11 @@ Revision history for Perl extension Minilla
 
 {{$NEXT}}
 
+v3.1.10 2020-03-30T10:53:54Z
+    - Add gitlab badges (thibaultduponchelle, srchulo #288, #285)
+    - It is a conventaion that the remote should be named origin (thibaultduponchelle #287)
+    - Update travis.yml template; now travis xenial environment supports perl 5.14+ (#289)
+
 v3.1.9 2020-01-24T13:59:54Z
     - Use '--cleanup=verbatim' option with commit not to erase empty line in diff output (kaz-utashiro #281)
     - Fix grammar (anirvan #286)
