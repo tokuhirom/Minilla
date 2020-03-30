@@ -180,13 +180,9 @@ matrix:
     - perl: "5.12"
       dist: trusty
     - perl: "5.14"
-      dist: trusty
     - perl: "5.16"
-      dist: trusty
     - perl: "5.18"
-      dist: trusty
     - perl: "5.20"
-      dist: trusty
     - perl: "5.22"
     - perl: "5.24"
     - perl: "5.26"
