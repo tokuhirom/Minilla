@@ -340,7 +340,7 @@ In almost all cases, the default value (false) is correct.
     pause_config = "/path/to/some/.pause"
 
 By setting this value to another PAUSE configuration file (see
-L<cpan_upload/CONFIGURATION> for the details), it is possible to use another
+L<cpan-upload/CONFIGURATION> for the details), it is possible to use another
 PAUSE server (or anything good enough to mimick its upload process) for the
 release step.
 

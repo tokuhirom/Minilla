@@ -311,7 +311,7 @@ But, you can write configurations to _minil.toml_ file in [TOML](https://github.
         pause_config = "/path/to/some/.pause"
 
     By setting this value to another PAUSE configuration file (see
-    ["CONFIGURATION" in cpan\_upload](https://metacpan.org/pod/cpan_upload#CONFIGURATION) for the details), it is possible to use another
+    ["CONFIGURATION" in cpan-upload](https://metacpan.org/pod/cpan-upload#CONFIGURATION) for the details), it is possible to use another
     PAUSE server (or anything good enough to mimick its upload process) for the
     release step.
 
