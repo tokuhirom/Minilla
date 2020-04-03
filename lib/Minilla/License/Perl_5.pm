@@ -18,6 +18,18 @@ sub url  { 'http://dev.perl.org/licenses/' }
 sub meta_name  { 'perl' }
 sub meta2_name { 'perl_5' }
 
+sub notice {
+    my $self = shift;
+
+    my $author = $self->holder;
+    <<"..."
+Copyright (C) $author
+
+This library is free software; you can redistribute it and/or modify
+it under the same terms as Perl itself.
+...
+}
+
 sub fulltext {
     my ($self) = @_;
 
