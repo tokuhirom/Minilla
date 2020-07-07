@@ -17,16 +17,16 @@ sub run {
         return;
     }
 
-    while(1) {
+    while (1) {
         my $changes = slurp('Changes');
         last if $changes =~ /^\{\{\$NEXT\}\}\h*\R+\h+\S/m;
 
         # Tell the user what the problem is
-        if($changes !~ /\{\{\$NEXT\}\}/m) {
+        if ($changes !~ /\{\{\$NEXT\}\}/m) {
             infof("No mention of {{\$NEXT}} in changelog file 'Changes'\n");
-        } elsif($changes !~ /^\{\{\$NEXT\}\}/m) {
+        } elsif ($changes !~ /^\{\{\$NEXT\}\}/m) {
             infof("{{\$NEXT}} must be at the beginning of a line in changelog file 'Changes'\n");
-        } elsif($changes !~ /^\{\{\$NEXT\}\}\h*\R/m) {
+        } elsif ($changes !~ /^\{\{\$NEXT\}\}\h*\R/m) {
             infof("{{\$NEXT}} in changelog file 'Changes' must be the only non-whitespace on its line\n");
         } else {
             infof("{{\$NEXT}} in changelog file 'Changes' must be followed by at least one indented line describing a change\n");
