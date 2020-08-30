@@ -8,7 +8,7 @@ Minilla::Tutorial - Tutorial document for Minilla
 
 =head2 Installing
 
-    > cpanm Minilla
+    > cpanm --with-recommends Minilla
 
 You can install L<Minilla> from CPAN.
 
