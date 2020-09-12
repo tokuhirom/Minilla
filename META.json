@@ -4,7 +4,7 @@
       "Tokuhiro Matsuno < tokuhirom@gmail.com >"
    ],
    "dynamic_config" : 0,
-   "generated_by" : "Minilla/v3.1.9, CPAN::Meta::Converter version 2.150010",
+   "generated_by" : "Minilla/v3.1.10, CPAN::Meta::Converter version 2.150010",
    "license" : [
       "perl_5"
    ],
@@ -113,13 +113,15 @@
          "web" : "https://github.com/tokuhirom/Minilla"
       }
    },
-   "version" : "v3.1.10",
+   "version" : "v3.1.11",
    "x_authority" : "cpan:TOKUHIROM",
    "x_contributors" : [
       "Alex Kapranoff <alex@kapranoff.ru>",
       "Alex Kapranoff <kappa@yandex.ru>",
+      "Alexander Karelas <karjala@cpan.org>",
       "Anirvan Chatterjee <anirvan@users.noreply.github.com>",
       "Chris White <chrisw@leehayes.com>",
+      "Chris White <cxwembedded@gmail.com>",
       "Daisuke Maki <lestrrat+github@gmail.com>",
       "Daisuke Murase <typester@cpan.org>",
       "Dan Book <grinnz@gmail.com>",
@@ -145,10 +147,10 @@
       "Peter Oliver <git@mavit.org.uk>",
       "Pine Mizune <pinemz@gmail.com>",
       "Ryo Okamoto <ryo@aquahill.net>",
+      "Shohei YOSHIDA <syohex@gmail.com>",
       "Shoichi Kaji <skaji@cpan.org>",
       "Shoichi Kaji <skaji@outlook.com>",
       "Songmu <y.songmu@gmail.com>",
-      "Syohei YOSHIDA <syohex@gmail.com>",
       "TAGOMORI Satoshi <tagomoris@gmail.com>",
       "Takumi Akiyama <t.akiym@gmail.com>",
       "Tatsuhiko Miyagawa <miyagawa@bulknews.net>",
@@ -170,6 +172,6 @@
       "vti <viacheslav.t@gmail.com>",
       "ysasaki <aloelight@gmail.com>"
    ],
-   "x_serialization_backend" : "JSON::PP version 4.04",
+   "x_serialization_backend" : "JSON::PP version 4.05",
    "x_static_install" : 1
 }

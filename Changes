@@ -2,6 +2,10 @@ Revision history for Perl extension Minilla
 
 {{$NEXT}}
 
+v3.1.11 2020-09-12T11:05:53Z
+    - Improve 'minil release' error message(#264)
+    - Improve document(#294)
+
 v3.1.10 2020-03-30T10:53:54Z
     - Add gitlab badges (thibaultduponchelle, srchulo #288, #285)
     - It is a conventaion that the remote should be named origin (thibaultduponchelle #287)
