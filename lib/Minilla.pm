@@ -59,7 +59,7 @@ As stated above, Minilla is opinionated. Minilla has a bold assumption and conve
 =head1 GETTING STARTED
 
     # First time only
-    % cpanm Minilla
+    % cpanm --with-recommends Minilla
     # Minilla has only a few deps. It should be very quick
 
     # Make a new distribution
