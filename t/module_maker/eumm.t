@@ -8,6 +8,7 @@ use FindBin;
 use lib "$FindBin::Bin/../../lib";
 use File::Temp qw(tempdir);
 use File::pushd;
+use File::Which qw(which);
 
 use Minilla::CLI::New;
 use Minilla::CLI;
@@ -51,7 +52,7 @@ subtest 'Acme::Speciality' => sub {
         ok -f 'Makefile.PL';
         is(system($^X, 'Makefile.PL'), 0);
         is(system($Config{'make'}), 0);
-        note `tree`;
+        note `tree` if which('tree');
     }
 };
 
