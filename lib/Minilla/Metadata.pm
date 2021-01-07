@@ -101,14 +101,14 @@ sub _build_authors {
 
     my $content = slurp_utf8($self->source);
     if ($content =~ m/
-        =head1 \s+ (?:authors?)\b \s*
-        ([^\n]*)
-        |
-        =head \d \s+ (?:licen[cs]e|licensing|copyright|legal)\b \s*
+        ^=head1 \s+ (?:authors?)\b \s*
+        ([^\n]+)
+    /ixm || $content =~ m/
+        ^=head \d \s+ (?:licen[cs]e|licensing|copyright|legal)\b \s*
         .*? copyright .*? \d\d\d[\d.]+ \s* (?:\bby\b)? \s*
-        ([^\n]*)
+        ([^\n]+)
     /ixms) {
-        my $author = $1 || $2;
+        my $author = $1;
 
         $author =~ s{ E<( (\d+) | ([A-Za-z]+) )> }{
             defined $2
