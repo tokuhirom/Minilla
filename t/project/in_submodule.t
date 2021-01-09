@@ -43,6 +43,10 @@ Acme::Foo - Yeah!!
 
     Gah
 
+=head1 LICENSE
+
+Copyright 2013- by author foo.  All rights reserved.
+
 =head1 AUTHORS
 
 author foo
