@@ -82,6 +82,10 @@ Checking git's untracked files. If there's untracked files, minilla will abort.
 
 This step will run the \`git remote\`. If there's no remote, minilla will abort.
 
+## CheckReleaseBranch
+
+Cheking git's current branch is \`release.branch\` key in minil.toml. If no match, minilla will abort.
+
 ## BumpVersion
 
 Minilla will show 'Next Release?' prompt. You can input next version number.
