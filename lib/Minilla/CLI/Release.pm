@@ -33,6 +33,7 @@ sub run {
     my @steps = qw(
         CheckUntrackedFiles
         CheckOrigin
+        CheckReleaseBranch
         BumpVersion
         CheckChanges
         RegenerateFiles
