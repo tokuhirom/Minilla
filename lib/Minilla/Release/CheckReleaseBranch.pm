@@ -10,7 +10,7 @@ sub run {
     my $release_branch = $project->config->{release}->{branch};
     return unless $release_branch;
 
-    my $current_branch = `git branch --show-current`;
+    my $current_branch = `git rev-parse --abbrev-ref HEAD`;
     chomp $current_branch;
     unless ($current_branch eq $release_branch) {
         errorf("Release branch must be $release_branch.\n");
