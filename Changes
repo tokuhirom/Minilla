@@ -2,6 +2,11 @@ Revision history for Perl extension Minilla
 
 {{$NEXT}}
 
+v3.1.12 2021-03-25T06:13:42Z
+    - Introduce CheckReleaseBranch step (kfly8 #305)
+    - Take author name from AUTHOR section even if it appears later (kaz-utashiro #302)
+    - Add --with-recommends at a second point in the documentation (akarelas #297)
+
 v3.1.11 2020-09-12T11:05:53Z
     - Improve 'minil release' error message(#264)
     - Improve document(#294)

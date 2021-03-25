@@ -4,7 +4,7 @@
       "Tokuhiro Matsuno < tokuhirom@gmail.com >"
    ],
    "dynamic_config" : 0,
-   "generated_by" : "Minilla/v3.1.10, CPAN::Meta::Converter version 2.150010",
+   "generated_by" : "Minilla/v3.1.11, CPAN::Meta::Converter version 2.150010",
    "license" : [
       "perl_5"
    ],
@@ -113,7 +113,7 @@
          "web" : "https://github.com/tokuhirom/Minilla"
       }
    },
-   "version" : "v3.1.11",
+   "version" : "v3.1.12",
    "x_authority" : "cpan:TOKUHIROM",
    "x_contributors" : [
       "Alex Kapranoff <alex@kapranoff.ru>",
@@ -136,7 +136,7 @@
       "Jiro Nishiguchi <jiro@cpan.org>",
       "Jose Luis Perez Diez <jluis@escomposlinux.org>",
       "Jörg Forstreuter <forstreuter@belwue.de>",
-      "Kaz Utashiro <kaz@utashiro.com>",
+      "Kazumasa Utashiro <kaz@utashiro.com>",
       "Keiji, Yoshimi <walf443@gmail.com>",
       "Kenichi Ishigaki <ishigaki@cpan.org>",
       "Klaus Eichner <klaus03@gmail.com>",
@@ -165,6 +165,7 @@
       "karupanerura <karupa@cpan.org>",
       "kazhiramatsu <kazhiramatsu.github@gmail.com>",
       "keita.iseki <keita.iseki@gmail.com>",
+      "kfly8 <kfly@cpan.org>",
       "mattn <mattn.jp@gmail.com>",
       "moznion <moznion@gmail.com>",
       "sago35 <sago35@gmail.com>",
@@ -172,6 +173,6 @@
       "vti <viacheslav.t@gmail.com>",
       "ysasaki <aloelight@gmail.com>"
    ],
-   "x_serialization_backend" : "JSON::PP version 4.05",
+   "x_serialization_backend" : "JSON::PP version 4.06",
    "x_static_install" : 1
 }
