@@ -111,7 +111,7 @@ This step will run the `git remote`. If there's no remote, minilla will abort.
 
 =head2 CheckReleaseBranch
 
-Cheking git's current branch is `release.branch` key in minil.toml. If no match, minilla will abort.
+Checking git's current branch is `release.branch` key in minil.toml. If no match, minilla will abort.
 
 =head2 BumpVersion
 
