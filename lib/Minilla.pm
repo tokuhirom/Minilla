@@ -372,6 +372,13 @@ This variable disables CPAN upload feature.
 
 Commands that are specified by this option will be executed when releasing. If result of commands is not successful, it will abort.
 
+=item release.branch
+
+    [release]
+    branch = "main"
+
+If this value does not match the current branch, it will abort.
+
 =item unsupported.os
 
     [unsupported]

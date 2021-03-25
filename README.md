@@ -343,6 +343,13 @@ But, you can write configurations to _minil.toml_ file in [TOML](https://github.
 
     Commands that are specified by this option will be executed when releasing. If result of commands is not successful, it will abort.
 
+- release.branch
+
+        [release]
+        branch = "main"
+
+    If this value does not match the current branch, it will abort.
+
 - unsupported.os
 
         [unsupported]
