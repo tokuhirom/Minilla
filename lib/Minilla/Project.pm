@@ -603,7 +603,7 @@ sub regenerate_meta_json {
 }
 
 sub generate_minil_toml {
-    my ($self, $profile) = @_;
+    my ($self, $profile, $license) = @_;
 
     my $fname        = File::Spec->catfile($self->dir, 'minil.toml');
     my $project_name = $self->_detect_project_name_from_dir;
@@ -627,6 +627,10 @@ sub generate_minil_toml {
         $content .= qq{\nmodule_maker="ModuleBuildTiny"\n};
     }
     $content .= qq{static_install = "auto"\n};
+
+    if ($license) {
+        $content .= qq{license = "${license}"\n};
+    }
 
     spew_raw($fname, $content . "\n");
 }

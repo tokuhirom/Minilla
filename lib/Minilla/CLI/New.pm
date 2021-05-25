@@ -5,19 +5,22 @@ use utf8;
 use File::pushd;
 use File::Path qw(mkpath);
 
-use Minilla::Util qw(check_git cmd parse_options);
+use Minilla::Util qw(check_git cmd parse_options guess_license_class_by_name);
 use Minilla::Logger;
+use Minilla::License::Perl_5;
 
 sub run {
     my ($self, @args) = @_;
 
     my $username;
     my $email;
+    my $license_name;
     my $profile = 'Default';
     parse_options(
         \@args,
         'username=s' => \$username,
         'email=s'    => \$email,
+        'license=s'  => \$license_name,
         'p|profile=s' => \$profile,
     );
 
@@ -54,6 +57,11 @@ sub run {
 
     my $author = $username;
 
+    $license_name = $license_name || 'Perl_5';
+    my $license = guess_license_class_by_name($license_name)->new({
+        holder => sprintf('%s', $author),
+    });
+
     my $profile_klass = "Minilla::Profile::${profile}";
     eval "require $profile_klass; 1;" or die $@;
     my $skelton = $profile_klass->new(
@@ -64,6 +72,7 @@ sub run {
         module  => $module,
         version => $version,
         email   => $email,
+        license => $license,
     );
     {
         mkpath($dist);
@@ -76,7 +85,7 @@ sub run {
 
         # generate project after initialize git repo
         my $project = Minilla::Project->new();
-        $project->generate_minil_toml($profile);
+        $project->generate_minil_toml($profile, $license_name);
         cmd('git', 'add', '.');
         $project->regenerate_files();
 
