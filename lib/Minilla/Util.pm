@@ -79,8 +79,8 @@ sub spew_utf8 {
 
 sub edit_file {
     my ($file) = @_;
-    my $editor = $ENV{"EDITOR"} || "vi";
-    system( $editor, $file );
+    # Unix-only; second 'sh' becomes sh's ARGV[0]
+    system( qw( sh -c ), 'exec ${EDITOR:-vi} "$1"', 'sh', $file )
 }
 
 sub find_file {
