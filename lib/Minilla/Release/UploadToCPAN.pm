@@ -43,11 +43,15 @@ EOF
         }
 
         PROMPT: while (1) {
-            my $answer = prompt("Release to " . ($config->{upload_uri} || 'CPAN') . ' ? [y/n] ');
+            my $answer = prompt("Release to " . ($config->{upload_uri} || 'CPAN') . ' ? [y/n/s[hell]] ');
             if ($answer =~ /y/i) {
                 last PROMPT;
             } elsif ($answer =~ /n/i) {
                 errorf("Giving up!\n");
+            } elsif ($answer =~ /^s/i) {
+              print "tar file: $tar\n";
+              system ($ENV{ SHELL } or 'sh');
+              redo PROMPT;
             } else {
                 redo PROMPT;
             }
