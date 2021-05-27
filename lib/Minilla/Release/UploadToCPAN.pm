@@ -29,6 +29,7 @@ sub run {
             : ($project->config->{release}->{pause_config}) ? $project->config->{release}->{pause_config}
             :                                                 undef;
         my $config = CPAN::Uploader->read_config_file($pause_config);
+        $config->{password} //= $ENV{CPAN_UPLOADER_UPLOAD_PASSWORD} // undef;
         if (!$config || !$config->{user} || !$config->{password}) {
             die <<EOF
 
