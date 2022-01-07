@@ -7,6 +7,8 @@ use Minilla::Logger;
 sub run {
     my ($self, $project, $opts) = @_;
 
+    # The checking only performs when the config explicitly sets the release branch.
+    # That's why we don't use "$project->release_branch".
     my $release_branch = $project->config->{release}->{branch};
     return unless $release_branch;
 
