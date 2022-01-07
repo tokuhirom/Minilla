@@ -61,6 +61,30 @@ subtest 'Badge' => sub {
         is $got, $expected;
     };
 
+    subtest 'Badges with release branch' => sub {
+        write_minil_toml({
+            name   => 'Acme-Foo',
+            badges => ['travis', 'travis-ci.com', 'appveyor', 'coveralls', 'codecov'],
+            release => {
+                branch => 'main',
+            },
+        });
+        $project->regenerate_files;
+
+        open my $fh, '<', 'README.md';
+        ok chomp (my $got = <$fh>);
+
+        my $badge_markdowns = [
+            "[![Build Status](https://travis-ci.org/tokuhirom/Minilla.svg?branch=main)](https://travis-ci.org/tokuhirom/Minilla)",
+            "[![Build Status](https://travis-ci.com/tokuhirom/Minilla.svg?branch=main)](https://travis-ci.com/tokuhirom/Minilla)",
+            "[![Build Status](https://img.shields.io/appveyor/ci/tokuhirom/Minilla/main.svg?logo=appveyor)](https://ci.appveyor.com/project/tokuhirom/Minilla/branch/main)",
+            "[![Coverage Status](https://img.shields.io/coveralls/tokuhirom/Minilla/main.svg?style=flat)](https://coveralls.io/r/tokuhirom/Minilla?branch=main)",
+            "[![Coverage Status](http://codecov.io/github/tokuhirom/Minilla/coverage.svg?branch=main)](https://codecov.io/github/tokuhirom/Minilla?branch=main)",
+        ];
+        my $expected = join(' ', @$badge_markdowns);
+        is $got, $expected;
+    };
+
     subtest 'Badges do not exist' => sub {
         write_minil_toml('Acme-Foo');
         $project->regenerate_files;

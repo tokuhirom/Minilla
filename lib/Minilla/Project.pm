@@ -657,7 +657,7 @@ sub regenerate_readme_md {
         if (my $web_url = $git_info->{repository}->{web}) {
             ($user_name, $repository_name) = $web_url =~ m!https://.+/(.+)/(.+)!;
         }
-
+        my $branch = $self->config->{release}->{branch} // 'master';
         my @badges;
         if ($user_name && $repository_name) {
             for my $badge (@{$self->badges}) {
@@ -672,7 +672,7 @@ sub regenerate_readme_md {
                     $image_uri->scheme('https');
                     $image_uri->path("$user_name/$repository_name.svg");
                     my %image_uri_qs = $image_uri->query_form;
-                    $image_uri_qs{branch} = 'master' if !defined($image_uri_qs{branch});
+                    $image_uri_qs{branch} = $branch if !defined($image_uri_qs{branch});
                     if ($service_name =~ /^travis(?:-ci\.(?:org|com))$/) {
                         $_->host($service_name) foreach ($build_uri, $image_uri);
                     } elsif (!defined($image_uri_qs{token})) {
@@ -686,11 +686,11 @@ sub regenerate_readme_md {
                     push @badges, "[![Build Status]($image_uri)]($build_uri)";
                 } elsif ($service_name eq 'appveyor') {
                     ( my $appveyor_repository_name = $repository_name ) =~ s/\./-/g;
-                    push @badges, "[![Build Status](https://img.shields.io/appveyor/ci/$user_name/$appveyor_repository_name/master.svg?logo=appveyor)](https://ci.appveyor.com/project/$user_name/$appveyor_repository_name/branch/master)";
+                    push @badges, "[![Build Status](https://img.shields.io/appveyor/ci/$user_name/$appveyor_repository_name/$branch.svg?logo=appveyor)](https://ci.appveyor.com/project/$user_name/$appveyor_repository_name/branch/$branch)";
                 } elsif ($service_name eq 'coveralls') {
-                    push @badges, "[![Coverage Status](https://img.shields.io/coveralls/$user_name/$repository_name/master.svg?style=flat)](https://coveralls.io/r/$user_name/$repository_name?branch=master)"
+                    push @badges, "[![Coverage Status](https://img.shields.io/coveralls/$user_name/$repository_name/$branch.svg?style=flat)](https://coveralls.io/r/$user_name/$repository_name?branch=$branch)"
                 } elsif ($service_name eq 'codecov') {
-                    push @badges, "[![Coverage Status](http://codecov.io/github/$user_name/$repository_name/coverage.svg?branch=master)](https://codecov.io/github/$user_name/$repository_name?branch=master)";
+                    push @badges, "[![Coverage Status](http://codecov.io/github/$user_name/$repository_name/coverage.svg?branch=$branch)](https://codecov.io/github/$user_name/$repository_name?branch=$branch)";
                 } elsif ($service_name eq 'gitter') {
                     push @badges, "[![Gitter chat](https://badges.gitter.im/$user_name/$repository_name.png)](https://gitter.im/$user_name/$repository_name)";
                 } elsif ($service_name eq 'circleci') {
@@ -707,15 +707,15 @@ sub regenerate_readme_md {
                     my $image_uri = $uri->clone;
                     $image_uri->scheme('https');
                     $image_uri->host('kritika.io');
-                    $image_uri->path("/users/$user_name/repos/$user_name+$repository_name/heads/master/status.svg");
+                    $image_uri->path("/users/$user_name/repos/$user_name+$repository_name/heads/$branch/status.svg");
                     push @badges, "[![Kritika Status]($image_uri)]($build_uri)";
                 } elsif ($service_name =~ m!^github-actions(?:/(.+))?$!) {
                     my $workflow_name = $1 || 'test';
                     push @badges, "[![Actions Status](https://github.com/$user_name/$repository_name/workflows/$workflow_name/badge.svg)](https://github.com/$user_name/$repository_name/actions)";
                 } elsif ($service_name eq 'gitlab-pipeline') {
-                    push @badges, "[![Gitlab pipeline](https://gitlab.com/$user_name/$repository_name/badges/master/pipeline.svg)](https://gitlab.com/$user_name/$repository_name/-/commits/master)";
+                    push @badges, "[![Gitlab pipeline](https://gitlab.com/$user_name/$repository_name/badges/$branch/pipeline.svg)](https://gitlab.com/$user_name/$repository_name/-/commits/$branch)";
                 } elsif ($service_name eq 'gitlab-coverage') {
-                    push @badges, "[![Gitlab coverage](https://gitlab.com/$user_name/$repository_name/badges/master/coverage.svg)](https://gitlab.com/$user_name/$repository_name/-/commits/master)";
+                    push @badges, "[![Gitlab coverage](https://gitlab.com/$user_name/$repository_name/badges/$branch/coverage.svg)](https://gitlab.com/$user_name/$repository_name/-/commits/$branch)";
                 }
             }
         }
