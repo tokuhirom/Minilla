@@ -7,8 +7,9 @@ use Minilla::Logger;
 sub run {
     my ($self, $project, $opts) = @_;
 
-    unless (`git remote`) {
-        errorf("No git remote.\n");
+    my $remotes = `git remote`;
+    if ($remotes !~ /^origin$/m) {
+        errorf("No git remote named origin.\n");
     }
 }
 
