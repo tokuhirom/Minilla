@@ -82,6 +82,11 @@ has files => (
     is => 'lazy',
 );
 
+has release_branch => (
+    is      => 'lazy',
+    clearer => 1,
+);
+
 has no_index => (
     is => 'ro',
     default => sub {
@@ -657,7 +662,7 @@ sub regenerate_readme_md {
         if (my $web_url = $git_info->{repository}->{web}) {
             ($user_name, $repository_name) = $web_url =~ m!https://.+/(.+)/(.+)!;
         }
-        my $branch = $self->config->{release}->{branch} // 'master';
+        my $branch = $self->release_branch;
         my @badges;
         if ($user_name && $repository_name) {
             for my $badge (@{$self->badges}) {
@@ -777,6 +782,18 @@ sub _build_files {
         $self->dir
     );
     \@files;
+}
+
+sub _build_release_branch {
+    my $self = shift;
+    if (my $br = $self->config->{release}->{branch}) {
+        return $br;
+    }
+    my $show = `git remote show origin`;
+    my ($br) = $show =~ /^\s*HEAD branch:\s(\S+)$/m;
+    # For backward compatibility, fallback to 'master' just in case,
+    # but it's unlikely to be used in practice.
+    return $br || 'master';
 }
 
 sub perl_files {

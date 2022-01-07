@@ -69,6 +69,7 @@ subtest 'Badge' => sub {
                 branch => 'main',
             },
         });
+        $project->clear_release_branch;
         $project->regenerate_files;
 
         open my $fh, '<', 'README.md';
@@ -83,6 +84,8 @@ subtest 'Badge' => sub {
         ];
         my $expected = join(' ', @$badge_markdowns);
         is $got, $expected;
+
+        $project->clear_release_branch;
     };
 
     subtest 'Badges do not exist' => sub {
