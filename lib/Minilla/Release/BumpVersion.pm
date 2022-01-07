@@ -27,6 +27,18 @@ sub run {
             errorf("Sorry, version '%s' is invalid.  Stopping.\n", $ver);
         }
 
+        my $curr_ver = $project->metadata->version;
+        if (!check_version_compatibility($curr_ver, $ver)) {
+            my $msg = sprintf
+                "version: %s\n" .
+                "current: %s\n" .
+                "The version format doesn't match the current one.\n" .
+                "Continue the release with this version? [y/n]", $ver, $curr_ver;
+            if (prompt($msg) !~ /y/i) {
+                errorf("Stop the release due to version format mismatch\n", $ver);
+            }
+        }
+
         my @opts;
         push @opts, '-set', $ver;
         if ($opts->{dry_run}) {
@@ -76,6 +88,25 @@ sub default_new_version {
     }
 }
 
+sub check_version_compatibility {
+    my ($curr, $next) = @_;
+
+    return version_format($curr) eq version_format($next)
+}
+
+sub version_format {
+    local $_ = shift;
+    # All formats accept an optional alpha notation starting with '_'.
+    return
+        # ex. 0.11, 3.14, 9.4_1
+        /^(?:0|[1-9][0-9]*)\.[0-9]+(?:_[0-9]+)?$/           ? 'decimal'    :
+        # ex. v1.2.3, v1.2.3_4, v3.3, v3.4_5
+        /^v(?:0|[1-9][0-9]*)(?:\.[0-9]+){1,2}(?:_[0-9]+)?$/ ? 'dotted'     :
+        # ex. 0.1.2, 3.4.5_67 (to distinguish it from the decimal version, it must have exactly two dots)
+        /^(?:0|[1-9][0-9]*)(?:\.[0-9]+){2}(?:_[0-9]+)?$/    ? 'lax dotted' :
+                                                              'unknown';
+}
+
 sub exists_tag {
     my ( $tag ) = @_;
 
@@ -85,5 +116,3 @@ sub exists_tag {
 }
 
 1;
-
-
