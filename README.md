@@ -24,7 +24,7 @@ As stated above, Minilla is opinionated. Minilla has a bold assumption and conve
 
 - Your modules are written in Pure Perl and are located in _lib/_.
 - Your executable files are in _script/_ directory, if any
-- Your module is maintained with **Git**, `git ls-files` matches with what you will release, your remote is named _origin_ and your main branch is named _master_
+- Your module is maintained with **Git**, `git ls-files` matches with what you will release and your remote is named _origin_
 - Your module has a static list of prerequisites that can be described in [cpanfile](https://metacpan.org/pod/cpanfile)
 - Your module has a Changes file
 - Your module requires at least perl 5.6.
