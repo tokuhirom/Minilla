@@ -35,7 +35,7 @@ sub run {
                 "The version format doesn't match the current one.\n" .
                 "Continue the release with this version? [y/n]", $ver, $curr_ver;
             if (prompt($msg) !~ /y/i) {
-                errorf("Stop the release due to version format mismatch\n", $ver);
+                errorf("Stop the release due to version format mismatch\n");
             }
         }
 
