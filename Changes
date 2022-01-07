@@ -1,6 +1,8 @@
 Revision history for Perl extension Minilla
 
 {{$NEXT}}
+
+v3.1.13 2022-01-07T09:14:48Z
     - Improve inputing new version(Songmu #310)
     - Use `release.branch` as default branch for badge URL instead of `master` (Songmu #311)
     - Improve checking remote name(Songmu #312)
