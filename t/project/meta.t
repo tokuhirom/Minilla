@@ -105,7 +105,7 @@ subtest 'resources' => sub {
             my $resources = $prepare_meta_json_resources->($git_conf_url);
             is $resources->{bugtracker}->{web}, 'https://github.com/tokuhirom/Minilla/issues';
             is $resources->{homepage}, 'https://github.com/tokuhirom/Minilla';
-            is $resources->{repository}->{url}, 'git://github.com/tokuhirom/Minilla.git';
+            is $resources->{repository}->{url}, 'https://github.com/tokuhirom/Minilla.git';
             is $resources->{repository}->{web}, 'https://github.com/tokuhirom/Minilla'
         };
 
@@ -118,7 +118,7 @@ subtest 'resources' => sub {
             $resources_url_of_meta_json_ok->($git_conf_url);
         };
         subtest 'when remote of origin url is git protocol' => sub {
-            my $git_conf_url = 'git://github.com/tokuhirom/Minilla.git';
+            my $git_conf_url = 'https://github.com/tokuhirom/Minilla.git';
             $resources_url_of_meta_json_ok->($git_conf_url);
         };
         subtest 'when remote of origin url is git protocol without scheme' => sub {
@@ -126,7 +126,7 @@ subtest 'resources' => sub {
             $resources_url_of_meta_json_ok->($git_conf_url);
         };
         subtest 'when remote of origin url is git protocol with port' => sub {
-            my $git_conf_url = 'git://github.com:9418/tokuhirom/Minilla.git';
+            my $git_conf_url = 'https://github.com:9418/tokuhirom/Minilla.git';
             $resources_url_of_meta_json_ok->($git_conf_url);
         };
         subtest 'when remote of origin url is ssh' => sub {
@@ -145,7 +145,7 @@ subtest 'resources' => sub {
             my $resources = $prepare_meta_json_resources->($git_conf_url);
             is $resources->{bugtracker}->{web}, 'https://gitlab.com/tokuhirom/Minilla/issues';
             is $resources->{homepage}, 'https://gitlab.com/tokuhirom/Minilla';
-            is $resources->{repository}->{url}, 'git://gitlab.com/tokuhirom/Minilla.git';
+            is $resources->{repository}->{url}, 'https://gitlab.com/tokuhirom/Minilla.git';
             is $resources->{repository}->{web}, 'https://gitlab.com/tokuhirom/Minilla'
         };
 
@@ -158,7 +158,7 @@ subtest 'resources' => sub {
             $resources_url_of_meta_json_ok->($git_conf_url);
         };
         subtest 'when remote of origin url is git protocol' => sub {
-            my $git_conf_url = 'git://gitlab.com/tokuhirom/Minilla.git';
+            my $git_conf_url = 'https://gitlab.com/tokuhirom/Minilla.git';
             $resources_url_of_meta_json_ok->($git_conf_url);
         };
         subtest 'when remote of origin url is git protocol without scheme' => sub {
@@ -166,7 +166,7 @@ subtest 'resources' => sub {
             $resources_url_of_meta_json_ok->($git_conf_url);
         };
         subtest 'when remote of origin url is git protocol with port' => sub {
-            my $git_conf_url = 'git://gitlab.com:9418/tokuhirom/Minilla.git';
+            my $git_conf_url = 'https://gitlab.com:9418/tokuhirom/Minilla.git';
             $resources_url_of_meta_json_ok->($git_conf_url);
         };
         subtest 'when remote of origin url is ssh' => sub {
@@ -185,7 +185,7 @@ subtest 'resources' => sub {
             my $resources = $prepare_meta_json_resources->($git_conf_url);
             is $resources->{bugtracker}->{web}, 'https://gitlab.com/group/subgroup/Minilla/issues';
             is $resources->{homepage}, 'https://gitlab.com/group/subgroup/Minilla';
-            is $resources->{repository}->{url}, 'git://gitlab.com/group/subgroup/Minilla.git';
+            is $resources->{repository}->{url}, 'https://gitlab.com/group/subgroup/Minilla.git';
             is $resources->{repository}->{web}, 'https://gitlab.com/group/subgroup/Minilla'
         };
 
@@ -198,7 +198,7 @@ subtest 'resources' => sub {
             $resources_url_of_meta_json_ok->($git_conf_url);
         };
         subtest 'when remote of origin url is git protocol' => sub {
-            my $git_conf_url = 'git://gitlab.com/group/subgroup/Minilla.git';
+            my $git_conf_url = 'https://gitlab.com/group/subgroup/Minilla.git';
             $resources_url_of_meta_json_ok->($git_conf_url);
         };
         subtest 'when remote of origin url is git protocol without scheme' => sub {
@@ -206,7 +206,7 @@ subtest 'resources' => sub {
             $resources_url_of_meta_json_ok->($git_conf_url);
         };
         subtest 'when remote of origin url is git protocol with port' => sub {
-            my $git_conf_url = 'git://gitlab.com:9418/group/subgroup/Minilla.git';
+            my $git_conf_url = 'https://gitlab.com:9418/group/subgroup/Minilla.git';
             $resources_url_of_meta_json_ok->($git_conf_url);
         };
         subtest 'when remote of origin url is ssh' => sub {
