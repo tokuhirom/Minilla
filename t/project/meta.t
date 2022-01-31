@@ -105,6 +105,7 @@ subtest 'resources' => sub {
             my $resources = $prepare_meta_json_resources->($git_conf_url);
             is $resources->{bugtracker}->{web}, 'https://github.com/tokuhirom/Minilla/issues';
             is $resources->{homepage}, 'https://github.com/tokuhirom/Minilla';
+            is $resources->{repository}->{type}, "git";
             is $resources->{repository}->{url}, 'https://github.com/tokuhirom/Minilla.git';
             is $resources->{repository}->{web}, 'https://github.com/tokuhirom/Minilla'
         };
@@ -145,6 +146,7 @@ subtest 'resources' => sub {
             my $resources = $prepare_meta_json_resources->($git_conf_url);
             is $resources->{bugtracker}->{web}, 'https://gitlab.com/tokuhirom/Minilla/issues';
             is $resources->{homepage}, 'https://gitlab.com/tokuhirom/Minilla';
+            is $resources->{repository}->{type}, "git";
             is $resources->{repository}->{url}, 'https://gitlab.com/tokuhirom/Minilla.git';
             is $resources->{repository}->{web}, 'https://gitlab.com/tokuhirom/Minilla'
         };
@@ -185,6 +187,7 @@ subtest 'resources' => sub {
             my $resources = $prepare_meta_json_resources->($git_conf_url);
             is $resources->{bugtracker}->{web}, 'https://gitlab.com/group/subgroup/Minilla/issues';
             is $resources->{homepage}, 'https://gitlab.com/group/subgroup/Minilla';
+            is $resources->{repository}->{type}, "git";
             is $resources->{repository}->{url}, 'https://gitlab.com/group/subgroup/Minilla.git';
             is $resources->{repository}->{web}, 'https://gitlab.com/group/subgroup/Minilla'
         };
@@ -223,6 +226,7 @@ subtest 'resources' => sub {
         my $resources_url_of_meta_json_ok = sub {
             my ($git_conf_url, $expected_url) = @_;
             my $resources = $prepare_meta_json_resources->($git_conf_url);
+            is $resources->{repository}->{type}, "git";
             is $resources->{repository}->{url}, $expected_url
                 or diag explain $resources;
         };
