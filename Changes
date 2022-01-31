@@ -2,6 +2,9 @@ Revision history for Perl extension Minilla
 
 {{$NEXT}}
 
+v3.1.15 2022-01-31T13:42:40Z
+    - Use https for github/gitlab urls (#315)
+
 v3.1.14 2022-01-07T14:52:37Z
     - Improve deciding default branch(Songmu #313)
     - suppress warnings of redundant argument(Songmu #314)
