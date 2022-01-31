@@ -545,6 +545,7 @@ sub extract_git_info {
                 };
             }
             $repository = +{
+                type => "git",
                 url => $git_url,
                 web => $http_url,
             };
@@ -568,6 +569,7 @@ sub extract_git_info {
             # normal repository
             if ($registered_url !~ m{^file://}) {
                 $repository = +{
+                    type => "git",
                     url => $registered_url,
                 };
             }
