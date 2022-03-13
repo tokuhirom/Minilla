@@ -2,6 +2,9 @@ Revision history for Perl extension Minilla
 
 {{$NEXT}}
 
+v3.1.16 2022-03-13T10:34:43Z
+    - Update github actions badge url (#317)
+
 v3.1.15 2022-01-31T13:42:40Z
     - Use https for github/gitlab urls (#315)
 

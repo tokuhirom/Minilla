@@ -1,4 +1,4 @@
-[![Actions Status](https://github.com/tokuhirom/Minilla/workflows/test/badge.svg)](https://github.com/tokuhirom/Minilla/actions) [![MetaCPAN Release](https://badge.fury.io/pl/Minilla.svg)](https://metacpan.org/release/Minilla)
+[![Actions Status](https://github.com/tokuhirom/Minilla/actions/workflows/test.yml/badge.svg)](https://github.com/tokuhirom/Minilla/actions) [![MetaCPAN Release](https://badge.fury.io/pl/Minilla.svg)](https://metacpan.org/release/Minilla)
 # NAME
 
 Minilla - CPAN module authoring tool
@@ -231,7 +231,7 @@ But, you can write configurations to _minil.toml_ file in [TOML](https://github.
 
 - badges
 
-        badges = ['travis-ci.com', 'travis-ci.org', 'circleci', 'appveyor', 'coveralls', 'codecov', 'gitter', 'metacpan', 'kritika', 'github-actions/$workflow_name', 'gitlab-pipeline', 'gitlab-coverage']
+        badges = ['travis-ci.com', 'travis-ci.org', 'circleci', 'appveyor', 'coveralls', 'codecov', 'gitter', 'metacpan', 'kritika', 'github-actions/$workflow_file', 'gitlab-pipeline', 'gitlab-coverage']
 
     Embed badges image (e.g. Travis-CI) to README.md. It ought to be array and each elements must be service name. Now, supported services are 'travis-ci.com', 'travis-ci.org', 'circleci', 'appveyor', 'coveralls', 'codecov', 'gitter', 'metacpan', 'kritika' 'github-actions', 'gitlab-pipeline' and 'gitlab-coverage'.
 
