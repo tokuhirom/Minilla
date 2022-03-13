@@ -127,10 +127,10 @@ subtest 'Badge' => sub {
         is $got, $expected;
     };
 
-    subtest 'GitHub Actions workflow name' => sub {
+    subtest 'GitHub Actions workflow file / name' => sub {
         write_minil_toml({
             name   => 'Acme-Foo',
-            badges => ['github-actions/foo'],
+            badges => ['github-actions/foo.yml', 'github-actions/foo'],
         });
         $project->regenerate_files;
 
@@ -138,6 +138,7 @@ subtest 'Badge' => sub {
         ok chomp (my $got = <$fh>);
 
         my $badge_markdowns = [
+            "[![Actions Status](https://github.com/tokuhirom/Minilla/actions/workflows/foo.yml/badge.svg)](https://github.com/tokuhirom/Minilla/actions)",
             "[![Actions Status](https://github.com/tokuhirom/Minilla/workflows/foo/badge.svg)](https://github.com/tokuhirom/Minilla/actions)",
         ];
         my $expected = join(' ', @$badge_markdowns);

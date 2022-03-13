@@ -717,8 +717,12 @@ sub regenerate_readme_md {
                     $image_uri->path("/users/$user_name/repos/$user_name+$repository_name/heads/$branch/status.svg");
                     push @badges, "[![Kritika Status]($image_uri)]($build_uri)";
                 } elsif ($service_name =~ m!^github-actions(?:/(.+))?$!) {
-                    my $workflow_name = $1 || 'test';
-                    push @badges, "[![Actions Status](https://github.com/$user_name/$repository_name/workflows/$workflow_name/badge.svg)](https://github.com/$user_name/$repository_name/actions)";
+                    my $workflow_file = $1 || 'test';
+                    if ($workflow_file =~ /\.(?:yml|yaml)$/) {
+                        push @badges, "[![Actions Status](https://github.com/$user_name/$repository_name/actions/workflows/$workflow_file/badge.svg)](https://github.com/$user_name/$repository_name/actions)";
+                    } else {
+                        push @badges, "[![Actions Status](https://github.com/$user_name/$repository_name/workflows/$workflow_file/badge.svg)](https://github.com/$user_name/$repository_name/actions)";
+                    }
                 } elsif ($service_name eq 'gitlab-pipeline') {
                     push @badges, "[![Gitlab pipeline](https://gitlab.com/$user_name/$repository_name/badges/$branch/pipeline.svg)](https://gitlab.com/$user_name/$repository_name/-/commits/$branch)";
                 } elsif ($service_name eq 'gitlab-coverage') {
