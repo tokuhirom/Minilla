@@ -16,7 +16,7 @@ rmtree('Acme-Foo');
 
 is(minil('new', '--username=anonymous', '--email=foo@example.com','Acme::Foo'), 0);
 ok(-f 'Acme-Foo/Build.PL');
-ok(-f 'Acme-Foo/.travis.yml');
+ok(-f 'Acme-Foo/.github/workflows/test.yml');
 ok(-f 'Acme-Foo/t/00_compile.t');
 {
     local $ENV{PERL_MM_USE_DEFAULT} = 1;

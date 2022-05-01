@@ -173,21 +173,46 @@ it under the same terms as Perl itself.
 
 =cut
 
-@@ .travis.yml
-language: perl
-matrix:
-  include:
-    - perl: "5.12"
-      dist: trusty
-    - perl: "5.14"
-    - perl: "5.16"
-    - perl: "5.18"
-    - perl: "5.20"
-    - perl: "5.22"
-    - perl: "5.24"
-    - perl: "5.26"
-    - perl: "5.28"
-    - perl: "5.30"
+@@ github_actions_test.yml
+name: test
+on: [push, pull_request]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        perl:
+          [
+            "5.34",
+            "5.32",
+            "5.30",
+            "5.28",
+            "5.26",
+            "5.24",
+            "5.22",
+            "5.20",
+            "5.18",
+            "5.16",
+            "5.14",
+            "5.12",
+            "5.10"
+          ]
+    name: Perl ${{ matrix.perl }}
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup perl
+        uses: shogo82148/actions-setup-perl@v1
+        with:
+          perl-version: ${{ matrix.perl }}
+      - name: Install dependencies
+        run: |
+          cpanm -nq --installdeps --with-develop --with-recommends .
+      - name: Build
+        run: |
+          perl Build.PL
+          ./Build
+      - name: Run test
+        run: ./Build test
 
 @@ Changes
 Revision history for Perl extension <% $dist %>

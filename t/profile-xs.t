@@ -30,7 +30,7 @@ ok(-f 'Build.PL');
 cmp_ok((-s 'Build.PL'), '>', 0);
 ok(-f 'lib/Acme/Foo.pm');
 like(slurp('lib/Acme/Foo.pm'), qr{XSLoader});
-ok(-f '.travis.yml');
+ok(-f '.github/workflows/test.yml');
 ok(-f 't/00_compile.t');
 note(join(" ", git_ls_files()));
 note slurp('.gitignore');
