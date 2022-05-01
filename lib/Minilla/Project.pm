@@ -616,7 +616,7 @@ sub generate_minil_toml {
     my $project_name = $self->_detect_project_name_from_dir;
     my $content      = join("\n",
         qq{name = "$project_name"},
-        qq{# badges = ["travis-ci.com"]},
+        qq{badges = ["github-actions/test.yml"]},
     );
 
     my %pause;

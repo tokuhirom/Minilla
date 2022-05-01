@@ -34,7 +34,7 @@ sub generate {
     $self->render('Changes');
     $self->render('t/00_compile.t');
     $self->render('t/01_simple.t');
-    $self->render('.travis.yml');
+    $self->render('github_actions_test.yml', catfile('.github', 'workflows', 'test.yml'));
 
     $self->render('.gitignore');
     my $gi = Minilla::Gitignore->load('.gitignore');
