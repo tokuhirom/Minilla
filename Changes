@@ -2,6 +2,9 @@ Revision history for Perl extension Minilla
 
 {{$NEXT}}
 
+v3.1.18 2022-05-10T20:00:37Z
+    - Use "prove" in github actions template (#319)
+
 v3.1.17 2022-05-01T23:20:56Z
     - Change from Travis to GitHub Actions (kfly8 #318)
 
