@@ -205,14 +205,9 @@ jobs:
         with:
           perl-version: ${{ matrix.perl }}
       - name: Install dependencies
-        run: |
-          cpanm -nq --installdeps --with-develop --with-recommends .
-      - name: Build
-        run: |
-          perl Build.PL
-          ./Build
+        run: cpanm -nq --installdeps --with-develop --with-recommends .
       - name: Run test
-        run: ./Build test
+        run: prove -lr t
 
 @@ Changes
 Revision history for Perl extension <% $dist %>
