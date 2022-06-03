@@ -2,6 +2,9 @@ Revision history for Perl extension Minilla
 
 {{$NEXT}}
 
+v3.1.19 2022-06-03T13:38:13Z
+    - Add perl 5.36 to github actions template (AnaTofuZ #320)
+
 v3.1.18 2022-05-10T20:00:37Z
     - Use "prove" in github actions template (#319)
 
