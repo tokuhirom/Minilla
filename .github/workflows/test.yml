@@ -30,6 +30,10 @@ jobs:
         uses: shogo82148/actions-setup-perl@v1
         with:
           perl-version: ${{ matrix.perl }}
+      - name: Git config
+        run: |
+          git config --global user.email "you@example.com"
+          git config --global user.name "Your Name"
       - name: Install dependencies
         run: cpanm -nq --installdeps --with-develop --with-recommends .
       - name: Run test
