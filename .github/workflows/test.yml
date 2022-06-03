@@ -33,4 +33,4 @@ jobs:
       - name: Install dependencies
         run: cpanm -nq --installdeps --with-develop --with-recommends .
       - name: Run test
-          run: prove -lr t
+        run: prove -lr t
