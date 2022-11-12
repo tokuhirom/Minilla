@@ -68,7 +68,7 @@ sub init {
     git_init();
     git_add('.');
     git_submodule_add("file://$submodule_repos{$_}", "lib$_") for keys %submodule_repos;
-    system 'git submodule update --init --recursive';
+    git_submodule_update_init_recursive();
     git_commit('-m', 'foo');
 
     $guard;

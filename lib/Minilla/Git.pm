@@ -5,7 +5,7 @@ use utf8;
 
 use parent qw(Exporter);
 
-our @EXPORT = qw(git_ls_files git_init git_add git_rm git_commit git_config git_remote git_submodule_add git_submodules git_submodule_files git_show_toplevel);
+our @EXPORT = qw(git_ls_files git_init git_add git_rm git_commit git_config git_remote git_submodules git_submodule_files git_show_toplevel);
 
 use Minilla::Logger qw(errorf);
 use Minilla::Util qw(cmd);
@@ -37,10 +37,6 @@ sub git_remote {
 sub git_ls_files {
     my @files = split /\0/, `git ls-files -z`;
     return @files;
-}
-
-sub git_submodule_add {
-    cmd('git', 'submodule', 'add', @_);
 }
 
 sub git_submodules {
@@ -83,4 +79,3 @@ sub git_show_toplevel {
 }
 
 1;
-
