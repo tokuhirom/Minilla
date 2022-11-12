@@ -26,7 +26,7 @@ $ENV{PERL_CPANM_HOME} = tempdir(CLEANUP => 1);
 delete $ENV{GIT_CONFIG};
 
 our @EXPORT = (
-    qw(git_init_add_commit write_minil_toml),
+    qw(git_init_add_commit git_submodule_add git_submodule_update_init_recursive write_minil_toml),
     qw(tempdir pushd),
     @Minilla::Git::EXPORT, @Minilla::Util::EXPORT_OK, qw(spew),
     qw(catfile),
@@ -37,6 +37,17 @@ sub git_init_add_commit() {
     git_init();
     git_add('.');
     git_commit('-m', 'initial import');
+}
+
+# Cloning from local file system is disabled by default since git 2.38.1
+# So set 'protocol.file.allow=always'
+# - https://github.blog/2022-10-18-git-security-vulnerabilities-announced/#cve-2022-39253
+sub git_submodule_add {
+    cmd('git', '-c', 'protocol.file.allow=always', 'submodule', 'add', @_);
+}
+
+sub git_submodule_update_init_recursive {
+    cmd('git', '-c', 'protocol.file.allow=always', 'submodule', 'update', '--init', '--recursive');
 }
 
 sub write_minil_toml {
@@ -51,4 +62,3 @@ sub write_minil_toml {
 }
 
 1;
-
