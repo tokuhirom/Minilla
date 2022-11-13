@@ -2,6 +2,10 @@ Revision history for Perl extension Minilla
 
 {{$NEXT}}
 
+v3.1.20 2022-11-13T00:03:40Z
+    - Fix test failure issue with git 2.38.1 or higher versions
+    - Improve the way to get git branch name
+
 v3.1.19 2022-06-03T13:38:13Z
     - Add perl 5.36 to github actions template (AnaTofuZ #320)
 
