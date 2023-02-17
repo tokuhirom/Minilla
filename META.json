@@ -4,7 +4,7 @@
       "Tokuhiro Matsuno < tokuhirom@gmail.com >"
    ],
    "dynamic_config" : 0,
-   "generated_by" : "Minilla/v3.1.19, CPAN::Meta::Converter version 2.150010",
+   "generated_by" : "Minilla/v3.1.20, CPAN::Meta::Converter version 2.150010",
    "license" : [
       "perl_5"
    ],
@@ -56,7 +56,6 @@
             "App::cpanminus" : "1.6902",
             "Archive::Tar" : "1.60",
             "CPAN::Meta" : "2.132830",
-            "Config::Identity" : "0",
             "Data::Section::Simple" : "0.04",
             "ExtUtils::Manifest" : "1.54",
             "File::Which" : "0",
@@ -113,8 +112,7 @@
          "web" : "https://github.com/tokuhirom/Minilla"
       }
    },
-   "version" : "v3.1.20",
-   "x_authority" : "cpan:TOKUHIROM",
+   "version" : "v3.1.21",
    "x_contributors" : [
       "Alex Kapranoff <alex@kapranoff.ru>",
       "Alex Kapranoff <kappa@yandex.ru>",
@@ -174,6 +172,6 @@
       "vti <viacheslav.t@gmail.com>",
       "ysasaki <aloelight@gmail.com>"
    ],
-   "x_serialization_backend" : "JSON::PP version 4.12",
+   "x_serialization_backend" : "JSON::PP version 4.16",
    "x_static_install" : 1
 }

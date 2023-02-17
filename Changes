@@ -2,6 +2,10 @@ Revision history for Perl extension Minilla
 
 {{$NEXT}}
 
+v3.1.21 2023-02-17T14:36:59Z
+    - Do not set x_authority by default (#326)
+    - Use actions/checkout@v3 (#327)
+
 v3.1.20 2022-11-13T00:03:40Z
     - Fix test failure issue with git 2.38.1 or higher versions
     - Improve the way to get git branch name
