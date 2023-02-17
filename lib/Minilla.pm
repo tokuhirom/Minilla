@@ -201,6 +201,9 @@ Grab authors information from the file contains pod.
 
 Set x_authority attribute to META.
 See L<https://jawnsy.wordpress.com/2011/02/20/what-is-x_authority/> for more details.
+Note that now PAUSE itself copies the permissions from the "main module"
+to any new modules entering the index for the first time,
+so you don't need to set this attribute anymore.
 
 =item allow_pureperl
 
