@@ -639,7 +639,7 @@ sub regenerate_readme_md {
         $markdown_maker->VERSION('1.322');
     }
 
-    my $parser = $markdown_maker->new;
+    my $parser = $markdown_maker->new( %{ $self->config->{markdown_maker_opts} || {} } );;
     if (not $parser->isa('Pod::Markdown')) {
         errorf("'markdown_maker' config key must be a subclass of Pod::Markdown\n");
     }
