@@ -1,6 +1,8 @@
 Revision history for Perl extension Minilla
 
 {{$NEXT}}
+
+v3.1.22 2023-07-08T05:48:31Z
     - Support package version syntax (#328)
 
 v3.1.21 2023-02-17T14:36:59Z
