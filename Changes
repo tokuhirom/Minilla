@@ -1,6 +1,7 @@
 Revision history for Perl extension Minilla
 
 {{$NEXT}}
+    - Support package version syntax (#328)
 
 v3.1.21 2023-02-17T14:36:59Z
     - Do not set x_authority by default (#326)
