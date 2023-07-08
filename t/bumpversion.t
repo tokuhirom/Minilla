@@ -66,6 +66,16 @@ our $VERSION="v0.0.1"; # No BumpVersion
     }
 };
 
+subtest 'package version syntax' => sub {
+    my $tmpfile = "$tmpdir/Foo.pm";
+    open my $fh, '>', $tmpfile or die $!;
+    print {$fh} q{
+package Foo v0.0.1;
+1;
+};
+    close $fh;
+    test($tmpfile);
+};
 
 done_testing;
 

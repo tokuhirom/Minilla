@@ -125,6 +125,10 @@ sub version_re_pod {
     return qr{ ^ ( .*? (?i: version ) .*? ) $ver_re ( .* ) $ }x;
 }
 
+sub version_re_package {
+    my $ver_re = shift;
+    return qr{ ^ ( package \s+ \S+ \s+ ) $ver_re (.*) $ }x;
+}
 
 # State machine for Perl source
 sub scanner{
@@ -141,6 +145,10 @@ sub scanner{
             },
             {
                 re   => version_re_perl($ver_re),
+                mark => 1,
+            },
+            {
+                re   => version_re_package($ver_re),
                 mark => 1,
             },
         ],
@@ -174,4 +182,3 @@ sub scanner{
 
 
 1;
-
