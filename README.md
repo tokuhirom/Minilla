@@ -142,6 +142,12 @@ But, you can write configurations to _minil.toml_ file in [TOML](https://github.
 
     You can write 'name' instead of automatically detecting project name out of the directory name.
 
+- module\_maker
+
+    Minilla supports three module building mechanisms. Module::Build::Tiny is the default one and Module::Build or ExtUtils::MakeMaker are the alternatives. See also [FAQ](#faq) section in this document.
+
+        module_maker="ModuleBuild"
+
 - readme\_from
 
         readme_from="lib/My/Foo.pod"
