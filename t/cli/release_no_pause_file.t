@@ -32,6 +32,7 @@ git_remote('add', 'origin', "file://$repo");
     local $ENV{PERL_MM_USE_DEFAULT} = 1;
     local $ENV{PERL_MINILLA_SKIP_CHECK_CHANGE_LOG} = 1;
     local $ENV{FAKE_RELEASE} = 0;
+    no warnings 'redefine';
     local *CPAN::Uploader::read_config_file = sub {
         return {};
     };

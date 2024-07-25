@@ -40,7 +40,6 @@ subtest 'Removing committed README' => sub {
     $profile->render('MANIFEST');
     unlink 'Build.PL';
     unlink 'META.json';
-    unlink 'cpanfile';
 
     git_init();
     git_add();
