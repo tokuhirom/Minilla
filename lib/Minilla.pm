@@ -419,6 +419,14 @@ or program. Build fail if the command does not exist.
 Use a different module to generate C<README.md> from your pod. This
 module must subclass L<Pod::Markdown>.
 
+=item markdown_maker_opts
+
+    [markdown_maker_opts]
+    local_module_re = "^MyApp::"
+    local_module_url_prefix = "https://example.org/perl/pod/"
+
+Specify arguments to pass to C<markdown_maker>'s C<new()> constructor.
+
 =item Metadata
 
     [Metadata]
