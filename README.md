@@ -390,6 +390,14 @@ But, you can write configurations to _minil.toml_ file in [TOML](https://github.
     Use a different module to generate `README.md` from your pod. This
     module must subclass [Pod::Markdown](https://metacpan.org/pod/Pod%3A%3AMarkdown).
 
+- markdown\_maker\_opts
+
+        [markdown_maker_opts]
+        local_module_re = "^MyApp::"
+        local_module_url_prefix = "https://example.org/perl/pod/"
+
+    Specify arguments to pass to `markdown_maker`'s `new()` constructor.
+
 - Metadata
 
         [Metadata]

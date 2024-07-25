@@ -2,6 +2,9 @@ Revision history for Perl extension Minilla
 
 {{$NEXT}}
 
+v3.1.24 2024-07-25T10:33:18Z
+    - Add markdown_maker_opts configuration (DabeDotCom #332)
+
 v3.1.23 2023-10-07T10:26:39Z
     - Add documentation for module_maker option (giftnuss #330)
 
