@@ -525,7 +525,10 @@ sub extract_git_info {
     my $bugtracker;
     my $repository;
     my $homepage;
-    if ( my $registered_url = `git config --get remote.origin.url` ) {
+    my $remote = $self->config ? $self->config->{git_remote} : undef;
+    $remote = 'origin' unless defined $remote;
+    
+    if ( my $registered_url = `git config --get remote.${remote}.url` ) {
         $registered_url =~ s/\n//g;
         # XXX Make it public clone URL, but this only works with github
         if ($registered_url !~ m{^file://} && $registered_url =~ /(?:github|gitlab)\.com/) {
