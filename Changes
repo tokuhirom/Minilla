@@ -2,6 +2,9 @@ Revision history for Perl extension Minilla
 
 {{$NEXT}}
 
+v3.1.26 2025-05-05T03:05:23Z
+    - Update Perl_5 license text (#336)
+
 v3.1.25 2024-08-11T14:06:16Z
     - Add perl 5.40, 5.38 to github action template (kfly8 #334)
 
