@@ -2,10 +2,9 @@ package Minilla::Metadata;
 use strict;
 use warnings;
 use utf8;
-use Minilla::Util qw(slurp slurp_utf8 require_optional);
+use Minilla::Util qw(slurp slurp_utf8 require_optional guess_license_class_by_name);
 use Carp;
 use Module::Metadata;
-use Minilla::License::Perl_5;
 use Pod::Escapes;
 
 use Moo;
@@ -168,58 +167,13 @@ sub __extract_license {
     return 0;
 }
 
-sub _guess_license_class_by_name {
-    my ($name) = @_;
-
-    if ($name eq 'Perl_5') {
-        return 'Minilla::License::Perl_5'
-    } else {
-        my %license_map = (
-            'agpl_3'       => 'Software::License::AGPL_3',
-            'apache_1_1'   => 'Software::License::Apache_1_1',
-            'apache_2_0'   => 'Software::License::Apache_2_0',
-            'artistic_1'   => 'Software::License::Artistic_1_0',
-            'artistic_2'   => 'Software::License::Artistic_2_0',
-            'bsd'          => 'Software::License::BSD',
-            'unrestricted' => 'Software::License::CC0_1_0',
-            'custom'       => 'Software::License::Custom',
-            'freebsd'      => 'Software::License::FreeBSD',
-            'gfdl_1_2'     => 'Software::License::GFDL_1_2',
-            'gfdl_1_3'     => 'Software::License::GFDL_1_3',
-            'gpl_1'        => 'Software::License::GPL_1',
-            'gpl_2'        => 'Software::License::GPL_2',
-            'gpl_3'        => 'Software::License::GPL_3',
-            'lgpl_2_1'     => 'Software::License::LGPL_2_1',
-            'lgpl_3_0'     => 'Software::License::LGPL_3_0',
-            'mit'          => 'Software::License::MIT',
-            'mozilla_1_0'  => 'Software::License::Mozilla_1_0',
-            'mozilla_1_1'  => 'Software::License::Mozilla_1_1',
-            'open_source'  => 'Software::License::Mozilla_2_0',
-            'restricted'   => 'Software::License::None',
-            'openssl'      => 'Software::License::OpenSSL',
-            'perl_5'       => 'Software::License::Perl_5',
-            'open_source'  => 'Software::License::PostgreSQL',
-            'qpl_1_0'      => 'Software::License::QPL_1_0',
-            'ssleay'       => 'Software::License::SSLeay',
-            'sun'          => 'Software::License::Sun',
-            'zlib'         => 'Software::License::Zlib',
-        );
-        if (my $klass = $license_map{lc $name}) {
-            eval "require $klass; 1" or die "$klass is required for supporting $name license. But: $@"; ## no critic.
-            return $klass;
-        } else {
-            die "'$name' is not supported yet. Supported licenses are: " . join(', ', keys %license_map);
-        }
-    }
-}
-
 sub _build_license {
     my ($self) = @_;
 
     my $pm_text = slurp($self->source);
     my $holder = $self->authors ? $self->authors->[0] : 'Unknown';
     if ($self->_license_name) {
-        _guess_license_class_by_name($self->_license_name)->new({
+        guess_license_class_by_name($self->_license_name)->new({
             holder => $holder,
         });
     } elsif (_is_perl5_license($pm_text)) {
@@ -254,4 +208,3 @@ sub _build_license {
 }
 
 1;
-

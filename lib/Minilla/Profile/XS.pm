@@ -42,9 +42,7 @@ sub generate {
     $gi->add("!$ppport"); # Import ppport.h!
     $gi->save('.gitignore');
 
-    $self->write_file('LICENSE', Minilla::License::Perl_5->new(
-        holder => sprintf('%s <%s>', $self->author, $self->email)
-    )->fulltext);
+    $self->write_file('LICENSE', $self->license->fulltext);
 
     $self->render('cpanfile');
 }

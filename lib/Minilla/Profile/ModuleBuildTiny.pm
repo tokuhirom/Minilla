@@ -12,8 +12,6 @@ use CPAN::Meta;
 use Data::Section::Simple qw(get_data_section);
 use File::pushd;
 
-use Minilla::License::Perl_5;
-
 sub generate {
     my $self = shift;
 
@@ -24,9 +22,7 @@ sub generate {
     $self->render('github_actions_test.yml', catfile('.github', 'workflows', 'test.yml'));
 
     $self->render('.gitignore');
-    $self->write_file('LICENSE', Minilla::License::Perl_5->new(
-        holder => sprintf('%s <%s>', $self->author, $self->email)
-    )->fulltext);
+    $self->write_file('LICENSE', $self->license->fulltext);
 
     $self->render('cpanfile');
 }
@@ -40,4 +36,3 @@ requires 'perl', '5.008001';
 on 'test' => sub {
     requires 'Test::More', '0.98';
 };
-

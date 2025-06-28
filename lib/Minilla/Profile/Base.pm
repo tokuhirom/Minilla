@@ -8,8 +8,9 @@ use File::Basename qw(dirname);
 use Data::Section::Simple;
 use Time::Piece;
 
-use Minilla::Util qw(spew_raw);
+use Minilla::Util qw(spew_raw guess_license_class_by_name);
 use Minilla::Logger;
+use Minilla::License::Perl_5;
 
 use Moo;
 
@@ -28,7 +29,7 @@ has suffix => (
     required => 1,
 );
 
-has [qw(email author)] => (
+has [qw(email author license)] => (
     is => 'lazy',
     required => 1,
 );
@@ -46,6 +47,13 @@ sub _build_author {
     }
 
     $name;
+}
+
+sub _build_license {
+    my $self = shift;
+    Minilla::License::Perl_5->new({
+        holder => $self->author,
+    });
 }
 
 sub _build_email {
@@ -119,6 +127,10 @@ sub write_file {
     spew_raw($path, $content);
 }
 
+sub license_notice {
+    my $self = shift;
+    $self->license->notice;
+}
 
 1;
 __DATA__
@@ -162,10 +174,7 @@ our $VERSION = "<% $version %>";
 
 =head1 LICENSE
 
-Copyright (C) <% $author %>.
-
-This library is free software; you can redistribute it and/or modify
-it under the same terms as Perl itself.
+<% $license_notice %>
 
 =head1 AUTHOR
 
