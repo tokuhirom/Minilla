@@ -63,6 +63,9 @@ subtest 'resources' => sub {
 
     my $prepare_meta_json_resources = sub {
         my $git_conf_url = shift;
+        my $minil_toml = shift;
+        
+        $minil_toml = { name => 'Acme-Foo' } unless 'HASH' eq ref $minil_toml;
 
         my $guard = pushd(tempdir(CLEANUP => 1));
 
@@ -76,17 +79,23 @@ subtest 'resources' => sub {
             email => 'tokuhirom@example.com',
         );
         $profile->generate();
-        write_minil_toml('Acme-Foo');
+        write_minil_toml($minil_toml);
 
         git_init_add_commit();
 
         # Add remote information
         {
+            my $upstream_url = $git_conf_url;
+            $upstream_url =~ s/nohuhu/tokuhirom/g;
+            
             open my $fh, '>>', catdir('.git', 'config');
             print $fh <<"...";
 [remote "origin"]
     url = $git_conf_url
     fetch = +refs/heads/*:refs/remotes/origin/*
+[remote "upstream"]
+    url = $upstream_url
+    fetch = +refs/heads/*:refs/remotes/upstream/*
 ...
         }
 
@@ -101,8 +110,7 @@ subtest 'resources' => sub {
 
     subtest 'github' => sub {
         my $resources_url_of_meta_json_ok = sub {
-            my $git_conf_url = shift;
-            my $resources = $prepare_meta_json_resources->($git_conf_url);
+            my $resources = $prepare_meta_json_resources->(@_);
             is $resources->{bugtracker}->{web}, 'https://github.com/tokuhirom/Minilla/issues';
             is $resources->{homepage}, 'https://github.com/tokuhirom/Minilla';
             is $resources->{repository}->{type}, "git";
@@ -137,6 +145,14 @@ subtest 'resources' => sub {
         subtest 'when remote of origin url is ssh with port' => sub {
             my $git_conf_url = 'ssh://git@github.com:22/tokuhirom/Minilla.git';
             $resources_url_of_meta_json_ok->($git_conf_url);
+        };
+        subtest 'with alternate git remote' => sub {
+            my $git_conf_url = 'git@github.com:nohuhu/Minilla.git';
+            
+            $resources_url_of_meta_json_ok->($git_conf_url, {
+                name => 'Acme-Foo',
+                git_remote => 'upstream',
+            });
         };
     };
 
