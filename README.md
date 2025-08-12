@@ -1,4 +1,4 @@
-[![Actions Status](https://github.com/tokuhirom/Minilla/actions/workflows/test.yml/badge.svg)](https://github.com/tokuhirom/Minilla/actions) [![MetaCPAN Release](https://badge.fury.io/pl/Minilla.svg)](https://metacpan.org/release/Minilla)
+[![Actions Status](https://github.com/tokuhirom/Minilla/actions/workflows/test.yml/badge.svg?branch=master)](https://github.com/tokuhirom/Minilla/actions?workflow=test) [![MetaCPAN Release](https://badge.fury.io/pl/Minilla.svg)](https://metacpan.org/release/Minilla)
 # NAME
 
 Minilla - CPAN module authoring tool

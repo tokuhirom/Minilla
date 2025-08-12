@@ -1,6 +1,8 @@
 Revision history for Perl extension Minilla
 
 {{$NEXT}}
+
+v3.1.27 2025-08-12T04:01:40Z
     - Update GitHub Actions status badge URLs to match the latest documentation (Songmu #338)
 
 v3.1.26 2025-05-05T03:05:23Z

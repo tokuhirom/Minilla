@@ -4,7 +4,7 @@
       "Tokuhiro Matsuno < tokuhirom@gmail.com >"
    ],
    "dynamic_config" : 0,
-   "generated_by" : "Minilla/v3.1.25, CPAN::Meta::Converter version 2.150010",
+   "generated_by" : "Minilla/v3.1.26, CPAN::Meta::Converter version 2.150010",
    "license" : [
       "perl_5"
    ],
@@ -112,7 +112,7 @@
          "web" : "https://github.com/tokuhirom/Minilla"
       }
    },
-   "version" : "v3.1.26",
+   "version" : "v3.1.27",
    "x_contributors" : [
       "Alex Kapranoff <alex@kapranoff.ru>",
       "Alex Kapranoff <kappa@yandex.ru>",
