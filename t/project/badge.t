@@ -55,7 +55,7 @@ subtest 'Badge' => sub {
             "[![Gitter chat](https://badges.gitter.im/tokuhirom/Minilla.png)](https://gitter.im/tokuhirom/Minilla)",
             "[![Coverage Status](http://codecov.io/github/tokuhirom/Minilla/coverage.svg?branch=master)](https://codecov.io/github/tokuhirom/Minilla?branch=master)",
             "[![MetaCPAN Release](https://badge.fury.io/pl/Acme-Foo.svg)](https://metacpan.org/release/Acme-Foo)",
-            "[![Actions Status](https://github.com/tokuhirom/Minilla/workflows/test/badge.svg)](https://github.com/tokuhirom/Minilla/actions)",
+            "[![Actions Status](https://github.com/tokuhirom/Minilla/actions/workflows/test.yml/badge.svg?branch=master)](https://github.com/tokuhirom/Minilla/actions?workflow=test)",
         ];
         my $expected = join(' ', @$badge_markdowns);
         is $got, $expected;
@@ -138,8 +138,8 @@ subtest 'Badge' => sub {
         ok chomp (my $got = <$fh>);
 
         my $badge_markdowns = [
-            "[![Actions Status](https://github.com/tokuhirom/Minilla/actions/workflows/foo.yml/badge.svg)](https://github.com/tokuhirom/Minilla/actions)",
-            "[![Actions Status](https://github.com/tokuhirom/Minilla/workflows/foo/badge.svg)](https://github.com/tokuhirom/Minilla/actions)",
+            "[![Actions Status](https://github.com/tokuhirom/Minilla/actions/workflows/foo.yml/badge.svg?branch=master)](https://github.com/tokuhirom/Minilla/actions?workflow=foo)",
+            "[![Actions Status](https://github.com/tokuhirom/Minilla/actions/workflows/foo.yml/badge.svg?branch=master)](https://github.com/tokuhirom/Minilla/actions?workflow=foo)",
         ];
         my $expected = join(' ', @$badge_markdowns);
         is $got, $expected;
