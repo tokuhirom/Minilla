@@ -25,6 +25,7 @@ use Minilla::ModuleMaker::ExtUtilsMakeMaker;
 use Minilla::Util qw(slurp_utf8 find_dir cmd spew_raw slurp_raw spew_utf8);
 use Encode qw(decode_utf8);
 use URI;
+use Term::Encoding qw(term_encoding);
 
 use Moo;
 
@@ -351,7 +352,7 @@ sub _build_metadata {
         %$config,
     );
     infof("Name: %s\n", $metadata->name);
-    infof("Abstract: %s\n", $metadata->abstract);
+    infof("Abstract: %s\n", Encode::encode(term_encoding(), $metadata->abstract));
     infof("Version: %s\n", $metadata->version);
 
     return $metadata;
