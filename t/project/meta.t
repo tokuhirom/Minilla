@@ -16,6 +16,7 @@ use Minilla::Project;
 use CPAN::Meta::Validator;
 use File::Spec::Functions qw(catdir);
 use JSON qw(decode_json);
+use Encode;
 use version;
 
 subtest 'develop deps' => sub {
@@ -359,6 +360,37 @@ feature 'bar', 'Optional feature Bar' => sub {
     ok($validator->is_valid) or diag join( "\n", $validator->errors );
 };
 
+subtest 'utf8 abstraction' => sub {
+    my $guard = pushd(tempdir(CLEANUP => 1));
+    my $profile = Minilla::Profile::Default->new(
+        author => 'foo',
+        dist => 'Foo',
+        path => 'Foo.pm',
+        suffix => 'Foo',
+        module => 'Foo',
+        version => '0.01',
+        email => 'foo@example.com',
+    );
+    $profile->generate();
+
+    write_minil_toml('Foo');
+
+    git_init_add_commit();
+
+    Minilla::Project->new()->regenerate_files;
+
+    open my $in, '<', 'lib/Foo.pm';
+    my $content = decode_utf8(do { local $/; <$in> });
+    close $in;
+    $content =~ s/Foo - It's new \$module/dozo - Dôzo, Docker with Zero Overhead/;
+
+    open my $out, '>', 'lib/Foo.pm';
+    print $out encode_utf8($content);
+    close $out;
+
+    Minilla::Project->new()->regenerate_files;
+    my $meta = CPAN::Meta->load_file('META.json');
+    is($meta->abstract, "Dôzo, Docker with Zero Overhead");
+};
 
 done_testing;
-
