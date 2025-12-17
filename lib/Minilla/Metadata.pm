@@ -36,7 +36,7 @@ no Moo;
 
 sub _build_metadata {
     my $self = shift;
-    Module::Metadata->new_from_file($self->source, collect_pod => 1);
+    Module::Metadata->new_from_file($self->source, collect_pod => 1, decode_pod => 1);
 }
 
 # Taken from Module::Install::Metadata
