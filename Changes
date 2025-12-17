@@ -1,6 +1,7 @@
 Revision history for Perl extension Minilla
 
 {{$NEXT}}
+    - Fix multibyte characters in POD issue(#340)
 
 v3.1.28 2025-09-15T09:18:56Z
     - Use perl5.42 at GitHub Actions (kfly8 #339)
