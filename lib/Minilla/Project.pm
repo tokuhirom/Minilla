@@ -646,7 +646,6 @@ sub regenerate_readme_md {
     }
     $parser->parse_from_file($self->readme_from);
 
-    my $fname = File::Spec->catfile($self->dir, 'README.md');
     my $markdown = $parser->as_markdown;
 
     if (ref $self->badges eq 'ARRAY' && scalar @{$self->badges} > 0) {
@@ -730,7 +729,15 @@ sub regenerate_readme_md {
         $markdown = join(' ', @badges) . $markdown
     }
 
-    spew_utf8($fname, $markdown);
+    # README.md is generated from the file in the current directory, which
+    # is not always the project directory. Write it to both, in the same way
+    # as module_maker in regenerate_files().
+    my @dirs = ($self->dir);
+    my $cwd = Cwd::getcwd();
+    unshift @dirs, $cwd if $cwd ne $self->dir;
+    for my $dir (@dirs) {
+        spew_utf8(File::Spec->catfile($dir, 'README.md'), $markdown);
+    }
 }
 
 sub verify_prereqs {
