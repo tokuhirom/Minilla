@@ -14,6 +14,7 @@ use File::Copy qw(copy);
 use Config;
 
 use Minilla::Logger;
+use Minilla::Changes;
 use Minilla::Util qw(randstr cmd cmd_perl slurp slurp_raw spew spew_raw pod_escape);
 use Minilla::FileGatherer;
 use Minilla::ReleaseTest;
@@ -166,9 +167,25 @@ sub _rewrite_changes {
     my $self = shift;
 
     my $orig = slurp_raw('Changes');
-    $orig =~ s!\{\{\$NEXT\}\}!
-        $self->project->version . ' ' . $self->changes_time->strftime('%Y-%m-%dT%H:%M:%SZ')
-    !e;
+    my $version = $self->project->version;
+    if (my $prepared = Minilla::Changes::prepared_release($orig, $version)) {
+        if ($prepared->{has_pending_changes}) {
+            errorf(
+                "{{\$NEXT}} in changelog file 'Changes' must be empty when release %s is already present\n",
+                $version,
+            );
+        }
+        substr(
+            $orig,
+            $prepared->{next_start},
+            $prepared->{version_start} - $prepared->{next_start},
+            '',
+        );
+    } else {
+        $orig =~ s!\{\{\$NEXT\}\}!
+            $version . ' ' . $self->changes_time->strftime('%Y-%m-%dT%H:%M:%SZ')
+        !e;
+    }
     spew_raw('Changes', $orig);
 }
 

@@ -4,6 +4,7 @@ use warnings;
 use utf8;
 use ExtUtils::MakeMaker qw(prompt);
 
+use Minilla::Changes;
 use Minilla::Util qw(edit_file slurp);
 use Minilla::Logger;
 
@@ -19,10 +20,17 @@ sub run {
 
     while (1) {
         my $changes = slurp('Changes');
-        last if $changes =~ /^\{\{\$NEXT\}\}\h*\R+\h+\S/m;
+        my $prepared = Minilla::Changes::prepared_release($changes, $version);
+        last if $prepared && !$prepared->{has_pending_changes};
+        last if !$prepared && $changes =~ /^\{\{\$NEXT\}\}\h*\R+\h+\S/m;
 
         # Tell the user what the problem is
-        if ($changes !~ /\{\{\$NEXT\}\}/m) {
+        if ($prepared) {
+            infof(
+                "{{\$NEXT}} in changelog file 'Changes' must be empty when release %s is already present\n",
+                $version,
+            );
+        } elsif ($changes !~ /\{\{\$NEXT\}\}/m) {
             infof("No mention of {{\$NEXT}} in changelog file 'Changes'\n");
         } elsif ($changes !~ /^\{\{\$NEXT\}\}/m) {
             infof("{{\$NEXT}} must be at the beginning of a line in changelog file 'Changes'\n");
