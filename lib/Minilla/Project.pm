@@ -74,6 +74,11 @@ has contributors => (
     is => 'lazy',
 );
 
+has skip_prepare => (
+    is      => 'ro',
+    default => sub { 0 },
+);
+
 has work_dir => (
     is => 'lazy',
 );
@@ -778,7 +783,8 @@ sub _build_contributors {
 sub _build_work_dir {
     my $self = shift;
     Minilla::WorkDir->new(
-        project  => $self,
+        project      => $self,
+        skip_prepare => $self->skip_prepare,
     );
 }
 

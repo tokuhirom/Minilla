@@ -7,8 +7,8 @@ use Minilla::Project;
 sub run {
     my ($self, $project, $opts) = @_;
 
+    return if $opts->{skip_prepare};
     $project->regenerate_files();
 }
 
 1;
-
