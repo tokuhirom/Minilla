@@ -2,6 +2,7 @@ use strict;
 use warnings;
 use utf8;
 use Test::More;
+use Test::Output;
 use Test::Requires 'Version::Next', 'CPAN::Uploader';
 
 use Archive::Tar;
@@ -13,6 +14,7 @@ use Minilla;
 use Minilla::CLI::Release;
 use Minilla::Profile::ModuleBuild;
 use Minilla::Project;
+use Minilla::Release::BumpVersion;
 
 my $repo = tempdir(CLEANUP => 1);
 {
@@ -54,6 +56,10 @@ git_remote('add', 'origin', "file://$repo");
     local $ENV{PERL_MM_USE_DEFAULT} = 1;
     local $ENV{PERL_MINILLA_SKIP_CHECK_CHANGE_LOG} = 1;
     local $ENV{FAKE_RELEASE} = 1;
+    no warnings 'redefine';
+    local *Minilla::Release::BumpVersion::prompt = sub {
+        die "version prompt should not be called\n";
+    };
     Minilla::CLI::Release->run('--skip-prepare', '--no-test');
 }
 
@@ -80,5 +86,22 @@ is(
     $readme,
     'packages the prepared README.md',
 );
+
+{
+    local $ENV{PERL_MINILLA_SKIP_CHECK_CHANGE_LOG} = 1;
+    local $ENV{FAKE_RELEASE} = 1;
+    my $error;
+    stderr_like(
+        sub {
+            eval {
+                Minilla::CLI::Release->run('--skip-prepare', '--no-test');
+            };
+            $error = $@;
+        },
+        qr/version '0\.01' is already tagged/,
+        'rejects an already tagged prepared version',
+    );
+    isa_ok($error, 'Minilla::Error::CommandExit');
+}
 
 done_testing;

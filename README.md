@@ -61,7 +61,7 @@ Run `minil help COMMAND` for the full documentation of a subcommand.
 - `minil release`
 
     `--no-test` (also `--notest`), `--trial`, `--dry-run`,
-    `--pause-config FILE`
+    `--skip-prepare`, `--pause-config FILE`
 
 - `minil clean`
 
@@ -146,11 +146,12 @@ push.
 
 ## Building from prepared source
 
-`minil dist --skip-prepare` builds a distribution from an already prepared
-source tree without regenerating `META.json`, `README.md`, or `Build.PL` or
-`Makefile.PL`. Packaging files such as `META.yml` and `MANIFEST` are still
-generated. Distribution tests run by default and can be disabled with
-`--no-test`.
+`minil dist --skip-prepare` and `minil release --skip-prepare` build a
+distribution from an already prepared source tree without regenerating
+`META.json`, `README.md`, or `Build.PL` or `Makefile.PL`. Packaging files
+such as `META.yml` and `MANIFEST` are still generated. Distribution tests
+run by default and can be disabled with `--no-test`. The release command uses
+the prepared version without prompting for or updating it.
 
 ## CheckUntrackedFiles
 
