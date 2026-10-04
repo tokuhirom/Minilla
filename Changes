@@ -2,9 +2,11 @@ Revision history for Perl extension Minilla
 
 {{$NEXT}}
     - Run spelling tests without requiring ~/.spellunker.en (#284, #351)
-    - Support command-line arguments in `EDITOR` (#350)
+    - Support command-line arguments in `EDITOR` (#306, #350)
     - Add `minil dist --skip-prepare` for building from prepared source (#348)
-    - Add `minil prepare` to prepare repository files for release (#343)
+    - Add `minil prepare` to prepare repository files for release (#347)
+    - Add Perl 5.44 to GitHub Actions (#346)
+    - Added a setting item manage_changes to prevent Changes from being managed (#345)
     - Allow prepared release entries in `Changes` (#344)
 
 v3.1.29 2025-12-17T15:08:28Z
