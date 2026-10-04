@@ -1,6 +1,7 @@
 Revision history for Perl extension Minilla
 
 {{$NEXT}}
+    - Add `minil release --skip-prepare` for releasing from prepared source
     - Run spelling tests without requiring ~/.spellunker.en (#284, #351)
     - Support command-line arguments in `EDITOR` (#306, #350)
     - Add `minil dist --skip-prepare` for building from prepared source (#348)
