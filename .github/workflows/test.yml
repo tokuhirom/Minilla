@@ -9,7 +9,10 @@ on:
       - "master"
 jobs:
   build:
+    permissions:
+      contents: read
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     strategy:
       matrix:
         perl:
@@ -35,9 +38,11 @@ jobs:
           ]
     name: Perl ${{ matrix.perl }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
       - name: Setup perl
-        uses: shogo82148/actions-setup-perl@v1
+        uses: shogo82148/actions-setup-perl@8b574cdc2dffdae49f803204a4f2b716a2fa1db7 # v1.44.2
         with:
           perl-version: ${{ matrix.perl }}
       - name: Git config
