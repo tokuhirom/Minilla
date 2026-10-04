@@ -7,6 +7,7 @@ Minilla - CPAN module authoring tool
 
     minil new     - Create a new dist
     minil test    - Run test cases
+    minil prepare - Prepare the source tree for release
     minil dist    - Make your dist tarball
     minil install - Install your dist
     minil release - Release your dist to CPAN
@@ -74,6 +75,21 @@ Minilla is built on only few small libraries. You can install Minilla without a 
 
 Minilla's release process is the following.
 
+## Preparing a release
+
+`minil prepare` performs the source-tree updates used by the release process:
+it selects the next version, updates version declarations, regenerates
+`META.json`, `README.md`, and `Build.PL` or `Makefile.PL`, and prepares
+`Changes` when Minilla manages it.
+
+The version can be selected interactively or supplied as an argument:
+
+    % minil prepare
+    % minil prepare v1.2.3
+
+The command does not commit, tag, build a distribution archive, upload, or
+push.
+
 ## CheckUntrackedFiles
 
 Checking git's untracked files. If there's untracked files, minilla will abort.
@@ -97,7 +113,6 @@ After that, minilla rewrites version numbers in \*\*/\*.pm, \*\*/\*.pl, and a sc
 You need to write Changes file. Your module's users need to know the difference between versions.
 
 Minilla's Changes file includes \`{{$NEXT}}\` next version indicator. You should put update informations after that.
-
 ## RegenerateFiles
 
 In this step, minilla will regenerate META.json, README.md and (Makefile.PL|Build.PL).
@@ -123,7 +138,6 @@ Upload your module to CPAN.
 Rewrite Changes file.
 Minilla replaces `{{$NEXT}}` with released version number and current date & time.
 And put `{{$NEXT}}` on the first line.
-
 ## Commit
 
 Commit current directory with automatically generated commit message from Changes file. And push it to origin.

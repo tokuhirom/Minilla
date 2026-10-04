@@ -25,6 +25,7 @@ Minilla - CPAN module authoring tool
 
     minil new     - Create a new dist
     minil test    - Run test cases
+    minil prepare - Prepare the source tree for release
     minil dist    - Make your dist tarball
     minil install - Install your dist
     minil release - Release your dist to CPAN
@@ -100,6 +101,21 @@ Minilla is built on only few small libraries. You can install Minilla without a 
 =head1 Minilla's release process
 
 Minilla's release process is the following.
+
+=head2 Preparing a release
+
+C<minil prepare> performs the source-tree updates used by the release process:
+it selects the next version, updates version declarations, regenerates
+F<META.json>, F<README.md>, and F<Build.PL> or F<Makefile.PL>, and prepares
+F<Changes> when Minilla manages it.
+
+The version can be selected interactively or supplied as an argument:
+
+    % minil prepare
+    % minil prepare v1.2.3
+
+The command does not commit, tag, build a distribution archive, upload, or
+push.
 
 =head2 CheckUntrackedFiles
 
