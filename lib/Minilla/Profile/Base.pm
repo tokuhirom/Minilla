@@ -175,7 +175,13 @@ it under the same terms as Perl itself.
 
 @@ github_actions_test.yml
 name: test
-on: [push, pull_request]
+on:
+  pull_request:
+    branches:
+      - "**"
+  push:
+    branches:
+      - "master"
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -183,6 +189,7 @@ jobs:
       matrix:
         perl:
           [
+            "5.44",
             "5.42",
             "5.40",
             "5.38",
