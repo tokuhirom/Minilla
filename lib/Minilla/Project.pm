@@ -614,7 +614,7 @@ sub regenerate_meta_json {
 
     my $meta = $self->cpan_meta('unstable');
     $meta->save(File::Spec->catfile($self->dir, 'META.json'), {
-        version => '2.0'
+        version => 2
     });
 }
 

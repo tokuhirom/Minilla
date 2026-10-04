@@ -6,6 +6,7 @@ use Test::More;
 use lib "t/lib";
 use Util;
 use Archive::Tar;
+use CPAN::Meta;
 use JSON;
 
 use Minilla::CLI::Dist;
@@ -34,6 +35,7 @@ Minilla::Project->new()->regenerate_files();
 
 my $build_pl = slurp('Build.PL') . "\n# prepared Build.PL\n";
 my $meta = decode_json(slurp('META.json'));
+$meta->{abstract} = 'Prepared abstract';
 $meta->{x_prepared} = 'kept';
 my $meta_json = JSON->new->canonical->pretty->encode($meta);
 my $readme = "# Prepared README\n";
@@ -64,6 +66,14 @@ is(
 ok(
     $tar->contains_file('Acme-Foo-0.01/META.yml'),
     'generates META.yml for packaging',
+);
+is(
+    CPAN::Meta->load_yaml_string(
+        $tar->get_content('Acme-Foo-0.01/META.yml'),
+        { lazy_validation => 0 },
+    )->abstract,
+    'Prepared abstract',
+    'generates META.yml from the prepared META.json',
 );
 ok(
     $tar->contains_file('Acme-Foo-0.01/MANIFEST'),

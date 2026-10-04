@@ -12,6 +12,7 @@ use File::Basename qw(dirname);
 use File::Path qw(mkpath);
 use File::Copy qw(copy);
 use Config;
+use CPAN::Meta;
 
 use Minilla::Logger;
 use Minilla::Changes;
@@ -135,7 +136,9 @@ sub build {
 
     # Generate meta file
     {
-        my $meta = $self->project->cpan_meta();
+        my $meta = $self->skip_prepare
+            ? CPAN::Meta->load_file('META.json', { lazy_validation => 0 })
+            : $self->project->cpan_meta();
         $meta->save('META.yml', {
             version => 1.4,
         });
