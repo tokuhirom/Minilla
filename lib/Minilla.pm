@@ -45,10 +45,9 @@ for example C<minil --help release>.
 Enable or disable colored log output. Color is enabled by default when standard
 output is connected to a terminal.
 
-=item B<--debug>, B<--no-debug>
+=item B<--debug>
 
-Enable or disable debug logging. Debug mode also preserves temporary work
-directories.
+Enable debug logging and preserve temporary work directories.
 
 =item B<--auto-install>, B<--no-auto-install>
 
@@ -73,22 +72,20 @@ C<--username NAME>, C<--email ADDRESS>, C<-p PROFILE>, C<--profile PROFILE>
 
 =item C<minil test>
 
-C<--release>, C<--no-release>, C<--author>, C<--no-author>,
-C<--automated>, C<--no-automated>, C<--all>, C<--no-all>
+C<--release>, C<--automated>, C<--all>, C<--no-author>
 
 =item C<minil dist>
 
-C<--test>, C<--no-test> (also C<--notest>), C<--skip-prepare>,
-C<--no-skip-prepare>
+C<--no-test> (also C<--notest>), C<--skip-prepare>
 
 =item C<minil install>
 
-C<--test>, C<--no-test> (also C<--notest>)
+C<--no-test> (also C<--notest>)
 
 =item C<minil release>
 
-C<--test>, C<--no-test> (also C<--notest>), C<--trial>, C<--no-trial>,
-C<--dry-run>, C<--no-dry-run>, C<--pause-config FILE>
+C<--no-test> (also C<--notest>), C<--trial>, C<--dry-run>,
+C<--pause-config FILE>
 
 =item C<minil clean>
 

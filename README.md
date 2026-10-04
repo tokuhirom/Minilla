@@ -25,10 +25,9 @@ Minilla - CPAN module authoring tool
     Enable or disable colored log output. Color is enabled by default when standard
     output is connected to a terminal.
 
-- **--debug**, **--no-debug**
+- **--debug**
 
-    Enable or disable debug logging. Debug mode also preserves temporary work
-    directories.
+    Enable debug logging and preserve temporary work directories.
 
 - **--auto-install**, **--no-auto-install**
 
@@ -49,22 +48,20 @@ Run `minil help COMMAND` for the full documentation of a subcommand.
 
 - `minil test`
 
-    `--release`, `--no-release`, `--author`, `--no-author`,
-    `--automated`, `--no-automated`, `--all`, `--no-all`
+    `--release`, `--automated`, `--all`, `--no-author`
 
 - `minil dist`
 
-    `--test`, `--no-test` (also `--notest`), `--skip-prepare`,
-    `--no-skip-prepare`
+    `--no-test` (also `--notest`), `--skip-prepare`
 
 - `minil install`
 
-    `--test`, `--no-test` (also `--notest`)
+    `--no-test` (also `--notest`)
 
 - `minil release`
 
-    `--test`, `--no-test` (also `--notest`), `--trial`, `--no-trial`,
-    `--dry-run`, `--no-dry-run`, `--pause-config FILE`
+    `--no-test` (also `--notest`), `--trial`, `--dry-run`,
+    `--pause-config FILE`
 
 - `minil clean`
 

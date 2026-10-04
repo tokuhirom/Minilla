@@ -47,10 +47,6 @@ Minilla::CLI::Install - Install the dist to system
 
 =over 4
 
-=item B<--test>
-
-Run distribution tests before installing. This is the default.
-
 =item B<--no-test>, B<--notest>
 
 Skip distribution tests. Both spellings are supported.

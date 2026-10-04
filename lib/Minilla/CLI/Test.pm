@@ -57,26 +57,21 @@ Minilla::CLI::Test - Run test cases
 
 =over 4
 
-=item B<--release>, B<--no-release>
+=item B<--release>
 
-Set C<RELEASE_TESTING> while running tests, or do not set it. It is not set by
-default.
+Set C<RELEASE_TESTING> while running tests.
 
-=item B<--automated>, B<--no-automated>
+=item B<--automated>
 
-Set C<AUTOMATED_TESTING> while running tests, or do not set it. It is not set
-by default.
+Set C<AUTOMATED_TESTING> while running tests.
 
-=item B<--author>, B<--no-author>
+=item B<--no-author>
 
-Set C<AUTHOR_TESTING> while running tests, or do not set it. It is set by
-default.
+Prevent Minilla from setting C<AUTHOR_TESTING>, which it sets by default.
 
-=item B<--all>, B<--no-all>
+=item B<--all>
 
-C<--all> enables C<RELEASE_TESTING>, C<AUTOMATED_TESTING>, and
-C<AUTHOR_TESTING>. C<--no-all> does not enable them as a group; their
-individually configured values still apply.
+Set C<RELEASE_TESTING>, C<AUTOMATED_TESTING>, and C<AUTHOR_TESTING>.
 
 =back
 

@@ -88,21 +88,18 @@ Minilla::CLI::Release - Release the module to CPAN!
 
 =over 4
 
-=item B<--test>
-
-Run distribution tests before releasing. This is the default.
-
 =item B<--no-test>, B<--notest>
 
 Skip distribution tests. Both spellings are supported.
 
-=item B<--trial>, B<--no-trial>
+=item B<--trial>
 
-Enable or disable a trial release. Trial release mode is disabled by default.
+Create a trial release.
 
-=item B<--dry-run>, B<--no-dry-run>
+=item B<--dry-run>
 
-Enable or disable dry-run mode. Dry-run mode is disabled by default.
+Run the release process without bumping the version, committing, tagging, or
+uploading to CPAN.
 
 =item B<--pause-config FILE>
 
