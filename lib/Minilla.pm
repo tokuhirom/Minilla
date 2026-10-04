@@ -31,6 +31,68 @@ Minilla - CPAN module authoring tool
     minil release - Release your dist to CPAN
     minil run     - Run arbitrary commands against build dir
 
+=head1 GLOBAL OPTIONS
+
+=over 4
+
+=item B<-h>, B<--help>
+
+Show the main help page. A subcommand name may be supplied to show its help,
+for example C<minil --help release>.
+
+=item B<--color>, B<--no-color>
+
+Enable or disable colored log output. Color is enabled by default when standard
+output is connected to a terminal.
+
+=item B<--debug>
+
+Enable debug logging and preserve temporary work directories.
+
+=item B<--auto-install>, B<--no-auto-install>
+
+Enable or disable automatic installation of project dependencies, including
+development dependencies. Automatic installation is enabled by default.
+
+=item B<--version>
+
+Print the installed Minilla version and exit.
+
+=back
+
+=head1 COMMAND OPTIONS
+
+Run C<minil help COMMAND> for the full documentation of a subcommand.
+
+=over 4
+
+=item C<minil new>
+
+C<--username NAME>, C<--email ADDRESS>, C<-p PROFILE>, C<--profile PROFILE>
+
+=item C<minil test>
+
+C<--release>, C<--automated>, C<--all>, C<--no-author>
+
+=item C<minil dist>
+
+C<--no-test> (also C<--notest>), C<--skip-prepare>
+
+=item C<minil install>
+
+C<--no-test> (also C<--notest>)
+
+=item C<minil release>
+
+C<--no-test> (also C<--notest>), C<--trial>, C<--dry-run>,
+C<--pause-config FILE>
+
+=item C<minil clean>
+
+C<-y>
+
+=back
+
 =head1 DESCRIPTION
 
 Minilla is a CPAN module authoring tool. Minilla provides L<minil> command for authorizing a CPAN distribution.

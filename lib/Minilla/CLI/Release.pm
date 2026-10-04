@@ -84,10 +84,28 @@ Minilla::CLI::Release - Release the module to CPAN!
 
     % minil release
 
-        --no-test         Do not run test scripts
-        --trial           Trial release
-        --dry-run         Dry run mode
-        --pause-config    Path to a CPAN::Uploader configuration file
+=head1 OPTIONS
+
+=over 4
+
+=item B<--no-test>, B<--notest>
+
+Skip distribution tests. Both spellings are supported.
+
+=item B<--trial>
+
+Create a trial release.
+
+=item B<--dry-run>
+
+Run the release process without bumping the version, committing, tagging, or
+uploading to CPAN.
+
+=item B<--pause-config FILE>
+
+Use FILE as the CPAN::Uploader configuration file.
+
+=back
 
 =head1 DESCRIPTION
 

@@ -13,6 +13,60 @@ Minilla - CPAN module authoring tool
     minil release - Release your dist to CPAN
     minil run     - Run arbitrary commands against build dir
 
+# GLOBAL OPTIONS
+
+- **-h**, **--help**
+
+    Show the main help page. A subcommand name may be supplied to show its help,
+    for example `minil --help release`.
+
+- **--color**, **--no-color**
+
+    Enable or disable colored log output. Color is enabled by default when standard
+    output is connected to a terminal.
+
+- **--debug**
+
+    Enable debug logging and preserve temporary work directories.
+
+- **--auto-install**, **--no-auto-install**
+
+    Enable or disable automatic installation of project dependencies, including
+    development dependencies. Automatic installation is enabled by default.
+
+- **--version**
+
+    Print the installed Minilla version and exit.
+
+# COMMAND OPTIONS
+
+Run `minil help COMMAND` for the full documentation of a subcommand.
+
+- `minil new`
+
+    `--username NAME`, `--email ADDRESS`, `-p PROFILE`, `--profile PROFILE`
+
+- `minil test`
+
+    `--release`, `--automated`, `--all`, `--no-author`
+
+- `minil dist`
+
+    `--no-test` (also `--notest`), `--skip-prepare`
+
+- `minil install`
+
+    `--no-test` (also `--notest`)
+
+- `minil release`
+
+    `--no-test` (also `--notest`), `--trial`, `--dry-run`,
+    `--pause-config FILE`
+
+- `minil clean`
+
+    `-y`
+
 # DESCRIPTION
 
 Minilla is a CPAN module authoring tool. Minilla provides [minil](https://metacpan.org/pod/minil) command for authorizing a CPAN distribution.
