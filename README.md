@@ -27,7 +27,7 @@ As stated above, Minilla is opinionated. Minilla has a bold assumption and conve
 - Your executable files are in _script/_ directory, if any
 - Your module is maintained with **Git**, `git ls-files` matches with what you will release and your remote is named _origin_
 - Your module has a static list of prerequisites that can be described in [cpanfile](https://metacpan.org/pod/cpanfile)
-- Your module has a Changes file
+- Your module has a Changes file unless `manage_changes = false` is configured
 - Your module requires at least perl 5.6.
 
 # GETTING STARTED
@@ -90,6 +90,14 @@ The version can be selected interactively or supplied as an argument:
 The command does not commit, tag, build a distribution archive, upload, or
 push.
 
+## Building from prepared source
+
+`minil dist --skip-prepare` builds a distribution from an already prepared
+source tree without regenerating `META.json`, `README.md`, or `Build.PL` or
+`Makefile.PL`. Packaging files such as `META.yml` and `MANIFEST` are still
+generated. Distribution tests run by default and can be disabled with
+`--no-test`.
+
 ## CheckUntrackedFiles
 
 Checking git's untracked files. If there's untracked files, minilla will abort.
@@ -113,6 +121,9 @@ After that, minilla rewrites version numbers in \*\*/\*.pm, \*\*/\*.pl, and a sc
 You need to write Changes file. Your module's users need to know the difference between versions.
 
 Minilla's Changes file includes \`{{$NEXT}}\` next version indicator. You should put update informations after that.
+If the release version is already recorded below an empty `{{$NEXT}}` section,
+Minilla treats the Changes file as prepared for that release.
+
 ## RegenerateFiles
 
 In this step, minilla will regenerate META.json, README.md and (Makefile.PL|Build.PL).
@@ -138,6 +149,9 @@ Upload your module to CPAN.
 Rewrite Changes file.
 Minilla replaces `{{$NEXT}}` with released version number and current date & time.
 And put `{{$NEXT}}` on the first line.
+If the release version is already recorded below an empty `{{$NEXT}}` section,
+Minilla leaves the file unchanged.
+
 ## Commit
 
 Commit current directory with automatically generated commit message from Changes file. And push it to origin.
@@ -211,6 +225,15 @@ But, you can write configurations to _minil.toml_ file in [TOML](https://github.
 
     Minilla sets bugtracker to github/GitLab's issue tracker by default. But if you
     want to use RT, you can set this variable.
+
+- manage\_changes
+
+        manage_changes = false
+
+    Minilla manages the `Changes` file by default. Set this option to false to
+    allow projects without `Changes` or `{{$NEXT}}` and to prevent `minil dist`
+    and `minil release` from rewriting it. A separately maintained `Changes` or
+    `CHANGELOG.md` file tracked by Git is still included in the distribution.
 
 - no\_index
 

@@ -4,6 +4,7 @@ use utf8;
 use Test::More;
 use Test::Requires 'Version::Next';
 use CPAN::Meta;
+use Minilla;
 
 use lib "t/lib";
 use Util;
@@ -37,11 +38,11 @@ EOF
 
     like slurp('lib/Acme/Foo.pm'), qr/our \$VERSION = "v1\.2\.3"/,
         'updates the module version';
-    is(
-        CPAN::Meta->load_file('META.json')->version,
-        'v1.2.3',
-        'regenerates META.json with the selected version',
-    );
+    my $meta = CPAN::Meta->load_file('META.json', { lazy_validation => 0 });
+    is $meta->version, 'v1.2.3',
+        'regenerates META.json with the selected version';
+    is $meta->generated_by, "Minilla/$Minilla::VERSION",
+        'records Minilla as the META.json generator';
     like(
         slurp('Changes'),
         qr{

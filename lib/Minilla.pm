@@ -117,6 +117,14 @@ The version can be selected interactively or supplied as an argument:
 The command does not commit, tag, build a distribution archive, upload, or
 push.
 
+=head2 Building from prepared source
+
+C<minil dist --skip-prepare> builds a distribution from an already prepared
+source tree without regenerating F<META.json>, F<README.md>, or F<Build.PL> or
+F<Makefile.PL>. Packaging files such as F<META.yml> and F<MANIFEST> are still
+generated. Distribution tests run by default and can be disabled with
+C<--no-test>.
+
 =head2 CheckUntrackedFiles
 
 Checking git's untracked files. If there's untracked files, minilla will abort.
