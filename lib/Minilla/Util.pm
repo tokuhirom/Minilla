@@ -80,7 +80,7 @@ sub spew_utf8 {
 sub edit_file {
     my ($file) = @_;
     my $editor = $ENV{"EDITOR"} || "vi";
-    system( $editor, $file );
+    system qq{$editor "$file"};
 }
 
 sub find_file {
@@ -170,4 +170,3 @@ sub check_git {
 }
 
 1;
-
