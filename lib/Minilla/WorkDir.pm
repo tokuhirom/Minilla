@@ -145,7 +145,7 @@ sub build {
     }
 
     $self->project->regenerate_files();
-    $self->_rewrite_changes();
+    $self->_rewrite_changes() if $self->project->manage_changes;
     $self->_rewrite_pod();
 
     unless ($ENV{MINILLA_DISABLE_WRITE_RELEASE_TEST}) { # DO NOT USE THIS ENVIRONMENT VARIABLE.

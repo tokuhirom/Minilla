@@ -50,7 +50,7 @@ As stated above, Minilla is opinionated. Minilla has a bold assumption and conve
 
 =item Your module has a static list of prerequisites that can be described in L<cpanfile>
 
-=item Your module has a Changes file
+=item Your module has a Changes file unless C<manage_changes = false> is configured
 
 =item Your module requires at least perl 5.6.
 
@@ -230,6 +230,15 @@ It affects to L<Module::Build> 0.4005+ only.
 
 Minilla sets bugtracker to github/GitLab's issue tracker by default. But if you
 want to use RT, you can set this variable.
+
+=item manage_changes
+
+    manage_changes = false
+
+Minilla manages the F<Changes> file by default. Set this option to false to
+allow projects without F<Changes> or C<{{$NEXT}}> and to prevent C<minil dist>
+and C<minil release> from rewriting it. A separately maintained F<Changes> or
+F<CHANGELOG.md> file tracked by Git is still included in the distribution.
 
 =item no_index
 
