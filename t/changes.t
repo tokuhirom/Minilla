@@ -15,25 +15,11 @@ v1.2.3 2025-12-17T15:08:28Z
     - Hogehoge
 EOF
 
-    my $prepared = Minilla::Changes::prepared_release($content, 'v1.2.3');
-    ok $prepared, 'prepared release detected';
-    ok !$prepared->{has_pending_changes}, 'NEXT section is empty';
-
-    substr(
-        $content,
-        $prepared->{next_start},
-        $prepared->{version_start} - $prepared->{next_start},
-        '',
-    );
-    is $content, <<'EOF', 'NEXT marker and following blank line are removed';
-Revision history for Perl extension Hoge
-
-v1.2.3 2025-12-17T15:08:28Z
-    - Hogehoge
-EOF
+    ok Minilla::Changes::is_prepared($content, 'v1.2.3'),
+        'prepared release detected';
 };
 
-subtest 'prepared release with pending changes' => sub {
+subtest 'release with pending changes is not prepared' => sub {
     my $content = <<'EOF';
 {{$NEXT}}
     - Unreleased change
@@ -42,9 +28,8 @@ v1.2.3 2025-12-17T15:08:28Z
     - Released change
 EOF
 
-    my $prepared = Minilla::Changes::prepared_release($content, 'v1.2.3');
-    ok $prepared, 'prepared release detected';
-    ok $prepared->{has_pending_changes}, 'pending changes detected';
+    ok !Minilla::Changes::is_prepared($content, 'v1.2.3'),
+        'pending changes use the existing rewrite behavior';
 };
 
 subtest 'release version is not prepared' => sub {
@@ -56,7 +41,7 @@ v1.2.2 2025-11-01T00:00:00Z
     - Previous release
 EOF
 
-    ok !Minilla::Changes::prepared_release($content, 'v1.2.3'),
+    ok !Minilla::Changes::is_prepared($content, 'v1.2.3'),
         'a previous release heading does not count as prepared';
 };
 

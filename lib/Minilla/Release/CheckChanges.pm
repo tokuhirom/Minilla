@@ -20,17 +20,11 @@ sub run {
 
     while (1) {
         my $changes = slurp('Changes');
-        my $prepared = Minilla::Changes::prepared_release($changes, $version);
-        last if $prepared && !$prepared->{has_pending_changes};
-        last if !$prepared && $changes =~ /^\{\{\$NEXT\}\}\h*\R+\h+\S/m;
+        last if Minilla::Changes::is_prepared($changes, $version);
+        last if $changes =~ /^\{\{\$NEXT\}\}\h*\R+\h+\S/m;
 
         # Tell the user what the problem is
-        if ($prepared) {
-            infof(
-                "{{\$NEXT}} in changelog file 'Changes' must be empty when release %s is already present\n",
-                $version,
-            );
-        } elsif ($changes !~ /\{\{\$NEXT\}\}/m) {
+        if ($changes !~ /\{\{\$NEXT\}\}/m) {
             infof("No mention of {{\$NEXT}} in changelog file 'Changes'\n");
         } elsif ($changes !~ /^\{\{\$NEXT\}\}/m) {
             infof("{{\$NEXT}} must be at the beginning of a line in changelog file 'Changes'\n");

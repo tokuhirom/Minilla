@@ -168,19 +168,11 @@ sub _rewrite_changes {
 
     my $orig = slurp_raw('Changes');
     my $version = $self->project->version;
-    if (my $prepared = Minilla::Changes::prepared_release($orig, $version)) {
-        if ($prepared->{has_pending_changes}) {
-            errorf(
-                "{{\$NEXT}} in changelog file 'Changes' must be empty when release %s is already present\n",
-                $version,
-            );
-        }
-        substr(
-            $orig,
-            $prepared->{next_start},
-            $prepared->{version_start} - $prepared->{next_start},
-            '',
-        );
+    if (Minilla::Changes::is_prepared($orig, $version)) {
+        $orig =~ s!
+            ^\{\{\$NEXT\}\}\h*\R(?:\h*\R)*
+            (?=\Q$version\E(?:\h|\R|\z))
+        !!mx;
     } else {
         $orig =~ s!\{\{\$NEXT\}\}!
             $version . ' ' . $self->changes_time->strftime('%Y-%m-%dT%H:%M:%SZ')
