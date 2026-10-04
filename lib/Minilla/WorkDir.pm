@@ -140,11 +140,11 @@ sub build {
             ? CPAN::Meta->load_file('META.json', { lazy_validation => 0 })
             : $self->project->cpan_meta();
         $meta->save('META.yml', {
-            version => 1.4,
+            version => '1.4',
         });
         unless ($self->skip_prepare) {
             $meta->save('META.json', {
-                version => 2.0,
+                version => '2',
             });
         }
     }
