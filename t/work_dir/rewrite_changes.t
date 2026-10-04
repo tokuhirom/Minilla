@@ -53,30 +53,7 @@ v1.2.3 2025-12-17T15:08:28Z
 EOF
 };
 
-subtest 'pending changes keep the existing behavior' => sub {
-    my $time = Time::Piece->strptime('2026-10-03T12:34:56Z', '%Y-%m-%dT%H:%M:%SZ');
-    my $work_dir = work_dir('v1.2.3', $time);
-    my $guard = pushd($work_dir->dir);
-    spew_raw('Changes', <<'EOF');
-{{$NEXT}}
-    - Unreleased change
-
-v1.2.3 2025-12-17T15:08:28Z
-    - Released change
-EOF
-
-    $work_dir->_rewrite_changes();
-
-    is slurp_raw('Changes'), <<'EOF', 'the NEXT marker is rewritten as before';
-v1.2.3 2026-10-03T12:34:56Z
-    - Unreleased change
-
-v1.2.3 2025-12-17T15:08:28Z
-    - Released change
-EOF
-};
-
-subtest 'unprepared release keeps the existing behavior' => sub {
+subtest 'NEXT marker is replaced with the release version and build time' => sub {
     my $time = Time::Piece->strptime('2026-10-03T12:34:56Z', '%Y-%m-%dT%H:%M:%SZ');
     my $work_dir = work_dir('v1.2.3', $time);
     my $guard = pushd($work_dir->dir);

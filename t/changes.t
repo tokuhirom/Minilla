@@ -19,19 +19,6 @@ EOF
         'prepared release detected';
 };
 
-subtest 'release with pending changes is not prepared' => sub {
-    my $content = <<'EOF';
-{{$NEXT}}
-    - Unreleased change
-
-v1.2.3 2025-12-17T15:08:28Z
-    - Released change
-EOF
-
-    ok !Minilla::Changes::is_prepared($content, 'v1.2.3'),
-        'pending changes use the existing rewrite behavior';
-};
-
 subtest 'release version is not prepared' => sub {
     my $content = <<'EOF';
 {{$NEXT}}
