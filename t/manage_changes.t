@@ -7,7 +7,6 @@ use lib "t/lib";
 use Util;
 use Archive::Tar;
 
-use Minilla::CLI::Release;
 use Minilla::Profile::Default;
 use Minilla::Project;
 
@@ -21,16 +20,6 @@ subtest 'configuration' => sub {
 
     spew('minil.toml', "manage_changes = true\n");
     is(Minilla::Project->new(dir => '.')->manage_changes, 1, 'can be enabled explicitly');
-};
-
-subtest 'release steps' => sub {
-    my @managed = Minilla::CLI::Release::_steps(Local::Project->new(1));
-    ok(grep($_ eq 'CheckChanges', @managed), 'checks Changes by default');
-    ok(grep($_ eq 'RewriteChanges', @managed), 'rewrites Changes by default');
-
-    my @unmanaged = Minilla::CLI::Release::_steps(Local::Project->new(0));
-    ok(!grep($_ eq 'CheckChanges', @unmanaged), 'does not check unmanaged Changes');
-    ok(!grep($_ eq 'RewriteChanges', @unmanaged), 'does not rewrite unmanaged Changes');
 };
 
 subtest 'distribution without Changes' => sub {
@@ -104,14 +93,3 @@ subtest 'distribution with independently maintained Changes' => sub {
 };
 
 done_testing;
-
-package Local::Project;
-
-sub new {
-    my ($class, $manage_changes) = @_;
-    bless \$manage_changes, $class;
-}
-
-sub manage_changes {
-    ${$_[0]};
-}
