@@ -15,8 +15,11 @@ sub run {
     $project->clear_metadata();
     my $ver = $project->metadata->version;
 
-    my $msg = "Checking in changes prior to tagging of version $ver.\n\nChangelog diff is:\n\n";
-    $msg .= `git diff Changes`;
+    my $msg = "Checking in changes prior to tagging of version $ver.";
+    if ($project->manage_changes) {
+        $msg .= "\n\nChangelog diff is:\n\n";
+        $msg .= `git diff Changes`;
+    }
 
     if ($opts->{dry_run}) {
         infof("DRY-RUN.  Would have committed message of:\n----------------\n$msg\n-----------\n");
@@ -40,4 +43,3 @@ sub _push_to_origin {
 }
 
 1;
-

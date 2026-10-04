@@ -30,6 +30,27 @@ sub run {
         return;
     }
 
+    my @steps = _steps($project);
+    my @klasses;
+    # Load all step classes.
+    for (@steps) {
+        my $klass = "Minilla::Release::$_";
+        if (eval "require ${klass}; 1") {
+            push @klasses, $klass;
+            $klass->init() if $klass->can('init');
+        } else {
+            errorf("Error while loading %s: %s\n", $_, $@);
+        }
+    }
+    # And run all steps.
+    for my $klass (@klasses) {
+        $klass->run($project, $opts);
+    }
+}
+
+sub _steps {
+    my $project = shift;
+
     my @steps = qw(
         CheckUntrackedFiles
         CheckOrigin
@@ -47,21 +68,9 @@ sub run {
         Commit
         Tag
     );
-    my @klasses;
-    # Load all step classes.
-    for (@steps) {
-        my $klass = "Minilla::Release::$_";
-        if (eval "require ${klass}; 1") {
-            push @klasses, $klass;
-            $klass->init() if $klass->can('init');
-        } else {
-            errorf("Error while loading %s: %s\n", $_, $@);
-        }
-    }
-    # And run all steps.
-    for my $klass (@klasses) {
-        $klass->run($project, $opts);
-    }
+
+    return @steps if $project->manage_changes;
+    return grep { $_ ne 'CheckChanges' && $_ ne 'RewriteChanges' } @steps;
 }
 
 1;

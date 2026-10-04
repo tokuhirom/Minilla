@@ -119,6 +119,15 @@ sub allow_pureperl {
     $self->config->{allow_pureperl} ? 1 : 0;
 }
 
+sub manage_changes {
+    my $self = shift;
+    return 1 unless exists $self->config->{manage_changes};
+
+    my $manage_changes = $self->config->{manage_changes};
+    return 0 if !$manage_changes || $manage_changes eq 'false';
+    return 1;
+}
+
 sub version {
     my $self = shift;
     my $version = $self->config->{version} || $self->metadata->version;
