@@ -34,7 +34,7 @@ Minilla::Project->new()->regenerate_files();
 
 my $build_pl = slurp('Build.PL') . "\n# prepared Build.PL\n";
 my $meta = decode_json(slurp('META.json'));
-$meta->{x_prepared} = JSON::true;
+$meta->{x_prepared} = 'kept';
 my $meta_json = JSON->new->canonical->pretty->encode($meta);
 my $readme = "# Prepared README\n";
 spew('Build.PL', $build_pl);
