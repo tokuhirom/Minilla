@@ -110,4 +110,18 @@ This module creates module skeleton to current directory.
 
 =over 4
 
+=item B<--username NAME>
+
+Set the author name. The value of C<git config user.name> is used by default.
+
+=item B<--email ADDRESS>
+
+Set the author email address. The value of C<git config user.email> is used by
+default.
+
+=item B<-p PROFILE>, B<--profile PROFILE>
+
+Select the project profile. The default is C<Default>. Other bundled profiles
+include C<ModuleBuild>, C<ModuleBuildTiny>, C<ExtUtilsMakeMaker>, and C<XS>.
+
 =back

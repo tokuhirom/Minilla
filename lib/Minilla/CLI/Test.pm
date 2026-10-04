@@ -53,14 +53,33 @@ Minilla::CLI::Test - Run test cases
 
     % minil test
 
-        --release      enables the RELEASE_TESTING env variable
-        --automated    enables the AUTOMATED_TESTING env variable
-        --author       enables the AUTHOR_TESTING env variable (default
-                       behavior)
-        --all          enables the RELEASE_TESTING, AUTOMATED_TESTING and
-                       AUTHOR_TESTING env variables
+=head1 OPTIONS
+
+=over 4
+
+=item B<--release>, B<--no-release>
+
+Set C<RELEASE_TESTING> while running tests, or do not set it. It is not set by
+default.
+
+=item B<--automated>, B<--no-automated>
+
+Set C<AUTOMATED_TESTING> while running tests, or do not set it. It is not set
+by default.
+
+=item B<--author>, B<--no-author>
+
+Set C<AUTHOR_TESTING> while running tests, or do not set it. It is set by
+default.
+
+=item B<--all>, B<--no-all>
+
+C<--all> enables C<RELEASE_TESTING>, C<AUTOMATED_TESTING>, and
+C<AUTHOR_TESTING>. C<--no-all> does not enable them as a group; their
+individually configured values still apply.
+
+=back
 
 =head1 DESCRIPTION
 
 This sub-command run test cases.
-

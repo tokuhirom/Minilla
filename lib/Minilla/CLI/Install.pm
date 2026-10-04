@@ -43,9 +43,20 @@ Minilla::CLI::Install - Install the dist to system
 
     % minil install
 
-        --no-test Do not run test
+=head1 OPTIONS
+
+=over 4
+
+=item B<--test>
+
+Run distribution tests before installing. This is the default.
+
+=item B<--no-test>, B<--notest>
+
+Skip distribution tests. Both spellings are supported.
+
+=back
 
 =head1 DESCRIPTION
 
 This sub-command install the dist for your system.
-

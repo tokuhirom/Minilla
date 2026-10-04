@@ -46,9 +46,16 @@ Minilla::CLI::Clean - Clean up directory
 
     % minil clean
 
-        -y    delete files without asking
+=head1 OPTIONS
+
+=over 4
+
+=item B<-y>
+
+Delete files without asking for confirmation.
+
+=back
 
 =head1 DESCRIPTION
 
 Remove some temporary files.
-
