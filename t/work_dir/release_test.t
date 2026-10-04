@@ -46,7 +46,8 @@ subtest 'Contributors are included in stopwords' => sub {
 
     my $work_dir = Minilla::Project->new()->work_dir();
     $work_dir->build;
-    my $spelling_test_file = catfile($work_dir->project->work_dir->dir, 'xt', 'minilla', 'spelling.t');
+    my $work_dir_path = $work_dir->project->work_dir->dir;
+    my $spelling_test_file = catfile($work_dir_path, 'xt', 'minilla', 'spelling.t');
 
     ok -f $spelling_test_file;
     my $spelling  = slurp($spelling_test_file);
@@ -55,5 +56,19 @@ subtest 'Contributors are included in stopwords' => sub {
     like $stopwords, qr(tokuhirom) or diag $spelling;
     like $stopwords, qr(Foo) or diag $stopwords;
     like $stopwords, qr(Bar);
+    unlike $spelling, qr/\bHOME\b/, 'spelling test does not require HOME';
+    unlike $spelling, qr/\.spellunker\.en/, 'spelling test does not require a user dictionary';
+
+    local %ENV = %ENV;
+    delete $ENV{HOME};
+    my $work_dir_guard = pushd($work_dir_path);
+    open my $test_fh, '-|', $^X, 'xt/minilla/spelling.t'
+        or die "Cannot run spelling test: $!";
+    my $output = do {
+        local $/;
+        <$test_fh>;
+    };
+    close $test_fh;
+    is $? >> 8, 0, 'spelling test runs without HOME' or diag $output;
 };
 done_testing;
