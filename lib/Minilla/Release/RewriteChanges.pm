@@ -2,6 +2,7 @@ package Minilla::Release::RewriteChanges;
 use strict;
 use warnings;
 use utf8;
+use Minilla::Changes;
 use Minilla::Util qw(slurp_raw spew_raw);
 
 sub run {
@@ -9,6 +10,8 @@ sub run {
     return if $opts->{dry_run};
 
     my $content = slurp_raw('Changes');
+    return if Minilla::Changes::is_prepared($content, $project->version);
+
     $content =~ s!\{\{\$NEXT\}\}!
         "{{\$NEXT}}\n\n" . $project->version . " " . $project->work_dir->changes_time->strftime('%Y-%m-%dT%H:%M:%SZ')
     !e;
@@ -17,4 +20,3 @@ sub run {
 
 
 1;
-

@@ -124,6 +124,8 @@ After that, minilla rewrites version numbers in **/*.pm, **/*.pl, and a script f
 You need to write Changes file. Your module's users need to know the difference between versions.
 
 Minilla's Changes file includes `{{$NEXT}}` next version indicator. You should put update informations after that.
+If the release version is already recorded below an empty C<{{$NEXT}}> section,
+Minilla treats the Changes file as prepared for that release.
 
 =head2 RegenerateFiles
 
@@ -150,6 +152,8 @@ Upload your module to CPAN.
 Rewrite Changes file.
 Minilla replaces C<{{$NEXT}}> with released version number and current date & time.
 And put C<{{$NEXT}}> on the first line.
+If the release version is already recorded below an empty C<{{$NEXT}}> section,
+Minilla leaves the file unchanged.
 
 =head2 Commit
 

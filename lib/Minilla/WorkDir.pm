@@ -14,6 +14,7 @@ use File::Copy qw(copy);
 use Config;
 
 use Minilla::Logger;
+use Minilla::Changes;
 use Minilla::Util qw(randstr cmd cmd_perl slurp slurp_raw spew spew_raw pod_escape);
 use Minilla::FileGatherer;
 use Minilla::ReleaseTest;
@@ -166,9 +167,17 @@ sub _rewrite_changes {
     my $self = shift;
 
     my $orig = slurp_raw('Changes');
-    $orig =~ s!\{\{\$NEXT\}\}!
-        $self->project->version . ' ' . $self->changes_time->strftime('%Y-%m-%dT%H:%M:%SZ')
-    !e;
+    my $version = $self->project->version;
+    if (Minilla::Changes::is_prepared($orig, $version)) {
+        $orig =~ s!
+            ^\{\{\$NEXT\}\}\h*\R(?:\h*\R)*
+            (?=\Q$version\E(?:\h|\R|\z))
+        !!mx;
+    } else {
+        $orig =~ s!\{\{\$NEXT\}\}!
+            $version . ' ' . $self->changes_time->strftime('%Y-%m-%dT%H:%M:%SZ')
+        !e;
+    }
     spew_raw('Changes', $orig);
 }
 

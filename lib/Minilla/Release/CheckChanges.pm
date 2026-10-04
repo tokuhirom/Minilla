@@ -4,6 +4,7 @@ use warnings;
 use utf8;
 use ExtUtils::MakeMaker qw(prompt);
 
+use Minilla::Changes;
 use Minilla::Util qw(edit_file slurp);
 use Minilla::Logger;
 
@@ -19,6 +20,7 @@ sub run {
 
     while (1) {
         my $changes = slurp('Changes');
+        last if Minilla::Changes::is_prepared($changes, $version);
         last if $changes =~ /^\{\{\$NEXT\}\}\h*\R+\h+\S/m;
 
         # Tell the user what the problem is
