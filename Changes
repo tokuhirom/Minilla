@@ -1,6 +1,7 @@
 Revision history for Perl extension Minilla
 
 {{$NEXT}}
+    - Add `minil dist --skip-prepare` for building from prepared source (#343)
     - Add `minil prepare` to prepare repository files for release (#343)
     - Allow prepared release entries in `Changes` (#344)
 

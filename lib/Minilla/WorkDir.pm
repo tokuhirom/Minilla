@@ -47,6 +47,11 @@ has 'cleanup' => (
     default => sub { $Minilla::DEBUG ? 0 : 1 },
 );
 
+has 'skip_prepare' => (
+    is => 'ro',
+    default => sub { 0 },
+);
+
 has changes_time => (
     is => 'lazy',
 );
@@ -134,9 +139,11 @@ sub build {
         $meta->save('META.yml', {
             version => 1.4,
         });
-        $meta->save('META.json', {
-            version => 2.0,
-        });
+        unless ($self->skip_prepare) {
+            $meta->save('META.json', {
+                version => 2.0,
+            });
+        }
     }
 
     {
@@ -144,7 +151,7 @@ sub build {
         spew('MANIFEST', join("\n", @{$self->manifest_files}));
     }
 
-    $self->project->regenerate_files();
+    $self->project->regenerate_files() unless $self->skip_prepare;
     $self->_rewrite_changes() if $self->project->manage_changes;
     $self->_rewrite_pod();
 
