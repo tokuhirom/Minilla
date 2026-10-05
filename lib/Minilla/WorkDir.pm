@@ -337,7 +337,7 @@ sub _write_reproducible_tarball {
         \$tar_data => $tarball,
         Minimal => 1,
         Time    => 0,
-        Level   => 6,
+        Level   => 9,
     ) or die "Cannot write $tarball: $GzipError\n";
 }
 
