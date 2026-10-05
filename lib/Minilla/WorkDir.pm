@@ -3,6 +3,7 @@ use strict;
 use warnings;
 use utf8;
 use Archive::Tar;
+use IO::Compress::Gzip qw(gzip $GzipError);
 use File::pushd;
 use Data::Dumper; # serializer
 use File::Spec::Functions qw(splitdir);
@@ -232,6 +233,7 @@ sub dist {
     my ($self) = @_;
 
     $self->{tarball} ||= do {
+        my $archive_timestamp = $self->_archive_timestamp();
         $self->build();
 
         my $guard = pushd($self->dir);
@@ -239,33 +241,171 @@ sub dist {
         # Create tar ball
         my $tarball = sprintf('%s-%s.tar.gz', $self->project->dist_name, $self->project->version);
 
-        my $force_mode = 0;
+        if (defined $archive_timestamp) {
+            $self->_write_reproducible_tarball($tarball, $archive_timestamp);
+            infof("Wrote %s\n", $tarball);
+        } else {
+            my $force_mode = 0;
+            my $tar = Archive::Tar->new;
+            for my $file (@{$self->manifest_files}) {
+                my $filename = File::Spec->catfile($self->project->dist_name . '-' . $self->project->version, $file);
+                my $data = slurp($file);
+                my $mode = (stat($file))[2];
 
-        my $tar = Archive::Tar->new;
-        for my $file (@{$self->manifest_files}) {
-            my $filename = File::Spec->catfile($self->project->dist_name . '-' . $self->project->version, $file);
-            my $data = slurp($file);
+                # On Windows, (stat($file))[2] * ALWAYS * results in octal 0100666 (which means it is
+                # world writeable). World writeable files are always rejected by PAUSE. The solution is to
+                # change a file mode octal 0100666 to octal 000664, such that it is * NOT * world
+                # writeable. This works on Windows, as well as on other systems (Linux, Mac, etc...), because
+                # the filemode 0100666 only occurs on Windows. (If it occurred on Linux, it would be wrong anyway)
 
-            my $mode = (stat($file))[2];
+                if ($mode == 0100666) {
+                    $mode = 0644;
+                    $force_mode++;
+                }
 
-            # On Windows, (stat($file))[2] * ALWAYS * results in octal 0100666 (which means it is
-            # world writeable). World writeable files are always rejected by PAUSE. The solution is to
-            # change a file mode octal 0100666 to octal 000664, such that it is * NOT * world
-            # writeable. This works on Windows, as well as on other systems (Linux, Mac, etc...), because
-            # the filemode 0100666 only occurs on Windows. (If it occurred on Linux, it would be wrong anyway)
-
-            if ($mode == 0100666) {
-                $mode = 0644;
-                $force_mode++;
+                $tar->add_data($filename, $data, { mode => $mode });
             }
-
-            $tar->add_data($filename, $data, { mode => $mode });
+            $tar->write($tarball, COMPRESS_GZIP);
+            infof("Wrote %s\n", $tarball.($force_mode == 0 ? '' : ' --> forced to mode 000664'));
         }
-        $tar->write($tarball, COMPRESS_GZIP);
-        infof("Wrote %s\n", $tarball.($force_mode == 0 ? '' : ' --> forced to mode 000664'));
 
         File::Spec->rel2abs($tarball);
     };
+}
+
+sub _archive_timestamp {
+    my ($self) = @_;
+
+    if (exists $ENV{SOURCE_DATE_EPOCH}) {
+        my $timestamp = $ENV{SOURCE_DATE_EPOCH};
+        die "SOURCE_DATE_EPOCH must be a non-negative integer\n"
+            unless defined $timestamp && $timestamp =~ /\A[0-9]+\z/;
+        die "SOURCE_DATE_EPOCH is too large for a tar header\n"
+            if $timestamp > 8_589_934_591;
+        return 0 + $timestamp;
+    }
+
+    my $guard = pushd($self->project->dir);
+    open my $verify_fh, '-|', 'git', 'rev-parse', '--verify', '--quiet', 'HEAD'
+        or return;
+    my $head = <$verify_fh>;
+    return unless close $verify_fh && defined $head;
+
+    open my $fh, '-|', 'git', 'log', '-1', '--format=%ct'
+        or return;
+    my $timestamp = <$fh>;
+    return unless close $fh;
+    chomp $timestamp if defined $timestamp;
+    return unless defined $timestamp && $timestamp =~ /\A[0-9]+\z/;
+    return 0 + $timestamp;
+}
+
+sub _write_reproducible_tarball {
+    my ($self, $tarball, $timestamp) = @_;
+
+    my $index_modes = $self->_git_index_modes();
+    my $generated_executables = $self->_generated_executable_files();
+    my $prefix = $self->project->dist_name . '-' . $self->project->version;
+    my $tar = Archive::Tar->new;
+
+    for my $file (sort { _archive_path($a) cmp _archive_path($b) } @{$self->manifest_files}) {
+        my $archive_file = _archive_path($file);
+        my $mode = exists $index_modes->{$archive_file}
+            ? ($index_modes->{$archive_file} eq '100755' ? 0755 : 0644)
+            : $generated_executables->{$archive_file} ? 0755 : 0644;
+
+        $tar->add_data(
+            "$prefix/$archive_file",
+            slurp_raw($file),
+            {
+                mode  => $mode,
+                mtime => $timestamp,
+                uid   => 0,
+                gid   => 0,
+                uname => '',
+                gname => '',
+            },
+        );
+    }
+
+    my $tar_data = $tar->write();
+    die "Cannot create tar stream: " . $tar->error . "\n"
+        unless defined $tar_data;
+    $tar_data = _canonicalize_tar_headers($tar_data, $timestamp);
+
+    gzip(
+        \$tar_data => $tarball,
+        Minimal => 1,
+        Time    => 0,
+        Level   => 6,
+    ) or die "Cannot write $tarball: $GzipError\n";
+}
+
+sub _git_index_modes {
+    my ($self) = @_;
+
+    my $guard = pushd($self->project->dir);
+    open my $fh, '-|', 'git', 'ls-files', '--stage', '--recurse-submodules', '-z'
+        or die "Cannot read Git index: $!\n";
+    local $/ = "\0";
+    my %modes;
+    while (my $entry = <$fh>) {
+        $entry =~ s/\0\z//;
+        my ($mode, $stage, $path) = $entry =~ /\A([0-9]+) [0-9a-f]+ ([0-3])\t(.*)\z/s;
+        next unless defined $path && $stage == 0;
+        $modes{_archive_path($path)} = $mode;
+    }
+    close $fh or die "Cannot read Git index\n";
+    return \%modes;
+}
+
+sub _generated_executable_files {
+    my ($self) = @_;
+
+    my @files = eval $self->project->script_files;
+    die "Cannot evaluate script_files: $@" if $@;
+    return +{ map { _archive_path($_) => 1 } @files };
+}
+
+sub _archive_path {
+    my ($path) = @_;
+    $path =~ s!\\!/!g if $^O eq 'MSWin32';
+    return $path;
+}
+
+sub _canonicalize_tar_headers {
+    my ($tar_data, $timestamp) = @_;
+
+    my $offset = 0;
+    while ($offset + 512 <= length $tar_data) {
+        my $header = substr($tar_data, $offset, 512);
+        last if $header eq "\0" x 512;
+
+        my $size = substr($header, 124, 12);
+        $size =~ s/\0.*\z//s;
+        $size =~ s/\A\s+|\s+\z//g;
+        $size = length($size) ? oct($size) : 0;
+
+        my $type = substr($header, 156, 1);
+        my $mode = $type eq '5' ? 0755
+                 : $type eq 'L' ? 0644
+                 : oct(substr($header, 100, 8));
+
+        substr($header, 100, 8) = sprintf("%07o\0", $mode);
+        substr($header, 108, 8) = sprintf("%07o\0", 0);
+        substr($header, 116, 8) = sprintf("%07o\0", 0);
+        substr($header, 136, 12) = sprintf("%011o\0", $timestamp);
+        substr($header, 265, 32) = "\0" x 32;
+        substr($header, 297, 32) = "\0" x 32;
+        substr($header, 148, 8) = ' ' x 8;
+        my $checksum = unpack('%32C*', $header);
+        substr($header, 148, 8) = sprintf("%06o\0 ", $checksum);
+        substr($tar_data, $offset, 512) = $header;
+
+        $offset += 512 + int(($size + 511) / 512) * 512;
+    }
+
+    return $tar_data;
 }
 
 sub run {

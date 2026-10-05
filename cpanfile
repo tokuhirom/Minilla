@@ -3,6 +3,7 @@ requires 'perl'   => '5.010001';
 # Core module at recent Perl5.
 requires 'parent' => '0';
 requires 'Archive::Tar', '1.60';
+requires 'IO::Compress::Gzip';
 requires 'Time::Piece' => 1.16; # older Time::Piece was broken
 requires 'version';
 requires 'CPAN::Meta', '2.132830'; # merged_requirements is 2.132830+
