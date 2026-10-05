@@ -4,13 +4,13 @@
       "Tokuhiro Matsuno < tokuhirom@gmail.com >"
    ],
    "dynamic_config" : 0,
-   "generated_by" : "Minilla/v3.1.28, CPAN::Meta::Converter version 2.150010",
+   "generated_by" : "Minilla/v3.1.29",
    "license" : [
       "perl_5"
    ],
    "meta-spec" : {
       "url" : "http://search.cpan.org/perldoc?CPAN::Meta::Spec",
-      "version" : 2
+      "version" : "2"
    },
    "name" : "Minilla",
    "no_index" : {
@@ -113,7 +113,7 @@
          "web" : "https://github.com/tokuhirom/Minilla"
       }
    },
-   "version" : "v3.1.29",
+   "version" : "v3.2.0",
    "x_contributors" : [
       "Alex Kapranoff <alex@kapranoff.ru>",
       "Alex Kapranoff <kappa@yandex.ru>",
