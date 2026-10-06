@@ -86,8 +86,10 @@ my $dist_meta = CPAN::Meta->load_json_string(
     { lazy_validation => 0 },
 );
 is($dist_meta->release_status, 'stable', 'finalizes the release status');
+my $provided_file = $dist_meta->provides->{'Acme::Foo'}{file};
+$provided_file =~ s!\\!/!g;
 is(
-    $dist_meta->provides->{'Acme::Foo'}{file},
+    $provided_file,
     'lib/Acme/Foo.pm',
     'finalizes provides',
 );
