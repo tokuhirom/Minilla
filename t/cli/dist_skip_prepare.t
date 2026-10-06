@@ -54,8 +54,8 @@ local $ENV{SOURCE_DATE_EPOCH} = 1700000000;
 my $stdout = stdout_from(sub { Minilla::CLI::Dist->run('--skip-prepare', '--no-test') });
 is_deeply(
     decode_json((split /\n/, $stdout)[-1]),
-    { dist => catfile(Minilla::Project->new()->dir, 'Acme-Foo-0.01.tar.gz') },
-    'minil dist --skip-prepare logs the final archive path',
+    { dist => 'Acme-Foo-0.01.tar.gz' },
+    'minil dist --skip-prepare logs the relative archive path',
 );
 my $first_dist = slurp_raw('Acme-Foo-0.01.tar.gz');
 

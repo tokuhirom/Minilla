@@ -42,8 +42,8 @@ my $stdout = stdout_from(sub { Minilla::CLI::Dist->run('--no-test') });
 my $dist_path = catfile(Minilla::Project->new()->dir, 'Acme-Foo-0.01.tar.gz');
 is_deeply(
     decode_json((split /\n/, $stdout)[-1]),
-    { dist => $dist_path },
-    'minil dist logs the final archive path as a JSON object',
+    { dist => 'Acme-Foo-0.01.tar.gz' },
+    'minil dist logs the archive path relative to the current directory',
 );
 is(scalar(() = $stdout =~ /^\{/mg), 1, 'result is a single JSON line');
 like($stdout, qr/\n\z/, 'result ends with a newline');
