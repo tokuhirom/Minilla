@@ -536,6 +536,21 @@ sub cpan_meta {
     return $meta;
 }
 
+sub finalize_cpan_meta {
+    my ($self, $meta) = @_;
+
+    my $release_dat = $self->cpan_meta->as_struct;
+    my $dat = { %{$meta->as_struct} };
+    $dat->{release_status} = $release_dat->{release_status};
+    if (exists $release_dat->{provides}) {
+        $dat->{provides} = $release_dat->{provides};
+    } else {
+        delete $dat->{provides};
+    }
+
+    return CPAN::Meta->new($dat);
+}
+
 sub extract_git_info {
     my $self = shift;
 

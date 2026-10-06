@@ -197,10 +197,13 @@ push.
 
 C<minil dist --skip-prepare> and C<minil release --skip-prepare> build a
 distribution from an already prepared source tree without regenerating
-F<META.json>, F<README.md>, or F<Build.PL> or F<Makefile.PL>. Packaging files
-such as F<META.yml> and F<MANIFEST> are still generated. Distribution tests
-run by default and can be disabled with C<--no-test>. The release command uses
-the prepared version without prompting for or updating it.
+F<README.md> or F<Build.PL> or F<Makefile.PL>. Prepared F<META.json> fields
+are preserved, while C<release_status> and C<provides> are finalized in the
+archive using the same rules as a normal distribution build. The source
+F<META.json> is not changed. Packaging files such as F<META.yml> and
+F<MANIFEST> are still generated. Distribution tests run by default and can be
+disabled with C<--no-test>. The release command uses the prepared version
+without prompting for or updating it.
 
 =head2 CheckUntrackedFiles
 

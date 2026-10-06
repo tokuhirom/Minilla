@@ -162,10 +162,13 @@ push.
 
 `minil dist --skip-prepare` and `minil release --skip-prepare` build a
 distribution from an already prepared source tree without regenerating
-`META.json`, `README.md`, or `Build.PL` or `Makefile.PL`. Packaging files
-such as `META.yml` and `MANIFEST` are still generated. Distribution tests
-run by default and can be disabled with `--no-test`. The release command uses
-the prepared version without prompting for or updating it.
+`README.md` or `Build.PL` or `Makefile.PL`. Prepared `META.json` fields
+are preserved, while `release_status` and `provides` are finalized in the
+archive using the same rules as a normal distribution build. The source
+`META.json` is not changed. Packaging files such as `META.yml` and
+`MANIFEST` are still generated. Distribution tests run by default and can be
+disabled with `--no-test`. The release command uses the prepared version
+without prompting for or updating it.
 
 ## CheckUntrackedFiles
 

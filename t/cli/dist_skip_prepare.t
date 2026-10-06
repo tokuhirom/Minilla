@@ -75,36 +75,79 @@ is(
 );
 
 my $tar = Archive::Tar->new('Acme-Foo-0.01.tar.gz');
-is(
-    $tar->get_content('Acme-Foo-0.01/Build.PL'),
-    $build_pl,
-    'keeps the prepared Build.PL',
-);
-is(
-    $tar->get_content('Acme-Foo-0.01/META.json'),
-    $meta_json,
-    'keeps the prepared META.json',
-);
+is($tar->get_content('Acme-Foo-0.01/Build.PL'), $build_pl, 'keeps the prepared Build.PL');
 is(
     $tar->get_content('Acme-Foo-0.01/README.md'),
     $readme,
     'keeps the prepared README.md',
 );
+my $dist_meta = CPAN::Meta->load_json_string(
+    $tar->get_content('Acme-Foo-0.01/META.json'),
+    { lazy_validation => 0 },
+);
+is($dist_meta->release_status, 'stable', 'finalizes the release status');
+my $provided_file = $dist_meta->provides->{'Acme::Foo'}{file};
+$provided_file =~ s!\\!/!g;
+is(
+    $provided_file,
+    'lib/Acme/Foo.pm',
+    'finalizes provides',
+);
+is($dist_meta->abstract, 'Prepared abstract', 'keeps prepared standard metadata');
+is($dist_meta->custom('x_prepared'), 'kept', 'keeps prepared custom metadata');
+is(slurp_raw('META.json'), $meta_json, 'does not change the prepared META.json');
 ok(
     $tar->contains_file('Acme-Foo-0.01/META.yml'),
     'generates META.yml for packaging',
 );
-is(
-    CPAN::Meta->load_yaml_string(
-        $tar->get_content('Acme-Foo-0.01/META.yml'),
-        { lazy_validation => 0 },
-    )->abstract,
-    'Prepared abstract',
-    'generates META.yml from the prepared META.json',
+my $dist_meta_yml = CPAN::Meta->load_yaml_string(
+    $tar->get_content('Acme-Foo-0.01/META.yml'),
+    { lazy_validation => 0 },
 );
+is($dist_meta_yml->release_status, 'stable', 'finalizes META.yml release status');
+is_deeply($dist_meta_yml->provides, $dist_meta->provides, 'uses the same provides in META.yml');
+is($dist_meta_yml->abstract, 'Prepared abstract', 'keeps prepared metadata in META.yml');
 ok(
     $tar->contains_file('Acme-Foo-0.01/MANIFEST'),
     'generates MANIFEST for packaging',
 );
+
+{
+    my $guard = pushd(tempdir(CLEANUP => 1));
+
+    Minilla::Profile::Default->new(
+        author  => 'tokuhirom',
+        dist    => 'Acme-Trial',
+        path    => 'Acme/Trial.pm',
+        suffix  => 'Trial',
+        module  => 'Acme::Trial',
+        version => '0.02_01',
+        email   => 'tokuhirom@example.com',
+    )->generate();
+    write_minil_toml({
+        name           => 'Acme-Trial',
+        manage_changes => 0,
+    });
+    git_init();
+    git_config(qw(user.name tokuhirom));
+    git_config(qw(user.email tokuhirom@example.com));
+    git_add('.');
+    Minilla::Project->new()->regenerate_files();
+    git_add('.');
+    git_commit('-m', 'prepared trial release');
+
+    Minilla::CLI::Dist->run('--skip-prepare', '--no-test');
+
+    my $trial_tar = Archive::Tar->new('Acme-Trial-0.02_01.tar.gz');
+    my $trial_meta = CPAN::Meta->load_json_string(
+        $trial_tar->get_content('Acme-Trial-0.02_01/META.json'),
+        { lazy_validation => 0 },
+    );
+    is($trial_meta->release_status, 'unstable', 'keeps underscore versions unstable');
+    ok(
+        !exists $trial_meta->as_struct->{provides},
+        'does not add provides to an unstable release',
+    );
+}
 
 done_testing;
