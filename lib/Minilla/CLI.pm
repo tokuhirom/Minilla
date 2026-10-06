@@ -3,6 +3,7 @@ use strict;
 use warnings;
 use utf8;
 use Getopt::Long;
+use IO::Handle;
 use Try::Tiny;
 
 use Minilla;
@@ -23,6 +24,29 @@ use Moo;
 no Moo;
 
 sub run {
+    my ($self, @args) = @_;
+
+    STDOUT->flush or die "Cannot flush standard output: $!";
+    open my $stdout, '>&', \*STDOUT
+        or die "Cannot save standard output: $!";
+    local $Minilla::Logger::SLOG_OUTPUT = $Minilla::Logger::SLOG_OUTPUT || $stdout;
+    open STDOUT, '>&', \*STDERR
+        or die "Cannot redirect standard output to standard error: $!";
+
+    try {
+        $self->_run(@args);
+    } catch {
+        die $_;
+    } finally {
+        my $flushed = STDOUT->flush;
+        my $flush_error = $!;
+        open STDOUT, '>&', $stdout
+            or die "Cannot restore standard output: $!";
+        die "Cannot flush redirected standard output: $flush_error" unless $flushed;
+    };
+}
+
+sub _run {
     my ($self, @args) = @_;
 
     local $Minilla::AUTO_INSTALL = 1;

@@ -13,6 +13,7 @@ use JSON::PP qw(decode_json);
 use Test::Output qw(stdout_from output_from);
 
 use Minilla::CLI::Dist;
+use Minilla::CLI;
 use Minilla::Profile::Default;
 use Minilla::Project;
 
@@ -38,14 +39,16 @@ git_add('.');
 git_commit('-m', 'initial import');
 
 local $ENV{SOURCE_DATE_EPOCH} = 1700000000;
-my $stdout = stdout_from(sub { Minilla::CLI::Dist->run('--no-test') });
+my $stdout = stdout_from(sub {
+    Minilla::CLI->run('--no-auto-install', 'dist', '--no-test');
+});
 my $dist_path = catfile(Minilla::Project->new()->dir, 'Acme-Foo-0.01.tar.gz');
 is_deeply(
-    decode_json((split /\n/, $stdout)[-1]),
+    decode_json($stdout),
     { dist => 'Acme-Foo-0.01.tar.gz' },
     'minil dist logs the archive path relative to the current directory',
 );
-is(scalar(() = $stdout =~ /^\{/mg), 1, 'result is a single JSON line');
+is(scalar(() = $stdout =~ /\n/g), 1, 'standard output is a single JSON line');
 like($stdout, qr/\n\z/, 'result ends with a newline');
 ok(-f $dist_path, 'logged archive exists in the project directory');
 my $first_dist = slurp_raw('Acme-Foo-0.01.tar.gz');

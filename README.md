@@ -24,7 +24,8 @@ Minilla - CPAN module authoring tool
 
     Enable or disable colored log output. Color is enabled by default when standard
     error is connected to a terminal. Log output is written to standard error so
-    standard output remains available for command output and pipelines.
+    standard output remains reserved for structured JSON results emitted by
+    `Minilla::Logger::slog`.
 
 - **--debug**
 
@@ -73,6 +74,18 @@ Run `minil help COMMAND` for the full documentation of a subcommand.
 Minilla is a CPAN module authoring tool. Minilla provides [minil](https://metacpan.org/pod/minil) command for authorizing a CPAN distribution.
 
     (M::I - inc) + shipit + (dzil - plugins)
+
+## Command output
+
+The CLI reserves standard output for structured JSON results emitted by
+`Minilla::Logger::slog`. All other output goes to standard error, including
+build commands, test summaries, dependency installation, release hooks, and
+interactive prompts. This also applies to `--version`, `minil help`, and
+commands executed by `minil run`.
+
+For example, `minil dist --no-test --skip-prepare` writes only a single JSON
+line containing the archive path to standard output; build progress remains
+visible on standard error.
 
 # CONVENTION
 
