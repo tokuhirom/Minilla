@@ -1,6 +1,8 @@
 Revision history for Perl extension Minilla
 
 {{$NEXT}}
+
+v3.3.1 2026-10-06T15:42:42Z
     - Finalize `release_status` and `provides` metadata in archives built with `--skip-prepare` without modifying the source `META.json` (#360)
     - Reserve standard output for structured JSON Lines results and route all other CLI and subprocess output to standard error (#359)
 
