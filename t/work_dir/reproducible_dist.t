@@ -78,6 +78,72 @@ sub archive_entries {
     return ($tar, $tar->get_files);
 }
 
+sub git_output {
+    open my $fh, '-|', 'git', @_ or die "Cannot run git: $!";
+    my $output = do { local $/; <$fh> };
+    close $fh or die "Git command failed";
+    chomp $output;
+    return $output;
+}
+
+sub set_head_timestamp {
+    my ($timestamp) = @_;
+    my $tree = git_output('write-tree');
+    spew_raw('commit-object', <<"EOF");
+tree $tree
+author Test <test\@example.com> $timestamp +0000
+committer Test <test\@example.com> $timestamp +0000
+
+Timestamp boundary fixture
+EOF
+    my $commit = git_output('hash-object', '-t', 'commit', '-w', 'commit-object');
+    cmd('git', 'update-ref', 'HEAD', $commit);
+}
+
+subtest 'archive timestamp bounds apply to both sources' => sub {
+    my $guard = pushd(tempdir(CLEANUP => 1));
+    spew('regular.txt', "regular\n");
+    git_init();
+    git_add('.');
+    my $project = Local::Project->new(
+        dir   => File::Spec->rel2abs('.'),
+        files => ['regular.txt'],
+    );
+
+    for my $source ('SOURCE_DATE_EPOCH', 'Git HEAD timestamp') {
+        subtest $source => sub {
+            local $ENV{SOURCE_DATE_EPOCH};
+            delete $ENV{SOURCE_DATE_EPOCH};
+            for my $timestamp (0, 8_589_934_591, 8_589_934_592) {
+                if ($source eq 'SOURCE_DATE_EPOCH') {
+                    $ENV{SOURCE_DATE_EPOCH} = $timestamp;
+                } else {
+                    set_head_timestamp($timestamp);
+                }
+                my $dir = ($source eq 'SOURCE_DATE_EPOCH' ? 'env' : 'git') . "-$timestamp";
+                my $work_dir = Local::WorkDir->new(
+                    project        => $project,
+                    dir            => $dir,
+                    cleanup        => 0,
+                    manifest_files => ['regular.txt'],
+                );
+                my $dist = eval { $work_dir->dist };
+                my $error = $@;
+                if ($timestamp > 8_589_934_591) {
+                    is($error, "$source is too large for a tar header\n", 'rejects an oversized timestamp');
+                    ok(!-e catfile($dir, 'Acme-Foo-0.01.tar.gz'), 'does not write a corrupt archive');
+                } else {
+                    is($error, '', "accepts timestamp $timestamp");
+                    my ($tar, @entries) = archive_entries($dist);
+                    is(scalar @entries, 1, 'archive remains readable');
+                    is($entries[0]->mtime, $timestamp, 'archive preserves the boundary timestamp');
+                    is($entries[0]->data, "regular\n", 'archive content is intact');
+                }
+            }
+        };
+    }
+};
+
 subtest 'SOURCE_DATE_EPOCH creates reproducible archives' => sub {
     my $guard = pushd(tempdir(CLEANUP => 1));
 

@@ -302,12 +302,7 @@ sub _build_archive_timestamp {
     my ($self) = @_;
 
     if (exists $ENV{SOURCE_DATE_EPOCH}) {
-        my $timestamp = $ENV{SOURCE_DATE_EPOCH};
-        die "SOURCE_DATE_EPOCH must be a non-negative integer\n"
-            unless defined $timestamp && $timestamp =~ /\A[0-9]+\z/;
-        die "SOURCE_DATE_EPOCH is too large for a tar header\n"
-            if $timestamp > 8_589_934_591;
-        return 0 + $timestamp;
+        return _validate_archive_timestamp($ENV{SOURCE_DATE_EPOCH}, 'SOURCE_DATE_EPOCH');
     }
 
     my $guard = pushd($self->project->dir);
@@ -322,6 +317,16 @@ sub _build_archive_timestamp {
     return unless close $fh;
     chomp $timestamp if defined $timestamp;
     return unless defined $timestamp && $timestamp =~ /\A[0-9]+\z/;
+    return _validate_archive_timestamp($timestamp, 'Git HEAD timestamp');
+}
+
+sub _validate_archive_timestamp {
+    my ($timestamp, $source) = @_;
+
+    die "$source must be a non-negative integer\n"
+        unless defined $timestamp && $timestamp =~ /\A[0-9]+\z/;
+    die "$source is too large for a tar header\n"
+        if $timestamp > 8_589_934_591;
     return 0 + $timestamp;
 }
 
