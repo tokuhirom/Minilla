@@ -13,8 +13,6 @@ jobs:
       contents: read
     runs-on: ${{ matrix.os }}
     timeout-minutes: 30
-    env:
-      TMPDIR: ${{ runner.temp }}
     strategy:
       fail-fast: false
       matrix:
@@ -64,4 +62,6 @@ jobs:
         if: runner.os == 'Windows'
         run: cpanm -nq Win32::Console Win32::Console::ANSI
       - name: Run test
+        env:
+          TMPDIR: ${{ runner.temp }}
         run: prove -lr t
