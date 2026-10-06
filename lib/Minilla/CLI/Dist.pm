@@ -31,6 +31,7 @@ sub run {
     }
     my $work_dir = Minilla::WorkDir->new(
         project      => $project,
+        file_modes   => $project->file_modes,
         skip_prepare => $skip_prepare,
     );
     if ($test) {

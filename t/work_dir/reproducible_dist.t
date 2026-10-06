@@ -49,6 +49,11 @@ sub create_work_dir {
         project        => $project,
         dir            => $dir,
         cleanup        => 0,
+        file_modes     => {
+            'executable.pl' => 0755,
+            $long_file      => 0644,
+            'regular.txt'   => 0644,
+        },
         manifest_files => [
             'regular.txt',
             'script/generated',

@@ -40,6 +40,11 @@ has manifest_files => (
     is => 'lazy',
 );
 
+has file_modes => (
+    is        => 'ro',
+    predicate => 'has_file_modes',
+);
+
 has [qw(prereq_specs)] => (
     is => 'lazy',
 );
@@ -118,11 +123,16 @@ sub BUILD {
             warnf("Trying to copy non-existing file '$src', ignored\n");
             next;
         }
-        my $dst = File::Spec->catfile($self->dir, File::Spec->abs2rel($src, $self->project->dir));
+        my $relative_path = File::Spec->abs2rel($src, $self->project->dir);
+        my $dst = File::Spec->catfile($self->dir, $relative_path);
         mkpath(dirname($dst));
         infof("cp %s %s\n", $src, $dst);
         copy($src => $dst) or die "Copying failed: $src $dst, $!\n";
-        chmod((stat($src))[2], $dst) or die "Cannot change mode: $dst, $!\n";
+        my $archive_path = _archive_path($relative_path);
+        my $mode = $self->has_file_modes && exists $self->file_modes->{$archive_path}
+            ? $self->file_modes->{$archive_path}
+            : (stat($src))[2];
+        chmod($mode, $dst) or die "Cannot change mode: $dst, $!\n";
     }
 }
 
@@ -303,16 +313,19 @@ sub _archive_timestamp {
 sub _write_reproducible_tarball {
     my ($self, $tarball, $timestamp) = @_;
 
-    my $index_modes = $self->_git_index_modes();
+    my $file_modes = $self->has_file_modes ? $self->file_modes : undef;
     my $generated_executables = $self->_generated_executable_files();
     my $prefix = $self->project->dist_name . '-' . $self->project->version;
     my $tar = Archive::Tar->new;
 
     for my $file (sort { _archive_path($a) cmp _archive_path($b) } @{$self->manifest_files}) {
         my $archive_file = _archive_path($file);
-        my $mode = exists $index_modes->{$archive_file}
-            ? ($index_modes->{$archive_file} eq '100755' ? 0755 : 0644)
-            : $generated_executables->{$archive_file} ? 0755 : 0644;
+        my $mode = $file_modes && exists $file_modes->{$archive_file}
+            ? $file_modes->{$archive_file}
+            : $file_modes
+                ? ($generated_executables->{$archive_file} ? 0755 : 0644)
+                : (stat($file))[2];
+        $mode = 0644 if $mode == 0100666;
 
         $tar->add_data(
             "$prefix/$archive_file",
@@ -339,24 +352,6 @@ sub _write_reproducible_tarball {
         Time    => 0,
         Level   => 9,
     ) or die "Cannot write $tarball: $GzipError\n";
-}
-
-sub _git_index_modes {
-    my ($self) = @_;
-
-    my $guard = pushd($self->project->dir);
-    open my $fh, '-|', 'git', 'ls-files', '--stage', '--recurse-submodules', '-z'
-        or die "Cannot read Git index: $!\n";
-    local $/ = "\0";
-    my %modes;
-    while (my $entry = <$fh>) {
-        $entry =~ s/\0\z//;
-        my ($mode, $stage, $path) = $entry =~ /\A([0-9]+) [0-9a-f]+ ([0-3])\t(.*)\z/s;
-        next unless defined $path && $stage == 0;
-        $modes{_archive_path($path)} = $mode;
-    }
-    close $fh or die "Cannot read Git index\n";
-    return \%modes;
 }
 
 sub _generated_executable_files {
