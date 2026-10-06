@@ -63,9 +63,22 @@ has changes_time => (
     is => 'lazy',
 );
 
+has archive_timestamp => (
+    is => 'lazy',
+);
+
+has file_mode_overrides => (
+    is => 'ro',
+    default => sub { +{} },
+);
+
 no Moo;
 
-sub _build_changes_time { scalar(gmtime()) }
+sub _build_changes_time {
+    my ($self) = @_;
+    my $timestamp = $self->archive_timestamp;
+    return defined $timestamp ? scalar(gmtime($timestamp)) : scalar(gmtime());
+}
 
 sub DEMOLISH {
     my $self = shift;
@@ -200,6 +213,8 @@ sub _rewrite_changes {
         !e;
     }
     spew_raw('Changes', $orig);
+    chmod(0644, 'Changes') or die "Cannot change mode: Changes, $!\n";
+    $self->file_mode_overrides->{'Changes'} = 0644;
 }
 
 sub _rewrite_pod {
@@ -243,7 +258,7 @@ sub dist {
     my ($self) = @_;
 
     $self->{tarball} ||= do {
-        my $archive_timestamp = $self->_archive_timestamp();
+        my $archive_timestamp = $self->archive_timestamp;
         $self->build();
 
         my $guard = pushd($self->dir);
@@ -283,7 +298,7 @@ sub dist {
     };
 }
 
-sub _archive_timestamp {
+sub _build_archive_timestamp {
     my ($self) = @_;
 
     if (exists $ENV{SOURCE_DATE_EPOCH}) {
@@ -314,13 +329,16 @@ sub _write_reproducible_tarball {
     my ($self, $tarball, $timestamp) = @_;
 
     my $file_modes = $self->has_file_modes ? $self->file_modes : undef;
+    my $file_mode_overrides = $self->file_mode_overrides;
     my $generated_executables = $self->_generated_executable_files();
     my $prefix = $self->project->dist_name . '-' . $self->project->version;
     my $tar = Archive::Tar->new;
 
     for my $file (sort { _archive_path($a) cmp _archive_path($b) } @{$self->manifest_files}) {
         my $archive_file = _archive_path($file);
-        my $mode = $file_modes && exists $file_modes->{$archive_file}
+        my $mode = exists $file_mode_overrides->{$archive_file}
+            ? $file_mode_overrides->{$archive_file}
+            : $file_modes && exists $file_modes->{$archive_file}
             ? $file_modes->{$archive_file}
             : $file_modes
                 ? ($generated_executables->{$archive_file} ? 0755 : 0644)
