@@ -5,7 +5,7 @@ use utf8;
 
 use parent qw(Exporter);
 
-our @EXPORT = qw(git_ls_files git_init git_add git_rm git_commit git_config git_remote git_submodules git_submodule_files git_show_toplevel);
+our @EXPORT = qw(git_ls_files git_file_modes git_init git_add git_rm git_commit git_config git_remote git_submodules git_submodule_files git_show_toplevel);
 
 use Minilla::Logger qw(errorf);
 use Minilla::Util qw(cmd);
@@ -37,6 +37,22 @@ sub git_remote {
 sub git_ls_files {
     my @files = split /\0/, `git ls-files -z`;
     return @files;
+}
+
+sub git_file_modes {
+    open my $fh, '-|', 'git', 'ls-files', '--stage', '--recurse-submodules', '-z'
+        or die "Cannot read Git index: $!\n";
+    local $/ = "\0";
+    my %modes;
+    while (my $entry = <$fh>) {
+        $entry =~ s/\0\z//;
+        my ($mode, $stage, $path) = $entry =~ /\A([0-9]+) [0-9a-f]+ ([0-3])\t(.*)\z/s;
+        next unless defined $path && $stage == 0;
+        $path =~ s!\\!/!g if $^O eq 'MSWin32';
+        $modes{$path} = $mode eq '100755' ? 0755 : 0644;
+    }
+    close $fh or die "Cannot read Git index\n";
+    return \%modes;
 }
 
 sub git_submodules {

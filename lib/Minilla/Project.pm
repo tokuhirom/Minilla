@@ -13,7 +13,7 @@ use Module::CPANfile;
 use Module::Runtime qw(require_module);
 
 use Minilla;
-use Minilla::Git qw(git_show_toplevel);
+use Minilla::Git qw(git_file_modes git_show_toplevel);
 use Minilla::Logger;
 use Minilla::Metadata;
 use Minilla::WorkDir;
@@ -84,6 +84,10 @@ has work_dir => (
 );
 
 has files => (
+    is => 'lazy',
+);
+
+has file_modes => (
     is => 'lazy',
 );
 
@@ -784,8 +788,15 @@ sub _build_work_dir {
     my $self = shift;
     Minilla::WorkDir->new(
         project      => $self,
+        file_modes   => $self->file_modes,
         skip_prepare => $self->skip_prepare,
     );
+}
+
+sub _build_file_modes {
+    my $self = shift;
+    my $guard = pushd($self->dir);
+    return git_file_modes();
 }
 
 sub _build_files {

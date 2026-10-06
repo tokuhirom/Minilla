@@ -32,7 +32,12 @@ sub run {
     infof("Create %s\n", $dst);
     rmtree($dst);
     mkpath($dst);
-    my $work_dir = Minilla::WorkDir->new(project => $project, dir => $dst, cleanup => 0);
+    my $work_dir = Minilla::WorkDir->new(
+        project    => $project,
+        dir        => $dst,
+        cleanup    => 0,
+        file_modes => $project->file_modes,
+    );
     $work_dir->build();
 }
 

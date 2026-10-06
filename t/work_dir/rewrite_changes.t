@@ -4,6 +4,7 @@ use utf8;
 use Test::More;
 use File::Temp qw(tempdir);
 use File::pushd;
+use Fcntl qw(:mode);
 use Time::Piece;
 
 use Minilla::Util qw(slurp_raw spew_raw);
@@ -51,6 +52,14 @@ Revision history for Perl extension Hoge
 v1.2.3 2025-12-17T15:08:28Z
     - Hogehoge
 EOF
+    SKIP: {
+        skip "chmod has a portability issue under Windows", 1 if $^O eq 'MSWin32';
+        is(
+            (stat('Changes'))[2] & (S_IRWXU | S_IRWXG | S_IRWXO),
+            0644,
+            'rewritten Changes has mode 0644',
+        );
+    }
 };
 
 subtest 'NEXT marker is replaced with the release version and build time' => sub {
