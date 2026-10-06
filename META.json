@@ -61,6 +61,7 @@
             "File::Which" : "0",
             "File::pushd" : "0",
             "Getopt::Long" : "2.36",
+            "JSON::PP" : "0",
             "Module::CPANfile" : "0.9025",
             "Module::Metadata" : "1.000037",
             "Module::Runtime" : "0",

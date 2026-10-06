@@ -32,6 +32,7 @@ requires 'Moo' => 1.001000;
 
 # Utilities
 requires 'Data::Section::Simple' => 0.04;
+requires 'JSON::PP';
 requires 'Term::ANSIColor';
 requires 'Term::Encoding';
 requires 'Module::Runtime';
