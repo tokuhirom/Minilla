@@ -11,10 +11,12 @@ jobs:
   build:
     permissions:
       contents: read
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
     timeout-minutes: 30
     strategy:
+      fail-fast: false
       matrix:
+        os: ["ubuntu-latest"]
         perl:
           [
             "5.44",
@@ -29,15 +31,24 @@ jobs:
             "5.26",
             "5.24",
             "5.22",
-            "5.20",
-            "5.18",
-            "5.16",
-            "5.14",
-            "5.12",
-            "5.10"
+            "5.20"
           ]
-    name: Perl ${{ matrix.perl }}
+        include:
+          - os: macos-latest
+            perl: "5.42"
+          - os: macos-latest
+            perl: "5.44"
+          - os: windows-latest
+            perl: "5.42"
+          - os: windows-latest
+            perl: "5.44"
+    name: Perl ${{ matrix.perl }} on ${{ matrix.os }}
     steps:
+      - name: Git config
+        run: |
+          git config --global user.email "you@example.com"
+          git config --global user.name "Your Name"
+          git config --global core.autocrlf false
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
@@ -45,11 +56,12 @@ jobs:
         uses: shogo82148/actions-setup-perl@8b574cdc2dffdae49f803204a4f2b716a2fa1db7 # v1.44.2
         with:
           perl-version: ${{ matrix.perl }}
-      - name: Git config
-        run: |
-          git config --global user.email "you@example.com"
-          git config --global user.name "Your Name"
       - name: Install dependencies
         run: cpanm -nq --installdeps --with-develop --with-recommends .
+      - name: Install Windows dependencies
+        if: runner.os == 'Windows'
+        run: cpanm -nq Win32::Console Win32::Console::ANSI
       - name: Run test
+        env:
+          TMPDIR: ${{ runner.temp }}
         run: prove -lr t

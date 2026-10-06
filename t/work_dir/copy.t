@@ -38,7 +38,7 @@ subtest 'copy' => sub {
     ok($work_dir);
     ok -f catfile($work_dir->dir, 'bin/foo');
     SKIP: {
-        skip "-x test is not portable", 1 if $^O eq 'MSWin32';
+        skip "File permissions are not portable", 2 if $^O eq 'MSWin32';
         ok -x catfile($work_dir->dir, 'bin/foo');
         is(
             (stat(catfile($work_dir->dir, 'bin/foo')))[2] & (S_IRWXU | S_IRWXG | S_IRWXO),

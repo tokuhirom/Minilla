@@ -51,6 +51,8 @@ subtest 'dist' => sub {
     my $dist = $work_dir->dist();
     my $tar = Archive::Tar->new();
     $tar->read($dist);
+    my $manifest = $tar->get_content('Acme-Foo-0.01/MANIFEST');
+    $manifest =~ s/\r\n/\n/g;
 
     is_deeply(
         [sort $tar->list_files],
@@ -62,13 +64,13 @@ subtest 'dist' => sub {
                 $x =~ s!\\!/!g;
                 "Acme-Foo-0.01/$x"
             }
-            grep /\S/, split /\n/, $tar->get_content('Acme-Foo-0.01/MANIFEST')
+            grep /\S/, split /\n/, $manifest
         }],
         "Valid MANIFEST file was generated.",
     );
-    like($tar->get_content('Acme-Foo-0.01/MANIFEST'), qr{^Build.PL$}sm, 'Contains Build.PL in MANIFEST');
+    like($manifest, qr{^Build.PL$}sm, 'Contains Build.PL in MANIFEST');
 
-    like($tar->get_content('Acme-Foo-0.01/MANIFEST'), qr{^empty.txt$}sm, 'Contains empty.txt in MANIFEST');
+    like($manifest, qr{^empty.txt$}sm, 'Contains empty.txt in MANIFEST');
     ok($tar->contains_file('Acme-Foo-0.01/empty.txt'), 'Contains empty.txt in archive');
 
     my ($executable) = $tar->get_files('Acme-Foo-0.01/executable.pl');

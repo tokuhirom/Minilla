@@ -43,9 +43,9 @@ $meta->{abstract} = 'Prepared abstract';
 $meta->{x_prepared} = 'kept';
 my $meta_json = JSON->new->canonical->pretty->encode($meta);
 my $readme = "# Prepared README\n";
-spew('Build.PL', $build_pl);
-spew('META.json', $meta_json);
-spew('README.md', $readme);
+spew_raw('Build.PL', $build_pl);
+spew_raw('META.json', $meta_json);
+spew_raw('README.md', $readme);
 
 git_add('.');
 git_commit('-m', 'prepared release');
@@ -67,7 +67,8 @@ is(slurp('Build.PL'), $build_pl, 'keeps the prepared Build.PL');
 is(slurp('META.json'), $meta_json, 'keeps the prepared META.json');
 is(slurp('README.md'), $readme, 'keeps the prepared README.md');
 
-my ($tarball) = glob('.build/*/Acme-Foo-0.01.tar.gz');
+my $build_dir = $^O eq 'MSWin32' ? '_build' : '.build';
+my ($tarball) = glob("$build_dir/*/Acme-Foo-0.01.tar.gz");
 ok($tarball, 'created a release tarball');
 
 my $tar = Archive::Tar->new($tarball);

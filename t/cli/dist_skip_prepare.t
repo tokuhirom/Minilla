@@ -44,9 +44,9 @@ $meta->{abstract} = 'Prepared abstract';
 $meta->{x_prepared} = 'kept';
 my $meta_json = JSON->new->canonical->pretty->encode($meta);
 my $readme = "# Prepared README\n";
-spew('Build.PL', $build_pl);
-spew('META.json', $meta_json);
-spew('README.md', $readme);
+spew_raw('Build.PL', $build_pl);
+spew_raw('META.json', $meta_json);
+spew_raw('README.md', $readme);
 git_add('.');
 git_commit('-m', 'prepared release');
 

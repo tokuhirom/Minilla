@@ -102,7 +102,7 @@ EOF
 
 subtest 'archive timestamp bounds apply to both sources' => sub {
     my $guard = pushd(tempdir(CLEANUP => 1));
-    spew('regular.txt', "regular\n");
+    spew_raw('regular.txt', "regular\n");
     git_init();
     git_add('.');
     my $project = Local::Project->new(
