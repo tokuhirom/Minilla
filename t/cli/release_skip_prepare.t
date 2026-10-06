@@ -78,15 +78,22 @@ is(
     'packages the prepared Build.PL',
 );
 is(
-    $tar->get_content('Acme-Foo-0.01/META.json'),
-    $meta_json,
-    'packages the prepared META.json',
-);
-is(
     $tar->get_content('Acme-Foo-0.01/README.md'),
     $readme,
     'packages the prepared README.md',
 );
+my $dist_meta = CPAN::Meta->load_json_string(
+    $tar->get_content('Acme-Foo-0.01/META.json'),
+    { lazy_validation => 0 },
+);
+is($dist_meta->release_status, 'stable', 'finalizes the packaged release status');
+is(
+    $dist_meta->provides->{'Acme::Foo'}{file},
+    'lib/Acme/Foo.pm',
+    'finalizes packaged provides',
+);
+is($dist_meta->abstract, 'Prepared abstract', 'keeps prepared standard metadata');
+is($dist_meta->custom('x_prepared'), 'kept', 'keeps prepared custom metadata');
 
 {
     local $ENV{PERL_MINILLA_SKIP_CHECK_CHANGE_LOG} = 1;
