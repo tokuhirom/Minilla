@@ -56,5 +56,8 @@ jobs:
           git config --global user.name "Your Name"
       - name: Install dependencies
         run: cpanm -nq --installdeps --with-develop --with-recommends .
+      - name: Install Windows dependencies
+        if: runner.os == 'Windows'
+        run: cpanm -nq Win32::Console::ANSI
       - name: Run test
         run: prove -lr t
