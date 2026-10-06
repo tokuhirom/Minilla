@@ -7,10 +7,14 @@ use lib "t/lib";
 use Util;
 use Archive::Tar;
 use Digest::SHA qw(sha256_hex);
+use Errno qw(EACCES);
 use Fcntl qw(:mode);
+use JSON::PP qw(decode_json);
+use Test::Output qw(stdout_from output_from);
 
 use Minilla::CLI::Dist;
 use Minilla::Profile::Default;
+use Minilla::Project;
 
 my $guard = pushd(tempdir(CLEANUP => 1));
 
@@ -34,7 +38,16 @@ git_add('.');
 git_commit('-m', 'initial import');
 
 local $ENV{SOURCE_DATE_EPOCH} = 1700000000;
-Minilla::CLI::Dist->run('--no-test');
+my $stdout = stdout_from(sub { Minilla::CLI::Dist->run('--no-test') });
+my $dist_path = catfile(Minilla::Project->new()->dir, 'Acme-Foo-0.01.tar.gz');
+is_deeply(
+    decode_json((split /\n/, $stdout)[-1]),
+    { dist => $dist_path },
+    'minil dist logs the final archive path as a JSON object',
+);
+is(scalar(() = $stdout =~ /^\{/mg), 1, 'result is a single JSON line');
+like($stdout, qr/\n\z/, 'result ends with a newline');
+ok(-f $dist_path, 'logged archive exists in the project directory');
 my $first_dist = slurp_raw('Acme-Foo-0.01.tar.gz');
 
 utime(1800000000, 1800000000, 'Changes');
@@ -59,5 +72,24 @@ is(
     0644,
     'rewritten Changes is archived as 0644',
 );
+
+{
+    no warnings 'redefine';
+    local *Minilla::CLI::Dist::copy = sub { $! = EACCES; return };
+    local $Minilla::Logger::COLOR = 0;
+    my $error;
+    my ($stdout, $stderr) = output_from(sub {
+        eval { Minilla::CLI::Dist->run('--no-test') };
+        $error = $@;
+    });
+    unlike($stdout, qr/^\{"dist":/m, 'copy failures do not log a successful result');
+    isa_ok($error, 'Minilla::Error::CommandExit');
+    like(
+        $error->body,
+        qr/^Failed to copy .+ to \Q$dist_path\E: .+\n\z/,
+        'copy failures report the archive paths and error',
+    );
+    like($stderr, qr/^Failed to copy /m, 'copy failures are logged to standard error');
+}
 
 done_testing;
