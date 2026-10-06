@@ -29,6 +29,7 @@ sub run {
             : ($project->config->{release}->{pause_config}) ? $project->config->{release}->{pause_config}
             :                                                 undef;
         my $config = CPAN::Uploader->read_config_file($pause_config);
+        $config->{password} //= $ENV{CPAN_UPLOADER_UPLOAD_PASSWORD} // undef;
         if (!$config || !$config->{user} || !$config->{password}) {
             die <<EOF
 
@@ -43,11 +44,15 @@ EOF
         }
 
         PROMPT: while (1) {
-            my $answer = prompt("Release to " . ($config->{upload_uri} || 'CPAN') . ' ? [y/n] ');
+            my $answer = prompt("Release to " . ($config->{upload_uri} || 'CPAN') . ' ? [y/n/s[hell]] ');
             if ($answer =~ /y/i) {
                 last PROMPT;
             } elsif ($answer =~ /n/i) {
                 errorf("Giving up!\n");
+            } elsif ($answer =~ /^s/i) {
+              print "tar file: $tar\n";
+              system ($ENV{ SHELL } or 'sh');
+              redo PROMPT;
             } else {
                 redo PROMPT;
             }
