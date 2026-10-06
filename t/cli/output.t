@@ -1,5 +1,12 @@
 use strict;
 use warnings;
+
+if (@ARGV && $ARGV[0] eq '--output-helper') {
+    print "Child output\n";
+    print STDERR "Child error\n";
+    exit;
+}
+
 use Test::More;
 use Test::Output qw(output_from output_is);
 use JSON::PP qw(decode_json);
@@ -16,7 +23,7 @@ use Minilla::Profile::Default;
     local *Minilla::CLI::New::run = sub {
         print "Direct output\n";
         print STDERR "Original standard error\n";
-        cmd($^X, '-e', 'print "Child output\n"; print STDERR "Child error\n"');
+        cmd($^X, File::Spec->rel2abs($0), '--output-helper');
         prompt('Continue?', 'n');
         Minilla::Logger::slog({ event => 'result' });
     };
