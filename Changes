@@ -1,6 +1,8 @@
 Revision history for Perl extension Minilla
 
 {{$NEXT}}
+
+v3.3.0 2026-10-06T08:05:01Z
     - Update the Perl CI matrix and add macOS and Windows coverage (#358)
     - Emit the archive path as a JSON Lines result on successful `minil dist` (#357)
     - Add slog for structured JSON Lines logging to standard output (#356)
