@@ -37,7 +37,7 @@ subtest 'distribution without Changes' => sub {
     $profile->generate();
     spew('minil.toml', qq{name = "Acme-Foo"\nmanage_changes = false\n});
     unlink 'Changes' or die "Cannot remove Changes: $!";
-    spew('CHANGELOG.md', "# Changelog\n\nMaintained independently.\n");
+    spew_raw('CHANGELOG.md', "# Changelog\n\nMaintained independently.\n");
 
     git_init();
     git_config(qw(user.name tokuhirom));
@@ -72,7 +72,7 @@ subtest 'distribution with independently maintained Changes' => sub {
     );
     $profile->generate();
     spew('minil.toml', qq{name = "Acme-Foo"\nmanage_changes = false\n});
-    spew('Changes', "Release history maintained without a NEXT marker.\n");
+    spew_raw('Changes', "Release history maintained without a NEXT marker.\n");
 
     git_init();
     git_config(qw(user.name tokuhirom));
