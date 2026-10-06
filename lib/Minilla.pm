@@ -100,6 +100,18 @@ Minilla is a CPAN module authoring tool. Minilla provides L<minil> command for a
 
     (M::I - inc) + shipit + (dzil - plugins)
 
+=head2 Command output
+
+The CLI reserves standard output for structured JSON results emitted by
+C<Minilla::Logger::slog>. All other output goes to standard error, including
+build commands, test summaries, dependency installation, release hooks, and
+interactive prompts. This also applies to C<--version>, C<minil help>, and
+commands executed by C<minil run>.
+
+For example, C<minil dist --no-test --skip-prepare> writes only a single JSON
+line containing the archive path to standard output; build progress remains
+visible on standard error.
+
 =head1 CONVENTION
 
 As stated above, Minilla is opinionated. Minilla has a bold assumption and convention like the followings, which are almost compatible to the sister project L<Dist::Milla>.

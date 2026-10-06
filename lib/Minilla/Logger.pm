@@ -13,6 +13,7 @@ use Minilla::Errors;
 our @EXPORT = qw(debugf infof warnf errorf slog);
 
 our $COLOR;
+our $SLOG_OUTPUT;
 
 use constant { DEBUG => 1, INFO => 2, WARN => 3, ERROR => 4 };
 
@@ -49,7 +50,8 @@ sub debugf {
 }
 
 sub slog {
-    print STDOUT JSON::PP->new->ascii->encode(shift), "\n";
+    my $output = $SLOG_OUTPUT || \*STDOUT;
+    print {$output} JSON::PP->new->ascii->encode(shift), "\n";
 }
 
 sub errorf {
@@ -81,5 +83,7 @@ Strings are escaped, including embedded newlines and non-ASCII characters,
 so each call produces one physical line regardless of the output encoding.
 Unlike the formatted logging functions, C<slog> always writes to standard
 output and is not affected by color or debug settings.
+During CLI execution, it uses the saved standard output handle while all
+other output is redirected to standard error.
 
 =cut
