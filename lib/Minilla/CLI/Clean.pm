@@ -5,6 +5,7 @@ use utf8;
 use ExtUtils::MakeMaker qw(prompt);
 use File::Path qw(rmtree);
 
+use Minilla::Logger;
 use Minilla::Project;
 use Minilla::Util qw(parse_options);
 
@@ -29,7 +30,7 @@ sub run {
         'Makefile',
         'pm_to_blib',
     );
-    print("Would remove $_\n") for (@targets);
+    infof("Would remove %s\n", $_) for @targets;
     if ($yes_opt || prompt('Remove it?', 'y') =~ /y/i) {
         rmtree($_) for @targets;
     }
