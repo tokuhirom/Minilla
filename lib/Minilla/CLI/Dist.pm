@@ -77,9 +77,10 @@ F<META.json>, F<README.md>, and F<Build.PL> or F<Makefile.PL>, are copied
 from the prepared source tree without being regenerated. Packaging files
 such as F<META.yml> and F<MANIFEST> are still generated.
 
-When C<SOURCE_DATE_EPOCH> is set, its value is used as the timestamp for
-every tar entry. Otherwise, the timestamp of the Git HEAD commit is used
-when available. In either case, tar metadata and the gzip header are
-canonicalized so identical distribution inputs produce identical archives.
-If neither timestamp is available, Minilla retains its legacy archive
-behavior.
+To make distribution archives reproducible, Minilla uses the timestamp of
+the Git HEAD commit for every tar entry when available. If
+C<SOURCE_DATE_EPOCH> is set, Minilla follows the reproducible-build convention
+and uses its value instead. In either case, tar metadata and the gzip header
+are canonicalized so identical distribution inputs produce identical
+archives. If neither timestamp is available, Minilla retains its legacy
+archive behavior.
