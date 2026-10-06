@@ -1,13 +1,18 @@
 Revision history for Perl extension Minilla
 
 {{$NEXT}}
-    - Add slog for structured JSON Lines logging to standard output
-    - Write log output to standard error, keeping standard output available for pipelines
+    - Update the Perl CI matrix and add macOS and Windows coverage (#358)
+    - Emit the archive path as a JSON Lines result on successful `minil dist` (#357)
+    - Add slog for structured JSON Lines logging to standard output (#356)
+    - Write log output to standard error, keeping standard output available for pipelines (#355)
+    - Make distribution tarballs reproducible using SOURCE_DATE_EPOCH or the Git HEAD timestamp (#354)
 
 v3.2.0 2026-10-05T01:48:07Z
     - Add `minil release --skip-prepare` for releasing from prepared source (#353)
+    - Harden GitHub Actions workflows and add Dependabot configuration (#352)
     - Run spelling tests without requiring ~/.spellunker.en (#284, #351)
     - Support command-line arguments in `EDITOR` (#306, #350)
+    - Document command-line options and the `--notest` alias (#349)
     - Add `minil dist --skip-prepare` for building from prepared source (#348)
     - Add `minil prepare` to prepare repository files for release (#347)
     - Add Perl 5.44 to GitHub Actions (#346)

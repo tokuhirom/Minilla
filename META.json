@@ -4,7 +4,7 @@
       "Tokuhiro Matsuno < tokuhirom@gmail.com >"
    ],
    "dynamic_config" : 0,
-   "generated_by" : "Minilla/v3.1.29",
+   "generated_by" : "Minilla/v3.2.0",
    "license" : [
       "perl_5"
    ],
@@ -61,6 +61,7 @@
             "File::Which" : "0",
             "File::pushd" : "0",
             "Getopt::Long" : "2.36",
+            "IO::Compress::Gzip" : "0",
             "JSON::PP" : "0",
             "Module::CPANfile" : "0.9025",
             "Module::Metadata" : "1.000037",
@@ -144,6 +145,7 @@
       "Klaus Eichner <klaus03@gmail.com>",
       "Manni Heumann <github@lxxi.org>",
       "Masahiro Nagano <kazeburo@gmail.com>",
+      "Masayuki Matsuki <y.songmu@gmail.com>",
       "Nathaniel Nutter <iam@nnutter.com>",
       "Oleg Gashev <oleg@gashev.net>",
       "Peter Oliver <git@mavit.org.uk>",
@@ -153,7 +155,6 @@
       "Shohei YOSHIDA <syohex@gmail.com>",
       "Shoichi Kaji <skaji@cpan.org>",
       "Shoichi Kaji <skaji@outlook.com>",
-      "Songmu <y.songmu@gmail.com>",
       "TAGOMORI Satoshi <tagomoris@gmail.com>",
       "Takumi Akiyama <t.akiym@gmail.com>",
       "Tatsuhiko Miyagawa <miyagawa@bulknews.net>",
