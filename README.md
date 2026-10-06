@@ -23,7 +23,8 @@ Minilla - CPAN module authoring tool
 - **--color**, **--no-color**
 
     Enable or disable colored log output. Color is enabled by default when standard
-    output is connected to a terminal.
+    error is connected to a terminal. Log output is written to standard error so
+    standard output remains available for command output and pipelines.
 
 - **--debug**
 

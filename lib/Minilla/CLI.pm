@@ -26,7 +26,7 @@ sub run {
     my ($self, @args) = @_;
 
     local $Minilla::AUTO_INSTALL = 1;
-    local $Minilla::Logger::COLOR = -t STDOUT ? 1 : 0;
+    local $Minilla::Logger::COLOR = -t STDERR ? 1 : 0;
     local @ARGV = @args;
     my @commands;
     my $version;
@@ -70,4 +70,3 @@ sub run {
 }
 
 1;
-

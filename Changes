@@ -1,6 +1,7 @@
 Revision history for Perl extension Minilla
 
 {{$NEXT}}
+    - Write log output to standard error, keeping standard output available for pipelines
 
 v3.2.0 2026-10-05T01:48:07Z
     - Add `minil release --skip-prepare` for releasing from prepared source (#353)

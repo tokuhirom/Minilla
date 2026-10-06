@@ -32,8 +32,7 @@ sub _print {
     my($msg, $type) = @_;
     return if $type == DEBUG && !Minilla->debug;
     $msg = colored $msg, $Colors->{$type} if defined $type && $COLOR;
-    my $fh = $type && $type >= WARN ? *STDERR : *STDOUT;
-    print {$fh} $msg;
+    print STDERR $msg;
 }
 
 sub infof {
@@ -57,4 +56,3 @@ sub errorf {
 }
 
 1;
-
