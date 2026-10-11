@@ -1,6 +1,8 @@
 Revision history for Perl extension Minilla
 
 {{$NEXT}}
+
+v3.3.2 2026-10-11T14:40:58Z
     - Avoid interactive release prompts when standard input is not a terminal; require an explicit version for preparation, skip Changes editing, and fail version format changes or CPAN uploads that require confirmation (#362)
     - Return a nonzero exit status for command errors and project validation failures so automated callers can detect failures (#362)
 
