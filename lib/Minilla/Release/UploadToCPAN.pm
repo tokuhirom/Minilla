@@ -4,7 +4,7 @@ use warnings;
 use utf8;
 use ExtUtils::MakeMaker qw(prompt);
 
-use Minilla::Util qw(require_optional);
+use Minilla::Util qw(require_optional is_interactive);
 use Minilla::Logger;
 
 sub init {
@@ -23,6 +23,9 @@ sub run {
     } elsif ($project->config->{release}->{do_not_upload_to_cpan}) {
         infof("You disabled CPAN uploading feature in minil.toml.\n");
     } else {
+        unless (is_interactive()) {
+            errorf("CPAN upload requires confirmation from a terminal. Use a terminal to release, or '--dry-run' to check the release without uploading.\n");
+        }
         infof("Upload to CPAN\n");
 
         my $pause_config = ($opts->{pause_config})          ? $opts->{pause_config}

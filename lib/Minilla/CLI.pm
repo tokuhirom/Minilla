@@ -77,13 +77,18 @@ sub _run {
 
     ## no critic
     if (eval sprintf("require %s; 1;", $klass)) {
+        my $exit_code = 0;
         try {
             $klass->run(@commands);
         } catch {
-            /Minilla::Error::CommandExit/ and return;
+            if (/Minilla::Error::CommandExit/) {
+                $exit_code = 1;
+                return;
+            }
             errorf("%s\n", $_);
             exit 1;
-        }
+        };
+        return $exit_code;
     } else {
         warnf("Could not find command '%s'\n", $cmd);
         if ($@ !~ /^Can't locate Minilla/) {

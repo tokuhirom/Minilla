@@ -13,7 +13,7 @@ if (@ARGV && $ARGV[0] eq '--editor-helper') {
 
 use Test::More;
 use File::Temp qw(tempfile);
-use Minilla::Util qw(edit_file slurp);
+use Minilla::Util qw(edit_file slurp is_interactive);
 
 my ($fh, $output) = tempfile();
 close $fh or die "Cannot close '$output': $!";
@@ -23,5 +23,11 @@ edit_file('Changes');
 
 is slurp($output), "--wait\nChanges",
     'EDITOR may contain command-line arguments';
+
+{
+    local *STDIN;
+    open STDIN, '<', \'' or die "Cannot redirect standard input: $!";
+    ok !is_interactive(), 'scalar input is not interactive';
+}
 
 done_testing;

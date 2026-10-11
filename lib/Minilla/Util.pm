@@ -22,6 +22,7 @@ our @EXPORT_OK = qw(
     pod_escape
     parse_options
     check_git
+    is_interactive
 );
 
 our %EXPORT_TAGS = (
@@ -81,6 +82,10 @@ sub edit_file {
     my ($file) = @_;
     my $editor = $ENV{"EDITOR"} || "vi";
     system qq{$editor "$file"};
+}
+
+sub is_interactive {
+    return -t STDIN;
 }
 
 sub find_file {

@@ -27,9 +27,7 @@ sub run {
     );
 
     my $project = Minilla::Project->new();
-    unless ($project->validate()) {
-        return;
-    }
+    errorf("Project validation failed.\n") unless $project->validate();
     my $work_dir = Minilla::WorkDir->new(
         project      => $project,
         file_modes   => $project->file_modes,

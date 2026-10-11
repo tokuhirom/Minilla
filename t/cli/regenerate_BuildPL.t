@@ -10,6 +10,7 @@ use Minilla::CLI::Dist;
 use Minilla::CLI::New;
 use Minilla::CLI::Release;
 use Minilla::CLI::Test;
+use Minilla::Release::BumpVersion;
 
 sub regenerate_BuildPL_test {
     my ($cli_class, %opt) = @_;
@@ -57,6 +58,8 @@ sub regenerate_BuildPL_test {
 {
     my $repo = tempdir(CLEANUP => 1);
     { my $guard = pushd($repo); cmd('git', 'init', '--bare'); }
+    no warnings 'redefine';
+    local *Minilla::Release::BumpVersion::is_interactive = sub { 1 };
     local $ENV{PERL_MM_USE_DEFAULT} = 1;
     local $ENV{PERL_MINILLA_SKIP_CHECK_CHANGE_LOG} = 1;
     local $ENV{FAKE_RELEASE} = 1;
