@@ -17,7 +17,7 @@ sub run {
     errorf("Too many arguments for prepare\n") if @args;
 
     my $project = Minilla::Project->new();
-    return unless $project->validate();
+    errorf("Project validation failed.\n") unless $project->validate();
 
     my $opts = {
         version => $version,
@@ -47,6 +47,12 @@ Minilla::CLI::Prepare - Prepare the source tree for release
 
 This sub-command updates the distribution version, regenerates repository files,
 and prepares F<Changes> when Minilla manages it.
+
+When standard input is not a terminal, the version argument is required.
+An explicitly supplied empty version is invalid.
+A version format change fails instead of prompting for confirmation.
+If F<Changes> needs editing, Minilla reports the problem and skips the
+interactive editing step; it still regenerates files and rewrites F<Changes>.
 
 It does not commit changes, create a Git tag, build a distribution archive,
 upload to CPAN, or push anything.

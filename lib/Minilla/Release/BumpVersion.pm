@@ -4,7 +4,7 @@ use warnings;
 use utf8;
 use ExtUtils::MakeMaker qw(prompt);
 
-use Minilla::Util qw(find_file require_optional cmd);
+use Minilla::Util qw(find_file require_optional cmd is_interactive);
 use Minilla::Logger;
 use Module::BumpVersion;
 use version ();
@@ -29,11 +29,15 @@ sub run {
         return;
     }
 
+    if (!defined $opts->{version} && !is_interactive()) {
+        errorf("A version is required when standard input is not a terminal. Run 'minil prepare VERSION', then 'minil release --skip-prepare'.\n");
+    }
+
     my $ver = defined $opts->{version}
         ? $opts->{version}
         : prompt("Next Release?", $self->default_new_version($project));
 
-    if ($ver) {
+    if (defined $opts->{version} || $ver) {
         # Do not use is_strict. is_strict rejects '5.00_01' style.
         if (!version::is_lax($ver)) {
             errorf("Sorry, version '%s' is invalid.  Stopping.\n", $ver);
@@ -41,6 +45,9 @@ sub run {
 
         my $curr_ver = $project->metadata->version;
         if (!check_version_compatibility($curr_ver, $ver)) {
+            unless (is_interactive()) {
+                errorf("The version format doesn't match the current one (%s -> %s), and cannot be confirmed without a terminal.\n", $curr_ver, $ver);
+            }
             my $msg = sprintf
                 "version: %s\n" .
                 "current: %s\n" .

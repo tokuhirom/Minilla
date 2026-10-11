@@ -7,6 +7,7 @@ use lib "t/lib";
 use Util;
 use Minilla::Profile::ModuleBuild;
 use Minilla::CLI::Release;
+use Minilla::Release::BumpVersion;
 
 subtest 'wrong release branch' => sub {
     my $RELEASE_BRANCH = 'GREAT_RELEASE_BRANCH';
@@ -37,6 +38,8 @@ subtest 'wrong release branch' => sub {
     git_remote('add', 'origin', "file://$repo");
 
     {
+        no warnings 'redefine';
+        local *Minilla::Release::BumpVersion::is_interactive = sub { 1 };
         local $ENV{PERL_MM_USE_DEFAULT} = 1;
         local $ENV{PERL_MINILLA_SKIP_CHECK_CHANGE_LOG} = 1;
         local $ENV{FAKE_RELEASE} = 1;
@@ -78,6 +81,8 @@ subtest 'correct release branch' => sub {
     cmd('git', 'branch','-M', $RELEASE_BRANCH);
 
     {
+        no warnings 'redefine';
+        local *Minilla::Release::BumpVersion::is_interactive = sub { 1 };
         local $ENV{PERL_MM_USE_DEFAULT} = 1;
         local $ENV{PERL_MINILLA_SKIP_CHECK_CHANGE_LOG} = 1;
         local $ENV{FAKE_RELEASE} = 1;

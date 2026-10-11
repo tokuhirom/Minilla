@@ -23,12 +23,19 @@ ok(-f 'Acme-Foo/t/00_compile.t');
     local $ENV{PERL_MINILLA_SKIP_CHECK_CHANGE_LOG} = 1;
     local $ENV{FAKE_RELEASE} = 1;
     my $guard = pushd('Acme-Foo');
+    my $repo = tempdir(CLEANUP => 1);
+    {
+        my $remote_guard = pushd($repo);
+        cmd('git', 'init', '--bare');
+    }
+    git_remote('add', 'origin', "file://$repo");
     is(minil('migrate'), 0);
     is(minil('build'), 0);
     is(minil('test'), 0);
     is(minil('dist'), 0);
     if (eval "require CPAN::Uploader; 1") {
-        is(minil('release', '--dry-run'), 0);
+        is(minil('prepare', '0.01'), 0);
+        is(minil('release', '--skip-prepare', '--dry-run'), 0);
     } else {
         diag "CPAN::Upoader is not installed?, skip releng tests";
     }

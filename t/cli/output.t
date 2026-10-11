@@ -67,8 +67,11 @@ use Minilla::Profile::Default;
         Minilla::Logger::errorf("Command failed\n");
     };
     output_is(
-        sub { Minilla::CLI->run('new'); print "Restored after failure\n" },
-        "Restored after failure\n", "Command failed\n",
+        sub {
+            my $status = Minilla::CLI->run('new');
+            print "Restored after failure ($status)\n";
+        },
+        "Restored after failure (1)\n", "Command failed\n",
         'standard output is restored after a command error',
     );
 }
@@ -85,11 +88,13 @@ use Minilla::Profile::Default;
             Minilla::Logger::slog({ event => 'outer' });
         }
     };
+    my $status;
     output_is(
-        sub { Minilla::CLI->run('new') },
+        sub { $status = Minilla::CLI->run('new') },
         "{\"event\":\"nested\"}\n{\"event\":\"outer\"}\n", "Outer output\n",
         'nested CLI execution retains the original structured output stream',
     );
+    is $status, 0, 'successful command returns a zero exit code';
 }
 
 my $script = File::Spec->rel2abs('script/minil');

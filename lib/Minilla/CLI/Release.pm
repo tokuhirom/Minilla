@@ -30,9 +30,7 @@ sub run {
     my $project = Minilla::Project->new(
         skip_prepare => $opts->{skip_prepare},
     );
-    unless ($project->validate()) {
-        return;
-    }
+    errorf("Project validation failed.\n") unless $project->validate();
 
     my @steps = _steps($project);
     my @klasses;
@@ -121,6 +119,14 @@ Use FILE as the CPAN::Uploader configuration file.
 =head1 DESCRIPTION
 
 This sub-command release the module to CPAN.
+
+When standard input is not a terminal, first run C<minil prepare VERSION>,
+then use C<minil release --skip-prepare> to avoid interactive version
+selection. If F<Changes> needs editing, Minilla reports the problem and
+skips the interactive editing step, but still rewrites F<Changes>.
+Actual CPAN uploading requires confirmation from a terminal and fails
+without one. C<--dry-run>, C<FAKE_RELEASE>, and
+C<release.do_not_upload_to_cpan> bypass uploading and this confirmation.
 
 =head1 ENVIRONMENT VARIABLES
 
