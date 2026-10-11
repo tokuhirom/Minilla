@@ -4,6 +4,7 @@ use utf8;
 use Test::More;
 use File::Temp qw(tempdir);
 use File::pushd;
+use File::Spec;
 use Test::Output qw(stderr_like);
 
 use Minilla::Release::CheckChanges;
@@ -45,7 +46,7 @@ subtest 'noninteractive Changes editing is skipped' => sub {
     my $guard = pushd(tempdir(CLEANUP => 1));
     my $project = Local::Project->new('0.02');
     local *STDIN;
-    open STDIN, '<', \'' or die "Cannot redirect standard input: $!";
+    open STDIN, '<', File::Spec->devnull or die "Cannot redirect standard input: $!";
     no warnings 'redefine';
     local *Minilla::Release::CheckChanges::prompt = sub { die "Unexpected prompt\n" };
     local *Minilla::Release::CheckChanges::edit_file = sub { die "Unexpected editor\n" };

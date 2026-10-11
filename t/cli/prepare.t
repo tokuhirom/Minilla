@@ -123,7 +123,7 @@ subtest 'noninteractive prepare requires a version and skips Changes editing' =>
     git_init_add_commit();
 
     local *STDIN;
-    open STDIN, '<', \'' or die "Cannot redirect standard input: $!";
+    open STDIN, '<', File::Spec->devnull or die "Cannot redirect standard input: $!";
     local $ENV{PERL_MM_USE_DEFAULT} = 1;
     no warnings 'redefine';
     local *Minilla::Release::BumpVersion::prompt = sub { die "Unexpected version prompt\n" };

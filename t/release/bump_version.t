@@ -3,6 +3,7 @@ use warnings;
 use utf8;
 use Test::More;
 use Test::Output qw(stderr_like);
+use File::Spec;
 
 use Minilla::Release::BumpVersion;
 
@@ -16,7 +17,7 @@ use Minilla::Release::BumpVersion;
 subtest 'noninteractive version selection' => sub {
     my $project = Local::Project->new;
     local *STDIN;
-    open STDIN, '<', \'' or die "Cannot redirect standard input: $!";
+    open STDIN, '<', File::Spec->devnull or die "Cannot redirect standard input: $!";
     local $ENV{PERL_MM_USE_DEFAULT} = 1;
     no warnings 'redefine';
     local *Minilla::Release::BumpVersion::prompt = sub { die "Unexpected prompt\n" };
