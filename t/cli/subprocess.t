@@ -1,6 +1,17 @@
 use strict;
 use warnings;
 
+if (@ARGV && $ARGV[0] eq '--stdin-helper') {
+    require IO::Select;
+    print 'stdin fd: ', fileno(STDIN), "\n";
+    print 'stdin terminal: ', (-t STDIN ? 1 : 0), "\n";
+    if ($^O ne 'MSWin32') {
+        print 'stdin pipe: ', (-p STDIN ? 1 : 0), "\n";
+        my @ready = IO::Select->new(\*STDIN)->can_read(0);
+        print 'stdin readable: ', scalar(@ready), "\n";
+    }
+    exit;
+}
 if (@ARGV && $ARGV[0] eq '--output-helper') {
     binmode STDOUT;
     binmode STDERR;
@@ -17,6 +28,18 @@ if (@ARGV && $ARGV[0] eq '--sleep-helper') {
 use Test::More;
 use lib 't/lib';
 use Util;
+
+my ($input_status, $input_output) = run_with_open_stdin(
+    10, $^X, File::Spec->rel2abs($0), '--stdin-helper',
+);
+is $input_status, 0, 'input probe succeeds';
+like $input_output, qr/^stdin fd: 0$/m, 'child standard input uses descriptor zero';
+like $input_output, qr/^stdin terminal: 0$/m, 'child does not inherit terminal input';
+SKIP: {
+    skip 'Unix pipe checks are not supported on Windows', 2 if $^O eq 'MSWin32';
+    like $input_output, qr/^stdin pipe: 1$/m, 'child standard input is a pipe';
+    like $input_output, qr/^stdin readable: 0$/m, 'the input pipe remains open without data';
+}
 
 my ($status, $output) = run_with_open_stdin(
     10, $^X, File::Spec->rel2abs($0), '--output-helper',
