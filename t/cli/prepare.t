@@ -3,7 +3,10 @@ use warnings;
 use utf8;
 use Test::More;
 use Test::Requires 'Version::Next';
+use Test::Output qw(stderr_like);
 use CPAN::Meta;
+use IPC::Open3 qw(open3);
+use Symbol qw(gensym);
 use Minilla;
 
 use lib "t/lib";
@@ -11,6 +14,9 @@ use Util;
 use Minilla::CLI;
 use Minilla::CLI::Prepare;
 use Minilla::Profile::ModuleBuild;
+
+my $script = File::Spec->rel2abs('script/minil');
+my $lib = File::Spec->rel2abs('lib');
 
 subtest 'prepare an explicitly selected version' => sub {
     my $guard = pushd(tempdir(CLEANUP => 1));
@@ -95,12 +101,88 @@ subtest 'prepare with interactive version selection' => sub {
     cmd('git', 'tag', '0.01');
 
     local $ENV{PERL_MM_USE_DEFAULT} = 1;
+    no warnings 'redefine';
+    local *Minilla::Release::BumpVersion::is_interactive = sub { 1 };
     Minilla::CLI::Prepare->run();
 
     like slurp('lib/Acme/Foo.pm'), qr/our \$VERSION = "0\.02"/,
         'accepts the prompted default next version';
     like slurp('Changes'), qr/\{\{\$NEXT\}\}\n\n0\.02 /,
         'prepares Changes for the interactively selected version';
+};
+
+subtest 'noninteractive prepare requires a version and skips Changes editing' => sub {
+    my $guard = pushd(tempdir(CLEANUP => 1));
+    Minilla::Profile::ModuleBuild->new(
+        author => 'hoge',
+        dist => 'Acme-Foo',
+        module => 'Acme::Foo',
+        path => 'Acme/Foo.pm',
+        version => '0.01',
+    )->generate();
+    write_minil_toml('Acme-Foo');
+    spew('Changes', "{{\$NEXT}}\n\n");
+    git_init_add_commit();
+
+    local *STDIN;
+    open STDIN, '<', \'' or die "Cannot redirect standard input: $!";
+    local $ENV{PERL_MM_USE_DEFAULT} = 1;
+    no warnings 'redefine';
+    local *Minilla::Release::BumpVersion::prompt = sub { die "Unexpected version prompt\n" };
+    local *Minilla::Release::CheckChanges::prompt = sub { die "Unexpected Changes prompt\n" };
+    local *Minilla::Release::CheckChanges::edit_file = sub { die "Unexpected editor\n" };
+
+    my $original = slurp('lib/Acme/Foo.pm');
+    my $error;
+    stderr_like {
+        eval { Minilla::CLI::Prepare->run() };
+        $error = $@;
+    } qr/A version is required/, 'missing version fails without a prompt';
+    isa_ok $error, 'Minilla::Error::CommandExit';
+    is slurp('lib/Acme/Foo.pm'), $original, 'missing version leaves the source unchanged';
+    is slurp('Changes'), "{{\$NEXT}}\n\n", 'missing version leaves Changes unchanged';
+
+    stderr_like {
+        Minilla::CLI::Prepare->run('0.02');
+    } qr/Skipping Changes editing/, 'explicit version skips Changes editing';
+    like slurp('lib/Acme/Foo.pm'), qr/our \$VERSION = "0\.02"/, 'updates the selected version';
+    is(CPAN::Meta->load_file('META.json')->version, '0.02', 'regenerates metadata');
+    like slurp('Changes'), qr/\{\{\$NEXT\}\}\n\n0\.02 /, 'still rewrites Changes';
+
+    for my $args ([], ['0.03']) {
+        my ($input, $output);
+        my $stderr = gensym;
+        my $pid = open3(
+            $input, $output, $stderr,
+            $^X, "-I$lib", $script, '--no-auto-install', 'prepare', @$args,
+        );
+        my $status;
+        {
+            local $SIG{ALRM} = sub { die "prepare blocked on an open input pipe\n" };
+            eval {
+                alarm 10;
+                waitpid $pid, 0;
+                $status = $?;
+                alarm 0;
+            };
+            my $error = $@;
+            alarm 0;
+            if ($error) {
+                kill 'TERM', $pid;
+                waitpid $pid, 0;
+                die $error;
+            }
+        }
+        close $input or die "Cannot close child input: $!";
+        my $message = do { local $/; <$stderr> };
+        is $status >> 8, @$args ? 0 : 1,
+            'CLI exits with the expected status while its input pipe stays open';
+        like $message, @$args ? qr/Skipping Changes editing/ : qr/A version is required/,
+            'CLI reports noninteractive handling';
+        unlike $message, qr/Next Release\?|Edit file\?/, 'CLI does not prompt';
+    }
+    like slurp('lib/Acme/Foo.pm'), qr/our \$VERSION = "0\.03"/,
+        'noninteractive CLI updates an explicitly selected version';
 };
 
 done_testing;

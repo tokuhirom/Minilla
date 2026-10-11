@@ -87,6 +87,9 @@ For example, `minil dist --no-test --skip-prepare` writes only a single JSON
 line containing the archive path to standard output; build progress remains
 visible on standard error.
 
+Successful commands exit with status 0. Command errors exit with a nonzero
+status so automated callers can detect failures.
+
 # CONVENTION
 
 As stated above, Minilla is opinionated. Minilla has a bold assumption and convention like the followings, which are almost compatible to the sister project [Dist::Milla](https://metacpan.org/pod/Dist%3A%3AMilla).
@@ -155,6 +158,10 @@ The version can be selected interactively or supplied as an argument:
     % minil prepare
     % minil prepare v1.2.3
 
+When standard input is not a terminal, the version argument is required.
+Prepare the source with `minil prepare VERSION`, then release it with
+`minil release --skip-prepare`.
+
 The command does not commit, tag, build a distribution archive, upload, or
 push.
 
@@ -186,6 +193,10 @@ Checking git's current branch is \`release.branch\` key in minil.toml. If no mat
 
 Minilla will show 'Next Release?' prompt. You can input next version number.
 
+Without a terminal on standard input, a required but unspecified version
+is an error; Minilla does not select the default version automatically.
+A version format change also fails instead of prompting for confirmation.
+
 After that, minilla rewrites version numbers in \*\*/\*.pm, \*\*/\*.pl, and a script file contains perl-ish shebang.
 
 ## CheckChanges
@@ -195,6 +206,10 @@ You need to write Changes file. Your module's users need to know the difference 
 Minilla's Changes file includes \`{{$NEXT}}\` next version indicator. You should put update informations after that.
 If the release version is already recorded below an empty `{{$NEXT}}` section,
 Minilla treats the Changes file as prepared for that release.
+
+If standard input is not a terminal, Minilla reports any problems and
+skips the interactive editing step. Subsequent Changes rewriting is not
+skipped.
 
 ## RegenerateFiles
 

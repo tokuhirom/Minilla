@@ -5,7 +5,7 @@ use utf8;
 use ExtUtils::MakeMaker qw(prompt);
 
 use Minilla::Changes;
-use Minilla::Util qw(edit_file slurp);
+use Minilla::Util qw(edit_file slurp is_interactive);
 use Minilla::Logger;
 
 sub run {
@@ -32,6 +32,11 @@ sub run {
             infof("{{\$NEXT}} in changelog file 'Changes' must be the only non-whitespace on its line\n");
         } else {
             infof("{{\$NEXT}} in changelog file 'Changes' must be followed by at least one indented line describing a change\n");
+        }
+
+        unless (is_interactive()) {
+            warnf("Skipping Changes editing because standard input is not a terminal.\n");
+            return;
         }
 
         if (prompt("Edit file?", 'y') =~ /y/i) {

@@ -7,6 +7,7 @@ use lib "t/lib";
 use Util;
 use Minilla::Profile::ModuleBuild;
 use Minilla::CLI::Release;
+use Minilla::Release::BumpVersion;
 use Test::Output;
 
 my $repo = tempdir(CLEANUP => 1);
@@ -29,6 +30,8 @@ git_init_add_commit();
 git_remote('add', 'origin', "file://$repo");
 
 {
+    no warnings 'redefine';
+    local *Minilla::Release::BumpVersion::is_interactive = sub { 1 };
     local $ENV{PERL_MM_USE_DEFAULT} = 1;
     local $ENV{PERL_MINILLA_SKIP_CHECK_CHANGE_LOG} = 1;
     local $ENV{FAKE_RELEASE} = 1;

@@ -7,6 +7,7 @@ use lib "t/lib";
 use Util;
 use Minilla::Profile::ModuleBuild;
 use Minilla::CLI::Release;
+use Minilla::Release::BumpVersion;
 use Carp;
 
 my $repo = tempdir(CLEANUP => 1);
@@ -33,6 +34,7 @@ git_remote('add', 'origin', "file://$repo");
     local $ENV{PERL_MINILLA_SKIP_CHECK_CHANGE_LOG} = 1;
     local $ENV{FAKE_RELEASE} = 0;
     no warnings 'redefine';
+    local *Minilla::Release::BumpVersion::is_interactive = sub { 1 };
     local *CPAN::Uploader::read_config_file = sub {
         return {};
     };

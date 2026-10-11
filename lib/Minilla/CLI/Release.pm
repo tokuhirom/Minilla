@@ -122,6 +122,11 @@ Use FILE as the CPAN::Uploader configuration file.
 
 This sub-command release the module to CPAN.
 
+When standard input is not a terminal, first run C<minil prepare VERSION>,
+then use C<minil release --skip-prepare> to avoid interactive version
+selection. If F<Changes> needs editing, Minilla reports the problem and
+skips the interactive editing step, but still rewrites F<Changes>.
+
 =head1 ENVIRONMENT VARIABLES
 
 =over 4
