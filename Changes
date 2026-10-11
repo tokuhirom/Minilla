@@ -1,6 +1,8 @@
 Revision history for Perl extension Minilla
 
 {{$NEXT}}
+    - Avoid interactive release prompts when standard input is not a terminal; require an explicit version for preparation, skip Changes editing, and fail version format changes or CPAN uploads that require confirmation (#362)
+    - Return a nonzero exit status for command errors and project validation failures so automated callers can detect failures (#362)
 
 v3.3.1 2026-10-06T15:42:42Z
     - Finalize `release_status` and `provides` metadata in archives built with `--skip-prepare` without modifying the source `META.json` (#360)
