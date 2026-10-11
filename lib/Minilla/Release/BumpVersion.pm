@@ -37,7 +37,7 @@ sub run {
         ? $opts->{version}
         : prompt("Next Release?", $self->default_new_version($project));
 
-    if ($ver) {
+    if (defined $opts->{version} || $ver) {
         # Do not use is_strict. is_strict rejects '5.00_01' style.
         if (!version::is_lax($ver)) {
             errorf("Sorry, version '%s' is invalid.  Stopping.\n", $ver);

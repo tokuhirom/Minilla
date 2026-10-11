@@ -5,8 +5,6 @@ use Test::More;
 use Test::Requires 'Version::Next';
 use Test::Output qw(stderr_like);
 use CPAN::Meta;
-use IPC::Open3 qw(open3);
-use Symbol qw(gensym);
 use Minilla;
 
 use lib "t/lib";
@@ -143,41 +141,30 @@ subtest 'noninteractive prepare requires a version and skips Changes editing' =>
     is slurp('Changes'), "{{\$NEXT}}\n\n", 'missing version leaves Changes unchanged';
 
     stderr_like {
+        eval { Minilla::CLI::Prepare->run('') };
+        $error = $@;
+    } qr/version '' is invalid/, 'empty version fails without a prompt';
+    isa_ok $error, 'Minilla::Error::CommandExit';
+    is slurp('lib/Acme/Foo.pm'), $original, 'empty version leaves the source unchanged';
+    is slurp('Changes'), "{{\$NEXT}}\n\n", 'empty version leaves Changes unchanged';
+
+    stderr_like {
         Minilla::CLI::Prepare->run('0.02');
     } qr/Skipping Changes editing/, 'explicit version skips Changes editing';
     like slurp('lib/Acme/Foo.pm'), qr/our \$VERSION = "0\.02"/, 'updates the selected version';
     is(CPAN::Meta->load_file('META.json')->version, '0.02', 'regenerates metadata');
     like slurp('Changes'), qr/\{\{\$NEXT\}\}\n\n0\.02 /, 'still rewrites Changes';
 
-    for my $args ([], ['0.03']) {
-        my ($input, $output);
-        my $stderr = gensym;
-        my $pid = open3(
-            $input, $output, $stderr,
+    for my $args ([], [''], ['0.03']) {
+        my ($status, $message) = run_with_open_stdin(
+            30,
             $^X, "-I$lib", $script, '--no-auto-install', 'prepare', @$args,
         );
-        my $status;
-        {
-            local $SIG{ALRM} = sub { die "prepare blocked on an open input pipe\n" };
-            eval {
-                alarm 10;
-                waitpid $pid, 0;
-                $status = $?;
-                alarm 0;
-            };
-            my $error = $@;
-            alarm 0;
-            if ($error) {
-                kill 'TERM', $pid;
-                waitpid $pid, 0;
-                die $error;
-            }
-        }
-        close $input or die "Cannot close child input: $!";
-        my $message = do { local $/; <$stderr> };
-        is $status >> 8, @$args ? 0 : 1,
+        my $success = @$args && length $args->[0];
+        is $status >> 8, $success ? 0 : 1,
             'CLI exits with the expected status while its input pipe stays open';
-        like $message, @$args ? qr/Skipping Changes editing/ : qr/A version is required/,
+        like $message, $success ? qr/Skipping Changes editing/
+            : @$args ? qr/version '' is invalid/ : qr/A version is required/,
             'CLI reports noninteractive handling';
         unlike $message, qr/Next Release\?|Edit file\?/, 'CLI does not prompt';
     }

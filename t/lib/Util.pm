@@ -16,6 +16,8 @@ use Minilla;
 use Minilla::Git;
 use Minilla::Util qw/:all/;
 use TOML;
+use IPC::Open3 ();
+use POSIX qw(WNOHANG);
 
 $Minilla::DEBUG=1 if $ENV{MINILLA_DEBUG};
 
@@ -31,6 +33,7 @@ our @EXPORT = (
     @Minilla::Git::EXPORT, @Minilla::Util::EXPORT_OK, qw(spew),
     qw(catfile),
     qw(mkpath),
+    qw(run_with_open_stdin),
 );
 
 sub git_init_add_commit() {
@@ -59,6 +62,37 @@ sub write_minil_toml {
     else {
         spew( 'minil.toml', to_toml(@_) );
     }
+}
+
+sub run_with_open_stdin {
+    my ($timeout, @command) = @_;
+    my $dir = tempdir(CLEANUP => 1);
+    my $log_path = catfile($dir, 'output.log');
+    open my $log, '>', $log_path or die "Cannot open child output: $!";
+    local *STDIN;
+    open STDIN, '<', File::Spec->devnull or die "Cannot open null input: $!";
+    my $pid = IPC::Open3::open3(
+        my $input, '>&' . fileno($log), '>&' . fileno($log), @command,
+    );
+    my $deadline = time + $timeout;
+    my $status;
+    while (1) {
+        my $result = waitpid $pid, WNOHANG;
+        if ($result == $pid) {
+            $status = $?;
+            last;
+        }
+        die "Cannot wait for child $pid: $!" if $result == -1;
+        if (time >= $deadline) {
+            kill 'TERM', $pid;
+            waitpid $pid, 0;
+            die "Child $pid did not exit with its input pipe open within $timeout seconds\n";
+        }
+        select undef, undef, undef, 0.05;
+    }
+    close $input or die "Cannot close child input: $!";
+    close $log or die "Cannot close child output: $!";
+    return ($status, slurp($log_path));
 }
 
 1;

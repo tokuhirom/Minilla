@@ -161,6 +161,10 @@ The version can be selected interactively or supplied as an argument:
 When standard input is not a terminal, the version argument is required.
 Prepare the source with `minil prepare VERSION`, then release it with
 `minil release --skip-prepare`.
+An explicitly supplied empty version is invalid. Actual CPAN uploading
+still requires confirmation from a terminal; without one, it fails rather
+than waiting. `--dry-run`, `FAKE_RELEASE`, and
+`release.do_not_upload_to_cpan` bypass uploading and this confirmation.
 
 The command does not commit, tag, build a distribution archive, upload, or
 push.

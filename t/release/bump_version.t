@@ -59,6 +59,27 @@ subtest 'noninteractive version selection' => sub {
     isa_ok $error, 'Minilla::Error::CommandExit';
 };
 
+subtest 'explicit false-valued versions are validated' => sub {
+    my $project = Local::Project->new;
+    no warnings 'redefine';
+    local *Minilla::Release::BumpVersion::is_interactive = sub { 1 };
+    local *Minilla::Release::BumpVersion::prompt = sub { die "Unexpected prompt\n" };
+    my $error;
+    stderr_like {
+        eval {
+            Minilla::Release::BumpVersion->run($project, { version => '', dry_run => 0 });
+        };
+        $error = $@;
+    } qr/version '' is invalid/, 'an explicit empty version is rejected even with a terminal';
+    isa_ok $error, 'Minilla::Error::CommandExit';
+
+    local *Minilla::Release::BumpVersion::check_version_compatibility = sub {
+        is $_[1], '0', 'zero reaches version compatibility checking';
+        return 1;
+    };
+    Minilla::Release::BumpVersion->run($project, { version => '0', dry_run => 1 });
+};
+
 subtest 'interactive version selection and confirmation' => sub {
     my $project = Local::Project->new;
     no warnings 'redefine';
