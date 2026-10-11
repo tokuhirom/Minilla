@@ -61,12 +61,6 @@ jobs:
       - name: Install Windows dependencies
         if: runner.os == 'Windows'
         run: cpanm -nq Win32::Console Win32::Console::ANSI
-      - name: Check noninteractive regressions on Windows
-        if: runner.os == 'Windows'
-        timeout-minutes: 3
-        env:
-          TMPDIR: ${{ runner.temp }}
-        run: prove -lv t/cli/prepare.t t/cli/subprocess.t t/cli/release_noninteractive.t t/release/changes.t t/release/bump_version.t t/release/upload_to_cpan.t
       - name: Run test
         env:
           TMPDIR: ${{ runner.temp }}
