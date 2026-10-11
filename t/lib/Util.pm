@@ -69,8 +69,8 @@ sub run_with_open_stdin {
     my $dir = tempdir(CLEANUP => 1);
     my $log_path = catfile($dir, 'output.log');
     open my $log, '>', $log_path or die "Cannot open child output: $!";
-    local *STDIN;
-    open STDIN, '<', File::Spec->devnull or die "Cannot open null input: $!";
+    # STDIN must retain descriptor 0; localizing it can make open3 redirect
+    # another descriptor instead, leaving the child attached to the terminal.
     my $pid = IPC::Open3::open3(
         my $input, '>&' . fileno($log), '>&' . fileno($log), @command,
     );

@@ -122,38 +122,40 @@ subtest 'noninteractive prepare requires a version and skips Changes editing' =>
     spew('Changes', "{{\$NEXT}}\n\n");
     git_init_add_commit();
 
-    local *STDIN;
-    open STDIN, '<', File::Spec->devnull or die "Cannot redirect standard input: $!";
     local $ENV{PERL_MM_USE_DEFAULT} = 1;
-    no warnings 'redefine';
-    local *Minilla::Release::BumpVersion::prompt = sub { die "Unexpected version prompt\n" };
-    local *Minilla::Release::CheckChanges::prompt = sub { die "Unexpected Changes prompt\n" };
-    local *Minilla::Release::CheckChanges::edit_file = sub { die "Unexpected editor\n" };
+    {
+        local *STDIN;
+        open STDIN, '<', File::Spec->devnull or die "Cannot redirect standard input: $!";
+        no warnings 'redefine';
+        local *Minilla::Release::BumpVersion::prompt = sub { die "Unexpected version prompt\n" };
+        local *Minilla::Release::CheckChanges::prompt = sub { die "Unexpected Changes prompt\n" };
+        local *Minilla::Release::CheckChanges::edit_file = sub { die "Unexpected editor\n" };
 
-    my $original = slurp('lib/Acme/Foo.pm');
-    my $error;
-    stderr_like {
-        eval { Minilla::CLI::Prepare->run() };
-        $error = $@;
-    } qr/A version is required/, 'missing version fails without a prompt';
-    isa_ok $error, 'Minilla::Error::CommandExit';
-    is slurp('lib/Acme/Foo.pm'), $original, 'missing version leaves the source unchanged';
-    is slurp('Changes'), "{{\$NEXT}}\n\n", 'missing version leaves Changes unchanged';
+        my $original = slurp('lib/Acme/Foo.pm');
+        my $error;
+        stderr_like {
+            eval { Minilla::CLI::Prepare->run() };
+            $error = $@;
+        } qr/A version is required/, 'missing version fails without a prompt';
+        isa_ok $error, 'Minilla::Error::CommandExit';
+        is slurp('lib/Acme/Foo.pm'), $original, 'missing version leaves the source unchanged';
+        is slurp('Changes'), "{{\$NEXT}}\n\n", 'missing version leaves Changes unchanged';
 
-    stderr_like {
-        eval { Minilla::CLI::Prepare->run('') };
-        $error = $@;
-    } qr/version '' is invalid/, 'empty version fails without a prompt';
-    isa_ok $error, 'Minilla::Error::CommandExit';
-    is slurp('lib/Acme/Foo.pm'), $original, 'empty version leaves the source unchanged';
-    is slurp('Changes'), "{{\$NEXT}}\n\n", 'empty version leaves Changes unchanged';
+        stderr_like {
+            eval { Minilla::CLI::Prepare->run('') };
+            $error = $@;
+        } qr/version '' is invalid/, 'empty version fails without a prompt';
+        isa_ok $error, 'Minilla::Error::CommandExit';
+        is slurp('lib/Acme/Foo.pm'), $original, 'empty version leaves the source unchanged';
+        is slurp('Changes'), "{{\$NEXT}}\n\n", 'empty version leaves Changes unchanged';
 
-    stderr_like {
-        Minilla::CLI::Prepare->run('0.02');
-    } qr/Skipping Changes editing/, 'explicit version skips Changes editing';
-    like slurp('lib/Acme/Foo.pm'), qr/our \$VERSION = "0\.02"/, 'updates the selected version';
-    is(CPAN::Meta->load_file('META.json')->version, '0.02', 'regenerates metadata');
-    like slurp('Changes'), qr/\{\{\$NEXT\}\}\n\n0\.02 /, 'still rewrites Changes';
+        stderr_like {
+            Minilla::CLI::Prepare->run('0.02');
+        } qr/Skipping Changes editing/, 'explicit version skips Changes editing';
+        like slurp('lib/Acme/Foo.pm'), qr/our \$VERSION = "0\.02"/, 'updates the selected version';
+        is(CPAN::Meta->load_file('META.json')->version, '0.02', 'regenerates metadata');
+        like slurp('Changes'), qr/\{\{\$NEXT\}\}\n\n0\.02 /, 'still rewrites Changes';
+    }
 
     for my $args ([], [''], ['0.03']) {
         my ($status, $message) = run_with_open_stdin(
