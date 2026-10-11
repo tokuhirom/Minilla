@@ -84,7 +84,7 @@ sub run_with_open_stdin {
         }
         die "Cannot wait for child $pid: $!" if $result == -1;
         if (time >= $deadline) {
-            kill 'TERM', $pid;
+            kill 'KILL', $pid;
             waitpid $pid, 0;
             die "Child $pid did not exit with its input pipe open within $timeout seconds\n";
         }

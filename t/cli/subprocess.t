@@ -9,6 +9,7 @@ if (@ARGV && $ARGV[0] eq '--output-helper') {
     exit 1;
 }
 if (@ARGV && $ARGV[0] eq '--sleep-helper') {
+    $SIG{TERM} = 'IGNORE' if $ARGV[1] && $ARGV[1] eq '--ignore-term';
     sleep 30;
     exit;
 }
@@ -30,5 +31,17 @@ eval { run_with_open_stdin(1, $^X, File::Spec->rel2abs($0), '--sleep-helper') };
 $error = $@;
 like $error, qr/did not exit.*within 1 seconds/,
     'a blocked child is terminated at the deadline';
+
+my $started = time;
+eval {
+    run_with_open_stdin(
+        1, $^X, File::Spec->rel2abs($0), '--sleep-helper', '--ignore-term',
+    );
+};
+$error = $@;
+like $error, qr/did not exit.*within 1 seconds/,
+    'a child ignoring TERM is terminated at the deadline';
+cmp_ok time - $started, '<', 10,
+    'timeout cleanup does not wait for the TERM-ignoring child to finish sleeping';
 
 done_testing;
